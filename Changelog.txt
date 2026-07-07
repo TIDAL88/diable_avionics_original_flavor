@@ -1,0 +1,96 @@
+﻿Version 3.02
+Major Changes
+Paintjob System: Added support for all weapon and ship paintjobs using MagicLib paintjob system.
+Note: Certain Pandemonium paintjobs do not feature their painted micro missile arrays.
+Ships:
+Virtuous Wunder Wanzer:
+Ship System Phase Grazer Siphon:
+Increased speed to 145
+Weapon Balance:
+Artassault Revolver Cannon: Increased damage by 5.
+
+Grave HMC: Reverted the version 3.01 damage buff.
+
+Lazyhorn Warp Repeater: Increased OP cost by 1.
+
+Nocturne Emitter: Decreased OP cost by 1, and reduced burst delay by 1.5s.
+
+State Support Beam: Increased damage to 800.
+
+Uhlan Siege Laser: Reduced minimum spread from 6 to 3.
+
+Plover Rocket Pod: Increased flight speed from 500 to 700, and increased initial acceleration from 750 to 850.
+
+Wanzers:
+Blizzaia: Increased OP cost to 18.
+
+Avalanche: Decreased OP cost to 18, and increased top speed from 165 to 175.
+
+Snowball Shotgun: Set damage type to Energy, and increased damage per shot to 450.
+
+Snowball Shotgun Projectiles: Set baseline projectile type to Energy, and increased damage from 65 to 75.
+
+Zephyr: Increased Micro Glaux damage to 500/s, set Aether Splitter chest beam damage to 1500/s, and increased base OP cost from 17 to 22. Reduced system cooldown from 20s to 10 and duration reduced to 2s from 2.25
+
+Hullmods:
+Pandemonium (Assault Configuration): Reduced the rate of fire and flux reduction bonuses to 20% (down from 30%).
+
+Bug Fixes
+Pandemonium (Assault): Fixed an incorrect hullmod description for the Assault configuration.
+
+Pandemonium (Artillery): Fixed an incorrect hullmod description for the Artillery configuration.
+
+Version 3.01 (Old Version)
+Ship Balance & Reworks
+Rime M:
+
+Swapped medium missile slots to Composites.
+
+Increased base speed from 65 to 95.
+
+Increased flux dissipation from 300 to 350.
+
+Increased flux capacity from 6000 to 7000.
+
+Design Note: The Rime was significantly inferior to the Falcon despite costing more DP, leaving it outmatched by the Gust. This shift gives it a solid role as a cheaper brawler and support hull with two fighter bays.
+
+Coanda:
+
+Added a built-in Micro Missile Array.
+
+Swapped the rear hybrid slot to a Universal slot.
+
+Design Note: The Coanda was aggressively mediocre. These built-in utilities give it a distinct identity and a real reason to be fielded.
+
+Pandemonium: Increased deployment cost from 65 to 75 DP.
+
+Weapon Balance & Reworks
+Srab Heavy Emitter:
+
+Increased damage to 750, and increased projectile health to 600.
+
+Increased projectile speed to 550 for better responsiveness.
+
+Enhanced sound effects by 0.2s to give the firing audio more punch.
+
+Design Note: These changes make the weapon punchy and reactive enough to bypass competent enemy point defense grids.
+
+Grave HMC:
+
+Increased damage to 70.
+
+Design Note: This weapon now functions as a longer-ranged heavy machine gun, trading away flux efficiency for superior default reach and solid hull damage.
+
+Recson V:
+
+Increased damage from 200 to 225, set flux per shot to 225, and increased the refire delay to 2.4s.
+
+Design Note: Positioned as a middle ground between the Heavy Mass Driver and the Hypervelocity Driver, offering higher DPS and better flux efficiency than the HVD, but with worse overall accuracy.
+
+State Support Beam:
+
+Completely reworked into a short-duration burst beam with a high rate of fire. It excels at shredding armor, but it features terrible flux efficiency and handles poorly against shields.
+
+Lazyhorn: Decreased OP cost from 12 to 10 to make it a more attractive point defense choice.
+
+Recson S: Decreased OP cost to 6 to ensure it can properly compete with the Light Mass Driver and Railgun alternatives.
