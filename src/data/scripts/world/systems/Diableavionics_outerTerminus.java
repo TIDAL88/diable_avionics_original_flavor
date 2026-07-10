@@ -95,6 +95,12 @@ public class Diableavionics_outerTerminus implements SectorGeneratorPlugin {
         jumpPoint1.setRelatedPlanet(OT1);
         jumpPoint1.setStandardWormholeToHyperspaceVisual();
         system.addEntity(jumpPoint1);
+        SectorEntityToken gate = system.addCustomEntity(
+                "sivie_gate",
+                "Sivie Gate",
+                "inactive_gate",
+                "neutral"
+        );
 
         //3000
         PlanetAPI ach2 = system.addPlanet("diableavionics_prison",
