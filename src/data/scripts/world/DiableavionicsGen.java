@@ -19,14 +19,19 @@ import org.magiclib.util.MagicCampaign;
 
 import static data.scripts.util.Diableavionics_stringsManager.txt;
 
-@SuppressWarnings("unchecked")
 public class DiableavionicsGen implements SectorGeneratorPlugin {
 
     @Override
     public void generate(SectorAPI sector) {
-        new Diableavionics_outerTerminus().generate(sector);
-        new Diableavionics_stagging().generate(sector);
-        new Diableavionics_fob().generate(sector);
+        if (sector.getStarSystem(txt("star_C"))==null) {
+            new Diableavionics_outerTerminus().generate(sector);
+        }
+        if (sector.getStarSystem(txt("star_B"))==null) {
+            new Diableavionics_stagging().generate(sector);
+        }
+        if (sector.getStarSystem(txt("star_A"))==null) {
+            new Diableavionics_fob().generate(sector);
+        }
 
         SharedData.getData().getPersonBountyEventData().addParticipatingFaction("diableavionics");
 
