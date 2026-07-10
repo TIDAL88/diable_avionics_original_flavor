@@ -27,7 +27,7 @@ public class Diableavionics_stagging {
         StarSystemAPI system = sector.createStarSystem(txt("star_B"));
         system.setOptionalUniqueId("diableavionics_stagging");
 
-        system.setBackgroundTextureFilename("graphics/backgrounds/background4.jpg");
+        system.setBackgroundTextureFilename("graphics/da/backgrounds/diableavionics_99es.jpg");
 
         // create the star and generate the hyperspace anchor for this system
         PlanetAPI star = system.initStar(txt("star_B_star_1"), // unique id for this star
