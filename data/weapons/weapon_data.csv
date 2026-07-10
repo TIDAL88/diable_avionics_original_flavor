@@ -89,7 +89,7 @@ Thrush LRM System,diableavionics_thrush,1,,1150,7000,,750,,65,30,13,10,0.13334,2
 ,diableavionics_calmSystem,,,,1,1,,,,,,,,,,,,,10,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
 ,diableavionics_armor,,,,1,1,,,,,,,,,,,,,10,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
 ,diableavionics_armorModule,,,,1,1,,,,,,,,,,,,,10,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
-Deep Strike Pod,diableavionics_station_deepStrike,4,,350,10000,,500,2000,500,0,50,1,,,ENERGY,0,,1,30,1,,0,0,0,0,,500,50,20,500,,,"STRIKE,DO_NOT_AIM,SYSTEM","strike20, missile20",,Diable Avionics,,,,,,,,,,,TRUE,9.7
+Deep Strike Pod,diableavionics_station_deepStrike,4,,350,10000,,500,2000,500,0,0,1,,,ENERGY,0,,1,30,1,,0,0,0,0,,500,50,20,500,,,"STRIKE,DO_NOT_AIM,SYSTEM","strike20, missile20",,Diable Avionics,,,,,,,,,,,TRUE,9.7
 ,diableavionics_deepStrikeGlow,,,,1,1,,,,,,,,,,,,,10,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
