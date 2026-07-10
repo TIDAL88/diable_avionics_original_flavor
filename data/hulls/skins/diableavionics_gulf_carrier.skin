@@ -3,7 +3,6 @@
   "skinHullId": "diableavionics_IBBgulf_carrier",
   "hullName": "Gulf",
   "descriptionId": "diableavionics_IBBgulf",
-  "systemId":"diableavionics_fastRefit",
   "weaponSlotChanges": {
     "WS0001": {
       "type": "BUILT_IN"
