@@ -177,6 +177,8 @@ diableavionics_royalblue_IBBgulf,diableavionics_IBBgulf,Royal Blue,royalblue,gra
 diableavionics_snowblast_IBBgulf,diableavionics_IBBgulf,Snowblast,snowblast,graphics/snowblast/ships/gulf/diableavionics_IBBgulf.png,true,,,
 diableavionics_stripeless_IBBgulf,diableavionics_IBBgulf,Stripeless,stripeless,graphics/stripeless/ships/gulf/diableavionics_IBBgulf.png,true,,,
 diableavionics_sunrise_IBBgulf,diableavionics_IBBgulf,Sunrise,sunrise,graphics/sunrise/ships/gulf/diableavionics_IBBgulf.png,true,,,
+diableavionics_arctic_IBBgulf,diableavionics_IBBgulf,Repainted,repainted,graphics/da/ships/gulf/diableavionics_IBBgulf_repainted.png,true,,,
+diableavionics_repainted_IBBgulf,diableavionics_IBBgulf,Arctic,arctic,graphics/arctic/ships/gulf/diableavionics_IBBgulf_repainted.png,true,,,
 diableavionics_battlehardened_laminar,diableavionics_laminar,Battle Hardened,battlehardened,graphics/battlehardened/ships/diableavionics_laminar.png,true,,,
 diableavionics_battleworn_laminar,diableavionics_laminar,Battleworn,battleworn,graphics/battleworn/ships/diableavionics_laminar.png,true,,,
 diableavionics_dra_laminar,diableavionics_laminar,DRA,DRA,graphics/DRA/ships/diableavionics_laminar.png,true,,,
