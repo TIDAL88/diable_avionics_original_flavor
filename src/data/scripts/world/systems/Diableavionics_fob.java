@@ -19,7 +19,8 @@ public class Diableavionics_fob {
     public void generate(SectorAPI sector) {
         StarSystemAPI system = sector.createStarSystem(txt("star_A"));
         system.setOptionalUniqueId("diableavionics_fob");
-        system.setBackgroundTextureFilename("graphics/backgrounds/background4.jpg");
+
+        system.setBackgroundTextureFilename("graphics/da/backgrounds/diableavionics_86rn.png");
 
         // create the star and generate the hyperspace anchor for this system
         PlanetAPI star = system.initStar(txt("star_A_star_1"), // unique id for this star
