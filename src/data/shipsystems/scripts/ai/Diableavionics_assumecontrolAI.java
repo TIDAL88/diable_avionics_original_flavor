@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 import java.util.List;
 
-public class Diableavionics_assumecontrolai implements ShipSystemAIScript {
+public class Diableavionics_assumecontrolAI implements ShipSystemAIScript {
     private CombatEngineAPI engine;
     private ShipAPI ship;
     private ShipSystemAPI system;
@@ -31,6 +31,6 @@ public class Diableavionics_assumecontrolai implements ShipSystemAIScript {
         }
         if (ship.areAnyEnemiesInRange() && !dead_wing && system.canBeActivated()) {
             ship.giveCommand(ShipCommand.USE_SYSTEM, null, 0);
+            }
         }
     }
-}
