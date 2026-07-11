@@ -3,7 +3,7 @@
     "type":"STAT_MOD",
     "aiType":"CUSTOM",
 
-    "aiScript":"data.shipsystems.scripts.ai.Diableavionics_assumecontrolai",
+    "aiScript":"data.shipsystems.scripts.ai.Diableavionics_assumecontrolAI",
     "statsScript":"data.shipsystems.scripts.Diableavionics_assumeControlStats",
 
     "useSound":"system_high_energy_focus_activate",

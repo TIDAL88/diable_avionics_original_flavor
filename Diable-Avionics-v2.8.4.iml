@@ -16,5 +16,6 @@
     <orderEntry type="library" exported="" name="lwjgl_util" level="project" />
     <orderEntry type="library" exported="" name="starfarer.api" level="project" />
     <orderEntry type="library" exported="" name="Graphics" level="project" />
+    <orderEntry type="library" name="Kotlin-Runtime" level="project" />
   </component>
 </module>

@@ -6,7 +6,6 @@ import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI.HullSize;
 import com.fs.starfarer.api.combat.ShipHullSpecAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
-
 public class DiableAvionicsGulf_Master extends BaseHullMod {
 
     private static final String LARGE_SLOT = "WS0001";
