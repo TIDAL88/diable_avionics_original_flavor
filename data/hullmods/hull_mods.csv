@@ -99,5 +99,5 @@ Assault Configuration,assault_configuration,,,Diable Avionics,diable,,15000,,TRU
 Artillery Configuration,artillery_configuration,,,Diable Avionics,diable,,15000,,TRUE,,0,0,0,0,data.hullmods.ArtilleryConfig,"A novel reconfiguration of the Pandemonium's core reactor grid, engineered exclusively for long-range orbital bombardment and fire-support operations. By aggressively redirecting power from the auxiliary propulsion systems and secondary capacitor banks into the primary fire-control arrays, the hull gains an unprecedented boost to tactical targeting fidelity and maximum weapon range. However, starving the main engines and smaller mounts results in a degradation of tactical mobility alongside a minor drop in overall weapon cycling speeds.",Artillery Configuration. Optimized for long range.,,graphics/da/hullmods/diableavionics_tuning.png
 ,,,,,,,,,,,,,,,,,,,
 #GULF,,,,,,,,,,,,,,,,,,,
-Deep Strike,gulf_deep_strike,,,Diable Avionics,diable,,,,FALSE,,0,0,0,0,data.hullmods.DiableAvionicsGulf_DeepStrike,,,,graphics/da/hullmods/diableavionics_tuning.png
+Deep Strike Catapult,gulf_deep_strike,,,Diable Avionics,diable,,,,FALSE,,0,0,25,0,data.hullmods.DiableAvionicsGulf_DeepStrike,,,,graphics/da/hullmods/diableavionics_tuning.png
 master,gulf_master,,,Diable Avionics,diable,,,,TRUE,TRUE,0,0,0,0,data.hullmods.DiableAvionicsGulf_Master,,,,
