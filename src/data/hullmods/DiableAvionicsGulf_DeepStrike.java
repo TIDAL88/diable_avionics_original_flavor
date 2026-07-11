@@ -4,7 +4,6 @@ import com.fs.starfarer.api.combat.BaseHullMod;
 import com.fs.starfarer.api.combat.ShipAPI;
 
 public class DiableAvionicsGulf_DeepStrike extends BaseHullMod {
-
     @Override
     public boolean isApplicableToShip(ShipAPI ship) {
         if (ship == null || ship.getHullSpec() == null) return false;

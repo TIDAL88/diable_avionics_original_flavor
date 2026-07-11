@@ -8,7 +8,6 @@ import com.fs.starfarer.api.impl.campaign.procgen.StarAge;
 import com.fs.starfarer.api.impl.campaign.procgen.StarSystemGenerator;
 import com.fs.starfarer.api.impl.campaign.terrain.HyperspaceTerrainPlugin;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.world.DiableavionicsGen;
 
 import java.awt.*;
 
@@ -91,17 +90,14 @@ public class Diableavionics_outerTerminus implements SectorGeneratorPlugin {
                 txt("star_C_jp_0")
         );
         OrbitAPI orbit = Global.getFactory().createCircularOrbit(star, 85, 2000, 150);
+        OrbitAPI orbit2 = Global.getFactory().createCircularOrbit(star, 125, 2500, 250);
         jumpPoint1.setOrbit(orbit);
         jumpPoint1.setRelatedPlanet(OT1);
         jumpPoint1.setStandardWormholeToHyperspaceVisual();
         system.addEntity(jumpPoint1);
-        SectorEntityToken gate = system.addCustomEntity(
-                "sivie_gate",
-                "Sivie Gate",
-                "inactive_gate",
-                "neutral"
-        );
-
+        SectorEntityToken gate = system.addCustomEntity("sivie_gate", "Sivie Gate", "inactive_gate", "neutral");
+        gate.setOrbit(orbit2);
+        system.addEntity(gate);
         //3000
         PlanetAPI ach2 = system.addPlanet("diableavionics_prison",
                 star,
