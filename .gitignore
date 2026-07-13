@@ -1,0 +1,11 @@
+# IntelliJ
+.idea/
+
+# IntelliJ module files
+*.iml
+
+# Run configurations
+.run/
+
+# Build output
+out/
