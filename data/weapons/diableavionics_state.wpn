@@ -20,7 +20,7 @@
     "coreColor":[238,255,239,255],
     "glowColor":[232,128,35,255],
 
-    "width":25.0,
+    "width":24.0,
     "hitGlowRadius":75,
 
 	"textureType":[

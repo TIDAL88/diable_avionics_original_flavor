@@ -67,7 +67,7 @@
 		{"file":"sounds/diablefx/da_virtuousGrenade_fireC1.ogg","pitch":0.97, "volume":0.25},
 		{"file":"sounds/diablefx/da_virtuousGrenade_fireC2.ogg","pitch":0.95, "volume":0.25},
 		{"file":"sounds/diablefx/da_virtuousGrenade_fireC3.ogg","pitch":0.93, "volume":0.25},
-        ],@
+        ],
         "diableavionics_virtuousGrenade_hit":[
 		{"file":"sounds/diablefx/da_virtuousGrenade_hit1.ogg","pitch":1.05, "volume":0.40},
 		{"file":"sounds/diablefx/da_virtuousGrenade_hit2.ogg","pitch":1.05, "volume":0.40},
@@ -382,9 +382,9 @@
 		{"file":"sounds/diablefx/da_state_loop.ogg","pitch":1.03, "volume":0.35}
 	],
         "diableavionics_nocturne_fire":[
-		{"file":"sounds/diablefx/da_nocturne_fire.ogg","pitch":1.0, "volume":0.9},
-		{"file":"sounds/diablefx/da_nocturne_fire.ogg","pitch":0.97, "volume":0.9},
-		{"file":"sounds/diablefx/da_nocturne_fire.ogg","pitch":1.03, "volume":0.9}
+		{"file":"sounds/diablefx/da_nocturne_fire.ogg","pitch":1.0, "volume":0.6},
+		{"file":"sounds/diablefx/da_nocturne_fire.ogg","pitch":0.97, "volume":0.6},
+		{"file":"sounds/diablefx/da_nocturne_fire.ogg","pitch":1.03, "volume":0.6}
 	],
         "diableavionics_nocturne_loop":[
 		{"file":"sounds/diablefx/da_nocturne_loop.ogg","pitch":1.0, "volume":0.9},
