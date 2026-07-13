@@ -1,11 +1,7 @@
-# IntelliJ
 .idea/
-
-# IntelliJ module files
 *.iml
-
-# Run configurations
 .run/
-
-# Build output
 out/
+.DS_Store
+Thumbs.db
+Desktop.ini
