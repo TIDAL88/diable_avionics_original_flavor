@@ -1,5 +1,5 @@
 {        
-	#CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK 
+	#CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK
 
 
         "diableavionics_virtuousSyphon_loop":[
@@ -382,14 +382,14 @@
 		{"file":"sounds/diablefx/da_state_loop.ogg","pitch":1.03, "volume":0.35}
 	],
         "diableavionics_nocturne_fire":[
-		{"file":"sounds/diablefx/da_nocturne_fire.ogg","pitch":1.0, "volume":0.35},
-		{"file":"sounds/diablefx/da_nocturne_fire.ogg","pitch":0.97, "volume":0.35},
-		{"file":"sounds/diablefx/da_nocturne_fire.ogg","pitch":1.03, "volume":0.35}
+		{"file":"sounds/diablefx/da_nocturne_fire.ogg","pitch":1.0, "volume":0.9},
+		{"file":"sounds/diablefx/da_nocturne_fire.ogg","pitch":0.97, "volume":0.9},
+		{"file":"sounds/diablefx/da_nocturne_fire.ogg","pitch":1.03, "volume":0.9}
 	],
         "diableavionics_nocturne_loop":[
-		{"file":"sounds/diablefx/da_nocturne_loop.ogg","pitch":1.0, "volume":0.35},
-		{"file":"sounds/diablefx/da_nocturne_loop.ogg","pitch":1.03, "volume":0.35},
-		{"file":"sounds/diablefx/da_nocturne_loop.ogg","pitch":0.97, "volume":0.35}
+		{"file":"sounds/diablefx/da_nocturne_loop.ogg","pitch":1.0, "volume":0.9},
+		{"file":"sounds/diablefx/da_nocturne_loop.ogg","pitch":1.03, "volume":0.9},
+		{"file":"sounds/diablefx/da_nocturne_loop.ogg","pitch":0.97, "volume":0.9}
 	],
         "diableavionics_nocturne_hit":[
 		{"file":"sounds/diablefx/da_spark_01.ogg","pitch":1.0, "volume":0.35},

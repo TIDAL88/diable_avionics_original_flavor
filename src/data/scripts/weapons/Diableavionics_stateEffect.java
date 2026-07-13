@@ -8,35 +8,36 @@ import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
 
 public class Diableavionics_stateEffect implements BeamEffectPlugin {
-    
-    private boolean runOnce=false;
-    private float time=0, offsetA=0, offsetB=0;
-    WeaponSpecAPI specs;
+
+    private boolean runOnce = false;
+    private float time = 0f;
+    private float offset = 0f;
+    private WeaponSpecAPI specs;
 
     @Override
     public void advance(float amount, CombatEngineAPI engine, BeamAPI beam) {
-        
-        if(engine.isPaused() || beam.getWeapon().getShip().getOriginalOwner()==-1){return;}
-        if(!runOnce){
-            runOnce=true;
-            beam.getWeapon().ensureClonedSpec();
-            specs=beam.getWeapon().getSpec();
-            offsetA=MathUtils.getRandomNumberInRange(0, 100);
-            offsetB=MathUtils.getRandomNumberInRange(0, 100);
+
+        if (engine.isPaused()
+                || beam.getWeapon().getShip().getOriginalOwner() == -1) {
+            return;
         }
-        
-        time+=amount*2;
-        
-        float A = (float)(FastTrig.sin((time+offsetA)*1.1f)/2+FastTrig.sin((time+offsetA)*2.9)/3);
-        float B = (float)(FastTrig.sin((time+offsetB)*1.3f)/2+FastTrig.sin((time+offsetB)*2.6)/3);
-        
-        specs.getHardpointAngleOffsets().set(0, A);
-        specs.getHardpointAngleOffsets().set(1, B);
-        
-        specs.getTurretAngleOffsets().set(0, A);
-        specs.getTurretAngleOffsets().set(1, B);
-        
-        specs.getHiddenAngleOffsets().set(0, A);
-        specs.getHiddenAngleOffsets().set(1, B);
+
+        if (!runOnce) {
+            runOnce = true;
+            beam.getWeapon().ensureClonedSpec();
+            specs = beam.getWeapon().getSpec();
+            offset = MathUtils.getRandomNumberInRange(0f, 100f);
+        }
+
+        time += amount * 2f;
+
+        float angle = (float) (
+                FastTrig.sin((time + offset) * 1.1f) / 2f
+                        + FastTrig.sin((time + offset) * 2.9f) / 3
+        ) * 0.5f;
+
+        specs.getHardpointAngleOffsets().set(0, angle);
+        specs.getTurretAngleOffsets().set(0, angle);
+        specs.getHiddenAngleOffsets().set(0, angle);
     }
 }
