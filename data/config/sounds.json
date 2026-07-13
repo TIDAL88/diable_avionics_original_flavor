@@ -67,7 +67,7 @@
 		{"file":"sounds/diablefx/da_virtuousGrenade_fireC1.ogg","pitch":0.97, "volume":0.25},
 		{"file":"sounds/diablefx/da_virtuousGrenade_fireC2.ogg","pitch":0.95, "volume":0.25},
 		{"file":"sounds/diablefx/da_virtuousGrenade_fireC3.ogg","pitch":0.93, "volume":0.25},
-        ],
+        ],@
         "diableavionics_virtuousGrenade_hit":[
 		{"file":"sounds/diablefx/da_virtuousGrenade_hit1.ogg","pitch":1.05, "volume":0.40},
 		{"file":"sounds/diablefx/da_virtuousGrenade_hit2.ogg","pitch":1.05, "volume":0.40},
