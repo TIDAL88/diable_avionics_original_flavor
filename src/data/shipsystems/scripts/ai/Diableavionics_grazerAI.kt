@@ -23,7 +23,7 @@ class Diableavionics_grazerAI : ShipSystemAIScript {
         if (engine == null || ship == null || system == null || engine!!.isPaused) {
             return
         }
-        if (ship!!.system.ammo >= 3) {
+        if (ship!!.system.ammo >= 3 && !ship!!.areAnyEnemiesInRange()) {
             ship!!.giveCommand(ShipCommand.USE_SYSTEM, null, 0)
             return
         }

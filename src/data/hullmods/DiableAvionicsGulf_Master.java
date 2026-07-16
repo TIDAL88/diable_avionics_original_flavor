@@ -22,7 +22,6 @@ public class DiableAvionicsGulf_Master extends BaseHullMod {
         } else {
             variant = stats.getVariant();
         }
-
         if (variant == null) return;
 
         boolean hasHullmod = variant.getHullMods().contains(TOGGLE_HULLMOD);
