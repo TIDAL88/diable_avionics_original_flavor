@@ -3,7 +3,7 @@
   "hullId": "diableavionics_module_ecm",
   "hullSize": "FRIGATE",
   "spriteName": "graphics/da/ships/station/diableavionics_station_ecm.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 137,
   "width": 335,
   "center": [167, 64],

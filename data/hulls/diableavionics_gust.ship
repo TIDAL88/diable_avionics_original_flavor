@@ -134,7 +134,7 @@
   ],
   "shieldRadius": 172,
   "spriteName": "graphics/da/ships/diableavionics_gust.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "viewOffset": 0,
   "weaponSlots": [
     {

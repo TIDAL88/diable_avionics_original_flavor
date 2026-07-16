@@ -120,7 +120,7 @@
   ],
   "shieldRadius": 67.5,
   "spriteName": "graphics/da/ships/diableavionics_sleet.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "viewOffset": 0,
   "weaponSlots": [
     {

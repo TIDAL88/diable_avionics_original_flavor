@@ -149,7 +149,7 @@
   ],
   "shieldRadius": 100.5,
   "spriteName": "graphics/da/ships/diableavionics_hayle.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "viewOffset": 0,
   "weaponSlots": [
     {

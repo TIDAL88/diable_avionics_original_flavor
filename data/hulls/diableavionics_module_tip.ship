@@ -3,7 +3,7 @@
   "hullId": "diableavionics_module_tip",
   "hullSize": "FRIGATE",
   "spriteName": "graphics/da/ships/station/diableavionics_station_bastion.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 125,
   "width": 178,
   "center": [89, 46],

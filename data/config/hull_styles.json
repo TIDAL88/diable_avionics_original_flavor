@@ -1,15 +1,17 @@
 {
-	"DA_WANZER":{
+	"DA":{
 		"hyperspaceJitterColor":[100,165,255,200],
 		"baseCampaignExplosionColor":[100,165,255,255],
 		"baseCombatExplosionColor":[100,165,255,255],
 		"fighterRepairFlickerColor":[100,165,255,255],
 		"fighterChipIconColor":[100,165,255,255],
 		"weaponDisabledExplosionColor":[100,165,255,255],
-		"shieldRingColor":[255,255,255,255],
-		"shieldInnerColor":[125,125,255,75],
-		"fluxVentCoreColor":[255,255,255,255],
-		"fluxVentFringeColor":[125,0,155,255],
+
+		"shieldRingColor":[190,255,255,200],
+		"shieldInnerColor":[0,200,255,30],
+		"fluxVentCoreColor":[155,190,195,255],
+		"fluxVentFringeColor":[45,110,130,255],
+
 		"engineLoopSet":"engine_loop",
 		"engineAccelerateSet":"engine_accelerate",
 		"empLoopSet":"emp_loop",
@@ -19,9 +21,56 @@
 		"shieldLowerSet":"shield_lower",
 		"shieldRaiseSet":"shield_raise",
 		"explosionShipSet":"explosion_ship",
+
+		"fluxVentTextureSheet":"graphics/da/fx/nebula_colorless75.png",
+		"fluxVentRadialTexture":"graphics/da/fx/da_aura.png",
+
+		"damageDecalSheet":"graphics/damage/damage_decal_sheet_base.png",
+		"damageDecalGlowSheet":"graphics/damage/damage_decal_sheet_glow.png",
+
+		"colorShiftCovers":true,
+		"coversColorShiftAmount":1,
+		"coversMatchShipBrightness":true,
+
+		"slotCoverSmallTurret":"graphics/weapons/covers/cover_turret_hightech_small.png",
+		"slotCoverSmallHardpoint":"graphics/weapons/covers/cover_hardpoint_hightech_small.png",
+		"slotCoverMediumTurret":"graphics/weapons/covers/cover_turret_hightech_medium.png",
+		"slotCoverMediumHardpoint":"graphics/weapons/covers/cover_hardpoint_hightech_medium.png",
+		"slotCoverLargeTurret":"graphics/weapons/covers/cover_turret_hightech_large.png",
+		"slotCoverLargeHardpoint":"graphics/weapons/covers/cover_hardpoint_hightech_large.png",
+
+		"dHullOverlayLight":"graphics/damage/dmod_overlay_hightech_light.png",
+		"dHullOverlayMedium":"graphics/damage/dmod_overlay_hightech_medium.png",
+		"dHullOverlayHeavy":"graphics/damage/dmod_overlay_hightech_heavy.png"
+	},
+
+	"DA_WANZER":{
+		"hyperspaceJitterColor":[100,165,255,200],
+		"baseCampaignExplosionColor":[100,165,255,255],
+		"baseCombatExplosionColor":[100,165,255,255],
+		"fighterRepairFlickerColor":[100,165,255,255],
+		"fighterChipIconColor":[100,165,255,255],
+		"weaponDisabledExplosionColor":[100,165,255,255],
+
+		"shieldRingColor":[190,255,255,220],
+		"shieldInnerColor":[0,200,255,55],
+
+		"fluxVentCoreColor":[210,255,255,255],
+		"fluxVentFringeColor":[0,200,255,150],
+
+		"engineLoopSet":"engine_loop",
+		"engineAccelerateSet":"engine_accelerate",
+		"empLoopSet":"emp_loop",
+		"fluxLoopSet":"flux_loop",
+		"ventFluxSet":"vent_flux",
+		"shieldBurnoutSet":"shield_burnout",
+		"shieldLowerSet":"shield_lower",
+		"shieldRaiseSet":"shield_raise",
+		"explosionShipSet":"explosion_ship",
+
 		"damageDecalSheet":"graphics/da/damage/diableavionics_damage_decal_sheet_base.png",
 		"damageDecalGlowSheet":"graphics/da/damage/diableavionics_damage_decal_sheet_glow.png",
-		
+
 		"colorShiftCovers":true,
 		"coversColorShiftAmount":1,
 		"coversMatchShipBrightness":true,
@@ -31,8 +80,8 @@
 		"slotCoverMediumHardpoint":"graphics/weapons/covers/cover_hardpoint_midline_medium.png",
 		"slotCoverLargeTurret":"graphics/weapons/covers/cover_turret_midline_large.png",
 		"slotCoverLargeHardpoint":"graphics/weapons/covers/cover_hardpoint_midline_large.png",
-		
+
 		"dHullOverlaySmall":"graphics/damage/ship_damage_over3.png",
-		"dHullOverlayLarge":"graphics/damage/ship_damage_over3.png",
-	},
+		"dHullOverlayLarge":"graphics/damage/ship_damage_over3.png"
+	}
 }

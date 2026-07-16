@@ -3,7 +3,7 @@
   "hullId": "diableavionics_module_defense",
   "hullSize": "FRIGATE",
   "spriteName": "graphics/da/ships/station/diableavionics_station_defense.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 103,
   "width": 216,
   "center": [108, 52],

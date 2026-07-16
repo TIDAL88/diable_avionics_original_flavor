@@ -123,7 +123,7 @@
   ],
   "shieldRadius": 65,
   "spriteName": "graphics/da/ships/diableavionics_vapor.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "viewOffset": 0,
   "weaponSlots": [
     {

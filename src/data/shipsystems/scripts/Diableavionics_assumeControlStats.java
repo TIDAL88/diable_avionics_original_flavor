@@ -34,7 +34,8 @@ import static data.scripts.util.Diableavionics_stringsManager.txt;
 xeds
  */
 public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
-    private static final Color JITTER_UNDER_COLOR = new Color(150, 100, 50, 50);
+    private static final Color WEAPON_GLOW_COLOR = new Color(150, 100, 50, 50);
+    private static final Color CYAN_JITTER_COLOR = new Color(220, 250, 255, 170);
     private static final float MAX_TIME_MULT = 1.25f;
     public static final String SYSTEM_ID = "diableavionics_assumeControl";
 
@@ -62,14 +63,13 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
             fighter.getMutableStats().getShieldDamageTakenMult().modifyMult(SYSTEM_ID, 0.66f);
 
             //visual effect
-            fighter.setWeaponGlow(effectLevel, Misc.setAlpha(JITTER_UNDER_COLOR, 50), EnumSet.allOf(WeaponType.class));
-            fighter.setJitterUnder(
-                    fighter,
-                    JITTER_UNDER_COLOR,
-                    effectLevel,
-                    (int)(16 * effectLevel),
-                    8,
-                    10 + 8 * effectLevel
+            fighter.setWeaponGlow(effectLevel, Misc.setAlpha(WEAPON_GLOW_COLOR, 50), EnumSet.allOf(WeaponType.class));
+            fighter.setJitter( fighter,
+                    CYAN_JITTER_COLOR,
+                    0.25f*effectLevel,
+                    3,
+                    1+2f*effectLevel,
+                    3+6f*effectLevel
             );
         }
 
@@ -413,6 +413,8 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
         private final ShipAPI carrier;
 
         private final IntervalUtil effectInterval = new IntervalUtil(0.05f, 0.05f);
+        private final IntervalUtil initialEmpArcDelay = new IntervalUtil(0.5f, 2f);
+        private final IntervalUtil empArcInterval = new IntervalUtil(8f, 11f);
         private final Map<ShipEngineControllerAPI.ShipEngineAPI, Float> trailIdByEngine = new HashMap<>();
 
         private final SpriteAPI trailSprite =
@@ -425,8 +427,11 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
 
         private static final Color RED_TRAIL_COLOR = new Color(255,20,20,255);
         private static final Color BLUE_TRAIL_COLOR = new Color(94,255,255,255);
+        private static final Color RED_EMP_FRINGE_COLOR = Color.RED;
+        private static final Color EMP_CORE_COLOR = new Color(0,160,200,255);
 
         private float engineEffectLevel = 0f;
+        private boolean initialEmpArcSpawned = false;
 
         public AfterimageVisualTracker(ShipAPI ship, ShipAPI carrier) {
             this.ship = ship;
@@ -447,6 +452,38 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
             return RED_TRAIL_COLOR;
         }
 
+        private void spawnEmpArc() {
+            float arcRadius = Math.max(ship.getCollisionRadius() * 0.75f, 10f);
+            float arcAngle = MathUtils.getRandomNumberInRange(0f, 360f);
+            Vector2f arcFrom = MathUtils.getPointOnCircumference(
+                    ship.getLocation(),
+                    arcRadius,
+                    arcAngle
+            );
+            Vector2f arcTo = MathUtils.getPointOnCircumference(
+                    ship.getLocation(),
+                    arcRadius,
+                    arcAngle + MathUtils.getRandomNumberInRange(120f, 240f)
+            );
+
+            Global.getCombatEngine().spawnEmpArcVisual(
+                    arcFrom,
+                    ship,
+                    arcTo,
+                    ship,
+                    0.2f,
+                    RED_EMP_FRINGE_COLOR,
+                    EMP_CORE_COLOR
+            );
+            Global.getSoundPlayer().playSound(
+                    "diableavionics_nocturne_hit",
+                    1f,
+                    0.15f,
+                    ship.getLocation(),
+                    ship.getVelocity()
+            );
+        }
+
         @Override
         public void advance(float amount) {
 
@@ -462,6 +499,19 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
                     sys.getState() == ShipSystemAPI.SystemState.COOLDOWN) {
                 ship.removeListener(this);
                 return;
+            }
+
+            if (!initialEmpArcSpawned) {
+                initialEmpArcDelay.advance(amount);
+                if (initialEmpArcDelay.intervalElapsed()) {
+                    initialEmpArcSpawned = true;
+                    spawnEmpArc();
+                }
+            } else {
+                empArcInterval.advance(amount);
+                if (empArcInterval.intervalElapsed()) {
+                    spawnEmpArc();
+                }
             }
 
             engineEffectLevel = clamp(engineEffectLevel + amount,0f,1f);

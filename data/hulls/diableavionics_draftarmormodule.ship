@@ -52,7 +52,7 @@
   ],
   "shieldRadius": 37.5,
   "spriteName": "graphics/da/ships/diableavionics_draftarmor.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "viewOffset": 0,
   "weaponSlots": [
     {

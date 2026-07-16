@@ -118,7 +118,7 @@
   ],
   "shieldRadius": 70,
   "spriteName": "graphics/da/ships/versant/diableavionics_versant_body.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "viewOffset": 0,
   "weaponSlots": [
     {

@@ -3,7 +3,7 @@
   "hullId": "diableavionics_module_fighter",
   "hullSize": "FRIGATE",
   "spriteName": "graphics/da/ships/station/diableavionics_station_fighter.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 129,
   "width": 323,
   "center": [160, 65],

@@ -119,7 +119,7 @@
   ],
   "shieldRadius": 104,
   "spriteName": "graphics/da/ships/diableavionics_stratus.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "viewOffset": 0,
   "weaponSlots": [
     {

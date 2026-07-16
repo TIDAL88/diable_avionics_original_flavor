@@ -3,7 +3,7 @@
   "hullId": "diableavionics_deepStrike",
   "hullSize": "FRIGATE",
   "spriteName": "graphics/da/ships/station/diableavionics_deepStrikeEmpty.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 62,
   "width": 38,
   "center": [19, 42],

@@ -3,7 +3,7 @@
   "hullId": "diableavionics_module_missile",
   "hullSize": "FRIGATE",
   "spriteName": "graphics/da/ships/station/diableavionics_station_missile.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 309,
   "width": 216,
   "center": [108, 52],

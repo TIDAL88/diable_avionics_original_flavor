@@ -3,7 +3,7 @@
   "hullId": "diableavionics_virtuous_skirmisher",
   "hullSize": "DESTROYER",
   "spriteName": "graphics/da/ships/virtuous/diableavionics_virtuous_body.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 104,
   "width": 120,
   "center": [60, 41],
