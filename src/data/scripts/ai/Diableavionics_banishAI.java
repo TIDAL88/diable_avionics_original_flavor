@@ -10,6 +10,7 @@ import com.fs.starfarer.api.combat.MissileAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipCommand;
 import com.fs.starfarer.api.util.IntervalUtil;
+import kotlin.jvm.internal.MagicApiIntrinsics;
 import org.magiclib.util.MagicTargeting;
 import java.awt.Color;
 import org.lazywizard.lazylib.MathUtils;
