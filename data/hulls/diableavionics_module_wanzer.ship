@@ -3,7 +3,7 @@
   "hullId": "diableavionics_module_wanzer",
   "hullSize": "FRIGATE",
   "spriteName": "graphics/da/ships/station/diableavionics_station_wanzer.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 285,
   "width": 218,
   "center": [109, 40],

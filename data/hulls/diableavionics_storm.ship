@@ -3,7 +3,7 @@
   "hullId": "diableavionics_storm",
   "hullSize": "CRUISER",
   "spriteName": "graphics/da/ships/diableavionics_stormold.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 308,
   "width": 115,
   "center": [60, 151],

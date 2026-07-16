@@ -145,7 +145,7 @@
   ],
   "shieldRadius": 111.001129,
   "spriteName": "graphics/da/ships/diableavionics_derecho.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "viewOffset": 0,
   "weaponSlots": [
     {

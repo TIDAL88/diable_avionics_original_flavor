@@ -3,7 +3,7 @@
   "hullId": "diableavionics_coanda",
   "hullSize": "DESTROYER",
   "spriteName": "graphics/da/ships/diableavionics_coanda.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 220,
   "width": 102,
   "center": [49, 93],

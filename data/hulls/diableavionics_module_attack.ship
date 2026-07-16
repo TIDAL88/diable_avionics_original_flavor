@@ -3,7 +3,7 @@
   "hullId": "diableavionics_module_attack",
   "hullSize": "FRIGATE",
   "spriteName": "graphics/da/ships/station/diableavionics_station_attack.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 100,
   "width": 335,
   "center": [167, 51],

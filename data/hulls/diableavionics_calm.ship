@@ -142,7 +142,7 @@
   ],
   "shieldRadius": 114.5,
   "spriteName": "graphics/da/ships/diableavionics_calm_deck.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "viewOffset": 0,
   "weaponSlots": [
     {

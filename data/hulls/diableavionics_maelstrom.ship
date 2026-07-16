@@ -246,7 +246,7 @@
   ],
   "shieldRadius": 293,
   "spriteName": "graphics/da/ships/diableavionics_maelstrom.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "viewOffset": 0,
   "weaponSlots": [
     {

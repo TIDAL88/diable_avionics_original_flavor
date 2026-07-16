@@ -3,7 +3,7 @@
   "hullId": "diableavionics_pandemonium_large",
   "hullSize": "CAPITAL_SHIP",
   "spriteName": "graphics/da/ships/diableavionics_pandemonium_large.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 610,
   "width": 356,
   "center": [178, 255],

@@ -86,7 +86,7 @@
   ],
   "shieldRadius": 44,
   "spriteName": "graphics/da/ships/diableavionics_laminar.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "viewOffset": 0,
   "weaponSlots": [
     {

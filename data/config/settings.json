@@ -1,10 +1,10 @@
 {
   "ruleCommandPackages":[
-    "data.campaign.rulecmd",
+    "data.campaign.rulecmd"
   ],
   "textGreenColor":[0,255,0,255],
   "designTypeColors": {
-    "Diable Avionics": [ 119,52,47,255 ],
+    "Diable Avionics": [ 119,52,47,255 ]
   },
   "graphics": {
     "characters": {
@@ -12,11 +12,13 @@
       "da_gulf": "graphics/da/portraits/diableavionics_gulfOwner.png"
     },
     "shields": {
+      "phaseShieldInner": "graphics/da/fx/da_shields256.png",
+      "phaseShieldOuter": "graphics/da/fx/da_shields256ring2.png",
       #"virtuousShieldIn":"graphics/da/fx/da_shields256box.png",
       "virtuousShieldIn": "graphics/da/fx/da_shields256.png",
       #"virtuousShieldIn":"graphics/da/fx/da_shields128.png",
       "virtuousShieldOut": "graphics/da/fx/da_shields128ring.png",
-      "virtuousShieldBase": "graphics/da/fx/da_shields128base.png",
+      "virtuousShieldBase": "graphics/da/fx/da_shields128base.png"
     },
     "fx": {
       "itano_border": "graphics/da/itano/itano_border.png",
@@ -52,7 +54,7 @@
       "nocturneT": "graphics/da/weapons/diableavionics_nocturne_turretglow_base.png",
       "flakFlash": "graphics/da/fx/flak_flash.png",
       "flakPuff": "graphics/da/fx/flak_puff.png",
-      "beamRough2Core": "graphics/fx/beam_weave_fringe.png",
+      "beamRough2Core": "graphics/fx/beam_weave_fringe.png"
     },
 
     "diableavionics": {
@@ -136,13 +138,13 @@
       "BUBBLE_bottom26": "graphics/da/ships/virtuous/bubble/diableavionics_bubbleBottom27.png",
       "BUBBLE_bottom27": "graphics/da/ships/virtuous/bubble/diableavionics_bubbleBottom28.png",
       "BUBBLE_bottom28": "graphics/da/ships/virtuous/bubble/diableavionics_bubbleBottom29.png",
-      "BUBBLE_bottom29": "graphics/da/ships/virtuous/bubble/diableavionics_bubbleBlank.png",
+      "BUBBLE_bottom29": "graphics/da/ships/virtuous/bubble/diableavionics_bubbleBlank.png"
     },
 
     "blueprint_packages": {
       "diableavionics_ship_package": "graphics/da/icons/cargo/diableavionics_ship_package.png",
       "diableavionics_weapon_package": "graphics/da/icons/cargo/diableavionics_weapon_package.png",
-      "diableavionics_wanzer_package": "graphics/da/icons/cargo/diableavionics_wanzer_package.png",
-    },
+      "diableavionics_wanzer_package": "graphics/da/icons/cargo/diableavionics_wanzer_package.png"
+    }
   }
 }

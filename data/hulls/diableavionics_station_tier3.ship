@@ -3,7 +3,7 @@
   "hullId": "diableavionics_station_tier3",
   "hullSize": "CAPITAL_SHIP",
   "spriteName": "graphics/da/ships/station/diableavionics_station_core.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 774,
   "width": 276,
   "center": [138, 387],

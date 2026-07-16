@@ -3,7 +3,7 @@
   "hullId": "diableavionics_IBBgulf",
   "hullSize": "CRUISER",
   "spriteName": "graphics/da/ships/gulf/diableavionics_IBBgulf.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "height": 336,
   "width": 158,
   "center": [79, 135],

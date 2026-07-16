@@ -369,7 +369,7 @@
   ],
   "shieldRadius": 315,
   "spriteName": "graphics/da/ships/diableavionics_pandemonium.png",
-  "style": "HIGH_TECH",
+  "style": "DA",
   "viewOffset": 0,
   "weaponSlots": [
     {
