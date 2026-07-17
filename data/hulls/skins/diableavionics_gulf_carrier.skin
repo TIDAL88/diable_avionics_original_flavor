@@ -4,6 +4,9 @@
   "hullName": "Gulf",
   "descriptionId": "diableavionics_IBBgulf",
   "systemId":"diableavionics_fluxredirection",
+  "builtInMods":[
+      "diableavionics_subsystem_wanzerdisruption"
+  ],
   "removeBuiltInMods":[
       "diableavionics_universaldecksExtra"
   ],

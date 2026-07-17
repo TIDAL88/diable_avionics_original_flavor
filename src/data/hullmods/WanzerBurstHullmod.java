@@ -7,7 +7,6 @@ import com.fs.starfarer.api.combat.DamageType;
 import com.fs.starfarer.api.combat.FighterWingAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.listeners.AdvanceableListener;
-import com.fs.starfarer.api.impl.combat.RealityDisruptorChargeGlow;
 import org.lazywizard.lazylib.MathUtils;
 import org.magiclib.subsystems.MagicSubsystem;
 import org.magiclib.subsystems.MagicSubsystemsManager;
@@ -24,7 +23,7 @@ public class WanzerBurstHullmod extends BaseHullMod {
 
     @Override
     public void applyEffectsAfterShipCreation(ShipAPI ship, String id) {
-        //MagicSubsystemsManager.addSubsystemToShip(ship, new WanzerBurstSubsystem(ship));
+        MagicSubsystemsManager.addSubsystemToShip(ship, new WanzerBurstSubsystem(ship));
     }
 
     @Override
@@ -49,7 +48,19 @@ public class WanzerBurstHullmod extends BaseHullMod {
 
         @Override
         public boolean shouldActivateAI(float amount) {
-            return canActivate();
+            for (FighterWingAPI wing : ship.getAllWings()) {
+                for (ShipAPI fighter : wing.getWingMembers()) {
+                    ShipAPI target = fighter.getShipTarget();
+                    if (target == null || target.isFighter() || target.isHulk()) continue;
+                    if (MathUtils.getDistance(fighter, target) > 750f) continue;
+                    if (target.getShield() != null &&
+                            target.getShield().isOn() &&
+                            target.getShield().isWithinArc(fighter.getLocation())) continue;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         @Override
@@ -80,11 +91,11 @@ public class WanzerBurstHullmod extends BaseHullMod {
                     ShipAPI target = fighter.getShipTarget();
                     if (target == null) continue;
                     Global.getCombatEngine().spawnEmpArc(ship, fighter.getLocation(), fighter, target, DamageType.FRAGMENTATION, 0f, 250f, 750f, "realitydisruptor_emp_impact", 20f, Color.RED, Color.WHITE);
-                    List<RealityDisruptorChargeGlow.RDRepairRateDebuff> listeners = target.getListeners(RealityDisruptorChargeGlow.RDRepairRateDebuff.class);
+                    List<RDRepairRateDebuff> listeners = target.getListeners(RDRepairRateDebuff.class);
                     if (listeners.isEmpty()) {
                         target.addListener(new RDRepairRateDebuff(target));
                     } else {
-                        listeners.get(0).resetDur(1);
+                        listeners.get(0).resetDur();
                     }
                 }
             }
