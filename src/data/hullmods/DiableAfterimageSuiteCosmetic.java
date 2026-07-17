@@ -33,6 +33,7 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
     private static final String MAIN_ID = "abyss_diable_afterimage_suite";
     private static final String MODE_RED_ID = "abyss_diable_afterimage_mode_red";
     private static final String MODE_BLUE_ID = "abyss_diable_afterimage_mode_blue";
+    private static final String PHASE_VISUALS_ID = "diableavionics_phase_visuals";
 
     private static final String TAG_LAST_RED = "abyss_diable_afterimage_last_red";
     private static final String TAG_LAST_BLUE = "abyss_diable_afterimage_last_blue";
@@ -44,9 +45,16 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
     // Saturated cyan-blue, deliberately darker than the engine glow so it does not wash out white.
     private static final Color BLUE_TRAIL_COLOR = new Color(94, 255, 255, 255);
 
+    private static final Color RED_SHIELD_INNER_COLOR = new Color(74, 5, 5, 100);
+    private static final Color BLUE_SHIELD_INNER_COLOR = new Color(0, 110, 140, 100);
+
     @Override
     public void applyEffectsBeforeShipCreation(ShipAPI.HullSize hullSize, MutableShipStatsAPI stats, String id) {
         if (stats == null || stats.getVariant() == null) return;
+
+        // Clean up the obsolete Maelstrom shield-flicker hullmod from old variants/saves.
+        stats.getVariant().removeMod(PHASE_VISUALS_ID);
+        stats.getVariant().removePermaMod(PHASE_VISUALS_ID);
 
         boolean hasRed = stats.getVariant().hasHullMod(MODE_RED_ID);
         boolean hasBlue = stats.getVariant().hasHullMod(MODE_BLUE_ID);
@@ -84,14 +92,41 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
 
     @Override
     public void applyEffectsAfterShipCreation(ShipAPI ship, String id) {
-        if (ship == null || ship.getEngineController() == null) return;
+        if (ship == null) return;
 
         Color trailColor = RED_TRAIL_COLOR;
-        if (ship.getVariant() != null && ship.getVariant().hasHullMod(MODE_BLUE_ID)) {
+        boolean blueMode = ship.getVariant() != null &&
+                ship.getVariant().hasHullMod(MODE_BLUE_ID);
+
+        if (blueMode) {
             trailColor = BLUE_TRAIL_COLOR;
         }
 
+        if (ship.getShield() != null) {
+            Color shieldInnerColor = getShieldInnerColor(ship);
+            ship.getShield().setInnerColor(shieldInnerColor);
+        }
+
+        if (ship.getEngineController() == null) return;
         ship.addListener(new AfterimageVisualTracker(ship, trailColor));
+    }
+
+    @Override
+    public void advanceInCombat(ShipAPI ship, float amount) {
+        if (ship == null || ship.isHulk() || ship.getShield() == null) return;
+
+        Color desiredColor = getShieldInnerColor(ship);
+        if (!desiredColor.equals(ship.getShield().getInnerColor())) {
+            ship.getShield().setInnerColor(desiredColor);
+        }
+    }
+
+    private static Color getShieldInnerColor(ShipAPI ship) {
+        if (ship != null && ship.getVariant() != null &&
+                ship.getVariant().hasHullMod(MODE_BLUE_ID)) {
+            return BLUE_SHIELD_INNER_COLOR;
+        }
+        return RED_SHIELD_INNER_COLOR;
     }
 
     @Override
