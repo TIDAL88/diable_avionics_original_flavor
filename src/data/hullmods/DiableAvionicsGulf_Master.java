@@ -14,6 +14,7 @@ public class DiableAvionicsGulf_Master extends BaseHullMod {
     private static final String CUSTOM_WEAPON = "diableavionics_deep_strike_catapult";
     private static final String TOGGLE_HULLMOD = "gulf_deep_strike";
     private static final String WANZER_GANTRY = "diableavionics_universaldecksExtra";
+    private static final String WANZER_DISRUPTION = "diableavionics_subsystem_wanzerdisruption";
     @Override
     public void applyEffectsBeforeShipCreation(HullSize hullSize, MutableShipStatsAPI stats, String id) {
         ShipVariantAPI variant = null;
@@ -46,6 +47,8 @@ public class DiableAvionicsGulf_Master extends BaseHullMod {
 
             ShipHullSpecAPI baseSpec = Global.getSettings().getHullSpec(BASE_HULL);
             variant.setHullSpecAPI(baseSpec);
+            variant.removeMod(WANZER_DISRUPTION);
+            variant.removePermaMod(WANZER_DISRUPTION);
             if (CUSTOM_WEAPON.equals(variant.getWeaponId(LARGE_SLOT))) {
                 variant.clearSlot(LARGE_SLOT);
                 if (Global.getSector() != null && Global.getSector().getPlayerFleet() != null) {
@@ -66,4 +69,3 @@ public class DiableAvionicsGulf_Master extends BaseHullMod {
         }
     }
 }
-
