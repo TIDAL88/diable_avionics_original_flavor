@@ -52,8 +52,8 @@
 		"fighterChipIconColor":[100,165,255,255],
 		"weaponDisabledExplosionColor":[100,165,255,255],
 
-		"shieldRingColor":[190,255,255,220],
-		"shieldInnerColor":[0,200,255,55],
+		"shieldRingColor":[255,255,255,255],
+		"shieldInnerColor":[125,125,255,75],
 
 		"fluxVentCoreColor":[210,255,255,255],
 		"fluxVentFringeColor":[0,200,255,150],

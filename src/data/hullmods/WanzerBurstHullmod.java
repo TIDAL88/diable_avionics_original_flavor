@@ -90,7 +90,7 @@ public class WanzerBurstHullmod extends BaseHullMod {
                 for (ShipAPI fighter : wing.getWingMembers()) {
                     ShipAPI target = fighter.getShipTarget();
                     if (target == null) continue;
-                    Global.getCombatEngine().spawnEmpArc(ship, fighter.getLocation(), fighter, target, DamageType.FRAGMENTATION, 0f, 250f, 750f, "realitydisruptor_emp_impact", 20f, Color.RED, Color.WHITE);
+                    Global.getCombatEngine().spawnEmpArc(ship, fighter.getLocation(), fighter, target, DamageType.FRAGMENTATION, 0f, 250f, 750f, "rift_lightning_explosion", 20f, Color.RED, Color.WHITE);
                     List<RDRepairRateDebuff> listeners = target.getListeners(RDRepairRateDebuff.class);
                     if (listeners.isEmpty()) {
                         target.addListener(new RDRepairRateDebuff(target));
