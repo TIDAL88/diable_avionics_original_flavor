@@ -2,6 +2,7 @@ package data.hullmods;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.BaseHullMod;
+import com.fs.starfarer.api.combat.FighterWingAPI;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipEngineControllerAPI;
@@ -34,6 +35,7 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
     private static final String MODE_RED_ID = "abyss_diable_afterimage_mode_red";
     private static final String MODE_BLUE_ID = "abyss_diable_afterimage_mode_blue";
     private static final String PHASE_VISUALS_ID = "diableavionics_phase_visuals";
+    private static final String WANZER_HULLMOD_ID = "diableavionics_wanzer";
 
     private static final String TAG_LAST_RED = "abyss_diable_afterimage_last_red";
     private static final String TAG_LAST_BLUE = "abyss_diable_afterimage_last_blue";
@@ -108,7 +110,11 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
         }
 
         if (ship.getEngineController() == null) return;
-        ship.addListener(new AfterimageVisualTracker(ship, trailColor));
+        ship.addListener(new AfterimageVisualTracker(
+                ship,
+                trailColor,
+                getShieldInnerColor(ship)
+        ));
     }
 
     @Override
@@ -166,15 +172,21 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
     private static class AfterimageVisualTracker implements AdvanceableListener {
         private final ShipAPI ship;
         private final Color trailColor;
+        private final Color wanzerShieldInnerColor;
         private final IntervalUtil effectInterval = new IntervalUtil(0.05f, 0.05f);
         private final Map<ShipEngineControllerAPI.ShipEngineAPI, Float> trailIdByEngine = new HashMap<ShipEngineControllerAPI.ShipEngineAPI, Float>();
         private final SpriteAPI trailSprite = Global.getSettings().getSprite("fx", "beamRough2Core");
 
         private float engineEffectLevel = 0f;
 
-        private AfterimageVisualTracker(ShipAPI ship, Color trailColor) {
+        private AfterimageVisualTracker(
+                ShipAPI ship,
+                Color trailColor,
+                Color wanzerShieldInnerColor
+        ) {
             this.ship = ship;
             this.trailColor = trailColor;
+            this.wanzerShieldInnerColor = wanzerShieldInnerColor;
         }
 
         @Override
@@ -186,6 +198,8 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
 
             effectInterval.advance(amount);
             if (!effectInterval.intervalElapsed()) return;
+
+            updateWanzerShieldColors();
 
             Vector2f velocity = ship.getVelocity();
             float angle = Misc.getAngleInDegrees(new Vector2f(velocity));
@@ -215,6 +229,24 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
                         2f,
                         true
                 );
+            }
+        }
+
+        private void updateWanzerShieldColors() {
+            for (FighterWingAPI wing : ship.getAllWings()) {
+                for (ShipAPI fighter : wing.getWingMembers()) {
+                    if (fighter == null || fighter.getVariant() == null ||
+                            !fighter.getVariant().hasHullMod(WANZER_HULLMOD_ID) ||
+                            fighter.getShield() == null) {
+                        continue;
+                    }
+
+                    if (!wanzerShieldInnerColor.equals(
+                            fighter.getShield().getInnerColor()
+                    )) {
+                        fighter.getShield().setInnerColor(wanzerShieldInnerColor);
+                    }
+                }
             }
         }
     }
