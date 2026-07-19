@@ -136,7 +136,7 @@ public class Diableavionics_thrushAI implements MissileAIPlugin, GuidedMissileAI
                     )
                     || missile.isFizzling()
                     ){
-                for(float i=0; i<=12; i++){
+                for(float i=0; i<=6; i++){
                     engine.spawnProjectile(
                             missile.getSource(),
                             missile.getWeapon(),

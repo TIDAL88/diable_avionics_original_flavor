@@ -4,8 +4,6 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.impl.campaign.procgen.NebulaEditor;
-import com.fs.starfarer.api.impl.campaign.procgen.StarAge;
-import com.fs.starfarer.api.impl.campaign.procgen.StarSystemGenerator;
 import com.fs.starfarer.api.impl.campaign.terrain.HyperspaceTerrainPlugin;
 import com.fs.starfarer.api.util.Misc;
 
@@ -33,48 +31,6 @@ public class Diableavionics_outerTerminus implements SectorGeneratorPlugin {
         system.setLightColor(new Color(255, 250, 250)); // light color in entire system, affects all entities
 
         system.getLocation().set(29000, -5000);
-        /*
-         * addPlanet() parameters:
-         * 1. What the planet orbits (orbit is always circular)
-         * 2. Name
-         * 3. Planet type id in planets.json
-         * 4. Starting angle in orbit, i.e. 0 = to the right of the star
-         * 5. Planet radius, pixels at default zoom
-         * 6. Orbit radius, pixels at default zoom
-         * 7. Days it takes to complete an orbit. 1 day = 10 seconds.
-         */
-        /*
-         * addAsteroidBelt() parameters:
-         * 1. What the belt orbits
-         * 2. Number of asteroids
-         * 3. Orbit radius
-         * 4. Belt width
-         * 6/7. Range of days to complete one orbit. Value picked randomly for each asteroid.
-         */
-        /*
-         * addRingBand() parameters:
-         * 1. What it orbits
-         * 2. Category under "graphics" in settings.json
-         * 3. Key in category
-         * 4. Width of band within the texture
-         * 5. Index of band
-         * 6. Color to apply to band
-         * 7. Width of band (in the game)
-         * 8. Orbit radius (of the middle of the band)
-         * 9. Orbital period, in days
-         */
-//        private void addMarketplace(
-//                    String factionID, 
-//                    SectorEntityToken primaryEntity, 
-//                    ArrayList<SectorEntityToken> connectedEntities, 
-//                    String name, 
-//                    int size, 
-//                    ArrayList<String> marketConditions, 
-//                    ArrayList<String> submarkets, 
-//                    float tarrif)
-
-
-        //2000
         PlanetAPI OT1 = system.addPlanet("OT_a",
                 star,
                 txt("star_C_planet_0"),
@@ -125,30 +81,6 @@ public class Diableavionics_outerTerminus implements SectorGeneratorPlugin {
                 "comm_relay", // type of object, defined in custom_entities.json
                 "diableavionics"); // faction
         relay.setCircularOrbit(star, 150, 4250, 350);
-
-        StarSystemGenerator.addOrbitingEntities(system, star, StarAge.AVERAGE,
-                5, 9, // min/max entities to add
-                5500, // radius to start adding at
-                2, // name offset - next planet will be <system name> <roman numeral of this parameter + 1>
-                true); // whether to use custom or system-name based names
-
-//        //7000
-//        PlanetAPI ach3 = system.addPlanet("OT_c", star, "Vun", "ice_giant", 180, 300, 7000, 700);
-//
-//        //12000
-//        PlanetAPI ach5 = system.addPlanet("OT_e", star, "Lema", "gas_giant", 80, 325, 12000, 1200);
-//        //ASTEROIDS
-//        system.addAsteroidBelt(ach5, 50, 600, 128, 39, 45); 
-//        
-//            //JUMP POINT
-//            JumpPointAPI jumpPoint2 = Global.getFactory().createJumpPoint("OT_jumpPointB", "Lema Jump-Point");
-//            OrbitAPI orbit2 = Global.getFactory().createCircularOrbit(star, 20, 12000, 1200);
-//            jumpPoint2.setOrbit(orbit2);
-//            jumpPoint2.setStandardWormholeToHyperspaceVisual();
-//            system.addEntity(jumpPoint2);
-//
-//        //15000
-//        PlanetAPI ach6 = system.addPlanet("OT_f", star, "Tid", "frozen", 75, 75, 15000, 2000);
 
         system.autogenerateHyperspaceJumpPoints(true, true, true);
         system.setEnteredByPlayer(true);
