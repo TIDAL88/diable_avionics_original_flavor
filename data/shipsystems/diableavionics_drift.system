@@ -4,7 +4,7 @@
 	"aiType":"CUSTOM",
 	
 	"statsScript":"data.shipsystems.scripts.Diableavionics_driftStats",
-    "aiScript":"data.shipsystems.scripts.ai.Diableavionics_grazerAI",
+	"aiScript":"data.shipsystems.scripts.ai.Diableavionics_grazerAI",
 	"clampTurnRateAfter":true,
 	"clampMaxSpeedAfter":false,
 
