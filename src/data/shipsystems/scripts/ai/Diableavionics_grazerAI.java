@@ -9,6 +9,7 @@ public class Diableavionics_grazerAI implements ShipSystemAIScript {
     private CombatEngineAPI engine;
     private ShipAPI ship;
     private ShipSystemAPI system;
+    private float timer = 4f;
     private float getAggroRange(ShipAPI enemy) {
         if (enemy == null) return 0f;
         return switch (enemy.getHullSize()) {
@@ -34,7 +35,6 @@ public class Diableavionics_grazerAI implements ShipSystemAIScript {
 
     @Override
     public void advance(float amount, Vector2f missileDangerDir, Vector2f collisionDangerDir, ShipAPI target) {
-        float timer = 0f;
         if (engine == null || ship == null || system == null || engine.isPaused()) {
             return;
         }
@@ -52,20 +52,20 @@ public class Diableavionics_grazerAI implements ShipSystemAIScript {
         if (ship.getFluxTracker().getFluxLevel() >= 0.8f && ship.getSystem().getAmmo() >= 1) {
             if (ship.getShield() != null) {
                 ship.getShield().toggleOff();
-            }
-
-            while (timer <= 3) {
                 ship.blockCommandForOneFrame(ShipCommand.TOGGLE_SHIELD_OR_PHASE_CLOAK);
-                timer++;
             }
             ship.giveCommand(ShipCommand.USE_SYSTEM, null, 0);
             ship.giveCommand(ShipCommand.TOGGLE_SHIELD_OR_PHASE_CLOAK,null,0);
         }
-        if (ship.getSystem().getAmmo()>=3 && distance>aggroRange){
+        if (ship.getSystem().getAmmo()>=3 && distance>aggroRange && timer==0f){
             ship.giveCommand(ShipCommand.USE_SYSTEM,null,0);
+            timer=4f;
         }
         if (ship.getSystem().getAmmo()>=3 && distance<aggroRange){
             ship.giveCommand(ShipCommand.USE_SYSTEM,null,0);
+        }
+        if(timer>0){
+            timer--;
         }
     }
 }
