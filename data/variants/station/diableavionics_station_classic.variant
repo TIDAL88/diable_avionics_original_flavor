@@ -1,0 +1,34 @@
+{
+  "variantId": "diableavionics_station_classic",
+  "hullId": "diableavionics_station_tier3",
+  "displayName": "Diable Classic Station",
+  "goalVariant": false,
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "quality": 1,
+  "permaMods": [],
+  "hullMods": [],
+  "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {"WS0001": "diableavionics_station_deepStrike"}
+        },
+  ],
+  "modules": [
+		# CROSS SECTION
+		{"CROSS_LEFT": "diableavionics_module_wanzer_classic"},
+		{"CROSS_RIGHT": "diableavionics_module_wanzer_classic"},
+
+		# TIPS
+		{"TIP_UP": "diableavionics_module_tip_classic"},
+		{"TIP_DOWN": "diableavionics_module_tip_classic"},
+
+		# ARM SECTION
+		{"TOP_LEFT": "diableavionics_module_ecm_classic"},
+		{"TOP_RIGHT": "diableavionics_module_attack_classic"},
+		{"BOTTOM_LEFT": "diableavionics_module_ecm_classic"},
+		{"BOTTOM_RIGHT": "diableavionics_module_attack_classic"},
+	],
+  "wings": []
+}
