@@ -1,4 +1,7 @@
 {
+  "plugins": {
+    "diableavionics_gulfPart2CombatPlugin": "data.scripts.campaign.gulf.DiableGulfPart2CombatPlugin",
+  },
   "ruleCommandPackages":[
     "data.campaign.rulecmd"
   ],
@@ -50,6 +53,9 @@
       "banishFlash": "graphics/da/fx/banish_flash.png",
       "banishSharp": "graphics/da/fx/banish_sharp.png",
       "banishDiffuse": "graphics/da/fx/banish_diffuse.png",
+      "gulfArrivalRay": "graphics/da/fx/da_gulf_arrival_ray.png",
+      "gulfArrivalSwoosh": "graphics/da/fx/da_gulf_arrival_swoosh.png",
+      "gulfArrivalCloud": "graphics/da/fx/da_gulf_arrival_cloud.png",
       "nocturneH": "graphics/da/weapons/diableavionics_nocturne_hardpointglow_base.png",
       "nocturneT": "graphics/da/weapons/diableavionics_nocturne_turretglow_base.png",
       "flakFlash": "graphics/da/fx/flak_flash.png",

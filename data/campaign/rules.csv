@@ -225,3 +225,15 @@ The comm link closes and the display goes black.
 A security team enters the Virtuous. On the tactical display, you see the doors open to the bridge autonomously, where a mess of hanging wires and disconnected life support systems surround a husk of a corpse. The team lead checks its vitals and reports it as deceased.
 
 After another few minutes, the security team clears the Virtuous, with no other signs of life aboard the ship.","cutCommLink:Claim the Virtuous.",
+,,,,,,
+# Gulf bounty - Part II,,,,,,
+DAGulfPart2Interact,OpenInteractionDialog,"$da_gulf_part2_site score:1000
+!$global.da_gulf_part2_complete","SalvageGenFromSeed
+SalvageDefenderInteraction","The relay is silent, but far from dead. Ten Diable Vapor signatures detach from its sensor shadow and form a screen between your fleet and the station.
+
+The contacts broadcast no identification and answer no hails. Beneath their drive signatures, your sensors detect a repeating deep-strike synchronization pulse coming from somewhere else.",,
+DAGulfPart2Defeat,BeatDefendersContinue,$da_gulf_part2_site score:1000,,"The last hostile signature disappears. The station that tore its way into the battlespace is breaking apart, leaving a dense field of armored wreckage and half-molten Diable hardware.",0:DAGulfPart2Recover:Search the station wreckage,
+DAGulfPart2Recover,DialogOptionSelected,$option == DAGulfPart2Recover,"AddRemoveAnyItem SPECIAL modspec ""gulf_deep_strike"" 1
+$global.da_gulf_part2_complete = true","Your salvage crews recover a sealed engineering archive from the station core. Its contents document the complete Deep Strike Catapult installation: control software, structural requirements, and fabrication tolerances.
+
+The data is intact enough to use as a hullmod specification.",0:defaultLeave:Leave,

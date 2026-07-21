@@ -214,7 +214,26 @@
 		{"file":"sounds/diablefx/da_damperwave_3.ogg","pitch":0.95, "volume":0.75},
 	],
 
- 
+	"diableavionics_gulf_arrival_shadow":[
+		{"file":"sounds/diablefx/da_gulf_arrival_shadow.ogg","pitch":1.00,"volume":1.00},
+	],
+	"diableavionics_gulf_arrival_ripple":[
+		{"file":"sounds/diablefx/da_gulf_arrival_ripple1.ogg","pitch":0.90,"volume":1.00},
+		{"file":"sounds/diablefx/da_gulf_arrival_ripple1.ogg","pitch":1.00,"volume":1.00},
+		{"file":"sounds/diablefx/da_gulf_arrival_ripple1.ogg","pitch":1.10,"volume":1.00},
+		{"file":"sounds/diablefx/da_gulf_arrival_ripple2.ogg","pitch":0.90,"volume":1.00},
+		{"file":"sounds/diablefx/da_gulf_arrival_ripple2.ogg","pitch":1.00,"volume":1.00},
+		{"file":"sounds/diablefx/da_gulf_arrival_ripple2.ogg","pitch":1.10,"volume":1.00},
+		{"file":"sounds/diablefx/da_gulf_arrival_ripple3.ogg","pitch":0.90,"volume":1.00},
+		{"file":"sounds/diablefx/da_gulf_arrival_ripple3.ogg","pitch":1.00,"volume":1.00},
+		{"file":"sounds/diablefx/da_gulf_arrival_ripple3.ogg","pitch":1.10,"volume":1.00},
+	],
+	"diableavionics_gulf_station_arrival":[
+		{"file":"sounds/diablefx/da_gulf_station_arrival.ogg","pitch":0.90,"volume":1.00},
+		{"file":"sounds/diablefx/da_gulf_station_arrival.ogg","pitch":1.00,"volume":1.00},
+		{"file":"sounds/diablefx/da_gulf_station_arrival.ogg","pitch":1.10,"volume":1.00},
+	],
+
     "diableavionics_deepStrike_launch":[
 		{"file":"sounds/diablefx/da_deepStrike_launch1.ogg","pitch":1.00, "volume":0.75},
 		{"file":"sounds/diablefx/da_deepStrike_launch1.ogg","pitch":0.95, "volume":0.75},

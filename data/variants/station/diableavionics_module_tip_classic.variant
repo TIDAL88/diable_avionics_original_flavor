@@ -4,7 +4,9 @@
     "fluxVents": 10,
     "hullId": "diableavionics_module_tip",
     "hullMods": [
-        "magazines"
+        "magazines",
+        "abyss_diable_afterimage_suite",
+        "abyss_diable_afterimage_mode_red"
     ],
     "permaMods": [
         "magazines"

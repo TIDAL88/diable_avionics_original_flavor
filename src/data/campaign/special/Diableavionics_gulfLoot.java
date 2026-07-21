@@ -11,6 +11,7 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.special.ShipRecoverySpecial;
+import data.scripts.campaign.gulf.DiableGulfPart2Intel;
 import static data.scripts.util.Diableavionics_stringsManager.txt;
 import org.magiclib.util.MagicCampaign;
 import java.util.List;
@@ -93,6 +94,9 @@ public class Diableavionics_gulfLoot implements FleetEventListener{
                 //set memkey that the wreck must never spawn
                 Global.getSector().getMemoryWithoutUpdate().set(GULF_DROP_ALREADY,true); 
             }
+
+            // Part II is a persistent Important-intel quest and begins as soon as Gulf is dealt with.
+            DiableGulfPart2Intel.ensureStarted();
         }
     }
 
