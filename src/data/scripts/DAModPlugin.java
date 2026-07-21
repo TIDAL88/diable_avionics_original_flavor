@@ -7,11 +7,13 @@ import com.fs.starfarer.api.PluginPick;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.CampaignPlugin;
 import com.fs.starfarer.api.campaign.StarSystemAPI;
+import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.MissileAIPlugin;
 import com.fs.starfarer.api.combat.MissileAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import data.campaign.DACampaignPlugin;
+import data.scripts.campaign.gulf.DiableGulfPart2CombatPlugin;
 import data.scripts.campaign.gulf.DiableGulfPart2DefenderPlugin;
 import data.scripts.campaign.gulf.DiableGulfPart2Intel;
 import data.scripts.campaign.gulf.DiableGulfPart2TriggerScript;
@@ -103,6 +105,7 @@ public class DAModPlugin extends BaseModPlugin {
     @Override
     public void onGameLoad(boolean newGame) {
         Global.getSector().registerPlugin(new DACampaignPlugin());
+        new DiableavionicsGen().generate(Global.getSector());
         setupGulfPart2();
 
         if (!haveNexerelin || SectorManager.getManager().isCorvusMode()) {
@@ -186,31 +189,34 @@ public class DAModPlugin extends BaseModPlugin {
 
     @Override
     public PluginPick<MissileAIPlugin> pickMissileAI(MissileAPI missile, ShipAPI launchingShip) {
-        switch (missile.getProjectileSpecId()) {
-            case SCATTER_MISSILE_ID:
-                return new PluginPick<MissileAIPlugin>(new Diableavionics_ScatterMissileAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
-            case PD_MISSILE_ID:
-                return new PluginPick<MissileAIPlugin>(new Diableavionics_antiMissileAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
-            case THUNDERBOLT_ID:
-                return new PluginPick<MissileAIPlugin>(new Diableavionics_ThunderboltMissileAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
-            case PLOVER_ID:
-                return new PluginPick<MissileAIPlugin>(new Diableavionics_ploverMissileAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
-            case BANISH_ID:
-                return new PluginPick<MissileAIPlugin>(new Diableavionics_banishAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
-            case THRUSH_ID:
-                return new PluginPick<MissileAIPlugin>(new Diableavionics_thrushAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
-            case SRAB_ID:
-                return new PluginPick<MissileAIPlugin>(new Diableavionics_SrabAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
-            case CICADA_ID:
-                return new PluginPick<MissileAIPlugin>(new Diableavionics_cicadaAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
-            case VIRTUOUS_GRENADE_ID:
-                return new PluginPick<MissileAIPlugin>(new Diableavionics_cicadaAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
-            case VIRTUOUS_MISSILE_ID:
-                return new PluginPick<MissileAIPlugin>(new Diableavionics_itanoMissileAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
-            case DEEPSTRIKE_ID:
-                return new PluginPick<MissileAIPlugin>(new Diableavionics_deepStrikeAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
-            default:
+        addStationPlugin();
+        return switch (missile.getProjectileSpecId()) {
+            case SCATTER_MISSILE_ID ->
+                    new PluginPick<MissileAIPlugin>(new Diableavionics_ScatterMissileAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
+            case PD_MISSILE_ID ->
+                    new PluginPick<MissileAIPlugin>(new Diableavionics_antiMissileAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
+            case THUNDERBOLT_ID ->
+                    new PluginPick<MissileAIPlugin>(new Diableavionics_ThunderboltMissileAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
+            case PLOVER_ID ->
+                    new PluginPick<MissileAIPlugin>(new Diableavionics_ploverMissileAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
+            case BANISH_ID ->
+                    new PluginPick<MissileAIPlugin>(new Diableavionics_banishAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
+            case THRUSH_ID ->
+                    new PluginPick<MissileAIPlugin>(new Diableavionics_thrushAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
+            case SRAB_ID ->
+                    new PluginPick<MissileAIPlugin>(new Diableavionics_SrabAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
+            case CICADA_ID, VIRTUOUS_GRENADE_ID ->
+                    new PluginPick<MissileAIPlugin>(new Diableavionics_cicadaAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
+            case VIRTUOUS_MISSILE_ID ->
+                    new PluginPick<MissileAIPlugin>(new Diableavionics_itanoMissileAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
+            case DEEPSTRIKE_ID ->
+                    new PluginPick<MissileAIPlugin>(new Diableavionics_deepStrikeAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
+            default -> null;
+        };
+    }
+    public void addStationPlugin(){
+        if (Global.getSector().getMemoryWithoutUpdate().getBoolean("$da_gulf_part2_defenders")){
+            Global.getCombatEngine().addPlugin(new DiableGulfPart2CombatPlugin());
         }
-        return null;
     }
 }

@@ -1,8 +1,5 @@
 {
-  "plugins": {
-    "diableavionics_gulfPart2CombatPlugin": "data.scripts.campaign.gulf.DiableGulfPart2CombatPlugin",
-  },
-  "ruleCommandPackages":[
+   "ruleCommandPackages":[
     "data.campaign.rulecmd"
   ],
   "textGreenColor":[0,255,0,255],
