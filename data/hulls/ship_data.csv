@@ -59,6 +59,7 @@ ordnance points,min crew,max crew,number,mass,max turn rate,turn acceleration,de
 0,0,0,2002.1,5000,4,2,200,100,30,1600,200,1000,40000,Orbital Station,Diable Avionics,NONE,diableavionics_station_tier1,,Orbital Station,100,,,,0,0,0,,,0,0,1,0,0,500000,10,10,,,50,50,"STATION, UNBOARDABLE, HIDE_IN_CODEX",,,0,,,
 0,0,0,2003.5,5000,4,2,200,100,30,2000,200,1000,80000,Battlestation,Diable Avionics,NONE,diableavionics_station_tier2,,Battlestation,200,,,,0,0,0,,,0,0,1,0,0,500000,10,10,,,75,50,"STATION, UNBOARDABLE, HIDE_IN_CODEX",,,0,,,
 0,0,0,2004.,5000,4,2,200,100,30,2400,200,1000,160000,Star Fortress,Diable Avionics,NONE,diableavionics_station_tier3,,Star Fortress,400,,,,0,0,0,,,0,0,1,0,0,500000,10,10,,,100,50,"STATION, UNBOARDABLE, HIDE_IN_CODEX",,,0,,,
+0,0,0,2004.,5000,4,2,200,100,30,2400,200,1000,160000,Diable Classic Station,Diable Avionics,NONE,diableavionics_station_classic_hull,,Star Fortress,400,,,,0,0,0,,,0,0,1,0,0,500000,10,10,,,100,50,"STATION, UNBOARDABLE, HIDE_IN_CODEX",,,0,,,
 ,,,,,,,,,,,,,,# tier 1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 1000,0,0,2067,3500,10,10,0,800,0,1250,0,12000,10000,,Diable Avionics,NONE,diableavionics_module_lightAttack,forgevats_station,Light Attack Module,1,,,,90,0.4,1,,,0,0,1,0,,500000,,1,,,0,0,"UNBOARDABLE, HIDE_IN_CODEX",,,0.5,2,4,
 1000,0,0,2068,3500,10,10,0,200,0,1250,0,4000,8000,,Diable Avionics,NONE,diableavionics_module_defense,forgevats_station,Defense Module,1,,,,120,0.4,1,,,0,0,1,0,,500000,,1,,,0,0,"UNBOARDABLE, HIDE_IN_CODEX",,,0.5,2,4,

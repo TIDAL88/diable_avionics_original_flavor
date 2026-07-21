@@ -5,7 +5,9 @@
     "hullId": "diableavionics_module_attack",
     "hullMods": [
         "magazines",
-        "turretgyros"
+        "turretgyros",
+        "abyss_diable_afterimage_suite",
+        "abyss_diable_afterimage_mode_red"
     ],
     "permaMods": [
         "magazines"

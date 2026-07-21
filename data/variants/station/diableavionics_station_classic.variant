@@ -1,6 +1,6 @@
 {
   "variantId": "diableavionics_station_classic",
-  "hullId": "diableavionics_station_tier3",
+  "hullId": "diableavionics_station_classic_hull",
   "displayName": "Diable Classic Station",
   "goalVariant": false,
   "fluxCapacitors": 0,
@@ -12,7 +12,10 @@
         {
             "autofire": false,
             "mode": "ALTERNATING",
-            "weapons": {"WS0001": "diableavionics_station_deepStrike"}
+            "weapons": {
+                "WS0001": "diableavionics_station_deepStrike",
+                "WS0002": "diableavionics_station_deepStrike"
+            }
         },
   ],
   "modules": [

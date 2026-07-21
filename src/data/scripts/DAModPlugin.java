@@ -12,6 +12,9 @@ import com.fs.starfarer.api.combat.MissileAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import data.campaign.DACampaignPlugin;
+import data.scripts.campaign.gulf.DiableGulfPart2DefenderPlugin;
+import data.scripts.campaign.gulf.DiableGulfPart2Intel;
+import data.scripts.campaign.gulf.DiableGulfPart2TriggerScript;
 import data.scripts.ai.*;
 import data.scripts.world.DiableavionicsGen;
 import data.scripts.world.MarketHelpers;
@@ -94,11 +97,13 @@ public class DAModPlugin extends BaseModPlugin {
         DiableavionicsGen.spawnVirtuous();
         Global.getSector().getMemoryWithoutUpdate().set(MEMKEY_SPECIAL_FLEETS_INITIALIZED, true);
         Global.getSector().getMemoryWithoutUpdate().set(MEMKEY_VERSION, 2.84);
+        setupGulfPart2();
     }
 
     @Override
     public void onGameLoad(boolean newGame) {
         Global.getSector().registerPlugin(new DACampaignPlugin());
+        setupGulfPart2();
 
         if (!haveNexerelin || SectorManager.getManager().isCorvusMode()) {
             if (!Global.getSector().getMemoryWithoutUpdate().contains(MEMKEY_INTIALIZED)) {
@@ -144,6 +149,19 @@ public class DAModPlugin extends BaseModPlugin {
             }
 
             Global.getSector().getMemoryWithoutUpdate().set(MEMKEY_VERSION, 2.82);
+        }
+    }
+
+    private void setupGulfPart2() {
+        if (!Global.getSector().getGenericPlugins().hasPlugin(DiableGulfPart2DefenderPlugin.class)) {
+            Global.getSector().getGenericPlugins().addPlugin(new DiableGulfPart2DefenderPlugin(), true);
+        }
+        DiableGulfPart2Intel.ensureStarted();
+        DiableGulfPart2Intel.ensureLandmarkPlacement();
+        if (!Global.getSector().getMemoryWithoutUpdate().getBoolean(DiableGulfPart2Intel.STARTED_MEMKEY)
+                && !Global.getSector().getMemoryWithoutUpdate().getBoolean(DiableGulfPart2Intel.COMPLETE_MEMKEY)
+                && !Global.getSector().hasTransientScript(DiableGulfPart2TriggerScript.class)) {
+            Global.getSector().addTransientScript(new DiableGulfPart2TriggerScript());
         }
     }
 
