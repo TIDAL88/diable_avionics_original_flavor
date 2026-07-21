@@ -12,6 +12,7 @@ import com.fs.starfarer.api.util.WeightedRandomPicker;
 import data.campaign.ids.Diableavionics_ids;
 import data.campaign.special.Diableavionics_gulfLoot;
 import data.campaign.special.Diableavionics_virtuousLoot;
+import data.scripts.world.systems.Diableavionics_blackSite;
 import data.scripts.world.systems.Diableavionics_fob;
 import data.scripts.world.systems.Diableavionics_outerTerminus;
 import data.scripts.world.systems.Diableavionics_stagging;
@@ -31,6 +32,9 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         }
         if (sector.getStarSystem(txt("star_A"))==null) {
             new Diableavionics_fob().generate(sector);
+        }
+        if (sector.getStarSystem("diable_blacksite")==null){
+            new Diableavionics_blackSite().generate(sector);
         }
 
         SharedData.getData().getPersonBountyEventData().addParticipatingFaction("diableavionics");

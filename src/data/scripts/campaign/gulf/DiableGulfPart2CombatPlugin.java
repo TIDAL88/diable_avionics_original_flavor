@@ -46,7 +46,6 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
     private boolean arrivalStarted;
     private boolean stationArrived;
     private float elapsed;
-    private ShipAPI station;
 
     @Override
     public void advance(float amount, List<InputEventAPI> events) {
@@ -235,7 +234,7 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
 
     private void finishArrival(CombatEngineAPI engine) {
         stationArrived = true;
-        station = spawnStation(engine);
+        ShipAPI station = spawnStation(engine);
         if (station == null) return;
 
         station.getVelocity().set(0f, 0f);
