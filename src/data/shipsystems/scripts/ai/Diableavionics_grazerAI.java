@@ -35,20 +35,15 @@ public class Diableavionics_grazerAI implements ShipSystemAIScript {
 
     @Override
     public void advance(float amount, Vector2f missileDangerDir, Vector2f collisionDangerDir, ShipAPI target) {
-        if (engine == null || ship == null || system == null || engine.isPaused()) {
-            return;
-        }
+        if (engine == null || ship == null || system == null || engine.isPaused()) return;
         ShipAPI nearestEnemy= AIUtils.getNearestEnemy(ship);
-        if (nearestEnemy==null){
-            return;
-        }
+        if (nearestEnemy==null) return;
         float aggroRange = getAggroRange(nearestEnemy);
         float distance = MathUtils.getDistance(ship, nearestEnemy);
         if (ship.getSystem().getAmmo() >= 3 && !ship.areAnyEnemiesInRange()) {
             ship.giveCommand(ShipCommand.USE_SYSTEM, null, 0);
             return;
         }
-
         if (ship.getFluxTracker().getFluxLevel() >= 0.8f && ship.getSystem().getAmmo() >= 1) {
             if (ship.getShield() != null) {
                 ship.getShield().toggleOff();
@@ -64,8 +59,6 @@ public class Diableavionics_grazerAI implements ShipSystemAIScript {
         if (ship.getSystem().getAmmo()>=3 && distance<aggroRange){
             ship.giveCommand(ShipCommand.USE_SYSTEM,null,0);
         }
-        if(timer>0){
-            timer--;
-        }
+        if(timer>0) timer--;
     }
 }
