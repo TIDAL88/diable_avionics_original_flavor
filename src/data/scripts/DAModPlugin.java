@@ -6,14 +6,15 @@ import com.fs.starfarer.api.ModSpecAPI;
 import com.fs.starfarer.api.PluginPick;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.CampaignPlugin;
+import com.fs.starfarer.api.campaign.FactionAPI;
+import com.fs.starfarer.api.campaign.RepLevel;
 import com.fs.starfarer.api.campaign.StarSystemAPI;
-import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.MissileAIPlugin;
 import com.fs.starfarer.api.combat.MissileAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
+import com.fs.starfarer.api.combat.ShipHullSpecAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import data.campaign.DACampaignPlugin;
-import data.scripts.campaign.gulf.DiableGulfPart2CombatPlugin;
 import data.scripts.campaign.gulf.DiableGulfPart2DefenderPlugin;
 import data.scripts.campaign.gulf.DiableGulfPart2Intel;
 import data.scripts.campaign.gulf.DiableGulfPart2TriggerScript;
@@ -27,6 +28,7 @@ import org.dark.shaders.util.TextureData;
 import org.magiclib.util.MagicSettings;
 import org.magiclib.util.MagicVariables;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +44,12 @@ public class DAModPlugin extends BaseModPlugin {
     public static final String VIRTUOUS_GRENADE_ID = "diableavionics_virtuousGrenade_shot";
     public static final String VIRTUOUS_MISSILE_ID = "diableavionics_virtuousmissile";
     public static final String DEEPSTRIKE_ID = "diableavionics_deepStrikeM";
+
+    private static final String LUNALIB_ID = "lunalib";
+    private static final String SHIELD_COLOR_RED = "Advanced Avionics Red";
+    private static final String SHIELD_COLOR_CYAN = "Phase Grazer Cyan";
+    private static final Color RED_SHIELD_INNER_COLOR = new Color(74, 5, 5, 100);
+    private static final Color CYAN_SHIELD_INNER_COLOR = new Color(0, 110, 140, 100);
 
     public static final String MEMKEY_VERSION = "$diableavionics_version";
     public static final String MEMKEY_INTIALIZED = "$diableavionics_initialized";
@@ -77,6 +85,40 @@ public class DAModPlugin extends BaseModPlugin {
         GANTRY_TIME_MULT = MagicSettings.getFloat("diableavionics", "gantry_refitMult");
         GANTRY_DEPLETION_PERCENT = MagicSettings.getFloat("diableavionics", "gantry_depletionPercent");
 
+        applyOptionalLunaShieldColor();
+
+    }
+
+    private static void applyOptionalLunaShieldColor() {
+        if (!Global.getSettings().getModManager().isModEnabled(LUNALIB_ID)) return;
+
+        String mode;
+        try {
+            mode = DAOptionalLunaSettings.getShieldColorMode();
+        } catch (Throwable ex) {
+            System.err.println("Diable Avionics: unable to read optional LunaLib shield color "
+                    + "setting; using stock colors.");
+            ex.printStackTrace(System.err);
+            return;
+        }
+        Color color = null;
+        if (SHIELD_COLOR_RED.equals(mode)) {
+            color = RED_SHIELD_INNER_COLOR;
+        } else if (SHIELD_COLOR_CYAN.equals(mode)) {
+            color = CYAN_SHIELD_INNER_COLOR;
+        }
+
+        // Stock mode deliberately leaves the data-defined hull styles untouched.
+        if (color == null) return;
+
+        for (ShipHullSpecAPI spec : Global.getSettings().getAllShipHullSpecs()) {
+            if (spec == null || spec.getHullId() == null ||
+                    !spec.getHullId().startsWith("diableavionics_") ||
+                    spec.getShieldSpec() == null) {
+                continue;
+            }
+            spec.getShieldSpec().setInnerColor(color);
+        }
     }
 
     @Override
@@ -156,6 +198,11 @@ public class DAModPlugin extends BaseModPlugin {
     }
 
     private void setupGulfPart2() {
+        FactionAPI unknownFaction = Global.getSector().getFaction(DiableGulfPart2Intel.ENEMY_FACTION_ID);
+        if (unknownFaction != null) {
+            unknownFaction.setRelationship("diableavionics", RepLevel.NEUTRAL);
+            unknownFaction.setRelationship(Global.getSector().getPlayerFaction().getId(), RepLevel.HOSTILE);
+        }
         if (!Global.getSector().getGenericPlugins().hasPlugin(DiableGulfPart2DefenderPlugin.class)) {
             Global.getSector().getGenericPlugins().addPlugin(new DiableGulfPart2DefenderPlugin(), true);
         }
@@ -189,7 +236,6 @@ public class DAModPlugin extends BaseModPlugin {
 
     @Override
     public PluginPick<MissileAIPlugin> pickMissileAI(MissileAPI missile, ShipAPI launchingShip) {
-        addStationPlugin();
         return switch (missile.getProjectileSpecId()) {
             case SCATTER_MISSILE_ID ->
                     new PluginPick<MissileAIPlugin>(new Diableavionics_ScatterMissileAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
@@ -213,10 +259,5 @@ public class DAModPlugin extends BaseModPlugin {
                     new PluginPick<MissileAIPlugin>(new Diableavionics_deepStrikeAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
             default -> null;
         };
-    }
-    public void addStationPlugin(){
-        if (Global.getSector().getMemoryWithoutUpdate().getBoolean("$da_gulf_part2_defenders")){
-            Global.getCombatEngine().addPlugin(new DiableGulfPart2CombatPlugin());
-        }
     }
 }

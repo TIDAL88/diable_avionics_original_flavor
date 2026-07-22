@@ -227,13 +227,27 @@ A security team enters the Virtuous. On the tactical display, you see the doors 
 After another few minutes, the security team clears the Virtuous, with no other signs of life aboard the ship.","cutCommLink:Claim the Virtuous.",
 ,,,,,,
 # Gulf bounty - Part II,,,,,,
-DAGulfPart2Interact,OpenInteractionDialog,"$da_gulf_part2_site score:1000
-!$global.da_gulf_part2_complete","SalvageGenFromSeed
-SalvageDefenderInteraction","The relay is silent, but far from dead. Ten Diable Vapor signatures detach from its sensor shadow and form a screen between your fleet and the station.
+DAGulfPart2Interact,OpenInteractionDialog,"$id == diableavionics_blacksite_station score:2000
+$global.da_gulf_part2_started
+!$global.da_gulf_part2_complete","ShowDefaultVisual
+SetShortcut defaultLeave ESCAPE","The broken station turns in silence above FOB-01. Its architecture is unmistakably Diable, but the entire sunward face has been peeled open and vitrified. There are no bodies, no active reactors, and no intact escape craft.
 
-The contacts broadcast no identification and answer no hails. Beneath their drive signatures, your sensors detect a repeating deep-strike synchronization pulse coming from somewhere else.",,
-DAGulfPart2Defeat,BeatDefendersContinue,$da_gulf_part2_site score:1000,,"The last hostile signature disappears. The station that tore its way into the battlespace is breaking apart, leaving a dense field of armored wreckage and half-molten Diable hardware.",0:DAGulfPart2Recover:Search the station wreckage,
+Fragments recovered from hardened log buffers describe a high-energy transit experiment that escaped containment. The cascade propagated through every drive-field emitter in the system, burning the planet and station before reaching the star itself.
+
+The final surviving instruments record an impossible gravitational surge followed by forced stellar collapse. Whatever Diable Avionics attempted here did not merely destroy the facility; it burned the entire system and turned its sun into the black hole hanging beyond the planet.
+
+Buried beneath the station's dead telemetry is an active signal carrying valid Diable identification codes. Neither the facility nor this system appears on any navigational chart or corporate registry.","0:DAGulfPart2Investigate:Investigate the signal
+100:defaultLeave:Leave",
+DAGulfPart2Investigate,DialogOptionSelected,$option == DAGulfPart2Investigate,"SalvageGenFromSeed
+DiableGulfPart2DefenderInteraction","Your sensors resolve a sudden drive flare beyond the station. An unidentified Diable fleet is burning directly toward you with weapons free. It answers neither challenge nor hail.",,
+DAGulfPart2Defeat,BeatDefendersContinue,"$id == diableavionics_blacksite_station score:2000",,"The last hostile signature disappears. The station that tore its way into the battlespace is breaking apart, leaving a dense field of armored wreckage and half-molten Diable hardware.",0:DAGulfPart2Recover:Search the station wreckage,
 DAGulfPart2Recover,DialogOptionSelected,$option == DAGulfPart2Recover,"AddRemoveAnyItem SPECIAL modspec ""gulf_deep_strike"" 1
 $global.da_gulf_part2_complete = true","Your salvage crews recover a sealed engineering archive from the station core. Its contents document the complete Deep Strike Catapult installation: control software, structural requirements, and fabrication tolerances.
 
 The data is intact enough to use as a hullmod specification.",0:defaultLeave:Leave,
+,,,,,,
+# Diable Blacksite,,,,,,
+DABlacksiteRupturedGate,OpenInteractionDialog,"$id == diableavionics_blacksite_ruptured_gate score:1000","ShowDefaultVisual
+SetShortcut defaultLeave ESCAPE","The gate's adamantine frame has been warped out of alignment and split along several structural seams. Its internal geometry is dead: no resonance, no stable manifold, and no response to the Janus Device.
+
+The damage pattern points inward, toward the collapsed star. Whatever destroyed this system appears to have reached the gate from within—and rendered it permanently unusable.",0:defaultLeave:Leave,

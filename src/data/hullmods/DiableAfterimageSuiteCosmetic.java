@@ -2,7 +2,6 @@ package data.hullmods;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.BaseHullMod;
-import com.fs.starfarer.api.combat.FighterWingAPI;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipEngineControllerAPI;
@@ -34,8 +33,6 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
     private static final String MAIN_ID = "abyss_diable_afterimage_suite";
     private static final String MODE_RED_ID = "abyss_diable_afterimage_mode_red";
     private static final String MODE_BLUE_ID = "abyss_diable_afterimage_mode_blue";
-    private static final String PHASE_VISUALS_ID = "diableavionics_phase_visuals";
-    private static final String WANZER_HULLMOD_ID = "diableavionics_wanzer";
 
     private static final String TAG_LAST_RED = "abyss_diable_afterimage_last_red";
     private static final String TAG_LAST_BLUE = "abyss_diable_afterimage_last_blue";
@@ -47,16 +44,9 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
     // Saturated cyan-blue, deliberately darker than the engine glow so it does not wash out white.
     private static final Color BLUE_TRAIL_COLOR = new Color(94, 255, 255, 255);
 
-    private static final Color RED_SHIELD_INNER_COLOR = new Color(74, 5, 5, 100);
-    private static final Color BLUE_SHIELD_INNER_COLOR = new Color(0, 110, 140, 100);
-
     @Override
     public void applyEffectsBeforeShipCreation(ShipAPI.HullSize hullSize, MutableShipStatsAPI stats, String id) {
         if (stats == null || stats.getVariant() == null) return;
-
-        // Clean up the obsolete Maelstrom shield-flicker hullmod from old variants/saves.
-        stats.getVariant().removeMod(PHASE_VISUALS_ID);
-        stats.getVariant().removePermaMod(PHASE_VISUALS_ID);
 
         boolean hasRed = stats.getVariant().hasHullMod(MODE_RED_ID);
         boolean hasBlue = stats.getVariant().hasHullMod(MODE_BLUE_ID);
@@ -104,25 +94,11 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
             trailColor = BLUE_TRAIL_COLOR;
         }
 
-        if (ship.getShield() != null) {
-            Color shieldInnerColor = getShieldInnerColor(ship);
-            ship.getShield().setInnerColor(shieldInnerColor);
-        }
-
         if (ship.getEngineController() == null) return;
         ship.addListener(new AfterimageVisualTracker(
                 ship,
-                trailColor,
-                getShieldInnerColor(ship)
+                trailColor
         ));
-    }
-
-    private static Color getShieldInnerColor(ShipAPI ship) {
-        if (ship != null && ship.getVariant() != null &&
-                ship.getVariant().hasHullMod(MODE_BLUE_ID)) {
-            return BLUE_SHIELD_INNER_COLOR;
-        }
-        return RED_SHIELD_INNER_COLOR;
     }
 
     @Override
@@ -162,7 +138,6 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
     private static class AfterimageVisualTracker implements AdvanceableListener {
         private final ShipAPI ship;
         private final Color trailColor;
-        private final Color shieldInnerColor;
         private final IntervalUtil effectInterval = new IntervalUtil(0.05f, 0.05f);
         private final Map<ShipEngineControllerAPI.ShipEngineAPI, Float> trailIdByEngine = new HashMap<ShipEngineControllerAPI.ShipEngineAPI, Float>();
         private final SpriteAPI trailSprite = Global.getSettings().getSprite("fx", "beamRough2Core");
@@ -171,12 +146,10 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
 
         private AfterimageVisualTracker(
                 ShipAPI ship,
-                Color trailColor,
-                Color shieldInnerColor
+                Color trailColor
         ) {
             this.ship = ship;
             this.trailColor = trailColor;
-            this.shieldInnerColor = shieldInnerColor;
         }
 
         @Override
@@ -188,9 +161,6 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
 
             effectInterval.advance(amount);
             if (!effectInterval.intervalElapsed()) return;
-
-            updateShieldColor(ship);
-            updateWanzerShieldColors();
 
             Vector2f velocity = ship.getVelocity();
             float angle = Misc.getAngleInDegrees(new Vector2f(velocity));
@@ -223,25 +193,5 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
             }
         }
 
-        private void updateShieldColor(ShipAPI target) {
-            if (target == null || target.getShield() == null) return;
-            if (!shieldInnerColor.equals(target.getShield().getInnerColor())) {
-                target.getShield().setInnerColor(shieldInnerColor);
-            }
-        }
-
-        private void updateWanzerShieldColors() {
-            for (FighterWingAPI wing : ship.getAllWings()) {
-                for (ShipAPI fighter : wing.getWingMembers()) {
-                    if (fighter == null || fighter.getVariant() == null ||
-                            !fighter.getVariant().hasHullMod(WANZER_HULLMOD_ID) ||
-                            fighter.getShield() == null) {
-                        continue;
-                    }
-
-                    updateShieldColor(fighter);
-                }
-            }
-        }
     }
 }
