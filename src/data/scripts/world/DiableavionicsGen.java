@@ -33,9 +33,8 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         if (sector.getStarSystem(txt("star_A"))==null) {
             new Diableavionics_fob().generate(sector);
         }
-        if (sector.getStarSystem("diable_blacksite")==null){
-            new Diableavionics_blackSite().generate(sector);
-        }
+        // Also performs an idempotent visual/layout upgrade for existing saves.
+        new Diableavionics_blackSite().generate(sector);
 
         SharedData.getData().getPersonBountyEventData().addParticipatingFaction("diableavionics");
 

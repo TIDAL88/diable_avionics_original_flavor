@@ -1,0 +1,93 @@
+{
+    id:"diableavionics_unknown",
+
+    "color":[150,20,20,255],
+    "baseUIColor":[190,28,20,220],
+    "darkUIColor":[58,8,8,200],
+    "gridUIColor":[110,12,12,90],
+
+    "displayName":"Diable Avionics ?",
+    "displayNameWithArticle":"Diable Avionics ?",
+    "displayNameLong":"Diable Avionics ?",
+    "displayNameLongWithArticle":"Diable Avionics ?",
+    "personNamePrefix":"unknown",
+    "personNamePrefixAOrAn":"an",
+    "displayNameIsOrAre":"is",
+
+    "logo":"graphics/da/factions/scarydacrest.png",
+    "crest":"graphics/da/factions/scarydacrest.png",
+    "showInIntelTab":false,
+    "shipNamePrefix":"",
+
+    "shipNameSources":{
+        "diableavionics":1,
+    },
+    "names":{
+        "modern":1,
+    },
+
+    "variantOverrides":{},
+    "hullFrequency":{
+        "tags":{},
+        "hulls":{},
+    },
+    "shipsWhenImporting":{
+        "tags":[],
+        "hulls":[],
+    },
+    "knownShips":{
+        "tags":[],
+        "hulls":[],
+    },
+    "priorityShips":{
+        "tags":[],
+        "hulls":[],
+    },
+    "knownFighters":{
+        "tags":[],
+        "fighters":[],
+    },
+    "priorityFighters":{
+        "tags":[],
+        "fighters":[],
+    },
+    "knownWeapons":{
+        "tags":[],
+        "weapons":[],
+    },
+    "priorityWeapons":{
+        "tags":[],
+        "weapons":[],
+    },
+    "knownHullMods":{
+        "tags":[],
+        "hullMods":[],
+    },
+
+    "factionDoctrine":{
+        "warships":5,
+        "carriers":1,
+        "phaseShips":1,
+        "officerQuality":1,
+        "shipQuality":1,
+        "numShips":1,
+        "shipSize":1,
+        "aggression":4,
+        "combatFreighterProbability":0,
+        "combatFreighterCombatUseFraction":0,
+        "combatFreighterCombatUseFractionWhenPriority":0,
+        "autofitRandomizeProbability":0,
+        "commanderSkillsShuffleProbability":0,
+        "commanderSkills":[],
+    },
+
+    "illegalCommodities":[],
+    "portraits":{
+        "standard_male":[
+            "graphics/da/portraits/scary.png",
+        ],
+        "standard_female":[
+            "graphics/da/portraits/scary.png",
+        ],
+    },
+}
