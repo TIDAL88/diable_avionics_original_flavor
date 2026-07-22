@@ -18,25 +18,5 @@
     "glowColor": [255, 255, 255, 255],
     "useReverseLightForGlow": false,
     "doNotShowInCombat": true
-  },
-  "diableavionics_blacksite_fragment": {
-    "name": "Volcanic Fragment",
-    "descriptionId": "lava_minor",
-    "tilt": -20,
-    "pitch": -5,
-    "rotation": -2,
-    "planetColor": [255, 255, 255, 255],
-    "atmosphereThickness": 0.08,
-    "atmosphereThicknessMin": 18,
-    "atmosphereColor": [215, 50, 15, 70],
-    "texture": "graphics/da/planets/diableavionics_blacksite_fragment.jpg",
-    "icon": "graphics/warroom/icon_planet.png",
-    "iconColor": [215, 100, 48, 255],
-    "isStar": false,
-    "lightPosition": [0, 0, 50],
-    "glowTexture": "graphics/da/planets/diableavionics_blacksite_fragment_glow.png",
-    "glowColor": [255, 255, 255, 255],
-    "useReverseLightForGlow": false,
-    "doNotShowInCombat": true
   }
 }
