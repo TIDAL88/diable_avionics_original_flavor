@@ -24,16 +24,16 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
 
     @Override
     public void generate(SectorAPI sector) {
-        if (sector.getStarSystem(txt("star_C"))==null) {
+        if (sector.getStarSystem(txt("star_C")) == null) {
             new Diableavionics_outerTerminus().generate(sector);
         }
-        if (sector.getStarSystem(txt("star_B"))==null) {
+        if (sector.getStarSystem(txt("star_B")) == null) {
             new Diableavionics_stagging().generate(sector);
         }
-        if (sector.getStarSystem(txt("star_A"))==null) {
+        if (sector.getStarSystem(txt("star_A")) == null) {
             new Diableavionics_fob().generate(sector);
         }
-        if (sector.getStarSystem("diable_blacksite")==null){
+        if (sector.getStarSystem("diable_blacksite") == null) {
             new Diableavionics_blackSite().generate(sector);
         }
 
