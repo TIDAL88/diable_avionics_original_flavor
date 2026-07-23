@@ -102,3 +102,4 @@ Artillery Configuration,artillery_configuration,,,Diable Avionics,diable,,15000,
 Deep Strike Catapult,gulf_deep_strike,,,Diable Avionics,diable,,,,FALSE,,0,0,25,0,data.hullmods.DiableAvionicsGulf_DeepStrike,,,,graphics/da/hullmods/diableavionics_tuning.png
 master,gulf_master,,,Diable Avionics,diable,,,,TRUE,TRUE,0,0,0,0,data.hullmods.DiableAvionicsGulf_Master,,,,
 DA,diableavionics_phase_visuals,,,Diable Avionics,diable,,,,TRUE,TRUE,0,0,0,0,data.hullmods.Diableavionics_phaseVisuals,,,,
+Station Anchor,diableavionics_station_anchor,,,Diable Avionics,diable,,,,FALSE,FALSE,0,0,0,0,data.hullmods.StationPhaseAnchor,,,,
