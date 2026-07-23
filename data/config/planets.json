@@ -1,0 +1,22 @@
+{
+  "diableavionics_blacksite_burned": {
+    "name": "Scorched",
+    "descriptionId": "lava",
+    "tilt": -20,
+    "pitch": -5,
+    "rotation": -3.5,
+    "planetColor": [255, 255, 255, 255],
+    "atmosphereThickness": 0.1,
+    "atmosphereThicknessMin": 30,
+    "atmosphereColor": [215, 50, 15, 60],
+    "texture": "graphics/da/planets/diableavionics_blacksite_scorched.jpg",
+    "icon": "graphics/warroom/icon_planet.png",
+    "iconColor": [215, 115, 55, 255],
+    "isStar": false,
+    "lightPosition": [0, 0, 50],
+    "glowTexture": "graphics/da/planets/diableavionics_blacksite_scorched_glow.png",
+    "glowColor": [255, 255, 255, 255],
+    "useReverseLightForGlow": false,
+    "doNotShowInCombat": true
+  }
+}

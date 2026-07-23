@@ -3,28 +3,22 @@ package data.scripts.campaign.gulf;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
-import com.fs.starfarer.api.campaign.StarSystemAPI;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Entities;
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;
 import com.fs.starfarer.api.impl.campaign.procgen.DefenderDataOverride;
-import com.fs.starfarer.api.impl.campaign.procgen.themes.BaseThemeGenerator;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import org.lwjgl.util.vector.Vector2f;
+import data.scripts.world.systems.Diableavionics_blackSite;
 import org.magiclib.util.MagicVariables;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 /**
@@ -38,7 +32,10 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
     public static final String DEFENDER_MEMKEY = "$da_gulf_part2_defenders";
     public static final String LANDMARK_PLACEMENT_MEMKEY = "$da_gulf_part2_landmark_v1";
 
+    /** Legacy randomly-generated relay ID; retained only for save migration and cleanup. */
     public static final String SITE_ID = "diableavionics_gulf_part2_site";
+    public static final String ENEMY_FACTION_ID = "diableavionics_unknown";
+    public static final String ENEMY_PORTRAIT = "graphics/da/portraits/scary.png";
     public static final String GULF_BASE_HULL_ID = "diableavionics_IBBgulf";
     public static final String STATION_VARIANT = "diableavionics_station_classic";
     public static final String REWARD_HULLMOD = "gulf_deep_strike";
@@ -63,47 +60,80 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
     public static void ensureStarted() {
         if (Global.getSector() == null) return;
 
-        if (Global.getSector().getMemoryWithoutUpdate().getBoolean(STARTED_MEMKEY)
-                || Global.getSector().getMemoryWithoutUpdate().getBoolean(COMPLETE_MEMKEY)) {
+        if (Global.getSector().getMemoryWithoutUpdate().getBoolean(COMPLETE_MEMKEY)) {
+            syncBlackSiteStation();
+            return;
+        }
+
+        if (Global.getSector().getMemoryWithoutUpdate().getBoolean(STARTED_MEMKEY)) {
+            syncBlackSiteStation();
             return;
         }
 
         if (Global.getSector().getIntelManager().hasIntelOfClass(DiableGulfPart2Intel.class)) {
             Global.getSector().getMemoryWithoutUpdate().set(STARTED_MEMKEY, true);
+            syncBlackSiteStation();
             return;
         }
 
         if (!playerHasGulf()) return;
 
-        SectorEntityToken existing = Global.getSector().getEntityById(SITE_ID);
-        if (existing != null) {
-            addIntel(existing);
-            Global.getSector().getMemoryWithoutUpdate().set(STARTED_MEMKEY, true);
-            return;
+        SectorEntityToken site = getBlackSiteStation();
+        if (site == null) return;
+
+        Global.getSector().getMemoryWithoutUpdate().set(STARTED_MEMKEY, true);
+        Global.getSector().getMemoryWithoutUpdate().set(LANDMARK_PLACEMENT_MEMKEY, true);
+        configureActiveSite(site);
+        removeLegacyRelay();
+        addIntel(site);
+    }
+
+    /**
+     * Save migration for the test builds that targeted a randomly generated relay. Existing intel is
+     * retargeted to the permanent Black Site station and only the obsolete relay entity is removed.
+     */
+    public static void ensureLandmarkPlacement() {
+        syncBlackSiteStation();
+    }
+
+    private static void syncBlackSiteStation() {
+        if (Global.getSector() == null) return;
+
+        SectorEntityToken station = getBlackSiteStation();
+        boolean started = Global.getSector().getMemoryWithoutUpdate().getBoolean(STARTED_MEMKEY);
+        boolean complete = Global.getSector().getMemoryWithoutUpdate().getBoolean(COMPLETE_MEMKEY);
+
+        removeLegacyRelay();
+        if (station == null) return;
+
+        if (started && !complete) {
+            configureActiveSite(station);
+            retargetExistingIntel(station);
+            Global.getSector().getMemoryWithoutUpdate().set(LANDMARK_PLACEMENT_MEMKEY, true);
+        } else {
+            station.removeTag(Tags.HAS_INTERACTION_DIALOG);
+            station.getMemoryWithoutUpdate().unset(SITE_MEMKEY);
+            station.getMemoryWithoutUpdate().unset(MemFlags.ENTITY_MISSION_IMPORTANT);
+            station.getMemoryWithoutUpdate().unset(MemFlags.SALVAGE_DEFENDER_OVERRIDE);
+            station.getMemoryWithoutUpdate().unset(MemFlags.SALVAGE_SPEC_ID_OVERRIDE);
         }
+    }
 
-        StarSystemAPI system = pickRemoteSystem();
-        if (system == null) return;
+    private static SectorEntityToken getBlackSiteStation() {
+        return Global.getSector().getEntityById(Diableavionics_blackSite.STATION_ID);
+    }
 
-        Random random = new Random(Misc.genRandomSeed());
-        SectorEntityToken site = BaseThemeGenerator.addSalvageEntity(
-                random,
-                system,
-                Entities.STATION_RESEARCH,
-                Factions.NEUTRAL
-        );
-
-        site.setId(SITE_ID);
-        site.setName("Silent Diable Relay");
-        placeAtPrimaryStar(site, system, random);
-        site.setSensorProfile(3000f);
-        site.setDiscoverable(false);
-        site.setDiscoveryXP(0f);
-        site.addTag(Tags.SALVAGE_ENTITY_NO_REMOVE);
+    private static void configureActiveSite(SectorEntityToken site) {
+        site.addTag(Tags.HAS_INTERACTION_DIALOG);
         site.getMemoryWithoutUpdate().set(SITE_MEMKEY, true);
         site.getMemoryWithoutUpdate().set(MemFlags.ENTITY_MISSION_IMPORTANT, true);
+        // The Black Site uses a custom visual entity type, which is not itself a salvage-data ID.
+        // Tell SalvageGenFromSeed to use vanilla's research-station data instead.
+        site.getMemoryWithoutUpdate().set(MemFlags.SALVAGE_SPEC_ID_OVERRIDE, Entities.STATION_RESEARCH);
 
         // The generated fleet is replaced wholesale by DiableGulfPart2DefenderPlugin.
+        // Use MagicLib's populated bounty faction only to seed that temporary fleet: the deliberately
+        // empty hidden encounter faction cannot generate one for the defender plugin to replace.
         Misc.setDefenderOverride(site, new DefenderDataOverride(
                 MagicVariables.BOUNTY_FACTION,
                 1f,
@@ -111,54 +141,26 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
                 10f,
                 10
         ));
-
-        system.addTag(Tags.SYSTEM_ALREADY_USED_FOR_STORY);
-        Global.getSector().getMemoryWithoutUpdate().set(STARTED_MEMKEY, true);
-        Global.getSector().getMemoryWithoutUpdate().set(LANDMARK_PLACEMENT_MEMKEY, true);
-        addIntel(site);
     }
 
-    /** Moves sites created by the first test build from an arbitrary system-center orbit to a star. */
-    public static void ensureLandmarkPlacement() {
-        if (Global.getSector() == null
-                || Global.getSector().getMemoryWithoutUpdate().getBoolean(COMPLETE_MEMKEY)
-                || Global.getSector().getMemoryWithoutUpdate().getBoolean(LANDMARK_PLACEMENT_MEMKEY)) {
-            return;
-        }
-
-        SectorEntityToken site = Global.getSector().getEntityById(SITE_ID);
-        if (site == null) return;
-
-        StarSystemAPI destination = site.getStarSystem();
-        if (!hasSafePrimaryStar(destination)) {
-            StarSystemAPI replacement = pickRemoteSystem();
-            if (replacement != null) {
-                if (site.getContainingLocation() != null) {
-                    site.getContainingLocation().removeEntity(site);
-                }
-                replacement.addEntity(site);
-                replacement.addTag(Tags.SYSTEM_ALREADY_USED_FOR_STORY);
-                destination = replacement;
+    private static void retargetExistingIntel(SectorEntityToken site) {
+        for (IntelInfoPlugin intel : Global.getSector().getIntelManager().getIntel(DiableGulfPart2Intel.class)) {
+            if (intel instanceof DiableGulfPart2Intel) {
+                ((DiableGulfPart2Intel) intel).setSite(site);
             }
         }
-
-        if (!hasSafePrimaryStar(destination)) return;
-
-        placeAtPrimaryStar(site, destination, new Random(Misc.genRandomSeed()));
-        site.setSensorProfile(3000f);
-        site.setDiscoverable(false);
-        site.getMemoryWithoutUpdate().set(MemFlags.ENTITY_MISSION_IMPORTANT, true);
-        Global.getSector().getMemoryWithoutUpdate().set(LANDMARK_PLACEMENT_MEMKEY, true);
     }
 
-    private static void placeAtPrimaryStar(SectorEntityToken site, StarSystemAPI system, Random random) {
-        float orbitRadius = system.getStar().getRadius() + 2000f;
-        site.setCircularOrbitPointingDown(
-                system.getStar(),
-                random.nextFloat() * 360f,
-                orbitRadius,
-                120f
-        );
+    private static void removeLegacyRelay() {
+        SectorEntityToken legacy = Global.getSector().getEntityById(SITE_ID);
+        if (legacy != null && legacy.getContainingLocation() != null) {
+            legacy.getContainingLocation().removeEntity(legacy);
+        }
+    }
+
+    private void setSite(SectorEntityToken site) {
+        this.site = site;
+        this.systemName = site.getStarSystem() == null ? "an unknown system" : site.getStarSystem().getName();
     }
 
     public static boolean playerHasGulf() {
@@ -179,63 +181,9 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
         Global.getSector().getIntelManager().addIntel(intel, true);
     }
 
-    private static StarSystemAPI pickRemoteSystem() {
-        List<StarSystemAPI> preferred = new ArrayList<StarSystemAPI>();
-        List<StarSystemAPI> fallback = new ArrayList<StarSystemAPI>();
-        Vector2f sectorCenter = new Vector2f(0f, 0f);
-
-        for (StarSystemAPI system : Global.getSector().getStarSystems()) {
-            if (!isAccessible(system)) continue;
-            fallback.add(system);
-
-            float distance = Misc.getDistanceLY(system.getLocation(), sectorCenter);
-            if (distance >= 8f && distance <= 40f
-                    && !system.hasTag(Tags.THEME_CORE)
-                    && !system.hasTag(Tags.THEME_CORE_POPULATED)
-                    && !system.hasTag(Tags.THEME_CORE_UNPOPULATED)) {
-                preferred.add(system);
-            }
-        }
-
-        Random random = new Random(Misc.genRandomSeed());
-        Collections.shuffle(preferred, random);
-        Collections.shuffle(fallback, random);
-        if (!preferred.isEmpty()) return preferred.get(0);
-        if (!fallback.isEmpty()) return fallback.get(0);
-        return null;
-    }
-
-    private static boolean isAccessible(StarSystemAPI system) {
-        return system != null
-                && system.getCenter() != null
-                && system.getStar() != null
-                && system.getHyperspaceAnchor() != null
-                && !system.hasPulsar()
-                && !system.hasBlackHole()
-                && !system.hasTag(Tags.THEME_HIDDEN)
-                && !system.hasTag(Tags.SYSTEM_CUT_OFF_FROM_HYPER)
-                && !system.hasTag(Tags.SYSTEM_ABYSSAL)
-                && !system.hasTag(Tags.PK_SYSTEM)
-                && !system.hasTag(Tags.SYSTEM_ALREADY_USED_FOR_STORY);
-    }
-
-    private static boolean hasSafePrimaryStar(StarSystemAPI system) {
-        return system != null
-                && system.getStar() != null
-                && !system.hasPulsar()
-                && !system.hasBlackHole();
-    }
-
     private String getCurrentSystemName() {
         if (site != null && site.getStarSystem() != null) return site.getStarSystem().getName();
         return systemName;
-    }
-
-    private String getCurrentLandmarkName() {
-        if (site != null && site.getStarSystem() != null && site.getStarSystem().getStar() != null) {
-            return site.getStarSystem().getStar().getName();
-        }
-        return "the system's primary star";
     }
 
     @Override
@@ -246,10 +194,7 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
             completionUpdateSent = true;
             setImportant(false);
             sendUpdateIfPlayerHasIntel(UPDATE_COMPLETE, false);
-
-            if (site != null && site.getContainingLocation() != null) {
-                site.getContainingLocation().removeEntity(site);
-            }
+            syncBlackSiteStation();
             endAfterDelay();
         }
     }
@@ -264,10 +209,9 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
                     Misc.getPositiveHighlightColor(), "Deep Strike Catapult");
         } else {
             String currentSystemName = getCurrentSystemName();
-            String landmarkName = getCurrentLandmarkName();
-            info.addPara("Investigate the relay orbiting " + landmarkName + " in the "
+            info.addPara("Investigate the research station orbiting FOB-01 in the "
                             + currentSystemName + " system.",
-                    5f, Misc.getHighlightColor(), landmarkName, currentSystemName);
+                    5f, Misc.getHighlightColor(), "research station", "FOB-01", currentSystemName);
         }
     }
 
@@ -275,21 +219,19 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
     public void createSmallDescription(TooltipMakerAPI info, float width, float height) {
         Color highlight = Misc.getHighlightColor();
         String currentSystemName = getCurrentSystemName();
-        String landmarkName = getCurrentLandmarkName();
-        info.addPara("A surviving data partition aboard the Gulf contains a set of coordinates. "
-                + "The source is a silent Diable relay orbiting " + landmarkName + " in the "
-                + currentSystemName + " system.",
-                10f, highlight, "Gulf", landmarkName, currentSystemName);
+        info.addPara("A surviving data partition aboard the Gulf contains a signal trace from a "
+                        + "research station orbiting FOB-01. The transmission carries Diable identification "
+                        + "codes, but its coordinates correspond to no charted system or registered facility.",
+                10f, highlight, "Gulf", "research station", "FOB-01", "Diable identification codes");
 
         if (Global.getSector().getMemoryWithoutUpdate().getBoolean(COMPLETE_MEMKEY)) {
             info.addPara("The hidden station was destroyed. Your salvage crews recovered a complete "
                     + "Deep Strike Catapult hullmod specification from its remains.",
                     10f, Misc.getPositiveHighlightColor(), "Deep Strike Catapult");
         } else {
-            info.addPara("Travel to the marked point and investigate the relay. The signal identifies "
-                    + "a ten-ship Vapor screen, but its deep-strike control traffic suggests that the "
-                    + "sensor picture is incomplete.",
-                    10f, highlight, "ten-ship Vapor screen", "sensor picture is incomplete");
+            info.addPara("Travel to the marked station in the " + currentSystemName + " system and "
+                            + "investigate the impossible signal.",
+                    10f, highlight, currentSystemName, "impossible signal");
         }
     }
 

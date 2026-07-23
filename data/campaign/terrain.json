@@ -1,0 +1,5 @@
+{
+    "diableavionics_blacksite_nebula":{
+        "plugin":"data.scripts.campaign.terrain.DiableBlackSiteNebulaTerrainPlugin",
+    },
+}
