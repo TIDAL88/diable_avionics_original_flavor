@@ -21,7 +21,6 @@ import org.lwjgl.util.vector.Vector2f;
 import org.magiclib.campaign.MagicCaptainBuilder;
 import org.magiclib.util.MagicLensFlare;
 import org.magiclib.util.MagicRender;
-import org.magiclib.util.MagicVariables;
 
 import java.awt.Color;
 import java.util.List;
@@ -118,7 +117,10 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
                 DiableGulfPart2Intel.STATION_VARIANT
         );
         member.setShipName("Diable Classic Station");
-        member.setCaptain(new MagicCaptainBuilder(MagicVariables.BOUNTY_FACTION).setLevel(6).create());
+        member.setCaptain(new MagicCaptainBuilder(DiableGulfPart2Intel.ENEMY_FACTION_ID)
+                .setLevel(6)
+                .create());
+        member.getCaptain().setPortraitSprite(DiableGulfPart2Intel.ENEMY_PORTRAIT);
         member.setOwner(1);
 
         CombatFleetManagerAPI enemy = engine.getFleetManager(1);

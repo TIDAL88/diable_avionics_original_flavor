@@ -1,7 +1,10 @@
 {
-   "ruleCommandPackages":[
+  "ruleCommandPackages":[
     "data.campaign.rulecmd"
   ],
+  "plugins": {
+    "DiableGulfPart2CombatPlugin": "data.scripts.campaign.gulf.DiableGulfPart2CombatPlugin"
+  },
   "textGreenColor":[0,255,0,255],
   "designTypeColors": {
     "Diable Avionics": [ 119,52,47,255 ]

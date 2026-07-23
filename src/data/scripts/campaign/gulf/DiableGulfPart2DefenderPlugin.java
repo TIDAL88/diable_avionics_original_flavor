@@ -3,10 +3,12 @@ package data.scripts.campaign.gulf;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
+import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
+import com.fs.starfarer.api.impl.campaign.ids.Personalities;
+import com.fs.starfarer.api.impl.campaign.ids.Ranks;
 import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.SalvageGenFromSeed;
-import org.magiclib.util.MagicVariables;
 
 import java.util.Random;
 
@@ -62,18 +64,28 @@ public class DiableGulfPart2DefenderPlugin implements SalvageGenFromSeed.Salvage
         if (random == null) random = new Random();
 
         fleet.getFleetData().clear();
-        fleet.setFaction(MagicVariables.BOUNTY_FACTION, true);
-        fleet.setName("Diable Decoy Force");
+        fleet.setFaction(DiableGulfPart2Intel.ENEMY_FACTION_ID, true);
+        fleet.setName("Diable Avionics ?");
         fleet.setNoFactionInName(true);
 
+        FleetMemberAPI flagship = null;
+        PersonAPI commander = null;
         for (int i = 0; i < 10; i++) {
             String variantId = VAPOR_VARIANTS[random.nextInt(VAPOR_VARIANTS.length)];
             FleetMemberAPI member = fleet.getFleetData().addFleetMember(variantId);
             member.setShipName(Global.getSector().getFaction("diableavionics").pickRandomShipName(random));
+            PersonAPI pilot = createUnknownPilot();
+            member.setCaptain(pilot);
             member.getRepairTracker().setCR(member.getRepairTracker().getMaxCR());
+
+            if (flagship == null) {
+                flagship = member;
+                commander = pilot;
+            }
         }
 
-        fleet.getFleetData().ensureHasFlagship();
+        if (flagship != null) fleet.getFleetData().setFlagship(flagship);
+        if (commander != null) fleet.setCommander(commander);
         fleet.getFleetData().sort();
         fleet.forceSync();
         fleet.updateCounts();
@@ -84,6 +96,16 @@ public class DiableGulfPart2DefenderPlugin implements SalvageGenFromSeed.Salvage
         fleet.getMemoryWithoutUpdate().set(MemFlags.FLEET_FIGHT_TO_THE_LAST, true);
         fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_NO_REP_IMPACT, true);
         fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_NO_SHIP_RECOVERY, true);
+    }
+
+    private static PersonAPI createUnknownPilot() {
+        PersonAPI pilot = Global.getFactory().createPerson();
+        pilot.setFaction(DiableGulfPart2Intel.ENEMY_FACTION_ID);
+        pilot.setPortraitSprite(DiableGulfPart2Intel.ENEMY_PORTRAIT);
+        pilot.setRankId(Ranks.SPACE_COMMANDER);
+        pilot.setPostId(Ranks.POST_OFFICER);
+        pilot.setPersonality(Personalities.AGGRESSIVE);
+        return pilot;
     }
 
     @Override
