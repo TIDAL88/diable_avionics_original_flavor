@@ -18,19 +18,26 @@ import data.scripts.world.systems.Diableavionics_outerTerminus;
 import data.scripts.world.systems.Diableavionics_stagging;
 import org.magiclib.util.MagicCampaign;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static data.scripts.util.Diableavionics_stringsManager.txt;
 
 public class DiableavionicsGen implements SectorGeneratorPlugin {
 
+    public static final String OUTER_TERMINUS_SYSTEM_ID = "diableavionics_outerTerminus";
+    public static final String STAGING_SYSTEM_ID = "diableavionics_stagging";
+    public static final String FOB_SYSTEM_ID = "diableavionics_fob";
+
     @Override
     public void generate(SectorAPI sector) {
-        if (sector.getStarSystem(txt("star_C"))==null) {
+        if (findSystemByUniqueId(sector, OUTER_TERMINUS_SYSTEM_ID) == null) {
             new Diableavionics_outerTerminus().generate(sector);
         }
-        if (sector.getStarSystem(txt("star_B"))==null) {
+        if (findSystemByUniqueId(sector, STAGING_SYSTEM_ID) == null) {
             new Diableavionics_stagging().generate(sector);
         }
-        if (sector.getStarSystem(txt("star_A"))==null) {
+        if (findSystemByUniqueId(sector, FOB_SYSTEM_ID) == null) {
             new Diableavionics_fob().generate(sector);
         }
         // Also performs an idempotent visual/layout upgrade for existing saves.
@@ -119,6 +126,77 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         diableavionics.setRelationship("nomads", -0.25f);
         diableavionics.setRelationship("thulelegacy", -0.25f);
         diableavionics.setRelationship("infected", -0.99f);
+    }
+
+    /**
+     * Removes empty systems created by the old display-name safeguards.
+     *
+     * The three generators assign optional unique IDs, while the previous checks searched for
+     * localized display names. Calling the generator during game load could therefore add another
+     * complete set. The economy-backed system is always preserved; occupied or otherwise non-empty
+     * duplicates are left untouched rather than deleting live campaign state.
+     */
+    public static void cleanupDuplicateSystems(SectorAPI sector) {
+        cleanupDuplicateSystems(sector, OUTER_TERMINUS_SYSTEM_ID);
+        cleanupDuplicateSystems(sector, STAGING_SYSTEM_ID);
+        cleanupDuplicateSystems(sector, FOB_SYSTEM_ID);
+    }
+
+    private static void cleanupDuplicateSystems(SectorAPI sector, String uniqueId) {
+        List<StarSystemAPI> matches = new ArrayList<StarSystemAPI>();
+        for (StarSystemAPI system : sector.getStarSystems()) {
+            if (uniqueId.equals(system.getOptionalUniqueId())) {
+                matches.add(system);
+            }
+        }
+        if (matches.size() <= 1) return;
+
+        StarSystemAPI canonical = null;
+        for (StarSystemAPI system : matches) {
+            if (!sector.getEconomy().getMarkets(system).isEmpty()) {
+                canonical = system;
+                break;
+            }
+        }
+        if (canonical == null) {
+            canonical = findSystemByUniqueId(sector, uniqueId);
+        }
+        if (canonical == null || !matches.contains(canonical)) {
+            canonical = matches.get(0);
+        }
+
+        int removed = 0;
+        for (StarSystemAPI duplicate : matches) {
+            if (duplicate == canonical) continue;
+            if (!sector.getEconomy().getMarkets(duplicate).isEmpty()) continue;
+            if (sector.getCurrentLocation() == duplicate
+                    || sector.getRespawnLocation() == duplicate
+                    || !duplicate.getFleets().isEmpty()) {
+                continue;
+            }
+
+            sector.removeStarSystem(duplicate);
+            removed++;
+        }
+
+        if (removed > 0) {
+            System.out.println(
+                    "Diable Avionics: removed " + removed
+                            + " duplicate system(s) for " + uniqueId
+            );
+        }
+    }
+
+    private static StarSystemAPI findSystemByUniqueId(SectorAPI sector, String uniqueId) {
+        StarSystemAPI direct = sector.getStarSystem(uniqueId);
+        if (direct != null) return direct;
+
+        for (StarSystemAPI system : sector.getStarSystems()) {
+            if (uniqueId.equals(system.getOptionalUniqueId())) {
+                return system;
+            }
+        }
+        return null;
     }
 
     private static final WeightedRandomPicker<String> VIRTUOUS = new WeightedRandomPicker<>();

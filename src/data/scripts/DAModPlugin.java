@@ -7,6 +7,7 @@ import com.fs.starfarer.api.PluginPick;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.CampaignPlugin;
 import com.fs.starfarer.api.campaign.FactionAPI;
+import com.fs.starfarer.api.campaign.GenericPluginManagerAPI;
 import com.fs.starfarer.api.campaign.RepLevel;
 import com.fs.starfarer.api.campaign.StarSystemAPI;
 import com.fs.starfarer.api.combat.MissileAIPlugin;
@@ -21,6 +22,7 @@ import data.scripts.campaign.gulf.DiableGulfPart2TriggerScript;
 import data.scripts.ai.*;
 import data.scripts.world.DiableavionicsGen;
 import data.scripts.world.MarketHelpers;
+import data.scripts.world.systems.Diableavionics_blackSite;
 import exerelin.campaign.SectorManager;
 import org.dark.shaders.light.LightData;
 import org.dark.shaders.util.ShaderLib;
@@ -147,7 +149,10 @@ public class DAModPlugin extends BaseModPlugin {
     @Override
     public void onGameLoad(boolean newGame) {
         Global.getSector().registerPlugin(new DACampaignPlugin());
-        new DiableavionicsGen().generate(Global.getSector());
+        DiableavionicsGen.cleanupDuplicateSystems(Global.getSector());
+        // Existing saves need the Blacksite added/upgraded, but the three established Diable
+        // systems must not be regenerated on every load.
+        new Diableavionics_blackSite().generate(Global.getSector());
         setupGulfPart2();
 
         if (!haveNexerelin || SectorManager.getManager().isCorvusMode()) {
@@ -203,8 +208,15 @@ public class DAModPlugin extends BaseModPlugin {
             unknownFaction.setRelationship("diableavionics", RepLevel.NEUTRAL);
             unknownFaction.setRelationship(Global.getSector().getPlayerFaction().getId(), RepLevel.HOSTILE);
         }
-        if (!Global.getSector().getGenericPlugins().hasPlugin(DiableGulfPart2DefenderPlugin.class)) {
-            Global.getSector().getGenericPlugins().addPlugin(new DiableGulfPart2DefenderPlugin(), true);
+        // Part II now uses a real campaign fleet. Remove the persisted salvage-defender plugin
+        // from saves made while the old probe-style implementation was active.
+        List<GenericPluginManagerAPI.GenericPlugin> oldDefenderPlugins =
+                new ArrayList<GenericPluginManagerAPI.GenericPlugin>(
+                        Global.getSector().getGenericPlugins()
+                                .getPluginsOfClass(DiableGulfPart2DefenderPlugin.class)
+                );
+        for (GenericPluginManagerAPI.GenericPlugin plugin : oldDefenderPlugins) {
+            Global.getSector().getGenericPlugins().removePlugin(plugin);
         }
         DiableGulfPart2Intel.ensureStarted();
         DiableGulfPart2Intel.ensureLandmarkPlacement();

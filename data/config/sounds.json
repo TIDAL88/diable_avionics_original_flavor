@@ -750,6 +750,9 @@
                 "diableavionics_blacksite_ambience":[
                         {"file":"DA_scary.ogg","source":"sounds/diablemusic/","volume":0.35,"randomStart":false},
                 ],
+                "diableavionics_blacksite_combat":[
+                        {"file":"DA_scary2.ogg","source":"sounds/diablemusic/","volume":0.35,"randomStart":false},
+                ],
 				
                 "diableavionics_market_interaction_neutral":[
                         {"file":"DA_neutral_interaction.ogg","source":"sounds/diablemusic/","volume":0.35,"randomStart":true},

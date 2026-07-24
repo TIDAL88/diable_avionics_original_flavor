@@ -35,6 +35,9 @@ public class Diableavionics_blackSite {
     public static final String SYSTEM_ID = "diable_blacksite";
     public static final String STAR_ID = "diableavionics_blackhole";
     public static final String PLANET_ID = "diableavionics_blacksite";
+    public static final String SYSTEM_NAME = "88 Ra";
+    public static final String STAR_NAME = "88 Ra";
+    public static final String PLANET_NAME = "88 Ra I";
     /** Kept only so the removed prototype moon can be deleted from existing saves. */
     public static final String FRAGMENT_ID = "diableavionics_blacksite_fragment";
     public static final String STATION_ID = "diableavionics_blacksite_station";
@@ -90,25 +93,42 @@ public class Diableavionics_blackSite {
 
     /**
      * Creates the Blacksite on a new game, or upgrades the first test version in
-     * an existing save. DAModPlugin calls the world generator on game load.
+     * an existing save. DAModPlugin calls this targeted updater on game load.
      */
     public void generate(SectorAPI sector) {
-        StarSystemAPI system = sector.getStarSystem(SYSTEM_ID);
+        StarSystemAPI system = findExistingSystem(sector);
         if (system == null) {
             system = createSystem(sector);
         }
         configureSystem(sector, system);
     }
 
+    private StarSystemAPI findExistingSystem(SectorAPI sector) {
+        StarSystemAPI direct = sector.getStarSystem(SYSTEM_ID);
+        if (direct != null) return direct;
+
+        for (StarSystemAPI system : sector.getStarSystems()) {
+            if (SYSTEM_ID.equals(system.getOptionalUniqueId())
+                    || system.getEntityById(STAR_ID) != null
+                    || system.getEntityById(PLANET_ID) != null) {
+                return system;
+            }
+        }
+        return null;
+    }
+
     private StarSystemAPI createSystem(SectorAPI sector) {
         StarSystemAPI system = sector.createStarSystem(SYSTEM_ID);
+        system.setOptionalUniqueId(SYSTEM_ID);
+        system.setBaseName(SYSTEM_NAME);
         PlanetAPI star = system.initStar(STAR_ID, StarTypes.BLACK_HOLE, 500f, 450f);
+        star.setName(STAR_NAME);
         system.getLocation().set(35000f, -7000f);
 
         PlanetAPI planet = system.addPlanet(
                 PLANET_ID,
                 star,
-                "FOB-01",
+                PLANET_NAME,
                 FOB_PLANET_TYPE,
                 PLANET_ORBIT_ANGLE,
                 PLANET_RADIUS,
@@ -122,6 +142,8 @@ public class Diableavionics_blackSite {
     }
 
     private void configureSystem(SectorAPI sector, StarSystemAPI system) {
+        system.setOptionalUniqueId(SYSTEM_ID);
+        system.setBaseName(SYSTEM_NAME);
         system.setType(StarSystemGenerator.StarSystemType.DEEP_SPACE);
         system.addTag(Tags.THEME_UNSAFE);
         system.addTag(Tags.THEME_HIDDEN);
@@ -136,6 +158,8 @@ public class Diableavionics_blackSite {
         if (star == null || !(planetToken instanceof PlanetAPI)) return;
 
         PlanetAPI planet = (PlanetAPI) planetToken;
+        star.setName(STAR_NAME);
+        planet.setName(PLANET_NAME);
         removePrototypeTestFleet(system);
         styleFobPlanet(planet);
         ensureFobRuins(planet);

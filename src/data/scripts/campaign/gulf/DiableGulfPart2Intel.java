@@ -5,16 +5,13 @@ import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Entities;
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;
-import com.fs.starfarer.api.impl.campaign.procgen.DefenderDataOverride;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.world.systems.Diableavionics_blackSite;
-import org.magiclib.util.MagicVariables;
 
 import java.awt.Color;
 import java.util.LinkedHashSet;
@@ -42,6 +39,9 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
 
     private static final String TITLE = "A Cold Plate of Revenge - Part II";
     private static final String UPDATE_COMPLETE = "completed";
+    private static final String INTEL_SPRITE_CATEGORY = "diableavionics_intel";
+    private static final String INTEL_IMAGE_KEY = "gulfPart2Signal";
+    private static final String INTEL_ICON_KEY = "gulfPart2SignalIcon";
 
     private SectorEntityToken site;
     private String systemName;
@@ -110,12 +110,14 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
             configureActiveSite(station);
             retargetExistingIntel(station);
             Global.getSector().getMemoryWithoutUpdate().set(LANDMARK_PLACEMENT_MEMKEY, true);
+        } else if (complete) {
+            configureCompletedSite(station);
         } else {
             station.removeTag(Tags.HAS_INTERACTION_DIALOG);
             station.getMemoryWithoutUpdate().unset(SITE_MEMKEY);
             station.getMemoryWithoutUpdate().unset(MemFlags.ENTITY_MISSION_IMPORTANT);
-            station.getMemoryWithoutUpdate().unset(MemFlags.SALVAGE_DEFENDER_OVERRIDE);
-            station.getMemoryWithoutUpdate().unset(MemFlags.SALVAGE_SPEC_ID_OVERRIDE);
+            clearLegacySalvageState(station);
+            DiableGulfPart2FleetFactory.removeFleet(station);
         }
     }
 
@@ -127,20 +129,25 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
         site.addTag(Tags.HAS_INTERACTION_DIALOG);
         site.getMemoryWithoutUpdate().set(SITE_MEMKEY, true);
         site.getMemoryWithoutUpdate().set(MemFlags.ENTITY_MISSION_IMPORTANT, true);
-        // The Black Site uses a custom visual entity type, which is not itself a salvage-data ID.
-        // Tell SalvageGenFromSeed to use vanilla's research-station data instead.
-        site.getMemoryWithoutUpdate().set(MemFlags.SALVAGE_SPEC_ID_OVERRIDE, Entities.STATION_RESEARCH);
+        // Save migration: Part II originally used the vanilla salvage/probe defender backend.
+        // Clear every trace of that backend before the normal campaign fleet is created.
+        clearLegacySalvageState(site);
+    }
 
-        // The generated fleet is replaced wholesale by DiableGulfPart2DefenderPlugin.
-        // Use MagicLib's populated bounty faction only to seed that temporary fleet: the deliberately
-        // empty hidden encounter faction cannot generate one for the defender plugin to replace.
-        Misc.setDefenderOverride(site, new DefenderDataOverride(
-                MagicVariables.BOUNTY_FACTION,
-                1f,
-                10f,
-                10f,
-                10
-        ));
+    private static void configureCompletedSite(SectorEntityToken site) {
+        site.addTag(Tags.HAS_INTERACTION_DIALOG);
+        site.getMemoryWithoutUpdate().unset(SITE_MEMKEY);
+        site.getMemoryWithoutUpdate().unset(MemFlags.ENTITY_MISSION_IMPORTANT);
+        clearLegacySalvageState(site);
+        DiableGulfPart2FleetFactory.removeFleet(site);
+    }
+
+    private static void clearLegacySalvageState(SectorEntityToken site) {
+        site.getMemoryWithoutUpdate().unset(MemFlags.SALVAGE_DEFENDER_OVERRIDE);
+        site.getMemoryWithoutUpdate().unset(MemFlags.SALVAGE_SPEC_ID_OVERRIDE);
+        site.getMemoryWithoutUpdate().unset("$hasDefenders");
+        site.getMemoryWithoutUpdate().unset("$defenderFleet");
+        site.getMemoryWithoutUpdate().unset("$defenderFleetDefeated");
     }
 
     private static void retargetExistingIntel(SectorEntityToken site) {
@@ -209,29 +216,62 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
                     Misc.getPositiveHighlightColor(), "Deep Strike Catapult");
         } else {
             String currentSystemName = getCurrentSystemName();
-            info.addPara("Investigate the research station orbiting FOB-01 in the "
+            info.addPara("Investigate the research station orbiting 88 Ra I in the "
                             + currentSystemName + " system.",
-                    5f, Misc.getHighlightColor(), "research station", "FOB-01", currentSystemName);
+                    5f, Misc.getHighlightColor(), "research station", "88 Ra I", currentSystemName);
         }
     }
 
     @Override
     public void createSmallDescription(TooltipMakerAPI info, float width, float height) {
         Color highlight = Misc.getHighlightColor();
-        String currentSystemName = getCurrentSystemName();
-        info.addPara("A surviving data partition aboard the Gulf contains a signal trace from a "
-                        + "research station orbiting FOB-01. The transmission carries Diable identification "
-                        + "codes, but its coordinates correspond to no charted system or registered facility.",
-                10f, highlight, "Gulf", "research station", "FOB-01", "Diable identification codes");
+        info.addImage(
+                Global.getSettings().getSpriteName(INTEL_SPRITE_CATEGORY, INTEL_IMAGE_KEY),
+                width,
+                width * 5f / 8f,
+                0f
+        );
+
+        info.addPara("Your comms team isolates a single repeating signal buried deep in the Gulf's "
+                + "digital underbelly.", 10f, highlight, "Gulf");
+
+        info.addPara("\u201cNothing unusual,\u201d your comms officer says at first. \u201cJust an obsolete ship "
+                + "recognizing a legacy handshake.\u201d", 10f);
+
+        info.addPara("What remains of the signal is less a message than the faint memory of one, "
+                + "recalled from a dream and lost again upon waking.", 10f);
+
+        info.addPara("Before long, a quiet obsession takes hold across the comms team. Specialists "
+                + "remain at their stations long after their shifts have ended, their man-machine "
+                + "interfaces still saturated with fragments of the transmission. The team reports "
+                + "that its encryption bears the unmistakable architecture of the Admiralty yet "
+                + "matches no current corporate standard.", 10f, highlight, "the Admiralty");
+
+        info.addPara("Once decrypted, it resolves into a list:", 10f);
+        info.addPara("86 Rn\n99 Es\nOT\n88 Ra - LOST", 5f, highlight,
+                "86 Rn", "99 Es", "OT", "88 Ra - LOST");
+
+        info.addPara("Before the team can quarantine the decoded protocol, something in the Gulf "
+                + "remembers the proper reply.", 10f, highlight, "Gulf");
+
+        info.addPara("The bridge lights dim. Relays close somewhere beneath the decks. The silence "
+                + "stretches; a moment's hesitation is all it takes.", 10f);
+
+        info.addPara("Your comms officer reaches for the emergency cutoff, but the transmission is "
+                + "already gone: a narrow, encrypted pulse aimed directly back along the signal's "
+                + "origin vector.", 10f);
+
+        info.addPara("The automated navigation display lights up with a set of coordinates. A return "
+                + "carrier flashes across the comms board.", 10f, highlight, "a set of coordinates");
+
+        info.addPara("Your comms officer stares at it.", 10f);
+        info.addPara("\u201cThey're pinging back.\u201d", 5f, Misc.getNegativeHighlightColor(),
+                "\u201cThey're pinging back.\u201d");
 
         if (Global.getSector().getMemoryWithoutUpdate().getBoolean(COMPLETE_MEMKEY)) {
             info.addPara("The hidden station was destroyed. Your salvage crews recovered a complete "
                     + "Deep Strike Catapult hullmod specification from its remains.",
                     10f, Misc.getPositiveHighlightColor(), "Deep Strike Catapult");
-        } else {
-            info.addPara("Travel to the marked station in the " + currentSystemName + " system and "
-                            + "investigate the impossible signal.",
-                    10f, highlight, currentSystemName, "impossible signal");
         }
     }
 
@@ -258,7 +298,7 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
 
     @Override
     public String getIcon() {
-        return Global.getSettings().getHullModSpec(REWARD_HULLMOD).getSpriteName();
+        return Global.getSettings().getSpriteName(INTEL_SPRITE_CATEGORY, INTEL_ICON_KEY);
     }
 
     @Override

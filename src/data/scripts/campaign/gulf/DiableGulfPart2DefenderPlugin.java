@@ -12,7 +12,11 @@ import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.SalvageGenFromSeed;
 
 import java.util.Random;
 
-/** Replaces the salvage site's procedural defenders with exactly ten Vapor frigates. */
+/**
+ * Legacy salvage-defender plugin retained only so old saves can deserialize and remove it.
+ * Gulf Part II no longer registers or calls this plugin.
+ */
+@Deprecated
 public class DiableGulfPart2DefenderPlugin implements SalvageGenFromSeed.SalvageDefenderModificationPlugin {
 
     private static final String[] VAPOR_VARIANTS = {

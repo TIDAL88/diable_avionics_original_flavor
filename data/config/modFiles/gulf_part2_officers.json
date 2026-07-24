@@ -1,0 +1,71 @@
+{
+    "diableavionics_coanda": {
+        "officer_personality": "reckless",
+        "officer_faction": "diableavionics_unknown",
+        "officer_level": 6,
+        "officer_skills": {
+            "missile_specialization": 2,
+            "gunnery_implants": 1,
+            "systems_expertise": 2,
+            "ordnance_expert": 1,
+            "helmsmanship": 2,
+            "field_modulation": 1
+        }
+    },
+    "diableavionics_miniGust": {
+        "officer_personality": "reckless",
+        "officer_faction": "diableavionics_unknown",
+        "officer_level": 6,
+        "officer_skills": {
+            "missile_specialization": 2,
+            "target_analysis": 1,
+            "gunnery_implants": 1,
+            "systems_expertise": 2,
+            "helmsmanship": 2,
+            "field_modulation": 1
+        }
+    },
+    "diableavionics_vapor": {
+        "officer_personality": "reckless",
+        "officer_faction": "diableavionics_unknown",
+        "officer_level": 6,
+        "officer_skills": {
+            "energy_weapon_mastery": 2,
+            "target_analysis": 1,
+            "gunnery_implants": 1,
+            "systems_expertise": 2,
+            "helmsmanship": 2,
+            "field_modulation": 1
+        }
+    },
+    "station": {
+        "officer_personality": "reckless",
+        "officer_faction": "diableavionics_unknown",
+        "officer_level": 6,
+        "officer_skills": {
+            "missile_specialization": 2,
+            "target_analysis": 1,
+            "ordnance_expert": 2,
+            "impact_mitigation": 2,
+            "point_defense": 1,
+            "field_modulation": 1
+        }
+    },
+    "fleet_commander_skills": {
+        "best_of_the_best": 1,
+        "cybernetic_augmentation": 1,
+        "carrier_group": 1,
+        "wolfpack_tactics": 1,
+        "navigation": 1,
+        "tactical_drills": 1,
+        "officer_training": 1,
+        "officer_management": 1,
+        "support_doctrine": 1,
+        "crew_training": 1,
+        "flux_regulation": 1,
+        "fighter_uplink": 1,
+        "sensors": 1,
+        "electronic_warfare": 1,
+        "coordinated_maneuvers": 1
+    }
+}
