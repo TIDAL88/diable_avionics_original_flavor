@@ -230,21 +230,37 @@ After another few minutes, the security team clears the Virtuous, with no other 
 DAGulfPart2Interact,OpenInteractionDialog,"$id == diableavionics_blacksite_station score:2000
 $global.da_gulf_part2_started
 !$global.da_gulf_part2_complete","ShowDefaultVisual
-SetShortcut defaultLeave ESCAPE","The broken station turns in silence above FOB-01. Its architecture is unmistakably Diable, but the entire sunward face has been peeled open and vitrified. There are no bodies, no active reactors, and no intact escape craft.
+SetShortcut defaultLeave ESCAPE","The broken station turns in silence above 88 Ra I. Its architecture is unmistakably Diable, but the entire sunward face has been peeled open and vitrified. There are no bodies, no active reactors, and no intact escape craft.
 
 Fragments recovered from hardened log buffers describe a high-energy transit experiment that escaped containment. The cascade propagated through every drive-field emitter in the system, burning the planet and station before reaching the star itself.
 
 The final surviving instruments record an impossible gravitational surge followed by forced stellar collapse. Whatever Diable Avionics attempted here did not merely destroy the facility; it burned the entire system and turned its sun into the black hole hanging beyond the planet.
 
-Buried beneath the station's dead telemetry is an active signal carrying valid Diable identification codes. Neither the facility nor this system appears on any navigational chart or corporate registry.","0:DAGulfPart2Investigate:Investigate the signal
+Buried beneath the station's dead telemetry is an active signal carrying valid Diable identification codes. Neither the facility nor this system appears on any navigational chart or corporate registry.","0:DAGulfPart2Investigate:Investigate the signal (proceed with caution)
 100:defaultLeave:Leave",
-DAGulfPart2Investigate,DialogOptionSelected,$option == DAGulfPart2Investigate,"SalvageGenFromSeed
-DiableGulfPart2DefenderInteraction","Your sensors resolve a sudden drive flare beyond the station. An unidentified Diable fleet is burning directly toward you with weapons free. It answers neither challenge nor hail.",,
-DAGulfPart2Defeat,BeatDefendersContinue,"$id == diableavionics_blacksite_station score:2000",,"The last hostile signature disappears. The station that tore its way into the battlespace is breaking apart, leaving a dense field of armored wreckage and half-molten Diable hardware.",0:DAGulfPart2Recover:Search the station wreckage,
-DAGulfPart2Recover,DialogOptionSelected,$option == DAGulfPart2Recover,"AddRemoveAnyItem SPECIAL modspec ""gulf_deep_strike"" 1
-$global.da_gulf_part2_complete = true","Your salvage crews recover a sealed engineering archive from the station core. Its contents document the complete Deep Strike Catapult installation: control software, structural requirements, and fabrication tolerances.
+DAGulfPart2InteractComplete,OpenInteractionDialog,"$id == diableavionics_blacksite_station score:2000
+$global.da_gulf_part2_complete","ShowDefaultVisual
+SetShortcut defaultLeave ESCAPE","The ruined research station continues its silent orbit above 88 Ra I. Fresh scars mark the places where the battle crossed its path, but the structure itself appears as lifeless as before.
 
-The data is intact enough to use as a hullmod specification.",0:defaultLeave:Leave,
+Repeated sweeps find no surviving crew, no hidden reactor, and no transmitter capable of producing the signal that drew you here. The hardened log buffers contain only the same corrupted fragments, ending several hours before the system burned.
+
+Deep inside the wreck, however, isolated relays still close at irregular intervals. Each event lasts less than a millisecond. There is no detectable power source, and every attempt to predict or provoke another response ends in silence.
+
+Whoever answered the Gulf is gone, or has learned not to answer twice.","0:defaultLeave:Leave",
+DAGulfPart2Investigate,DialogOptionSelected,$option == DAGulfPart2Investigate,DiableGulfPart2ContactScreen,"Your sensors resolve a sudden drive flare beyond the station. An unidentified Diable fleet is burning directly toward you with weapons free. Its transponder broadcasts valid but obsolete Diable identification codes.",,
+DAGulfPart2AttemptContact,DialogOptionSelected,$option == DAGulfPart2AttemptContact,DiableGulfPart2DefenderInteraction,"Your comms team transmits a standard Diable challenge, then repeats it across every known emergency and legacy channel.
+
+There is no answer.
+
+The unidentified fleet holds its intercept course. Targeting solutions begin to populate across the tactical display.",,
+DAGulfPart2Defeat,DAGulfPart2FleetDefeated,"$id == diableavionics_blacksite_station score:2000",,"The bizarre wolfpack is defeated, they haven't responded to your comms till the end. The Station that tore it's way into battle managed to jump out before it's collapse. Amidst a dense field of armored wreckage and half-molten Diable hardware, your team detects a piece of the station that could contain a datacore.",0:DAGulfPart2Recover:Search the station wreckage,
+DAGulfPart2Recover,DialogOptionSelected,$option == DAGulfPart2Recover,"AddRemoveAnyItem SPECIAL modspec ""gulf_deep_strike"" 1
+$global.da_gulf_part2_complete = true
+SetTextHighlightColors highlight
+SetTextHighlights ""Gulf""","At first, its contents appear to document a modular version of the Deep Strike Catapult that look to be even older than the Gulf. Deeper in the archive, your engineers discover that the weapon was only one component of a far more extensive conversion: control software, structural alterations, power-routing requirements, Gantries modifications, and the complete specification for a long-forgotten air superiority subsystem.
+The Catapult was never intended to be installed alone. These schematics describe how to rebuild a carrier around it.
+Gained Deep Strike Conversion Suite Modspec
+",0:defaultLeave:Leave,
 ,,,,,,
 # Diable Blacksite,,,,,,
 DABlacksiteRupturedGate,OpenInteractionDialog,"$id == diableavionics_blacksite_ruptured_gate score:1000","ShowDefaultVisual

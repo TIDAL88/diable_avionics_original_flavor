@@ -14,6 +14,10 @@
       "da_subject71": "graphics/da/portraits/diableavionics_s71.png",
       "da_gulf": "graphics/da/portraits/diableavionics_gulfOwner.png"
     },
+    "diableavionics_intel": {
+      "gulfPart2Signal": "graphics/da/fx/da_signal.png",
+      "gulfPart2SignalIcon": "graphics/da/fx/da_signal_icon.png"
+    },
     "shields": {
       "phaseShieldInner": "graphics/da/fx/da_shields256.png",
       "phaseShieldOuter": "graphics/fx/shields256ring.png",

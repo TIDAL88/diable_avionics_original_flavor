@@ -1,0 +1,49 @@
+{
+    "displayName": "Classic Fleet",
+    "fluxCapacitors": 5,
+    "fluxVents": 15,
+    "goalVariant": false,
+    "hullId": "diableavionics_vapor",
+    "hullMods": [
+        "abyss_diable_afterimage_suite",
+        "abyss_diable_afterimage_mode_red",
+        "ML_skinSwap",
+        "advancedoptics",
+        "hardenedshieldemitter",
+        "hardened_subsystems"
+    ],
+    "permaMods": [
+        "ML_skinSwap",
+        "advancedoptics",
+        "hardenedshieldemitter",
+        "hardened_subsystems"
+    ],
+    "sMods": [
+        "advancedoptics",
+        "hardenedshieldemitter",
+        "hardened_subsystems"
+    ],
+    "tags": [
+        "abyss_diable_afterimage_last_red",
+        "ML_paintjob-diableavionics_battleworn_vapor"
+    ],
+    "variantId": "diableavionics_gulf2_vapor",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0001": "diableavionics_nocturne",
+                "WS0002": "diableavionics_nocturne"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0003": "diableavionics_ibis",
+                "WS0004": "diableavionics_ibis"
+            }
+        }
+    ]
+}

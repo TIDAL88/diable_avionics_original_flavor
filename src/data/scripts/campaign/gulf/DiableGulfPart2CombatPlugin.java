@@ -18,7 +18,6 @@ import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
-import org.magiclib.campaign.MagicCaptainBuilder;
 import org.magiclib.util.MagicLensFlare;
 import org.magiclib.util.MagicRender;
 
@@ -117,10 +116,8 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
                 DiableGulfPart2Intel.STATION_VARIANT
         );
         member.setShipName("Diable Classic Station");
-        member.setCaptain(new MagicCaptainBuilder(DiableGulfPart2Intel.ENEMY_FACTION_ID)
-                .setLevel(6)
-                .create());
-        member.getCaptain().setPortraitSprite(DiableGulfPart2Intel.ENEMY_PORTRAIT);
+        member.setCaptain(DiableGulfPart2FleetFactory.createStationCommander());
+        member.getRepairTracker().setCR(member.getRepairTracker().getMaxCR());
         member.setOwner(1);
 
         CombatFleetManagerAPI enemy = engine.getFleetManager(1);

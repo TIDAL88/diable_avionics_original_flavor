@@ -6,7 +6,7 @@
   "fluxCapacitors": 0,
   "fluxVents": 0,
   "quality": 1,
-  "permaMods": [],
+  "permaMods": ["diableavionics_station_anchor"],
   "hullMods": [],
   "weaponGroups": [
         {
@@ -14,7 +14,8 @@
             "mode": "ALTERNATING",
             "weapons": {
                 "WS0001": "diableavionics_station_deepStrike",
-                "WS0002": "diableavionics_station_deepStrike"
+                #"WS0002": "diableavionics_station_deepStrike"
+                # The second weapon was originally disabled even in tart's files, probably because too strong.
             }
         },
   ],
