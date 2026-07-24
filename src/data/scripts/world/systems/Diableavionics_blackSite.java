@@ -16,7 +16,7 @@ import java.util.List;
 public class Diableavionics_blackSite {
 
     public static final String SYSTEM_ID = "diable_blacksite";
-    public static final String STAR_ID = "diableavionics_blackhole";
+    public static final String STAR_ID = "88 Ra";
     public static final String PLANET_ID = "diableavionics_blacksite";
     public static final String STATION_ID = "diableavionics_blacksite_station";
     public static final String NASCENT_WELL_KEY = "$diable_well";
@@ -74,9 +74,10 @@ public class Diableavionics_blackSite {
 
     private StarSystemAPI createSystem(SectorAPI sector) {
         StarSystemAPI system = sector.createStarSystem(SYSTEM_ID);
+        system.setName("88 Ra");
         PlanetAPI star = system.initStar(STAR_ID, StarTypes.BLACK_HOLE, 500f, 450f);
         system.getLocation().set(35000f, -7000f);
-
+        star.setName("88 Ra");
         PlanetAPI planet = system.addPlanet(
                 PLANET_ID,
                 star,
