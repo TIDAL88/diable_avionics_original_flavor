@@ -1,32 +1,15 @@
 package data.scripts.world.systems;
 
-import com.fs.starfarer.api.campaign.CampaignFleetAPI;
-import com.fs.starfarer.api.campaign.CampaignTerrainAPI;
-import com.fs.starfarer.api.campaign.CustomCampaignEntityAPI;
-import com.fs.starfarer.api.campaign.JumpPointAPI;
-import com.fs.starfarer.api.campaign.LocationAPI;
-import com.fs.starfarer.api.campaign.NascentGravityWellAPI;
-import com.fs.starfarer.api.campaign.PlanetAPI;
-import com.fs.starfarer.api.campaign.PlanetSpecAPI;
-import com.fs.starfarer.api.campaign.RingBandAPI;
-import com.fs.starfarer.api.campaign.SectorAPI;
-import com.fs.starfarer.api.campaign.SectorEntityToken;
-import com.fs.starfarer.api.campaign.StarSystemAPI;
+import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Conditions;
-import com.fs.starfarer.api.impl.campaign.ids.Entities;
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
-import com.fs.starfarer.api.impl.campaign.GateEntityPlugin;
 import com.fs.starfarer.api.impl.MusicPlayerPluginImpl;
-import com.fs.starfarer.api.impl.campaign.ids.StarTypes;
-import com.fs.starfarer.api.impl.campaign.ids.Tags;
-import com.fs.starfarer.api.impl.campaign.ids.Terrain;
+import com.fs.starfarer.api.impl.campaign.ids.*;
 import com.fs.starfarer.api.impl.campaign.procgen.StarSystemGenerator;
 import com.fs.starfarer.api.impl.campaign.terrain.BaseTiledTerrain;
 import com.fs.starfarer.api.impl.campaign.terrain.EventHorizonPlugin;
 import com.fs.starfarer.api.impl.campaign.terrain.MagneticFieldTerrainPlugin;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +18,7 @@ public class Diableavionics_blackSite {
     public static final String SYSTEM_ID = "diable_blacksite";
     public static final String STAR_ID = "diableavionics_blackhole";
     public static final String PLANET_ID = "diableavionics_blacksite";
-    public static final String SYSTEM_NAME = "88 Ra";
-    public static final String STAR_NAME = "88 Ra";
-    public static final String PLANET_NAME = "88 Ra I";
-    /** Kept only so the removed prototype moon can be deleted from existing saves. */
-    public static final String FRAGMENT_ID = "diableavionics_blacksite_fragment";
     public static final String STATION_ID = "diableavionics_blacksite_station";
-    public static final String RUPTURED_GATE_ID = "diableavionics_blacksite_ruptured_gate";
     public static final String NASCENT_WELL_KEY = "$diable_well";
     private static final String MUSIC_SET_ID = "diableavionics_blacksite_ambience";
     private static final String COSMETIC_NEBULA_TYPE = "diableavionics_blacksite_nebula";
@@ -57,20 +34,17 @@ public class Diableavionics_blackSite {
     private static final String ACCRETION_OUTER_ID = "diableavionics_blacksite_accretion_outer";
     private static final String CINDER_RING_ID = "diableavionics_blacksite_cinder_ring";
     private static final String PERIMETER_NEBULA_ID = "diableavionics_blacksite_perimeter_nebula";
-    /** Legacy visual ID retained so the rejected planet ring is removed from saves. */
+    /**
+     * Legacy visual ID retained so the rejected planet ring is removed from saves.
+     */
     private static final String PLANET_DEBRIS_RING_ID = "diableavionics_blacksite_planet_debris_ring";
     private static final String WRECKAGE_ID = "diableavionics_blacksite_wreckage";
     private static final String DEBRIS_TRAIL_TAG = "diableavionics_blacksite_debris_trail";
     private static final String FOB_DEBRIS_TAG = "diableavionics_blacksite_fob_debris";
-    private static final String GATE_DEBRIS_TAG = "diableavionics_blacksite_gate_debris";
-    private static final String MOON_DEBRIS_TAG = "diableavionics_blacksite_moon_debris";
     private static final String DEBRIS_TRAIL_ID_PREFIX = "diableavionics_blacksite_debris_trail_";
     private static final String FOB_DEBRIS_ID_PREFIX = "diableavionics_blacksite_fob_debris_";
-    private static final String GATE_DEBRIS_ID_PREFIX = "diableavionics_blacksite_gate_debris_";
     private static final int DEBRIS_TRAIL_COUNT = 320;
     private static final int FOB_DEBRIS_COUNT = 96;
-    private static final int GATE_DEBRIS_COUNT = 14;
-    private static final int LEGACY_DEBRIS_TRAIL_COUNT = 5;
 
     private static final String[] BURNED_VISUAL_IDS = {
             ACCRETION_INNER_ID,
@@ -91,59 +65,32 @@ public class Diableavionics_blackSite {
     private static final float PLANET_ORBIT_ANGLE = 45f;
     private static final Color WELL_COLOR = new Color(181, 22, 62);
 
-    /**
-     * Creates the Blacksite on a new game, or upgrades the first test version in
-     * an existing save. DAModPlugin calls this targeted updater on game load.
-     */
     public void generate(SectorAPI sector) {
-        StarSystemAPI system = findExistingSystem(sector);
+        StarSystemAPI system = sector.getStarSystem(SYSTEM_ID);
         if (system == null) {
             system = createSystem(sector);
         }
-        configureSystem(sector, system);
-    }
-
-    private StarSystemAPI findExistingSystem(SectorAPI sector) {
-        StarSystemAPI direct = sector.getStarSystem(SYSTEM_ID);
-        if (direct != null) return direct;
-
-        for (StarSystemAPI system : sector.getStarSystems()) {
-            if (SYSTEM_ID.equals(system.getOptionalUniqueId())
-                    || system.getEntityById(STAR_ID) != null
-                    || system.getEntityById(PLANET_ID) != null) {
-                return system;
-            }
-        }
-        return null;
     }
 
     private StarSystemAPI createSystem(SectorAPI sector) {
         StarSystemAPI system = sector.createStarSystem(SYSTEM_ID);
-        system.setOptionalUniqueId(SYSTEM_ID);
-        system.setBaseName(SYSTEM_NAME);
         PlanetAPI star = system.initStar(STAR_ID, StarTypes.BLACK_HOLE, 500f, 450f);
-        star.setName(STAR_NAME);
         system.getLocation().set(35000f, -7000f);
 
         PlanetAPI planet = system.addPlanet(
                 PLANET_ID,
                 star,
-                PLANET_NAME,
+                "FOB-01",
                 FOB_PLANET_TYPE,
                 PLANET_ORBIT_ANGLE,
                 PLANET_RADIUS,
                 PLANET_ORBIT_RADIUS,
                 PLANET_ORBIT_DAYS
         );
+        CustomCampaignEntityAPI station;
         MarketAPI market = planet.getMarket();
         market.addCondition("irradiated");
-
-        return system;
-    }
-
-    private void configureSystem(SectorAPI sector, StarSystemAPI system) {
-        system.setOptionalUniqueId(SYSTEM_ID);
-        system.setBaseName(SYSTEM_NAME);
+        market.addCondition(Conditions.RUINS_VAST);
         system.setType(StarSystemGenerator.StarSystemType.DEEP_SPACE);
         system.addTag(Tags.THEME_UNSAFE);
         system.addTag(Tags.THEME_HIDDEN);
@@ -153,33 +100,44 @@ public class Diableavionics_blackSite {
         system.setLightColor(new Color(218, 68, 34, 255));
         system.getMemoryWithoutUpdate().set(MusicPlayerPluginImpl.MUSIC_SET_MEM_KEY, MUSIC_SET_ID);
 
-        PlanetAPI star = system.getStar();
-        SectorEntityToken planetToken = system.getEntityById(PLANET_ID);
-        if (star == null || !(planetToken instanceof PlanetAPI)) return;
+        system.getEntityById(PLANET_ID);
 
-        PlanetAPI planet = (PlanetAPI) planetToken;
-        star.setName(STAR_NAME);
-        planet.setName(PLANET_NAME);
-        removePrototypeTestFleet(system);
         styleFobPlanet(planet);
-        ensureFobRuins(planet);
         planet.setCircularOrbit(star, PLANET_ORBIT_ANGLE, PLANET_ORBIT_RADIUS, PLANET_ORBIT_DAYS);
-        removePrototypeMoon(system);
 
         styleBlackHole(star);
         replaceEventHorizon(system, star);
-        CustomCampaignEntityAPI rupturedGate = ensureRupturedGate(system, star);
-        rebuildBurnedSystemVisuals(system, star, planet, rupturedGate);
+        rebuildBurnedSystemVisuals(system, star, planet);
         replacePlanetMagneticFields(system, planet);
-        CustomCampaignEntityAPI station = ensureRuinedStation(system, planet);
-        removeOrdinaryEntrances(sector, system);
+        station = system.addCustomEntity(
+                STATION_ID,
+                "Ruined Diable Research Station",
+                STATION_ID,
+                Factions.NEUTRAL
+        );
 
+        station.setCustomDescriptionId(STATION_ID);
+        station.setCircularOrbitPointingDown(planet, 180f, 850f, 55f);
+        station.setDiscoverable(true);
+        station.setDiscoveryXP(500f);
         system.generateAnchorIfNeeded();
-        ensureTransverseEntry(sector, station);
         system.updateAllOrbits();
+        NascentGravityWellAPI well;
+        LocationAPI hyperspace = sector.getHyperspace();
+        well = sector.createNascentGravityWell(station, 50f);
+        hyperspace.addEntity(well);
+        sector.getMemoryWithoutUpdate().set(NASCENT_WELL_KEY, well);
+        well.addTag(Tags.NO_ENTITY_TOOLTIP);
+        well.setColorOverride(WELL_COLOR);
+        well.autoUpdateHyperLocationBasedOnInSystemEntityAtRadius(station, 0f);
+        system.generateAnchorIfNeeded();
+        system.updateAllOrbits();
+        return system;
     }
 
-    /** Applies the imported Unknown Skies cracked-crust surface as a scorched world. */
+    /**
+     * Applies the imported Unknown Skies cracked-crust surface as a scorched world.
+     */
     private void styleFobPlanet(PlanetAPI planet) {
         if (!FOB_PLANET_TYPE.equals(planet.getTypeId())) {
             planet.changeType(FOB_PLANET_TYPE, StarSystemGenerator.random);
@@ -202,29 +160,10 @@ public class Diableavionics_blackSite {
         planet.applySpecChanges();
     }
 
-    /** Gives FOB-01 real, explorable vanilla ruins and upgrades any older tier. */
-    private void ensureFobRuins(PlanetAPI planet) {
-        MarketAPI market = planet.getMarket();
-        if (market == null) return;
 
-        market.removeCondition(Conditions.RUINS_SCATTERED);
-        market.removeCondition(Conditions.RUINS_WIDESPREAD);
-        market.removeCondition(Conditions.RUINS_EXTENSIVE);
-        if (!market.hasCondition(Conditions.RUINS_VAST)) {
-            market.addCondition(Conditions.RUINS_VAST);
-        }
-    }
-
-    /** Removes the discarded moon concept and its orbiting debris from old saves. */
-    private void removePrototypeMoon(StarSystemAPI system) {
-        removeTaggedEntities(system, MOON_DEBRIS_TAG);
-        SectorEntityToken fragment = system.getEntityById(FRAGMENT_ID);
-        if (fragment != null) {
-            system.removeEntity(fragment);
-        }
-    }
-
-    /** Recolors the vanilla black-hole sprite and corona without adding a custom asset. */
+    /**
+     * Recolors the vanilla black-hole sprite and corona without adding a custom asset.
+     */
     private void styleBlackHole(PlanetAPI star) {
         PlanetSpecAPI spec = star.getSpec();
         spec.setPlanetColor(new Color(0, 0, 0, 255));
@@ -244,8 +183,7 @@ public class Diableavionics_blackSite {
     private void rebuildBurnedSystemVisuals(
             StarSystemAPI system,
             PlanetAPI star,
-            PlanetAPI planet,
-            CustomCampaignEntityAPI rupturedGate
+            PlanetAPI planet
     ) {
         for (String id : BURNED_VISUAL_IDS) {
             SectorEntityToken old = system.getEntityById(id);
@@ -255,9 +193,6 @@ public class Diableavionics_blackSite {
         }
         removeTaggedEntities(system, DEBRIS_TRAIL_TAG);
         removeTaggedEntities(system, FOB_DEBRIS_TAG);
-        removeTaggedEntities(system, GATE_DEBRIS_TAG);
-        removeTaggedEntities(system, MOON_DEBRIS_TAG);
-        removeLegacyDebrisTrail(system);
 
         addBurnedRing(
                 system, star, ACCRETION_INNER_ID, "rings_special0", 1,
@@ -286,11 +221,12 @@ public class Diableavionics_blackSite {
         );
         addPerimeterNebula(system, star);
         addFobDebrisEnvelope(system, planet);
-        addRupturedGateDebris(system, rupturedGate);
         addPlanetToBeltStream(system, star);
     }
 
-    /** Surrounds the system with broken amber spiral arms while leaving its core clear. */
+    /**
+     * Surrounds the system with broken amber spiral arms while leaving its core clear.
+     */
     private void addPerimeterNebula(StarSystemAPI system, PlanetAPI star) {
         int width = 160;
         int height = 160;
@@ -331,13 +267,13 @@ public class Diableavionics_blackSite {
                 float radialProgress = clamp01((distance - innerRadius) / 76f);
                 float spiralPhase = angle
                         + 1.9f * (float) Math.log(
-                                1f + Math.max(0f, distance - innerRadius) / 8.5f
-                        )
+                        1f + Math.max(0f, distance - innerRadius) / 8.5f
+                )
                         + 0.33f;
                 float wrappedPhase = positiveModulo(spiralPhase, armSpacing);
                 float armDistance = Math.min(wrappedPhase, armSpacing - wrappedPhase);
                 float distanceFromArm = armDistance * Math.max(distance, 1f);
-                float cloudNoise = cloudNoise(x, y, 307.7f);
+                float cloudNoise = cloudNoise(x, y);
 
                 // Four logarithmic arms: narrow tips at the collapsed star,
                 // broad cloud banks at the map edge, with coherent raggedness.
@@ -382,11 +318,13 @@ public class Diableavionics_blackSite {
         return result.toString();
     }
 
-    /** Three octaves of smooth deterministic noise for large-scale cloud clumping. */
-    private float cloudNoise(float x, float y, float seed) {
-        return 0.55f * valueNoise(x * 0.12f, y * 0.12f, seed)
-                + 0.30f * valueNoise(x * 0.27f, y * 0.27f, seed + 13.7f)
-                + 0.15f * valueNoise(x * 0.58f, y * 0.58f, seed + 29.1f);
+    /**
+     * Three octaves of smooth deterministic noise for large-scale cloud clumping.
+     */
+    private float cloudNoise(float x, float y) {
+        return 0.55f * valueNoise(x * 0.12f, y * 0.12f, (float) 307.7)
+                + 0.30f * valueNoise(x * 0.27f, y * 0.27f, (float) 307.7 + 13.7f)
+                + 0.15f * valueNoise(x * 0.58f, y * 0.58f, (float) 307.7 + 29.1f);
     }
 
     private float valueNoise(float x, float y, float seed) {
@@ -417,18 +355,6 @@ public class Diableavionics_blackSite {
         return result < 0f ? result + modulus : result;
     }
 
-    /** Removes the coder's original one-Vapor Black Site test fleet from old saves. */
-    private void removePrototypeTestFleet(StarSystemAPI system) {
-        List<CampaignFleetAPI> fleets = new ArrayList<CampaignFleetAPI>(system.getFleets());
-        for (CampaignFleetAPI fleet : fleets) {
-            if (!fleet.isPlayerFleet()
-                    && "Test".equals(fleet.getName())
-                    && fleet.getFaction() != null
-                    && "diableavionics".equals(fleet.getFaction().getId())) {
-                system.removeEntity(fleet);
-            }
-        }
-    }
 
     /**
      * A close, thick envelope of individually placed rocks around FOB-01. This
@@ -471,43 +397,6 @@ public class Diableavionics_blackSite {
         }
     }
 
-    /**
-     * Loose fragments partly overlap the dead gate's frame, breaking up the
-     * otherwise intact vanilla silhouette and tying the wreck into the belt.
-     */
-    private void addRupturedGateDebris(
-            StarSystemAPI system,
-            CustomCampaignEntityAPI gate
-    ) {
-        float innerRadius = 88f;
-        float outerRadius = 215f;
-
-        for (int i = 0; i < GATE_DEBRIS_COUNT; i++) {
-            float orbitAngle = 360f * unitNoise(i, 231.5f);
-            float orbitRadius = interpolate(
-                    innerRadius,
-                    outerRadius,
-                    (float) Math.pow(unitNoise(i, 247.9f), 0.82f)
-            );
-            float chunkRadius = 1.8f
-                    + 5.2f * (float) Math.pow(unitNoise(i, 263.1f), 1.55f);
-            if (unitNoise(i, 279.7f) > 0.86f) {
-                chunkRadius = 7.2f + 2.8f * unitNoise(i, 291.3f);
-            }
-
-            SectorEntityToken chunk = system.addAsteroid(chunkRadius);
-            chunk.setId(GATE_DEBRIS_ID_PREFIX + i);
-            chunk.addTag(GATE_DEBRIS_TAG);
-            makeDecorativeAsteroid(chunk);
-            chunk.setCircularOrbit(
-                    gate,
-                    orbitAngle,
-                    orbitRadius,
-                    interpolate(7f, 17f,
-                            (orbitRadius - innerRadius) / (outerRadius - innerRadius))
-            );
-        }
-    }
 
     /**
      * A loose tidal-transfer stream from FOB-01 to the inner asteroid belt.
@@ -635,17 +524,9 @@ public class Diableavionics_blackSite {
         }
     }
 
-    /** Removes the five untagged prototype chunks from saves made before the expanded stream. */
-    private void removeLegacyDebrisTrail(StarSystemAPI system) {
-        for (int i = 1; i <= LEGACY_DEBRIS_TRAIL_COUNT; i++) {
-            SectorEntityToken legacy = system.getEntityById(DEBRIS_TRAIL_ID_PREFIX + i);
-            if (legacy != null) {
-                system.removeEntity(legacy);
-            }
-        }
-    }
 
-    private RingBandAPI addBurnedRing(
+
+    private void addBurnedRing(
             StarSystemAPI system,
             SectorEntityToken focus,
             String id,
@@ -676,10 +557,8 @@ public class Diableavionics_blackSite {
             band.setMinSpiralRadius(minSpiralRadius);
             band.setSpiralFactor(spiralFactor);
         }
-        return band;
     }
 
-    /** Replaces the prototype's purple aura with a scorched red field. */
     private void replacePlanetMagneticFields(StarSystemAPI system, PlanetAPI planet) {
         List<CampaignTerrainAPI> terrainCopy = new ArrayList<CampaignTerrainAPI>(system.getTerrainCopy());
         for (CampaignTerrainAPI terrain : terrainCopy) {
@@ -729,111 +608,5 @@ public class Diableavionics_blackSite {
                 )
         );
     }
-
-    private CustomCampaignEntityAPI ensureRuinedStation(StarSystemAPI system, PlanetAPI planet) {
-        SectorEntityToken existing = system.getEntityById(STATION_ID);
-        CustomCampaignEntityAPI station;
-        if (existing instanceof CustomCampaignEntityAPI) {
-            station = (CustomCampaignEntityAPI) existing;
-        } else {
-            station = system.addCustomEntity(
-                    STATION_ID,
-                    "Ruined Diable Research Station",
-                    STATION_ID,
-                    Factions.NEUTRAL
-            );
-        }
-
-        station.setCustomDescriptionId(STATION_ID);
-        station.setCircularOrbitPointingDown(planet, 180f, 850f, 55f);
-        station.setDiscoverable(true);
-        station.setDiscoveryXP(500f);
-        return station;
-    }
-
-    /** A stock inactive gate with a custom blurb, kept permanently outside the gate network. */
-    private CustomCampaignEntityAPI ensureRupturedGate(StarSystemAPI system, PlanetAPI star) {
-        SectorEntityToken existing = system.getEntityById(RUPTURED_GATE_ID);
-        CustomCampaignEntityAPI gate;
-        if (existing instanceof CustomCampaignEntityAPI
-                && Entities.INACTIVE_GATE.equals(existing.getCustomEntityType())
-                && existing.getCustomPlugin() instanceof GateEntityPlugin) {
-            gate = (CustomCampaignEntityAPI) existing;
-        } else {
-            if (existing != null) {
-                existing.getMemoryWithoutUpdate().unset(GateEntityPlugin.GATE_SCANNED);
-                GateEntityPlugin.getGateData().scanned.remove(existing);
-                system.removeEntity(existing);
-            }
-            gate = system.addCustomEntity(
-                    RUPTURED_GATE_ID,
-                    "Ruptured Gate",
-                    Entities.INACTIVE_GATE,
-                    Factions.NEUTRAL
-            );
-        }
-
-        // Keep the vanilla entity spec and plugin intact so hover/selection behave exactly
-        // like a stock gate. The high-priority rules.csv entry supplies the custom blurb.
-        gate.removeTag(Tags.NON_CLICKABLE);
-        gate.removeTag(Tags.NO_ENTITY_TOOLTIP);
-        gate.addTag(Tags.GATE);
-        gate.setSensorProfile(null);
-        gate.setDiscoverable(false);
-        gate.getMemoryWithoutUpdate().unset(GateEntityPlugin.GATE_SCANNED);
-        GateEntityPlugin.getGateData().scanned.remove(gate);
-        gate.setCircularOrbit(
-                star,
-                PLANET_ORBIT_ANGLE + 180f,
-                CINDER_RING_RADIUS - CINDER_RING_WIDTH * 0.5f + 15f,
-                PLANET_ORBIT_DAYS
-        );
-        return gate;
-    }
-
-    /** Removes the obvious map-visible jump points created by the prototype. */
-    private void removeOrdinaryEntrances(SectorAPI sector, StarSystemAPI system) {
-        LocationAPI hyperspace = sector.getHyperspace();
-
-        List<SectorEntityToken> inSystem = new ArrayList<SectorEntityToken>(system.getJumpPoints());
-        for (SectorEntityToken jumpPoint : inSystem) {
-            system.removeEntity(jumpPoint);
-        }
-
-        List<JumpPointAPI> inHyperspace = system.getAutogeneratedJumpPointsInHyper();
-        if (inHyperspace != null) {
-            for (JumpPointAPI jumpPoint : new ArrayList<JumpPointAPI>(inHyperspace)) {
-                hyperspace.removeEntity(jumpPoint);
-            }
-        }
-
-        List<NascentGravityWellAPI> autogeneratedWells = system.getAutogeneratedNascentWellsInHyper();
-        if (autogeneratedWells != null) {
-            Object selectedWell = sector.getMemoryWithoutUpdate().get(NASCENT_WELL_KEY);
-            for (NascentGravityWellAPI well : new ArrayList<NascentGravityWellAPI>(autogeneratedWells)) {
-                if (well != selectedWell) {
-                    hyperspace.removeEntity(well);
-                }
-            }
-        }
-    }
-
-    /** Vanilla Alpha Site-style, tooltip-hidden entrance used via Transverse Jump. */
-    private void ensureTransverseEntry(SectorAPI sector, SectorEntityToken target) {
-        LocationAPI hyperspace = sector.getHyperspace();
-        Object stored = sector.getMemoryWithoutUpdate().get(NASCENT_WELL_KEY);
-        NascentGravityWellAPI well = stored instanceof NascentGravityWellAPI
-                ? (NascentGravityWellAPI) stored
-                : null;
-
-        if (well == null || !hyperspace.getAllEntities().contains(well)) {
-            well = sector.createNascentGravityWell(target, 50f);
-            hyperspace.addEntity(well);
-            sector.getMemoryWithoutUpdate().set(NASCENT_WELL_KEY, well);
-        }
-
-        well.addTag(Tags.NO_ENTITY_TOOLTIP);
-        well.setColorOverride(WELL_COLOR);
-        well.autoUpdateHyperLocationBasedOnInSystemEntityAtRadius(target, 0f);
-    }
 }
+
