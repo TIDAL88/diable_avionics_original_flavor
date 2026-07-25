@@ -35,7 +35,12 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
     private static final Vector2f ARRIVAL_POINT = new Vector2f(0f, 0f);
     private static final float ARRIVAL_START = 18f;
     private static final float ARRIVAL_FINISH = 30f;
-    private static final String REDACTED_COMBAT_MESSAGE = "DIABLE CLASSIC : REDACTED";
+    private static final String REDACTED_COMBAT_MESSAGE = "CIC-EW : Phase-space interference. Source unknown.";
+    private static final String REDACTED_COMBAT_MESSAGE2 = "CIC-EW : LARGE PHASE-SPACE SIGNATURE...";
+    private static final String REDACTED_COMBAT_MESSAGE3 = "CIC-XO : All hands, prepare for turbulence";
+    private static final String REDACTED_COMBAT_MESSAGE4 = "CIC-XO : Divide and conquer, that thing is not going anywhere.";
+
+
 
     private boolean checkedBattle;
     private boolean targetBattle;
@@ -74,12 +79,12 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
 
         if (!firstMessage && elapsed >= 6f) {
             firstMessage = true;
-            engine.getCombatUI().addMessage(0, Color.RED, REDACTED_COMBAT_MESSAGE);
+            engine.getCombatUI().addMessage(0, Color.ORANGE, REDACTED_COMBAT_MESSAGE);
         }
 
         if (!secondMessage && elapsed >= 12f) {
             secondMessage = true;
-            engine.getCombatUI().addMessage(0, Color.RED, REDACTED_COMBAT_MESSAGE);
+            engine.getCombatUI().addMessage(0, Color.RED, REDACTED_COMBAT_MESSAGE2);
         }
 
         if (!arrivalStarted && elapsed >= ARRIVAL_START) {
@@ -107,7 +112,7 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
     private void beginArrival(CombatEngineAPI engine) {
         arrivalStarted = true;
         engine.setCombatNotOverForAtLeast(13f);
-        engine.getCombatUI().addMessage(0, Color.RED, REDACTED_COMBAT_MESSAGE);
+        engine.getCombatUI().addMessage(0, Color.BLUE, REDACTED_COMBAT_MESSAGE3);
     }
 
     private ShipAPI spawnStation(CombatEngineAPI engine) {
@@ -156,7 +161,7 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
         renderArrivalTelegraph(engine, intensity);
     }
 
-    /** SEEKER's boss warp-zone presentation, with its movement and push code omitted. */
+    /** boss warp-zone presentation */
     private void renderArrivalTelegraph(CombatEngineAPI engine, float intensity) {
         if (Math.random() < 0.1f + intensity * 0.25f) {
             engine.addHitParticle(
@@ -166,9 +171,9 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
                     0.25f + 0.25f * intensity,
                     MathUtils.getRandomNumberInRange(0.05f, 0.1f + 0.1f * intensity),
                     new Color(
-                            0.55f + 0.35f * MathUtils.getRandomNumberInRange(0f, 0.5f + 0.5f * intensity),
                             0.02f + 0.05f * MathUtils.getRandomNumberInRange(0f, 0.5f + 0.5f * intensity),
-                            0.02f + 0.05f * MathUtils.getRandomNumberInRange(0f, 0.5f + 0.5f * intensity)
+                            0.55f + 0.35f * MathUtils.getRandomNumberInRange(0f, 0.5f + 0.5f * intensity),
+                            0.75f + 0.25f * MathUtils.getRandomNumberInRange(0f, 0.5f + 0.5f * intensity)
                     )
             );
         }
@@ -185,9 +190,9 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
                     0.5f + 0.5f * intensity,
                     MathUtils.getRandomNumberInRange(0.5f, 1f + intensity),
                     new Color(
-                            0.65f + 0.3f * MathUtils.getRandomNumberInRange(0f, 0.5f + 0.5f * intensity),
                             0.02f + 0.04f * MathUtils.getRandomNumberInRange(0f, 0.5f + 0.5f * intensity),
-                            0.02f + 0.04f * MathUtils.getRandomNumberInRange(0f, 0.5f + 0.5f * intensity)
+                            0.65f + 0.3f * MathUtils.getRandomNumberInRange(0f, 0.5f + 0.5f * intensity),
+                            0.8f + 0.2f * MathUtils.getRandomNumberInRange(0f, 0.5f + 0.5f * intensity)
                     )
             );
         }
@@ -206,17 +211,18 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
                         MathUtils.getRandomNumberInRange(2f, 3f + 3f * intensity),
                         MathUtils.getRandomNumberInRange(50f, 100f + 350f * intensity),
                         0f,
-                        new Color(190, 0, 0),
+                        new Color(20, 105, 145),
                         Color.WHITE
                 );
             }
+
             engine.addHitParticle(
                     flarePoint,
                     new Vector2f(),
                     MathUtils.getRandomNumberInRange(30f, 80f + 80f * intensity),
                     0.5f + 0.5f * intensity,
                     MathUtils.getRandomNumberInRange(0.25f, 0.5f + 0.5f * intensity),
-                    new Color(220, 15, 15)
+                    new Color(75, 155, 170, 170)
             );
 
             if (Math.random() < 0.1f) {
@@ -240,7 +246,7 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
 
         renderArrivalBurst(engine, station);
 
-        engine.getCombatUI().addMessage(0, Color.RED, REDACTED_COMBAT_MESSAGE);
+        engine.getCombatUI().addMessage(0, Color.BLUE, REDACTED_COMBAT_MESSAGE4);
     }
 
     private ShipAPI getEffectAnchor(CombatEngineAPI engine) {
@@ -253,7 +259,7 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
         return null;
     }
 
-    /** SEEKER's boss arrival burst, detached from its warp movement and targeting code. */
+    /** boss arrival burst */
     private void renderArrivalBurst(CombatEngineAPI engine, ShipAPI arrivingStation) {
         Global.getSoundPlayer().playSound(
                 "diableavionics_gulf_station_arrival",
@@ -282,7 +288,7 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
                         0f
                 );
             } catch (RuntimeException ex) {
-                // GraphicsLib is optional; the sprite and particle effects remain complete.
+                // GraphicsLib is optional;
             } catch (LinkageError ex) {
                 // Handles a missing or incompatible optional GraphicsLib installation.
             }
@@ -384,7 +390,7 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
             for (ShipAPI module : arrivingStation.getChildModulesCopy()) {
                 if (module.isAlive()) {
                     module.addAfterimage(
-                            new Color(0.5f, 0.25f, 1f, 0.15f),
+                            new Color(0, 200, 255, 38),
                             point.x, point.y,
                             velocity.x, velocity.y,
                             0.1f,
@@ -394,7 +400,7 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
                 }
             }
             arrivingStation.addAfterimage(
-                    new Color(0.5f, 0.25f, 1f, 0.15f),
+                    new Color(0, 200, 255, 38),
                     point.x, point.y,
                     velocity.x, velocity.y,
                     0.1f,
