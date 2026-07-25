@@ -28,7 +28,7 @@ import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_COLOR;
 
 /**
- * Tahlan-style delayed station insertion for the Gulf Part II defender battle.
+ * delayed jump
  */
 public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
 

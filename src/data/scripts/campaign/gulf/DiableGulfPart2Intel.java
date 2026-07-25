@@ -262,7 +262,7 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
                 + "origin vector.", 10f);
 
         info.addPara("The automated navigation display lights up with a set of coordinates. A return "
-                + "carrier flashes across the comms board.", 10f, highlight, "a set of coordinates");
+                + "pulse flashes across the comms board.", 10f, highlight, "a set of coordinates");
 
         info.addPara("Your comms officer stares at it.", 10f);
         info.addPara("\u201cThey're pinging back.\u201d", 5f, Misc.getNegativeHighlightColor(),

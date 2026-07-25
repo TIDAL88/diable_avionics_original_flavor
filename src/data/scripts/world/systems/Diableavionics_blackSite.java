@@ -78,10 +78,11 @@ public class Diableavionics_blackSite {
         PlanetAPI star = system.initStar(STAR_ID, StarTypes.BLACK_HOLE, 500f, 450f);
         system.getLocation().set(35000f, -7000f);
         star.setName("88 Ra");
+        star.setCustomDescriptionId(STAR_ID);
         PlanetAPI planet = system.addPlanet(
                 PLANET_ID,
                 star,
-                "FOB-01",
+                "88 Ra I",
                 FOB_PLANET_TYPE,
                 PLANET_ORBIT_ANGLE,
                 PLANET_RADIUS,
@@ -101,7 +102,7 @@ public class Diableavionics_blackSite {
         system.setLightColor(new Color(218, 68, 34, 255));
         system.getMemoryWithoutUpdate().set(MusicPlayerPluginImpl.MUSIC_SET_MEM_KEY, MUSIC_SET_ID);
 
-        system.getEntityById(PLANET_ID);
+        planet.setCustomDescriptionId(PLANET_ID);
 
         styleFobPlanet(planet);
         planet.setCircularOrbit(star, PLANET_ORBIT_ANGLE, PLANET_ORBIT_RADIUS, PLANET_ORBIT_DAYS);
@@ -112,7 +113,7 @@ public class Diableavionics_blackSite {
         replacePlanetMagneticFields(system, planet);
         station = system.addCustomEntity(
                 STATION_ID,
-                "Ruined Diable Research Station",
+                "First Relay",
                 STATION_ID,
                 Factions.NEUTRAL
         );
@@ -137,7 +138,7 @@ public class Diableavionics_blackSite {
     }
 
     /**
-     * Applies the imported Unknown Skies cracked-crust surface as a scorched world.
+     * scorched world.
      */
     private void styleFobPlanet(PlanetAPI planet) {
         if (!FOB_PLANET_TYPE.equals(planet.getTypeId())) {
@@ -163,7 +164,7 @@ public class Diableavionics_blackSite {
 
 
     /**
-     * Recolors the vanilla black-hole sprite and corona without adding a custom asset.
+     * black-hole sprite recolor
      */
     private void styleBlackHole(PlanetAPI star) {
         PlanetSpecAPI spec = star.getSpec();
@@ -226,7 +227,7 @@ public class Diableavionics_blackSite {
     }
 
     /**
-     * Surrounds the system with broken amber spiral arms while leaving its core clear.
+     * Spiral arms
      */
     private void addPerimeterNebula(StarSystemAPI system, PlanetAPI star) {
         int width = 160;
