@@ -453,7 +453,7 @@ The M266 ""Artdeux"" uses the same ammunition from the M66 ""Artassault"" revolv
 diableavionics_graveac,WEAPON,"The Grave Light Auto-Cannon brings forth a strong anti-shield tool into a very small package. A multi-barrel brute-force approach gives it a strong alpha strike potential, although the long reload time can be a huge liability if it fails to crack the enemy's defenses.
 
 The design shares a large number of components with its bigger brother the Grave Machine-Gun, notably the same high-end ammunition, leading to both a reasonable price tag and a simplified maintenance. Bulk orders of both weapons used to yield significant discounts before the Collapse.",Assault,,
- ,,,,,
+,,,,,
 diableavionics_gravemg,WEAPON,"A devastating high-powered machine-gun. This Electrothermal-Chemical gun firing penetrating slugs is a welcome addition to any loadout focussed on raw damage output rather than range.
 
 The beating heart of this cannon is the unique ammunition fired: the plasma catalyzed liquid-propellant drives a high-density contact-fused ""Sabot"" type penetrator. Upon impact with a ship's shield, a secondary charge is detonated and adds its energy to the already considerable velocity of the projectile in a devastation one-two punch. Risks of ammunition cook-off are mitigated due to the reactants being inert when not submitted to an electric current.",Assault,,
@@ -829,5 +829,5 @@ diableavionics_station_tier1,SHIP,"A Diable Avionic-designed orbital station fea
 diableavionics_station_tier2,SHIP,"A large Diable Avionic-designed battlestation augmented with heavy weapons modules in addition to additional fighter decks and missile emplacements. This platform hosts shipyards, habitats, factories, and large stockpiles of weapons and supplies allowing projection of military and industrial power throughout the local orbital volume.",,,
 ,,,,,
 diableavionics_station_tier3,SHIP,"An enormous Diable Avionic star fortress, bristling with missile launchers and undisclosed proprietary systems. It can host shipyards, habitats, factories, and large stockpiles of weapons and supplies. These platforms project military and industrial power throughout their local orbital volume.",,,
-,,,,,
+diableavionics_blacksite,CUSTOM,"In the deafening silence of this forsaken place, the only reassuring radio noise comes from the planet's orbit. Older Domain codes are broadcast together with long forgotten Diable Avionics pings. Somewhere down there, mixed in with pieces of the planet itself, old satellites still hope for an answer before slowly drifting into the asteroid belt.",,,
 diableavionics_blacksite_station,CUSTOM,"A ruined Diable Avionics research station, its sunward armor vitrified and its internal structure open to vacuum. No active transponder or power signature remains.",,,
