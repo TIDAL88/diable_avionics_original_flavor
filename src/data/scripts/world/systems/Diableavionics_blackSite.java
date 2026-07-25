@@ -101,11 +101,10 @@ public class Diableavionics_blackSite {
         system.setLightColor(new Color(218, 68, 34, 255));
         system.getMemoryWithoutUpdate().set(MusicPlayerPluginImpl.MUSIC_SET_MEM_KEY, MUSIC_SET_ID);
 
-        system.getEntityById(PLANET_ID);
 
         styleFobPlanet(planet);
         planet.setCircularOrbit(star, PLANET_ORBIT_ANGLE, PLANET_ORBIT_RADIUS, PLANET_ORBIT_DAYS);
-
+        planet.setCustomDescriptionId(PLANET_ID);
         styleBlackHole(star);
         replaceEventHorizon(system, star);
         rebuildBurnedSystemVisuals(system, star, planet);
