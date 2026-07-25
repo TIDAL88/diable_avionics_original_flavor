@@ -253,7 +253,7 @@ DAGulfPart2AttemptContact,DialogOptionSelected,$option == DAGulfPart2AttemptCont
 There is no answer.
 
 The unidentified fleet holds its intercept course. Targeting solutions begin to populate across the tactical display.",,
-DAGulfPart2Defeat,DAGulfPart2FleetDefeated,"$id == diableavionics_blacksite_station score:2000",,"The bizarre wolfpack is defeated, they haven't responded to your comms till the end. The Station that tore it's way into battle managed to jump out before it's collapse. Amidst a dense field of armored wreckage and half-molten Diable hardware, your team detects a piece of the station that could contain a datacore.",0:DAGulfPart2Recover:Search the station wreckage,
+DAGulfPart2Defeat,DAGulfPart2FleetDefeated,"$id == diableavionics_blacksite_station score:2000",,"A return transmission flashes across the comms board.",0:DAGulfPart2Recover:Search the station wreckage,
 DAGulfPart2Recover,DialogOptionSelected,$option == DAGulfPart2Recover,"AddRemoveAnyItem SPECIAL modspec ""gulf_deep_strike"" 1
 $global.da_gulf_part2_complete = true
 SetTextHighlightColors highlight
