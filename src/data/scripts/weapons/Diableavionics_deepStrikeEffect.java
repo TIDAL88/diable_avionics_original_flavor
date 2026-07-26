@@ -45,9 +45,7 @@ public class Diableavionics_deepStrikeEffect implements EveryFrameWeaponEffectPl
     }
     
     public static void NewDeepStrikeMembers( List<ShipAPI> members){
-        for(ShipAPI m : members){
-            DEEP_STRIKE_MEMBERS.add(m);
-        }
+        DEEP_STRIKE_MEMBERS.addAll(members);
     }
     public static void NewDeepStrikePod( ShipAPI member){
         DEEP_STRIKE_MEMBERS.add(member);
