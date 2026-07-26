@@ -65,7 +65,7 @@ public class Diableavionics_thunderboltEffect implements OnHitEffectPlugin {
             for(int i=1; i<=NUM_PARTICLES; i++){
                 float mult = (float)i/NUM_PARTICLES;
                 float grey = MathUtils.getRandomNumberInRange(0.1f+mult/4, 0.2f+mult/2);
-                Integer direction = -1 + (MathUtils.getRandomNumberInRange(0, 1))*2;
+                int direction = -1 + (MathUtils.getRandomNumberInRange(0, 1))*2;
                 
                 engine.addNebulaParticle(
                         MathUtils.getPoint(point, 50*mult, angle+direction*90),
