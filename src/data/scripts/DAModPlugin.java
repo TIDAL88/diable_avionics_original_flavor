@@ -12,7 +12,6 @@ import com.fs.starfarer.api.campaign.StarSystemAPI;
 import com.fs.starfarer.api.combat.MissileAIPlugin;
 import com.fs.starfarer.api.combat.MissileAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.ShipHullSpecAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import data.campaign.DACampaignPlugin;
 import data.scripts.campaign.gulf.DiableGulfPart2Intel;
@@ -27,7 +26,6 @@ import org.dark.shaders.util.TextureData;
 import org.magiclib.util.MagicSettings;
 import org.magiclib.util.MagicVariables;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,12 +41,6 @@ public class DAModPlugin extends BaseModPlugin {
     public static final String VIRTUOUS_GRENADE_ID = "diableavionics_virtuousGrenade_shot";
     public static final String VIRTUOUS_MISSILE_ID = "diableavionics_virtuousmissile";
     public static final String DEEPSTRIKE_ID = "diableavionics_deepStrikeM";
-
-    private static final String LUNALIB_ID = "lunalib";
-    private static final String SHIELD_COLOR_RED = "Advanced Avionics Red";
-    private static final String SHIELD_COLOR_CYAN = "Phase Grazer Cyan";
-    private static final Color RED_SHIELD_INNER_COLOR = new Color(74, 5, 5, 100);
-    private static final Color CYAN_SHIELD_INNER_COLOR = new Color(0, 110, 140, 100);
 
     public static final String MEMKEY_VERSION = "$diableavionics_version";
     public static final String MEMKEY_INTIALIZED = "$diableavionics_initialized";
@@ -84,40 +76,6 @@ public class DAModPlugin extends BaseModPlugin {
         GANTRY_TIME_MULT = MagicSettings.getFloat("diableavionics", "gantry_refitMult");
         GANTRY_DEPLETION_PERCENT = MagicSettings.getFloat("diableavionics", "gantry_depletionPercent");
 
-        applyOptionalLunaShieldColor();
-
-    }
-
-    private static void applyOptionalLunaShieldColor() {
-        if (!Global.getSettings().getModManager().isModEnabled(LUNALIB_ID)) return;
-
-        String mode;
-        try {
-            mode = DAOptionalLunaSettings.getShieldColorMode();
-        } catch (Throwable ex) {
-            System.err.println("Diable Avionics: unable to read optional LunaLib shield color "
-                    + "setting; using stock colors.");
-            ex.printStackTrace(System.err);
-            return;
-        }
-        Color color = null;
-        if (SHIELD_COLOR_RED.equals(mode)) {
-            color = RED_SHIELD_INNER_COLOR;
-        } else if (SHIELD_COLOR_CYAN.equals(mode)) {
-            color = CYAN_SHIELD_INNER_COLOR;
-        }
-
-        // Stock mode deliberately leaves the data-defined hull styles untouched.
-        if (color == null) return;
-
-        for (ShipHullSpecAPI spec : Global.getSettings().getAllShipHullSpecs()) {
-            if (spec == null || spec.getHullId() == null ||
-                    !spec.getHullId().startsWith("diableavionics_") ||
-                    spec.getShieldSpec() == null) {
-                continue;
-            }
-            spec.getShieldSpec().setInnerColor(color);
-        }
     }
 
     @Override
