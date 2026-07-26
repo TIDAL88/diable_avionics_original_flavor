@@ -1,2 +1,2 @@
 fieldID,fieldName,fieldType,defaultValue,secondaryValue,fieldDescription,minValue,maxValue,tab
-diable_shield_color,Diable Avionics Shield Color,Radio,Stock,"Stock,Advanced Avionics Red,Phase Grazer Cyan","Selects the shield color for Diable Avionics hulls. Requires restarting Starsector.",,,Visuals
+diable_shield_color,Diable Avionics Shield Color,Radio,Stock,"Stock,Advanced Avionics Red,Phase Grazer Cyan","Selects the shield color for Diable Avionics hulls.",,,Visuals

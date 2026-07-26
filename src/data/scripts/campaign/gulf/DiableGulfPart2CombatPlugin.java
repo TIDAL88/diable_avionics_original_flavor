@@ -112,7 +112,7 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
     private void beginArrival(CombatEngineAPI engine) {
         arrivalStarted = true;
         engine.setCombatNotOverForAtLeast(13f);
-        engine.getCombatUI().addMessage(0, Color.BLUE, REDACTED_COMBAT_MESSAGE3);
+        engine.getCombatUI().addMessage(0, Color.WHITE, REDACTED_COMBAT_MESSAGE3);
     }
 
     private ShipAPI spawnStation(CombatEngineAPI engine) {
@@ -246,7 +246,7 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
 
         renderArrivalBurst(engine, station);
 
-        engine.getCombatUI().addMessage(0, Color.BLUE, REDACTED_COMBAT_MESSAGE4);
+        engine.getCombatUI().addMessage(0, Color.WHITE, REDACTED_COMBAT_MESSAGE4);
     }
 
     private ShipAPI getEffectAnchor(CombatEngineAPI engine) {

@@ -15,7 +15,6 @@
             "weapons": {
                 "WS0001": "diableavionics_station_deepStrike",
                 #"WS0002": "diableavionics_station_deepStrike"
-                # The second weapon was originally disabled even in tart's files, probably because too strong.
             }
         },
   ],
