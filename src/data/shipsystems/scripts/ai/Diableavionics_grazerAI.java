@@ -51,13 +51,16 @@ public class Diableavionics_grazerAI implements ShipSystemAIScript {
             }
             ship.giveCommand(ShipCommand.USE_SYSTEM, null, 0);
             ship.giveCommand(ShipCommand.TOGGLE_SHIELD_OR_PHASE_CLOAK,null,0);
+            return;
         }
         if (ship.getSystem().getAmmo()>=3 && distance>aggroRange && timer<=0f){
             ship.giveCommand(ShipCommand.USE_SYSTEM,null,0);
             timer=4f;
+            return;
         }
         if (ship.getSystem().getAmmo()>=3 && distance<aggroRange){
             ship.giveCommand(ShipCommand.USE_SYSTEM,null,0);
+            return;
         }
         if(timer>0) timer-=amount;
     }
