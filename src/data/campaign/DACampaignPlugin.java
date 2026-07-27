@@ -6,10 +6,17 @@ import com.fs.starfarer.api.campaign.BaseCampaignPlugin;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogPlugin;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
+import data.scripts.world.systems.Diableavionics_blackSite;
 
 public class DACampaignPlugin extends BaseCampaignPlugin {
     @Override
     public PluginPick<InteractionDialogPlugin> pickInteractionDialogPlugin(SectorEntityToken interactionTarget) {
+        if (Diableavionics_blackSite.RUPTURED_GATE_ID.equals(interactionTarget.getId())) {
+            return new PluginPick<InteractionDialogPlugin>(
+                    new DiableBlacksiteGateInteractionPlugin(),
+                    PickPriority.MOD_SPECIFIC
+            );
+        }
         if (interactionTarget.getMemoryWithoutUpdate().contains("$virtuous")) {
             if (Global.getSettings().getModManager().isModEnabled("nexerelin")) {
                 return new PluginPick<InteractionDialogPlugin>(new DANexVirtuousFleetInteractionDialogPluginImpl(), PickPriority.MOD_SPECIFIC);

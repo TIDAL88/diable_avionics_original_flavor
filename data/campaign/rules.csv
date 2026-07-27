@@ -1,5 +1,5 @@
 id,trigger,conditions,script,text,options,notes
-"#RULESET_NAME Diable Avionics",,,,,,
+#RULESET_NAME Diable Avionics,,,,,,
 ,,,,,,
 # Diable Avionics fleet greeting lines,,,,,,
 greetingDAFriendly,OpenCommLink,"$faction.id == diableavionics
@@ -7,18 +7,18 @@ $faction.friendlyToPlayer","$menuState = fleetConvMain 0
 FireAll PopulateOptions","""Greetings $playerName. Is there something $theFaction can do for one of our fine associates?""",,
 greetingDAHostileWeaker,OpenCommLink,"$faction.id == diableavionics
 $faction.hostileToPlayer
-$relativeStrength < 0","$ignorePlayerCommRequests = true 1","""If you have any idea of your best interests, you should leave now and join $theFaction.""","cutCommLink:Cut the comm link",
+$relativeStrength < 0",$ignorePlayerCommRequests = true 1,"""If you have any idea of your best interests, you should leave now and join $theFaction.""",cutCommLink:Cut the comm link,
 greetingDAHostileWeakerDefiant,OpenCommLink,"$faction.id == diableavionics
 $faction.hostileToPlayer
 $relativeStrength < 0
-$weakerThanPlayerButHolding","$ignorePlayerCommRequests = true 1","""Know that someday, you and your family will work for $theFaction as slaves.""","cutCommLink:Cut the comm link",
+$weakerThanPlayerButHolding",$ignorePlayerCommRequests = true 1,"""Know that someday, you and your family will work for $theFaction as slaves.""",cutCommLink:Cut the comm link,
 greetingDAHostileStronger,OpenCommLink,"$faction.id == diableavionics
 $faction.hostileToPlayer
-$relativeStrength >= 0","$ignorePlayerCommRequests = true 1","""All I see is a fine addition to either my fleet or my kill tally.""","cutCommLink:Cut the comm link",
+$relativeStrength >= 0",$ignorePlayerCommRequests = true 1,"""All I see is a fine addition to either my fleet or my kill tally.""",cutCommLink:Cut the comm link,
 greetingDANeutral,OpenCommLink,"$faction.id == diableavionics
 $faction.neutralToPlayer","$menuState = fleetConvMain 0
 FireAll PopulateOptions","""You are speaking to $PersonRank $personName of $theFaction Navy. State your business.""",,
-"#END Diable Avionics fleet greeting lines",,,,,,
+#END Diable Avionics fleet greeting lines,,,,,,
 ,,,,,,
 # Trade panel flavor text,,,,,,
 flavorTextMarketEclipse,TradePanelFlavorText,"$global.tradePanelMode == MARKET
@@ -26,20 +26,20 @@ $faction.id == diableavionics
 $market.id == eclipse_market","AddText ""A heavily fortified staging point for the Diable Avionics corporation. The beginning of the return of the Domain of Man."" textGrayColor",,,
 flavorTextMarketDiableAvionics,TradePanelFlavorText,"$global.tradePanelMode == MARKET
 $faction.id == diableavionics","AddText ""Glares pierce into you as looks of contempt make sure you know that you are merely tolerated, not welcomed."" textGrayColor",,,
-"#END Trade panel flavor text",,,,,,
+#END Trade panel flavor text,,,,,,
 ,,,,,,
 "# default commission conversation strings, copy and adjust this section for faction-specific conversation flavor",,,,,,
-CMSNTextRejectHostile_diableavionics,CMSNTextRejectHostile,"$faction.id == diableavionics",,"""Is this some kind of joke? If you are who you say you are, you're on several $faction wanted lists.""",,
-CMSNTextHasOther_diableavionics,CMSNTextHasOther,"$faction.id == diableavionics",,"""You're already commissioned by $theOtherCommissionFaction. You'll have to resign that commission before you can be commissioned by $theFaction.""",,
-CMSNTextUnsuited_diableavionics,CMSNTextUnsuited,"$faction.id == diableavionics",,"""I'm sorry, but you don't meet our criteria for receiving a commission.""",,
-CMSNTextSuitedPart1_diableavionics,CMSNTextSuitedPart1,"$faction.id == diableavionics",,"""Hmm, yes, you're a suitable candidate.\n\nAccepting a commission is a serious matter. You will be required to fight enemies of $theFaction, wherever they may be found.\n\nYou'll be able to resign your commission at any time, though I don't imagine doing so would win you any friends.""",,
-CMSNTextSuitedPart2_diableavionics,CMSNTextSuitedPart2,"$faction.id == diableavionics",,"""So, how about it? Still want to sign on?""",,
-CMSNTextWelcomePart1_diableavionics,CMSNTextWelcomePart1,"$faction.id == diableavionics",,"""Excellent! Welcome to the service.""",,
-CMSNTextWelcomePart2_diableavionics,CMSNTextWelcomePart2,"$faction.id == diableavionics",,"""Anything else I can do for you?""",,
-CMSNTextChangeMind_diableavionics,CMSNTextChangeMind,"$faction.id == diableavionics",,"""Yes, not everyone has it in them to uphold the values of $theFaction to such a high standard. No shame in it.\n\nAnything else I can do for you?""",,
-CMSNResignAskToConfirm_diableavionics,CMSNResignAskToConfirm,"$faction.id == diableavionics",,"""Are you sure? $TheFaction needs people it can rely on, and turning your back like this won't be easily forgotten.""",,
-CMSNResignConfirmed_diableavionics,CMSNResignConfirmed,"$faction.id == diableavionics",,"""I can see there's no changing your mind. Well, at least you had the courtesy to tender your resignation in person.""",,
-CMSNResignCancelled_diableavionics,CMSNResignCancelled,"$faction.id == diableavionics",,"""A good decision. We can use people like you.""",,
+CMSNTextRejectHostile_diableavionics,CMSNTextRejectHostile,$faction.id == diableavionics,,"""Is this some kind of joke? If you are who you say you are, you're on several $faction wanted lists.""",,
+CMSNTextHasOther_diableavionics,CMSNTextHasOther,$faction.id == diableavionics,,"""You're already commissioned by $theOtherCommissionFaction. You'll have to resign that commission before you can be commissioned by $theFaction.""",,
+CMSNTextUnsuited_diableavionics,CMSNTextUnsuited,$faction.id == diableavionics,,"""I'm sorry, but you don't meet our criteria for receiving a commission.""",,
+CMSNTextSuitedPart1_diableavionics,CMSNTextSuitedPart1,$faction.id == diableavionics,,"""Hmm, yes, you're a suitable candidate.\n\nAccepting a commission is a serious matter. You will be required to fight enemies of $theFaction, wherever they may be found.\n\nYou'll be able to resign your commission at any time, though I don't imagine doing so would win you any friends.""",,
+CMSNTextSuitedPart2_diableavionics,CMSNTextSuitedPart2,$faction.id == diableavionics,,"""So, how about it? Still want to sign on?""",,
+CMSNTextWelcomePart1_diableavionics,CMSNTextWelcomePart1,$faction.id == diableavionics,,"""Excellent! Welcome to the service.""",,
+CMSNTextWelcomePart2_diableavionics,CMSNTextWelcomePart2,$faction.id == diableavionics,,"""Anything else I can do for you?""",,
+CMSNTextChangeMind_diableavionics,CMSNTextChangeMind,$faction.id == diableavionics,,"""Yes, not everyone has it in them to uphold the values of $theFaction to such a high standard. No shame in it.\n\nAnything else I can do for you?""",,
+CMSNResignAskToConfirm_diableavionics,CMSNResignAskToConfirm,$faction.id == diableavionics,,"""Are you sure? $TheFaction needs people it can rely on, and turning your back like this won't be easily forgotten.""",,
+CMSNResignConfirmed_diableavionics,CMSNResignConfirmed,$faction.id == diableavionics,,"""I can see there's no changing your mind. Well, at least you had the courtesy to tender your resignation in person.""",,
+CMSNResignCancelled_diableavionics,CMSNResignCancelled,$faction.id == diableavionics,,"""A good decision. We can use people like you.""",,
 "#END default commission conversation strings, copy and adjust this section for faction-specific conversation flavor",,,,,,
 ,,,,,,
 DASubject71_greetingNotFriendly,OpenCommLink,"$virtuous score:10
@@ -52,7 +52,7 @@ DASubject71_showGreetingText,DA_Subject71_showGreetingText,,"SetTextHighlightCol
 SetTextHighlights ""This system is property of the Diable Avionics Corporation. Unauthorized access is prohibited."" ""ERR: Fleet simulation component has signs of corruption. Recommend repair. See sysinfo.txt for more information.""","This system is property of the Diable Avionics Corporation. Unauthorized access is prohibited.
 ERR: Fleet simulation component has signs of corruption. Recommend repair. See sysinfo.txt for more information.",,
 DASubject71_showCommandPrompt,DA_Subject71_showCommandPrompt,,"SetTextHighlightColors textGreenColor
-SetTextHighlights ""subject71 >""","subject71 >",,
+SetTextHighlights ""subject71 >""",subject71 >,,
 DASubject71_greetingFirst,OpenCommLink,"$virtuous score:10
 !$simulationRunning
 !$metSubject71","$menuState = fleetConvMain 0
@@ -90,7 +90,7 @@ FireBest DA_Subject71_showCommandPrompt
 FireAll PopulateOptions","The visual feed from the comm link goes dark suddenly, and returns to the command prompt which now has a new line:
 Simulation failed. Recommend re-running simulation.",,
 DASubject71_optionHelp,PopulateOptions,"$virtuous
-!$helpUsed",,,"subject71Help:> help",
+!$helpUsed",,,subject71Help:> help,
 DASubject71_help,DialogOptionSelected,"$virtuous
 $option == subject71Help
 !$helpUsed","$helpUsed = true
@@ -105,22 +105,22 @@ list
 read
 exec",,
 DASubject71_optionWhoAmI,PopulateOptions,"$virtuous
-$helpUsed",,,"subject71WhoAmI:> whoami",
+$helpUsed",,,subject71WhoAmI:> whoami,
 DASubject71_optionLS,PopulateOptions,"$virtuous
-$helpUsed",,,"subject71List:> list",
+$helpUsed",,,subject71List:> list,
 DASubject71_optionRead,PopulateOptions,"$virtuous
 $helpUsed
-!$lsUsed",,,"subject71Read:> read",
+!$lsUsed",,,subject71Read:> read,
 DASubject71_optionReadSysInfo,PopulateOptions,"$virtuous
-$lsUsed",,,"subject71ReadSysInfo:> read sysinfo.txt",
+$lsUsed",,,subject71ReadSysInfo:> read sysinfo.txt,
 DASubject71_optionExec,PopulateOptions,"$virtuous
 $helpUsed
-!$lsUsed",,,"subject71Exec:> exec",
+!$lsUsed",,,subject71Exec:> exec,
 DASubject71_optionExecBattleSim,PopulateOptions,"$virtuous
-$lsUsed",,,"subject71ExecBattleSim:> exec battlesim",
+$lsUsed",,,subject71ExecBattleSim:> exec battlesim,
 DASubject71_optionExecTransfer,PopulateOptions,"$virtuous
 $lsUsed
-!$transferring",,,"subject71ExecTransfer:> exec transfer",
+!$transferring",,,subject71ExecTransfer:> exec transfer,
 DASubject71_whoAmI,DialogOptionSelected,"$virtuous
 $option == subject71WhoAmI","SetTextHighlightColors textGreenColor
 SetTextHighlights subject
@@ -181,7 +181,7 @@ $option == subject71ExecBattleSim
 SetTextHighlightColors textGreenColor
 SetTextHighlights ""Entering simulation...""
 FireBest DA_Subject71_showCommandPrompt
-DASubject71_BattleSim","Entering simulation...",,
+DASubject71_BattleSim",Entering simulation...,,
 DASubject71_ExecBattleSimSimulationSuccessful,DialogOptionSelected,"$virtuous
 $option == subject71ExecBattleSim
 $simulationSuccessful","SetTextHighlightColors textGreenColor
@@ -201,9 +201,9 @@ FireAll PopulateOptions","Missing second argument. Valid options are:
 virtuous
 subject71",,
 DASubject71_optionTransferSubject71,PopulateOptions,"$virtuous
-$transferring",,,"subject71TransferSubject71:> exec transfer subject71",
+$transferring",,,subject71TransferSubject71:> exec transfer subject71,
 DASubject71_optionTransferVirtuous,PopulateOptions,"$virtuous
-$transferring",,,"subject71TransferVirtuous:> exec transfer virtuous",
+$transferring",,,subject71TransferVirtuous:> exec transfer virtuous,
 DASubject71_ExecTransferSubject71SimulationSuccessful,DialogOptionSelected,"$virtuous
 $option == subject71TransferSubject71","SetTextHighlightColors textGreenColor
 SetTextHighlights ""Process exited with error code -1.""
@@ -224,46 +224,70 @@ The comm link closes and the display goes black.
 
 A security team enters the Virtuous. On the tactical display, you see the doors open to the bridge autonomously, where a mess of hanging wires and disconnected life support systems surround a husk of a corpse. The team lead checks its vitals and reports it as deceased.
 
-After another few minutes, the security team clears the Virtuous, with no other signs of life aboard the ship.","cutCommLink:Claim the Virtuous.",
+After another few minutes, the security team clears the Virtuous, with no other signs of life aboard the ship.",cutCommLink:Claim the Virtuous.,
 ,,,,,,
 # Gulf bounty - Part II,,,,,,
+DAGulfPart2InteractDormant,OpenInteractionDialog,"$id == diableavionics_blacksite_station score:2000
+!$global.da_gulf_part2_started
+!$global.da_gulf_part2_complete","ShowDefaultVisual
+PrintDescription 3
+Highlight ""FIRST RELAY""
+SetShortcut defaultLeave ESCAPE",,0:defaultLeave:Leave,
 DAGulfPart2Interact,OpenInteractionDialog,"$id == diableavionics_blacksite_station score:2000
 $global.da_gulf_part2_started
 !$global.da_gulf_part2_complete","ShowDefaultVisual
-SetShortcut defaultLeave ESCAPE","The broken station turns in silence above 88 Ra I. Its architecture is unmistakably Diable, but the entire sunward face has been peeled open and vitrified. There are no bodies, no active reactors, and no intact escape craft.
+Highlight ""FIRST RELAY"" ""signal"" ""Gulf""
+SetShortcut defaultLeave ESCAPE","The frame has fused and warped, exposing a gutted interior. Yet this fading echo of the Corporation remains in orbit.
 
-Fragments recovered from hardened log buffers describe a high-energy transit experiment that escaped containment. The cascade propagated through every drive-field emitter in the system, burning the planet and station before reaching the star itself.
+By modern standards, its tolerances are finer, its internal geometry denser, and several structural joins nearly seamless.
 
-The final surviving instruments record an impossible gravitational surge followed by forced stellar collapse. Whatever Diable Avionics attempted here did not merely destroy the facility; it burned the entire system and turned its sun into the black hole hanging beyond the planet.
+Beneath the scars of micrometeorite impacts, faded white lettering still stands proudly against the scorched red hull:
 
-Buried beneath the station's dead telemetry is an active signal carrying valid Diable identification codes. Neither the facility nor this system appears on any navigational chart or corporate registry.","0:DAGulfPart2Investigate:Investigate the signal (proceed with caution)
-100:defaultLeave:Leave",
+FIRST RELAY
+
+A survey team enters through the exposed section.
+
+There are no bodies, no active reactors, and no intact escape craft.
+
+Buried in the static, a signal persists. It carries the same outdated identification code as the transmission that pinged the Gulf.
+
+Your comms officer runs the code again. Then a third time.
+Neither the facility nor this system appears on any navigational chart or corporate registry.","0:DAGulfPart2Investigate:Send the survey team deeper (proceed with caution)
+100:defaultLeave:Recall them and leave",
 DAGulfPart2InteractComplete,OpenInteractionDialog,"$id == diableavionics_blacksite_station score:2000
 $global.da_gulf_part2_complete","ShowDefaultVisual
-SetShortcut defaultLeave ESCAPE","The ruined research station continues its silent orbit above 88 Ra I. Fresh scars mark the places where the battle crossed its path, but the structure itself appears as lifeless as before.
+PrintDescription 3
+Highlight ""FIRST RELAY""
+AddText ""Whoever answered the Gulf is gone, or has learned not to answer twice.""
+SetShortcut defaultLeave ESCAPE",,0:defaultLeave:Leave,
+DAGulfPart2Investigate,DialogOptionSelected,$option == DAGulfPart2Investigate,"DiableGulfPart2ContactScreen
+Highlight ""same outdated identification code""","The signal repeats.
 
-Repeated sweeps find no surviving crew, no hidden reactor, and no transmitter capable of producing the signal that drew you here. The hardened log buffers contain only the same corrupted fragments, ending several hours before the system burned.
+A drive flare blooms beyond the station.
 
-Deep inside the wreck, however, isolated relays still close at irregular intervals. Each event lasts less than a millisecond. There is no detectable power source, and every attempt to predict or provoke another response ends in silence.
+Then another.
 
-Whoever answered the Gulf is gone, or has learned not to answer twice.","0:defaultLeave:Leave",
-DAGulfPart2Investigate,DialogOptionSelected,$option == DAGulfPart2Investigate,DiableGulfPart2ContactScreen,"Your sensors resolve a sudden drive flare beyond the station. An unidentified Diable fleet is burning directly toward you with weapons free. Its transponder broadcasts valid but obsolete Diable identification codes.",,
-DAGulfPart2AttemptContact,DialogOptionSelected,$option == DAGulfPart2AttemptContact,DiableGulfPart2DefenderInteraction,"Your comms team transmits a standard Diable challenge, then repeats it across every known emergency and legacy channel.
+Contacts emerge from the surrounding debris, already close. The fleet database returns no match.
 
-There is no answer.
+Their transponders broadcast the same outdated identification code.
 
-The unidentified fleet holds its intercept course. Targeting solutions begin to populate across the tactical display.",,
-DAGulfPart2Defeat,DAGulfPart2FleetDefeated,"$id == diableavionics_blacksite_station score:2000",,"A return transmission flashes across the comms board.",0:DAGulfPart2Recover:Search the station wreckage,
-DAGulfPart2Recover,DialogOptionSelected,$option == DAGulfPart2Recover,"AddRemoveAnyItem SPECIAL modspec ""gulf_deep_strike"" 1
-$global.da_gulf_part2_complete = true
-SetTextHighlightColors highlight
-SetTextHighlights ""Gulf""","At first, its contents appear to document a modular version of the Deep Strike Catapult that look to be even older than the Gulf. Deeper in the archive, your engineers discover that the weapon was only one component of a far more extensive conversion: control software, structural alterations, power-routing requirements, Gantries modifications, and the complete specification for a long-forgotten air superiority subsystem.
-The Catapult was never intended to be installed alone. These schematics describe how to rebuild a carrier around it.
-Gained Deep Strike Conversion Suite Modspec
-",0:defaultLeave:Leave,
+Weapon-lock alarms wail across the bridge.",,
+DAGulfPart2AttemptContact,DialogOptionSelected,$option == DAGulfPart2AttemptContact,DiableGulfPart2DefenderInteraction,,,
+DAGulfPart2Defeat,DAGulfPart2FleetDefeated,$id == diableavionics_blacksite_station score:2000,"Highlight ""signal"" ""FIRST RELAY""","The explosion vaporizes everyone aboard the unknown station, as if on purpose.
+
+The signal falls silent.
+
+The star fortress begins a slow drift toward the planet while the venerable FIRST RELAY watches on, undisturbed.",0:DAGulfPart2Recover:Search the drifting wreck,
+DAGulfPart2Recover,DialogOptionSelected,$option == DAGulfPart2Recover,"Highlight ""Deep Strike Catapult"" ""extensive conversion"" ""rebuild a carrier""
+AddRemoveAnyItem SPECIAL modspec ""gulf_deep_strike"" 1
+$global.da_gulf_part2_complete = true","Your overworked salvage team manages to recover a battle-worn Deep Strike Catapult from the wreck. Its internal data core is ancient but intact.
+
+At first, it holds little of interest: firing data, launch codes, the Admiralty’s usual boilerplate. But deeper in the archive, your engineers discover that the weapon was only one component of a far more extensive conversion: structural alterations, power-routing requirements, fighter bay modifications, and the complete specifications for a long-forgotten EMP subsystem.
+
+The Catapult was never intended to be installed alone. These schematics describe how to rebuild a carrier around it.",0:defaultLeave:Leave,
 ,,,,,,
 # Diable Blacksite,,,,,,
-DABlacksiteRupturedGate,OpenInteractionDialog,"$id == diableavionics_blacksite_ruptured_gate score:1000","ShowDefaultVisual
+DABlacksiteRupturedGate,OpenInteractionDialog,$id == diableavionics_blacksite_ruptured_gate score:1000,"ShowDefaultVisual
 SetShortcut defaultLeave ESCAPE","The gate's adamantine frame has been warped out of alignment and split along several structural seams. Its internal geometry is dead: no resonance, no stable manifold, and no response to the Janus Device.
 
 The damage pattern points inward, toward the collapsed star. Whatever destroyed this system appears to have reached the gate from within—and rendered it permanently unusable.",0:defaultLeave:Leave,
