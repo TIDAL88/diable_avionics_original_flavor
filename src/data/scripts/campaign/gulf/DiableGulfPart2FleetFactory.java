@@ -30,6 +30,7 @@ public final class DiableGulfPart2FleetFactory {
 
     public static final String FLEET_ID = "diableavionics_gulf_part2_encounter_fleet";
     public static final String SITE_FLEET_MEMKEY = "$da_gulf_part2_encounter_fleet";
+    private static final String FLEET_NAME = "Unknown";
 
     private static final float SPAWN_DISTANCE = 850f;
     private static final String FLEET_VERSION_MEMKEY = "$da_gulf_part2_fleet_version";
@@ -122,6 +123,7 @@ public final class DiableGulfPart2FleetFactory {
 
         CampaignFleetAPI existing = findFleet(site);
         if (isUsable(existing) && isCurrentVersion(existing)) {
+            existing.setName(FLEET_NAME);
             site.getMemoryWithoutUpdate().set(SITE_FLEET_MEMKEY, existing);
             prepareForDialog(existing);
             return existing;
@@ -138,7 +140,7 @@ public final class DiableGulfPart2FleetFactory {
         if (fleet == null) return null;
 
         fleet.setId(FLEET_ID);
-        fleet.setName("Diable Avionics ?");
+        fleet.setName(FLEET_NAME);
         fleet.setNoFactionInName(true);
         fleet.setFaction(DiableGulfPart2Intel.ENEMY_FACTION_ID, true);
         fleet.setNoAutoDespawn(true);

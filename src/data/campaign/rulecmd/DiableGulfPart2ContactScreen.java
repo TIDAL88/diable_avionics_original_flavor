@@ -60,7 +60,7 @@ public class DiableGulfPart2ContactScreen extends BaseCommandPlugin {
         // From this point onward there is deliberately no leave or back option.
         dialog.getOptionPanel().clearOptions();
         dialog.getOptionPanel().addOption(
-                "Attempt to contact the unidentified fleet",
+                "\"Recall the survey team. Now.\"",
                 ATTEMPT_CONTACT_OPTION_ID
         );
         dialog.setOptionOnEscape("", null);
