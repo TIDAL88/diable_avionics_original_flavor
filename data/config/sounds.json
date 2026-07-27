@@ -751,7 +751,7 @@
                         {"file":"DA_scary.ogg","source":"sounds/diablemusic/","volume":0.35,"randomStart":false},
                 ],
                 "diableavionics_blacksite_combat":[
-                        {"file":"DA_scary2.ogg","source":"sounds/diablemusic/","volume":0.35,"randomStart":false},
+                        {"file":"DA_scary2.ogg","source":"sounds/diablemusic/","volume":0.55,"randomStart":false},
                 ],
 				
                 "diableavionics_market_interaction_neutral":[

@@ -3,8 +3,11 @@ package data.scripts.world.systems;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.impl.MusicPlayerPluginImpl;
+import com.fs.starfarer.api.impl.campaign.DerelictShipEntityPlugin;
+import com.fs.starfarer.api.impl.campaign.GateEntityPlugin;
 import com.fs.starfarer.api.impl.campaign.ids.*;
 import com.fs.starfarer.api.impl.campaign.procgen.StarSystemGenerator;
+import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.special.ShipRecoverySpecial;
 import com.fs.starfarer.api.impl.campaign.terrain.BaseTiledTerrain;
 import com.fs.starfarer.api.impl.campaign.terrain.EventHorizonPlugin;
 import com.fs.starfarer.api.impl.campaign.terrain.MagneticFieldTerrainPlugin;
@@ -19,9 +22,16 @@ public class Diableavionics_blackSite {
     public static final String STAR_ID = "88 Ra";
     public static final String PLANET_ID = "diableavionics_blacksite";
     public static final String STATION_ID = "diableavionics_blacksite_station";
+    public static final String RUPTURED_GATE_ID = "diableavionics_blacksite_ruptured_gate";
     public static final String NASCENT_WELL_KEY = "$diable_well";
     private static final String MUSIC_SET_ID = "diableavionics_blacksite_ambience";
     private static final String COSMETIC_NEBULA_TYPE = "diableavionics_blacksite_nebula";
+    private static final String RUPTURED_GATE_TYPE =
+            "diableavionics_blacksite_ruptured_gate";
+    private static final String DECORATIVE_WRECK_TYPE =
+            "diableavionics_blacksite_decorative_wreck";
+    private static final String GATE_WRECK_ID_PREFIX =
+            "diableavionics_blacksite_gate_wreck_";
 
     private static final String FOB_PLANET_TYPE = "diableavionics_blacksite_burned";
     private static final String FOB_TEXTURE = "graphics/da/planets/diableavionics_blacksite_scorched.jpg";
@@ -63,13 +73,42 @@ public class Diableavionics_blackSite {
     private static final float CINDER_RING_RADIUS = 2450f;
     private static final float CINDER_RING_WIDTH = 280f;
     private static final float PLANET_ORBIT_ANGLE = 45f;
+    private static final float GATE_ORBIT_RADIUS =
+            CINDER_RING_RADIUS - CINDER_RING_WIDTH * 0.5f + 15f;
+    private static final float GATE_SPIN_DEGREES_PER_DAY = 2f;
     private static final Color WELL_COLOR = new Color(181, 22, 62);
+
+    private static final GateWreckSpec[] GATE_WRECKS = {
+            // Capital wrecks clumped between the ruptured gate and the black hole.
+            new GateWreckSpec(
+                    "pandemonium_1", "diableavionics_pandemonium_willBreaker", -4f, -160f
+            ),
+            new GateWreckSpec(
+                    "pandemonium_2",
+                    "diableavionics_pandemonium_extinguisher_large",
+                    4.1f,
+                    -180f
+            ),
+            new GateWreckSpec(
+                    "maelstrom_1", "diableavionics_maelstrom_standard", -1.5f, -310f
+            ),
+            new GateWreckSpec(
+                    "maelstrom_2", "diableavionics_maelstrom_vanguard", 1.6f, -340f
+            ),
+            new GateWreckSpec(
+                    "maelstrom_3", "diableavionics_maelstrom_beamer", -2.2f, -500f
+            ),
+            new GateWreckSpec(
+                    "maelstrom_4", "diableavionics_maelstrom_brawler", 2.3f, -560f
+            )
+    };
 
     public void generate(SectorAPI sector) {
         StarSystemAPI system = sector.getStarSystem(SYSTEM_ID);
         if (system == null) {
             system = createSystem(sector);
         }
+        ensureGateCluster(system);
     }
 
     private StarSystemAPI createSystem(SectorAPI sector) {
@@ -136,6 +175,104 @@ public class Diableavionics_blackSite {
         system.generateAnchorIfNeeded();
         system.updateAllOrbits();
         return system;
+    }
+
+    private void ensureGateCluster(StarSystemAPI system) {
+        PlanetAPI star = system.getStar();
+        SectorEntityToken planet = system.getEntityById(PLANET_ID);
+        if (star == null || planet == null) return;
+
+        float gateOrbitAngle = (float) Math.toDegrees(Math.atan2(
+                star.getLocation().y - planet.getLocation().y,
+                star.getLocation().x - planet.getLocation().x
+        ));
+        if (gateOrbitAngle < 0f) {
+            gateOrbitAngle += 360f;
+        }
+
+        SectorEntityToken existing = system.getEntityById(RUPTURED_GATE_ID);
+        CustomCampaignEntityAPI gate;
+        if (existing instanceof CustomCampaignEntityAPI
+                && RUPTURED_GATE_TYPE.equals(existing.getCustomEntityType())) {
+            gate = (CustomCampaignEntityAPI) existing;
+        } else {
+            if (existing != null) {
+                if (existing.getCustomPlugin() instanceof GateEntityPlugin) {
+                    existing.getMemoryWithoutUpdate().unset(GateEntityPlugin.GATE_SCANNED);
+                    GateEntityPlugin.getGateData().scanned.remove(existing);
+                }
+                system.removeEntity(existing);
+            }
+            gate = system.addCustomEntity(
+                    RUPTURED_GATE_ID,
+                    "Ruptured Gate",
+                    RUPTURED_GATE_TYPE,
+                    Factions.NEUTRAL
+            );
+        }
+
+        makeDecorativeEntity(gate);
+        gate.setCircularOrbitWithSpin(
+                star,
+                gateOrbitAngle,
+                GATE_ORBIT_RADIUS,
+                PLANET_ORBIT_DAYS,
+                GATE_SPIN_DEGREES_PER_DAY,
+                GATE_SPIN_DEGREES_PER_DAY
+        );
+
+        for (GateWreckSpec spec : GATE_WRECKS) {
+            ensureGateWreck(system, star, gateOrbitAngle, spec);
+        }
+        system.updateAllOrbits();
+    }
+
+    private void ensureGateWreck(
+            StarSystemAPI system,
+            PlanetAPI star,
+            float gateOrbitAngle,
+            GateWreckSpec spec
+    ) {
+        String id = GATE_WRECK_ID_PREFIX + spec.idSuffix;
+        SectorEntityToken wreck = system.getEntityById(id);
+        if (wreck != null && !DECORATIVE_WRECK_TYPE.equals(wreck.getCustomEntityType())) {
+            system.removeEntity(wreck);
+            wreck = null;
+        }
+        if (wreck == null) {
+            ShipRecoverySpecial.PerShipData ship =
+                    new ShipRecoverySpecial.PerShipData(
+                            spec.variantId,
+                            ShipRecoverySpecial.ShipCondition.WRECKED,
+                            0f
+                    );
+            DerelictShipEntityPlugin.DerelictShipData data =
+                    new DerelictShipEntityPlugin.DerelictShipData(ship, false);
+            data.durationDays = Float.MAX_VALUE;
+            wreck = system.addCustomEntity(
+                    id,
+                    null,
+                    DECORATIVE_WRECK_TYPE,
+                    Factions.NEUTRAL,
+                    data
+            );
+        }
+
+        makeDecorativeEntity(wreck);
+        wreck.setCircularOrbit(
+                star,
+                gateOrbitAngle + spec.angleOffset,
+                GATE_ORBIT_RADIUS + spec.radiusOffset,
+                PLANET_ORBIT_DAYS
+        );
+    }
+
+    private void makeDecorativeEntity(SectorEntityToken entity) {
+        entity.addTag(Tags.NON_CLICKABLE);
+        entity.addTag(Tags.NO_ENTITY_TOOLTIP);
+        entity.addTag(Tags.NOT_RANDOM_MISSION_TARGET);
+        entity.setSensorProfile(null);
+        entity.setDiscoverable(false);
     }
 
     /**
@@ -611,5 +748,23 @@ public class Diableavionics_blackSite {
                 )
         );
     }
-}
 
+    private static final class GateWreckSpec {
+        private final String idSuffix;
+        private final String variantId;
+        private final float angleOffset;
+        private final float radiusOffset;
+
+        private GateWreckSpec(
+                String idSuffix,
+                String variantId,
+                float angleOffset,
+                float radiusOffset
+        ) {
+            this.idSuffix = idSuffix;
+            this.variantId = variantId;
+            this.angleOffset = angleOffset;
+            this.radiusOffset = radiusOffset;
+        }
+    }
+}

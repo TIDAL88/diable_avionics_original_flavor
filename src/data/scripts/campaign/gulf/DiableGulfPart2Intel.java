@@ -37,7 +37,7 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
     public static final String STATION_VARIANT = "diableavionics_station_classic";
     public static final String REWARD_HULLMOD = "gulf_deep_strike";
 
-    private static final String TITLE = "A Cold Plate of Revenge - Part II";
+    private static final String TITLE = "Dead Frequency";
     private static final String UPDATE_COMPLETE = "completed";
     private static final String INTEL_SPRITE_CATEGORY = "diableavionics_intel";
     private static final String INTEL_IMAGE_KEY = "gulfPart2Signal";
@@ -113,7 +113,7 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
         } else if (complete) {
             configureCompletedSite(station);
         } else {
-            station.removeTag(Tags.HAS_INTERACTION_DIALOG);
+            station.addTag(Tags.HAS_INTERACTION_DIALOG);
             station.getMemoryWithoutUpdate().unset(SITE_MEMKEY);
             station.getMemoryWithoutUpdate().unset(MemFlags.ENTITY_MISSION_IMPORTANT);
             clearLegacySalvageState(station);
@@ -185,7 +185,7 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
 
     private static void addIntel(SectorEntityToken site) {
         DiableGulfPart2Intel intel = new DiableGulfPart2Intel(site);
-        Global.getSector().getIntelManager().addIntel(intel, true);
+        Global.getSector().getIntelManager().addIntel(intel);
     }
 
     private String getCurrentSystemName() {
@@ -215,10 +215,8 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
             info.addPara("Station destroyed; Deep Strike Catapult modspec recovered.", 5f,
                     Misc.getPositiveHighlightColor(), "Deep Strike Catapult");
         } else {
-            String currentSystemName = getCurrentSystemName();
-            info.addPara("Investigate the research station orbiting 88 Ra I in the "
-                            + currentSystemName + " system.",
-                    5f, Misc.getHighlightColor(), "research station", "88 Ra I", currentSystemName);
+            info.addPara("Investigate the ghost signal.", 5f,
+                    Misc.getHighlightColor(), "ghost signal");
         }
     }
 

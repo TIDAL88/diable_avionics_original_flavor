@@ -27,7 +27,8 @@ import java.util.Map;
  */
 public class DiableGulfPart2DefenderInteraction extends BaseCommandPlugin {
 
-    private static final String ENGAGE_TEXT = "Action stations, prepare for battle";
+    private static final String ENGAGE_TEXT = "\"Action stations.\"";
+    private static final String FLEET_DESC_SHOWN_KEY = "$shownFleetDescAlready";
     private static final String VICTORY_TRIGGER = "DAGulfPart2FleetDefeated";
 
     @Override
@@ -48,12 +49,13 @@ public class DiableGulfPart2DefenderInteraction extends BaseCommandPlugin {
         }
 
         DiableGulfPart2FleetFactory.prepareForDialog(enemyFleet);
+        enemyFleet.getMemoryWithoutUpdate().set(FLEET_DESC_SHOWN_KEY, true);
 
         final InteractionDialogPlugin originalPlugin = dialog.getPlugin();
         final FleetInteractionDialogPluginImpl.FIDConfig config =
                 createEncounterConfig();
         final FleetInteractionDialogPluginImpl plugin =
-                new FleetInteractionDialogPluginImpl(config);
+                new PostSkillReportFleetDialogPlugin(config);
 
         config.delegate = new FleetInteractionDialogPluginImpl.BaseFIDDelegate() {
             @Override
@@ -110,6 +112,39 @@ public class DiableGulfPart2DefenderInteraction extends BaseCommandPlugin {
         dialog.setPlugin(plugin);
         plugin.init(dialog);
         return true;
+    }
+
+    private static final class PostSkillReportFleetDialogPlugin
+            extends FleetInteractionDialogPluginImpl {
+
+        private int advanceCount;
+        private boolean postSkillReportTextAdded;
+
+        private PostSkillReportFleetDialogPlugin(FIDConfig config) {
+            super(config);
+        }
+
+        @Override
+        public void advance(float amount) {
+            super.advance(amount);
+
+            // Other campaign listeners may append commander skill panels on the first frame after
+            // the interaction target becomes a fleet. Wait one additional frame so this stays last.
+            if (!postSkillReportTextAdded && ++advanceCount >= 2) {
+                postSkillReportTextAdded = true;
+                addPostSkillReportText(dialog);
+            }
+        }
+    }
+
+    private static void addPostSkillReportText(InteractionDialogAPI dialog) {
+        dialog.getTextPanel().addPara(
+                "The surveyors are hurried aboard the nearest ship. Weary faces and dazed "
+                        + "expressions crowd the loading-bay feed."
+        );
+        dialog.getTextPanel().addPara(
+                "Your XO grips a TriPad with both hands and looks to you for an order."
+        );
     }
 
     private static FleetInteractionDialogPluginImpl.FIDConfig createEncounterConfig() {
