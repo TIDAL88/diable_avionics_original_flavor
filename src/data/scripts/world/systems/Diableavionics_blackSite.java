@@ -113,6 +113,7 @@ public class Diableavionics_blackSite {
 
     private StarSystemAPI createSystem(SectorAPI sector) {
         StarSystemAPI system = sector.createStarSystem(SYSTEM_ID);
+        system.setOptionalUniqueId("diable_blacksite");
         system.setName("88 Ra");
         PlanetAPI star = system.initStar(STAR_ID, StarTypes.BLACK_HOLE, 500f, 450f);
         system.getLocation().set(35000f, -7000f);
