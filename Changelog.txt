@@ -1,96 +1,289 @@
-﻿Version 3.02
-Major Changes
-Paintjob System: Added support for all weapon and ship paintjobs using MagicLib paintjob system.
-Note: Certain Pandemonium paintjobs do not feature their painted micro missile arrays.
-Ships:
+﻿===============================================================================
+DATE: 00/07/2026
+VERSION: Version 3.02 - “Choicelicious” 
+===============================================================================
+
+Major Changes:
+
+Paintjob System:
+Added support for all weapon and variant paintjobs.
+added Coanda paintjobs (more to come).
+added paintjobs for the  “Artillery” 4 large mounts Pandemonium.
+added the Arctic skinpack, now with a Coanda sprite.
+Lunalib settings
+You can pick between stock, phase grazer Cyan, or Advanced Avionics red shields if you have Lunalib installed.
+
+Story content:
+Gulf - Dead Frequency
+Obtaining the Gulf and being lvl 10 now unlocks an optional storyline. Follow a ghost signal into a new hidden system featuring unique campaign visuals, lore, and ambient soundtrack. Come prepared (lategame content). If you struggle, listen to your XO’s comms. The reward will be worth it. 
+
+Ships and AI:
+
 Virtuous Wunder Wanzer:
-Ship System Phase Grazer Siphon:
-Increased speed to 145
+Brawler Ship System (Phase Grazer Siphon): Increased the top speed bonus during the ship system by 10%, which equates to a 5% total mobility buff during use.
+Developer Note: This is just fine-tuning the animation’s in-game feel. Nirvana has been reached.
+
+Storm battlecarrier:
+Reactivated the 2 medium mounts on top of the carrier, they will now come with two integrated unique Lazyhorns to provide PD for allies.
+Gave it a bonus 130 flux dissipation. The new built-ins will tap into the ship’s flux stats after all.
+Tooltip: The Coupled Lazyhorn Warp Projectors integrated into this ship are linked to a shared auxiliary capacitor, resulting in a roughly halved burst size and fire power but lower flux generated compared to the modular version. The Diable Avionics corporation specially designed these to circumvent the Storm's downsized venting systems, a result of most of the available space being taken by its cavernous wanzer gantries.
+Reasoning: Our Storms still carry their classic Battlecarrier AI tag, and thus tend to be more aggressive and take more initiative on the battlefield. We wanted to give them a little push in their line holding duties.
+Moved the forward facing small mount to the middle of the ship so all sprites from all paintjobs match, purely cosmetic.
+
+Gust and Pocket Gust:
+Added tooltip information about what the ship system actually does: Increases the entire wing's timeflow by 25% and its durability by 33% by unlocking the Wanzers' limiters. Temporarily gives remote control of the resident wing to an Ace safely piloting from the carrier.
+Reasoning:  Such a strong AI compatible ship system was ignored by players because of how obscure the tooltip was.
+VFX Overhaul: 
+Wanzers will now start creating Advanced Avionics style trails out of their engines when their limiters are unlocked.
+The trails will be fainter than on regular Diable ships as not to visually clutter the battlefield.
+If you are using the Diable Aesthetics cosmetic Hullmod, the wings will adopt the carrier’s selected trail color. (!)
+Visually tweaked the temporal shell effect, it’s very faint still.
+The overdriven Wanzers might create sparks as the limiters get deactivated, then periodically on rare occasions during the ship system. There is nothing to worry about, this is all inside tolerance levels, the pilot is safe.
+Custom AI: During our playtesting, we uncovered a bug plaguing the AI in specific situations with ships of the gust family and the shielded Wanzers. The AI would refuse to use the ship system with some ship/wanzer combinations. So we made a simple custom AI. That long standing hidden bug is fixed, and thus, the Valiant and Zephyr will be lethal in the gust family.
+
+Calm:
+Added additional information to the ship system tooltip:
+increase one of three stats; Shield efficiency by 20%, reduced flux cost for weapons by -20%, or +20 flat speed.
+Reasoning: Simple text to explain what the system does more obviously in the codex.
+Custom AI: ShipSystem AI heavily improved (it fully utilizes buffs during combat).
+The Diable Corporation thanks Zone51 for this contribution.
+
+Maelstrom/Pandemonium:
+Custom AI for Phase Grazer : We created a monster.
+We’ve designed this AI so that its power level can very easily be modulated and balanced  by us. If it’s too strong, we can bring it back, if it needs to be more terrifying, we can modulate what it considers dangerous or not. It should be just right at the moment.
+
 Weapon Balance:
-Artassault Revolver Cannon: Increased damage by 5.
 
-Grave HMC: Reverted the version 3.01 damage buff.
+The Grand Goal: “We want to drown the player in tactical choices” could be the motto of this patch. Rather than gutting the gear that is already meta, we looked at creating more synergies and making unused weapons more viable, completing what was started last patch.
 
-Lazyhorn Warp Repeater: Increased OP cost by 1.
+Hexafire Scatter Cannon:
 
-Nocturne Emitter: Decreased OP cost by 1, and reduced burst delay by 1.5s.
+The infamous Hexafire was a weapon that suffered from many issues and struggled heavily to compete against other large weapons in the Diable Avionics armory, as well as vanilla weapons like the Plasma Cannon. This gun has received major changes to carve out a proper role for itself.
 
-State Support Beam: Increased damage to 800.
+Twin Hexafire Scatter Cannon:
+Increased EMP from 30 to 50.
+Reduced chargedown from 2.5s to 1.25s.
+Impact: These changes turn the Twin Hexafire into a powerful anti-swarm weapon capable of handling hordes of low-survivability ships, while its EMP damage keeps it effective against tougher opponents at high flux. It now fires twice as fast, greatly increasing both its DPS and flux consumption equally. It remains highly ineffective against heavy armor due to pitiful hit-strength, and its unchanged spread pattern makes recoil management even more important at this fire rate. As with the Uhlan, pilots will need to exercise trigger discipline to maintain accuracy.
+Hexafire Scatter Cannon (Standard):
+Reduced flux cost per shot from 100 to 80.
+Reduced chargedown from 2.5s to 1.25s.
+Impact: The smaller Hexafire is similar to the twin version, albeit with better efficiency. It remains a decent generalist medium energy weapon that doesn’t like heavy armor.
+
+State support beam:
+In the early days of Diable Avionics, the state was designed as a Phase Lance-like dealing Energy damage. After it was converted into a High Explosive weapon in later patches, its double-beam structure and exaggerated wiggling began interfering with damage calculations and armor shred. Its practical performance rarely matched the numbers shown to the player, making the weapon difficult to understand and build around.
+Numbers balance:
+Increased beam dps from 800 to 1,000.
+Increased flux cost from 1,000 to 1,300 per second.
+Increased the cooldown from 0.8s to 5s.
+Reduced chargedown from 1s to 0.1s.
+Reduced turn rate from 30 to 12 to match the Nocturne.
+Now recognized as a single beam by the game that means 2.5x hit strength compared to last version due to the reworked beam under the hood.
+VFX and Animation Overhaul:
+Completely redone the weapon’s vfx and beam sprites so that you don’t notice we’ve redone the weapon’s vfx and beam sprites.
+The two visible beams now are actually a single beam (it’s a secret). The weapon still looks and feels like the old double-beam emitter, but its displayed damage, actual damage, and armor shred now make sense.
+Slightly reduced the beam’s signature wiggle, making its damage application more consistent without removing the weapon’s distinctive movement.
+Impact: The State is now a predictable, high-intensity anti-armor burst weapon. Its higher damage is balanced by increased flux consumption and considerably longer downtime between bursts. And the new visuals build on previously established art direction.
+
+Nocturne Emitter: Decreased OP cost by 1, and reduced burst delay by 1.5 seconds.
+Reasoning: More DPS allows it to act as a proper combination of the Ion Beam and Graviton Beam in a bursty lance form.
+Increased volume just a smidge (did you ever hear the Nocturne in combat?)
 
 Uhlan Siege Laser: Reduced minimum spread from 6 to 3.
+Reasoning: This is a QoL change to reduce the number of first-shot misses. It never feels good when a weapon's opening shot misses by a giant margin due to RNG, so this will happen less often. It retains its temperamental recoil, so subsequent shots will be the Uhlan you are used to, requiring either patience or good grazer timing.
 
-Plover Rocket Pod: Increased flight speed from 500 to 700, and increased initial acceleration from 750 to 850.
+Plover Rocket Pod: Increased flight speed from 500 to 700, and increased initial acceleration from 750 to 850, toned down the double stage launch speed, it will leave the tube at 400 speed now, rather than 50.
+Reasoning: The goal is to make this missile more usable for both player baiting and AI builds. This speed increase should make it viable even without ECCM. We will keep an eye on it as this was one of the weakest weapons in the roster.
 
-Wanzers:
-Blizzaia: Increased OP cost to 18.
+Artassault Revolver Cannon: Increased damage by 5 (matching the LAG flux efficiency buff from vanilla).
+Reasoning: This is a simple buff to make the Artassault a bit more distinct from the newly buffed Light Assault Gun. It features less range and lower flux efficiency, but performs better at shredding armor and hull. 
 
-Avalanche: Decreased OP cost to 18, and increased top speed from 165 to 175.
+Grave HMC: Reverted the version 3.01 damage buff. back to 65 as it always has been.
+Reasoning: It was already a top contender for best-in-class kinetic medium-range weapons; it doesn't need a buff anymore after the other balance changes in this patch.
 
-Snowball Shotgun: Set damage type to Energy, and increased damage per shot to 450.
+Lazyhorn Warp Projector: Increased OP cost by 1.
+Reasoning: It has been showing exceptional results compared to similarly priced vanilla PD. The Powers That Be have reluctantly settled on a 1-OP nerf.
 
+Thrush : Micromissile payload reduced to 6.
+
+
+Wanzers
+The Grand Goal: The objective of these changes is to eliminate the “Best Wanzer” or “Blizz/Raven/Whatever meta” phenomenon. All Wanzers are now equally viable for their OP cost, featuring clear roles and strategies. You are free to explore creative synergies between certain Wanzers rather than just spamming a single "best" option.
+Don’t forget about supportive and disruptive Wanzers, especially when running non-gantry bays. We didn’t touch those because the Valiant, Strife, and Hoar are still super strong at their jobs, and the Frosts remain the cost-efficiency kings (especially when coupled with a wing that can protect them).
+
+Blizzaia: Increased OP cost to 18 (up from 16). Grave LAC damage reduced to 45 (down from 70). 
+Impact: It has been the best overall Wanzer for a while now, especially thanks to its synergy of having PD, AoE High Explosive for its allies, and the best flares in the game. The main issue was its kinetic damage, which made the wing too oppressive when spammed. It could do everything: out-DPS a shield next to a Warlust, or maintain a higher chance of overloading the enemy than a Raven. It is still the same angry guy with a grenade launcher at the end of the day and keeps its first volley damage; it just won’t out-DPS a shield next to an Avalanche or beat a Raven/Zephyr on hull damage anymore. We want you to be creative and find Wanzer combinations that fit the enemy or your fleet doctrine, rather than just spamming the Blizz against everything.
+
+Avalanche: Decreased OP cost to 18 (down from 19), and increased top speed from 165 to 190, its maneuverability has been buffed to be higher than the Blizzaia but below a Warlust.
+Reasoning: Our shock trooper was a little too slow, considering the Avalanche gets no PD and no shields, and gets slowed by its main gun’s recoil.
+Snowball Shotgun: Set damage type to Energy, and increased damage per shot from 350 to 450.
 Snowball Shotgun Projectiles: Set baseline projectile type to Energy, and increased damage from 65 to 75.
+Berserker now also momentarily increases those projectiles’ damage to 84. 
 
-Zephyr: Increased Micro Glaux damage to 500/s, set Aether Splitter chest beam damage to 1500/s, and increased base OP cost from 17 to 22. Reduced system cooldown from 20s to 10 and duration reduced to 2s from 2.25
+Impact: The Avalanche and the Blizzaia are much more closely matched now. The shotgun dealing energy damage means it deals full damage to shields. It is now a better alternative to the Blizzy when you need to kill targets with high shields but lower armor. Try fielding them against High Tech; they will also synergize together beautifully now that the avalanche loses its armor shred in exchange for all of this.
+
+Zephyr: Increased Micro Glaux damage to 500/s, set Aether Splitter chest beam damage to 1500/s, and increased base OP cost from 17 to 22.
+Impact: The Zephyr is now a true multirole 9th-generation Wanzer that has a Super-Interceptor kick to it. Because it only has access to soft flux damage, it is not as good as Ravens at busting ships on its own, nor is it as good as Hoars and Strifes for PD or anti-fighter duty. However, it is capable of performing both roles effectively without stepping on the toes of specialist Wanzers, all while being surprisingly hard to kill thanks to its shield. Now, it packs terrifying hull damage when the conditions are right. Some might call it a Super-Valiant that trades the disruption capabilities and speed of its little brother for pure combat prowess.
+
+Warlust: DMR range increased to 800 (up from 700).
+Impact: This minor change has made a surprising impact on the Warlust’s damage charts; it finally lives up to its "sniper" moniker.
+
+Hoar: Increased OP cost to 12 (up from 10), increased refit delay to 13 (from 12).
+Impact: This puts the Hoar and Strife at the same OP cost and refit delay, giving players a choice between the on-target PD space superiority of the Strife, or the bodyguard duties around the mothership offered by the Hoar. The Hoar received this nerf due to being extremely effective at deleting all enemy wings near its mothership while simultaneously providing EMP.
+
+Raven: Reduced HP from 2000 to 1750, and removed 2 charges from the Light Flicker Core (down to 2 from 4).
+
+Impact: The Raven has historically been one of the most overperforming wings in the entire Diable Avionics roster. A generous amount of HP and 300 armor made these Wanzers tough nuts to crack while dealing massive damage. Furthermore, their ability to teleport made them very difficult to punish and highly dangerous offensively, allowing them to blink behind ships to take out unprotected engines or bypass non-360° shields. The point of this nerf is to give the Raven distinct weaknesses without making it unusable. It is still quite powerful and still is best in class in certain situations, but it is no longer a "spam this only and win" Wanzer.
+
+Micro Missile Overhaul (some would call it a revert):
+
+Micro Missiles are one of Diable Avionics’ defining weapon systems. Between versions 2.8.0 and 2.8.4, successive changes moved them away from Flashfrozen and Tartiflette’s original design. Iteration is not inherently bad, but here the cumulative buffs produced endless waves of durable missiles that could overwhelm Starsector’s AI. In late-game playtests, this repeatedly caused enemy fleets to break down against Diable, making victory far too reliable with little investment in missile enhancements. This overhaul returns Micro Missiles to their original philosophy: fewer missiles, moving faster and hitting harder, with less durability and saturation potential.
+
+Global Projectile Changes
+Range: 2,000 → 1,500
+Damage: 50 → 100 High Explosive
+Projectile speed: 200 → 300
+Missile hitpoints: 50 → 25
+Flight time: 18 → 12 seconds. Daze exception: 15 seconds (because of uniquely slow daze animation)
+
+Launcher Changes
+Lower burst counts come with shorter refire delays: the standalone cycle drops from 6.0 to 3.0 seconds, and the major built-in arrays also speed up. The goal is smaller, more frequent salvos, not lost uptime. The flux values have been equalized to be the same flux per second as what they were last patch.
+Equippable and built-in launchers: burst 3 → 1; flux 10 → 15; refire 5.7 → 2.9 seconds; cycle 6.0 → 3.0 seconds.
+
+Pocket Gust cluster: burst 8 → 6; full cycle 7.0 → 6.8 seconds.
+Storm cluster: burst 10 → 6; minor flux increase; full cycle 7.2 → 4.7 seconds.
+Coanda cluster: burst remains at 6; full cycle remains at 6.8 seconds.
+Daze cluster: burst 5 → 3; minor flux increase; full cycle 6.7 → 4.6 seconds.
+Maelstrom array: burst 40 → 20; flux per missile 10 → 15; full cycle 8.0 → 6.0 seconds.
+Pandemonium/station arrays: burst 40 → 10; flux 10 → 25; full cycle 8.0 → 5.0 seconds.
+
+Impact
+Micro Missiles remain powerful pressure tools: they distract Point Defense, create openings for Wanzers, and threaten exposed armor. Hits matter more, but smaller, more fragile waves give dedicated Point Defense a meaningful response. The standard launcher fires twice as often, while faster built-in arrays offset their lower burst counts. Micro Missiles stay dependable without creating a permanent cloud; timing and coordination matter more than raw saturation.
+
+Deployment Point Tweaks
+If you’ve read all this, first of all, congratulations, then you’ll notice that many of the less-used tools in the Diable arsenal have been brought back into relevance. The faction now has an almost endless range of options for dismantling whatever the Sector throws at it.
+To preserve some challenge in the late game, some DP values are closer to their pre-2.8.0 state, and the haze and daze have been equalized in dp cost.
+Storm: 23->25
+Maelstrom: 40 -> 42
+Gulf: 30 -> 35
+Daze 22 -> 24
+Haze 25 -> 24
+
+Visual tweaks:
+86-RN and 99-ES: Added custom backgrounds
+New Faction-wide venting animation, with new sprites
+
+System changes:
+Added a new hidden DA system
+Added a gate in Outer Terminus
 
 Hullmods:
-Pandemonium (Assault Configuration): Reduced the rate of fire and flux reduction bonuses to 20% (down from 30%).
+Pandemonium (Assault Configuration Built-in ): Reduced the rate of fire and flux reduction bonuses to 20% (down from 30%).
+Diable Aesthetics (Cosmetic hullmod): Added gust-family ship system compatibility.
 
-Bug Fixes
+Bug Fixes:
 Pandemonium (Assault): Fixed an incorrect hullmod description for the Assault configuration.
-
 Pandemonium (Artillery): Fixed an incorrect hullmod description for the Artillery configuration.
 
-Version 3.01 (Old Version)
+===============================================================================
+DATE: 07/06/2026
+VERSION: Version 3.01 - “Diable Strikes Back”
+===============================================================================
+
 Ship Balance & Reworks
+
 Rime M:
-
 Swapped medium missile slots to Composites.
-
 Increased base speed from 65 to 95.
-
 Increased flux dissipation from 300 to 350.
-
 Increased flux capacity from 6000 to 7000.
-
 Design Note: The Rime was significantly inferior to the Falcon despite costing more DP, leaving it outmatched by the Gust. This shift gives it a solid role as a cheaper brawler and support hull with two fighter bays.
 
 Coanda:
-
 Added a built-in Micro Missile Array.
-
 Swapped the rear hybrid slot to a Universal slot.
 
-Design Note: The Coanda was aggressively mediocre. These built-in utilities give it a distinct identity and a real reason to be fielded.
+Design Note: The Coanda is such a good but weird ship. I’s hard to understand at a glance, and can be really hard to justify for the newcomers. These built-in utilities give it an extra apparent reason to be fielded. (don’t say placebo)
 
 Pandemonium: Increased deployment cost from 65 to 75 DP.
+Design Note: At 65 DP with its brand new hullmods, the emblematic dreadnought of the Corporation has been overperforming significantly compared to the Radiant. This nerf brings it back in line with its intended balance bracket.
 
 Weapon Balance & Reworks
+
 Srab Heavy Emitter:
-
 Increased damage to 750, and increased projectile health to 600.
-
 Increased projectile speed to 550 for better responsiveness.
-
 Enhanced sound effects by 0.2s to give the firing audio more punch.
 
-Design Note: These changes make the weapon punchy and reactive enough to bypass competent enemy point defense grids.
+Design Note: These changes make the weapon punchy and reactive enough to bypass competent enemy point defense grids while also dealing high alpha damage.
 
 Grave HMC:
-
 Increased damage to 70.
-
 Design Note: This weapon now functions as a longer-ranged heavy machine gun, trading away flux efficiency for superior default reach and solid hull damage.
 
 Recson V:
-
 Increased damage from 200 to 225, set flux per shot to 225, and increased the refire delay to 2.4s.
-
 Design Note: Positioned as a middle ground between the Heavy Mass Driver and the Hypervelocity Driver, offering higher DPS and better flux efficiency than the HVD, but with worse overall accuracy.
 
 State Support Beam:
-
-Completely reworked into a short-duration burst beam with a high rate of fire. It excels at shredding armor, but it features terrible flux efficiency and handles poorly against shields.
+Completely reworked into a short-duration burst beam with a high rate of fire. It excels at shredding armor, but features terrible flux efficiency and handles poorly against shields.
 
 Lazyhorn: Decreased OP cost from 12 to 10 to make it a more attractive point defense choice.
 
 Recson S: Decreased OP cost to 6 to ensure it can properly compete with the Light Mass Driver and Railgun alternatives.
+
+===============================================================================
+DATE: 22/05/2026
+VERSION: Version 2.95 - “Gotta do it myself”
+===============================================================================
+
+Virtuous Ship Systems Rebalance
+Brawler:
+The new brawler has more weight and inertia, effectively resulting in a 10% nerf to the total distance traveled during the ship system.
+In return, the ship system remains active for an extra 0.5s. You’re not as zippy, but you can pilot the ship system for longer.
+Aims to give it a more visceral gamefeel in line with the trailer/OG release, while remaining at the same power level as current releases thanks to animation and numbers trickery. These temporal shell numbers and the increased duration mean it will retain 99% of the damage potential of other current forks.
+Since the skill now lasts longer, its total cooldown has been raised to 15.625 from 15.15, so it will feel familiar if you are used to the rhythm of the Brawler.
+TL;DR: 10% mobility nerf, improved feel, same effective DPS.
+
+Skirmisher:
+Returned to Tart’s animations and ship system for a more readable and clear experience in combat. Removed feature-creep: it no longer automatically deletes all projectiles within a 1000 radius or grants free damage and EMP. In short, it is no longer so OP that you'll feel guilty about playing it. It's back to being the ultimate opportunistic mobility core.
+
+Recon:
+Grants an active 0-flux speed boost as long as the ship generates below 10% of its flux cap per second. This is intended to incentivize playing on the edge of max range, recon-style, dipping in and out of firing range rather than playing as a brawler.
+
+Guardian:
+Untouched.
+
+Virtuous Weapons Rebalance
+Glaux mk2: Increased damage, but increased flux consumption equally.
+
+Reasoning: It is no longer a weapon you can just fire without keeping sflux or venting in mind, though it remains far more flux-efficient than a Scicle. Bass and volume have also been increased.
+
+Snowblast Shotgun: Reduced range to 700 from 900. Increased magazine size and damage in return, reloading more rounds but with a slower reload time.
+
+Reasoning: In its previous state, the Roar Gatling was the go-to kinetic choice, and the Snowblast shotgun was only better when used on the Brawler. We aimed to sacrifice some range to make it more viable outside of Brawler configurations, especially when utilizing the classic manual aim mechanic (read the tooltip).
+
+Grasshopper Grenade Launcher: Added 1 extra ammo to the magazine, and it now reloads 6 rounds instead of 5. Reloads slightly faster now.
+Reasoning: This makes it less reliant on Missile Specialization, rendering it a little more viable before you unlock all skills. The weapon will still require careful planning and trigger discipline if you don’t want to end up without grenades after your first kill, the reload time is still longer than anything in vanilla. It remains a skill-check weapon that heavily favors manual aim when piloting.
+
+Beast Cannon: Added 25 damage, bringing damage per round up from 325 to 350.
+Reasoning: This is a simple buff to ensure the Beast/non-missile builds are not completely outmatched by the Grasshopper.
+
+Added Ship Variants
+
+Pandemonium (Assault):
+While the Pandemonium-class dreadnought is an extremely powerful ship, it lacks a "fun" feel. It is slow and not as heavily armed with big guns as one would hope for such a massive vessel. To rectify this, the legacy version of the Pandemonium with 4 large turrets has been added.
+
+Reasoning:
+To diversify the current version from the new one, a special hullmod has been added for both versions, aiming to make them more interesting while slightly increasing their power level without overdoing it.
+The Assault Configuration hullmod is tailored specifically to this version of the Pandemonium: it reduces your range and weapon damage, but increases your rate of fire, reduces the OP cost of medium and small weapons, and increases your top speed. This hullmod differentiates both versions into distinct niches where they can excel.
+
+Pandemonium (Artillery):
+The legacy version of the Pandemonium, this time equipped with 4 large mounts. Those who enjoy fielding Uhlans will love this version.
+
+The Artillery Configuration is a hullmod similar to its assault counterpart but features the opposite buffs and downsides. Namely, it grants lower speed and a lower rate of fire, but increases range, slightly boosts damage, and reduces the OP cost of large weapons.
+
+Hullmods
+Diable Aesthetics: Lore accurate cosmetic hullmod that replicates Advanced Avionics afterimage trails on Diable ships. No bonuses, no cost. 
+The hullmod will automatically appear in your hullmod choices pool if you are refitting a Diable ship, no need to hunt for it. 
+Color picker : Pick between the classic advanced avionics trail in red or the stock Diable engine teal.
+If you want it, it’s there, if not, you’ll never see it as a default option, in markets, or as a drop.
