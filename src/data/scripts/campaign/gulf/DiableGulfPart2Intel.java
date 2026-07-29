@@ -36,6 +36,7 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
     public static final String GULF_BASE_HULL_ID = "diableavionics_IBBgulf";
     public static final String STATION_VARIANT = "diableavionics_station_classic";
     public static final String REWARD_HULLMOD = "gulf_deep_strike";
+    public static final int MIN_PLAYER_LEVEL = 10;
 
     private static final String TITLE = "Dead Frequency";
     private static final String UPDATE_COMPLETE = "completed";
@@ -54,8 +55,9 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
     }
 
     /**
-     * Starts Part II once when the player possesses a Gulf. STARTED_MEMKEY is a permanent latch:
-     * losing the ship, acquiring another one, or using the console cannot start a second copy.
+     * Starts Part II once when the player possesses a Gulf and reaches the minimum level.
+     * STARTED_MEMKEY is a permanent latch: losing the ship, acquiring another one, or using the
+     * console cannot start a second copy.
      */
     public static void ensureStarted() {
         if (Global.getSector() == null) return;
@@ -76,7 +78,11 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
             return;
         }
 
-        if (!playerHasGulf()) return;
+        if (Global.getSector().getPlayerPerson() == null
+                || Global.getSector().getPlayerPerson().getStats().getLevel() < MIN_PLAYER_LEVEL
+                || !playerHasGulf()) {
+            return;
+        }
 
         SectorEntityToken site = getBlackSiteStation();
         if (site == null) return;
