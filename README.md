@@ -18,8 +18,8 @@ Any work contained in this mod is free to be reused, modified, or adapted for ot
 ## Credits & Attribution
 
 * **Tartiflette, FlashFrozen, & Debido:** Original Diable Avionics mod creation, assets, and codebase.
-* **Aero:** Quest design, AI design, content design, and balance.
-* **TIDAL:** AI implementation, system features, and balance.
+* **Aero:** Quest design/implementation, AI design, Blacksite implementation, and balance.
+* **TIDAL:** AI implementation, Gulf hullmdods, and balance.
   
 * **Tranquility:** Fleetbuilder tweaks and code.
 * **Zone51:** Calm AI code and initial Coanda sprite modification.
