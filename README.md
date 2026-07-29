@@ -17,7 +17,7 @@ Any work contained in this mod is free to be reused, modified, or adapted for ot
 
 ## Credits & Attribution
 
-* **Tartiflette, Flash-Frozen, & Debido:** Original Diable Avionics mod creation, assets, and codebase.
+* **Tartiflette, FlashFrozen, & Debido:** Original Diable Avionics mod creation, assets, and codebase.
 * **Aero:** Quest design, AI design, and content design.
 * **TIDAL:** AI implementation and system features.
   
