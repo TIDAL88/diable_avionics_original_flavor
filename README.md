@@ -20,7 +20,8 @@ Any work contained in this mod is free to be reused, modified, or adapted for ot
 * **Tartiflette, FlashFrozen, & Debido:** Original Diable Avionics mod creation, assets, and codebase.
 * **After/Aero:** Balance, art/writing/concepts, Quest/environment development, AI design(Grazer)
 * **TIDAL:** Balance, Code QC, AI implementation (Grazer/Assume Control), Gulf hullmods
-  
+<br>
+
 * **Tranquility:** Fleetbuilder tweaks and code.
 * **Zone51:** Calm AI code and initial Coanda sprite modification.
 * **Nia Tahl:** Paintjobs.
