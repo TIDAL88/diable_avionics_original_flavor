@@ -10,7 +10,7 @@ Any work contained in this mod is free to be reused, modified, or adapted for ot
 
 * **Original Diable Avionics Assets & Code:** Free to reuse or kitbash provided Tartiflette and FlashFrozen are credited and that the mod follows Tartiflette's license.
 * **TIDAL's Additions & Code:** Free to reuse or adapt provided TIDAL is credited as the author.
-* **Aero's Additions:** Free to reuse or adapt provided Aero is credited as the author.
+* **Aero's Additions & Code:** Free to reuse or adapt provided Aero is credited as the author.
 * **Third-Party Contributor Assets:** Free to reuse in accordance with the original creators' permissions listed below, provided appropriate attribution is given to the respective creators.
 
 ---
@@ -18,8 +18,8 @@ Any work contained in this mod is free to be reused, modified, or adapted for ot
 ## Credits & Attribution
 
 * **Tartiflette, FlashFrozen, & Debido:** Original Diable Avionics mod creation, assets, and codebase.
-* **Aero:** Quest design/implementation, AI design(Grazer), Blacksite implementation, and balance.
-* **TIDAL:** AI implementation (Grazer/Assume Control), Gulf hullmods, and balance.
+* **After/Aero:** Balance, art/writing/concepts, Quest/environment development, AI design(Grazer)
+* **TIDAL:** Balance, AI implementation (Grazer/Assume Control), Gulf hullmods
   
 * **Tranquility:** Fleetbuilder tweaks and code.
 * **Zone51:** Calm AI code and initial Coanda sprite modification.
