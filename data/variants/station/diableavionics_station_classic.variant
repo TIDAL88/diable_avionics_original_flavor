@@ -6,7 +6,7 @@
   "fluxCapacitors": 0,
   "fluxVents": 0,
   "quality": 1,
-  "permaMods": ["diableavionics_station_anchor"],
+  "permaMods": [],
   "hullMods": [],
   "weaponGroups": [
         {
