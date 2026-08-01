@@ -1,6 +1,6 @@
 {
     "displayName": "Standard",
-    "fluxCapacitors": 0,
+    "fluxCapacitors": 9,
     "fluxVents": 50,
     "goalVariant": true,
     "hullId": "diableavionics_maelstrom",

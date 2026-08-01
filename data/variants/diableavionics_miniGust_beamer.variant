@@ -1,6 +1,6 @@
 {
     "displayName": "Beamer",
-    "fluxCapacitors": 3,
+    "fluxCapacitors": 7,
     "fluxVents": 20,
     "goalVariant": true,
     "hullId": "diableavionics_miniGust",

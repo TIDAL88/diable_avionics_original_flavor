@@ -1,7 +1,7 @@
 {
     "displayName": "Kite",
     "fluxCapacitors": 0,
-    "fluxVents": 10,
+    "fluxVents": 15,
     "goalVariant": true,
     "hullId": "diableavionics_derecho",
     "hullMods": ["targetingunit"],

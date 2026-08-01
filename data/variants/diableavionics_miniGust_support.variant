@@ -1,6 +1,6 @@
 {
     "displayName": "Support",
-    "fluxCapacitors": 4,
+    "fluxCapacitors": 13,
     "fluxVents": 20,
     "goalVariant": true,
     "hullId": "diableavionics_miniGust",

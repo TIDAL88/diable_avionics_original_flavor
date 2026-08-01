@@ -1,7 +1,7 @@
 {
     "displayName": "Breacher",
     "fluxCapacitors": 0,
-    "fluxVents": 23,
+    "fluxVents": 24,
     "goalVariant": true,
     "hullId": "diableavionics_rime_p",
     "hullMods": ["missleracks"],
