@@ -1,7 +1,7 @@
 {
     "displayName": "Support",
     "fluxCapacitors": 0,
-    "fluxVents": 20,
+    "fluxVents": 19,
     "goalVariant": true,
     "hullId": "diableavionics_storm",
     "hullMods": [],

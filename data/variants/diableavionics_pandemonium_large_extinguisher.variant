@@ -3,7 +3,7 @@
   "hullId": "diableavionics_pandemonium_large",
   "displayName": "Extinguisher",
   "goalVariant": true,
-  "fluxCapacitors": 46,
+  "fluxCapacitors": 7,
   "fluxVents": 50,
   "quality": 1,
   "permaMods": [],

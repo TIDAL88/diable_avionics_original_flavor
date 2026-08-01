@@ -1,7 +1,7 @@
 {
     "displayName": "Escort",
     "fluxCapacitors": 0,
-    "fluxVents": 4,
+    "fluxVents": 7,
     "goalVariant": true,
     "hullId": "diableavionics_fractus",
     "hullMods": [],
