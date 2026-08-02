@@ -1,6 +1,6 @@
 {
     "displayName": "Beamer",
-    "fluxCapacitors": 0,
+    "fluxCapacitors": 2,
     "fluxVents": 10,
     "goalVariant": true,
     "hullId": "diableavionics_sleet",

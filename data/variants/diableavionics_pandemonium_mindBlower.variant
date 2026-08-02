@@ -1,6 +1,6 @@
 {
     "displayName": "Mind-Crusher",
-    "fluxCapacitors": 24,
+    "fluxCapacitors": 18,
     "fluxVents": 50,
     "goalVariant": true,
     "hullId": "diableavionics_pandemonium",

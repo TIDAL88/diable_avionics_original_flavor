@@ -1,6 +1,6 @@
 {
     "displayName": "Standard",
-    "fluxCapacitors": 12,
+    "fluxCapacitors": 9,
     "fluxVents": 20,
     "goalVariant": true,
     "hullId": "diableavionics_hayle",

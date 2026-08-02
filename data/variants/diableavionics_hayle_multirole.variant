@@ -1,6 +1,6 @@
 {
     "displayName": "Multirole",
-    "fluxCapacitors": 5,
+    "fluxCapacitors": 8,
     "fluxVents": 20,
     "goalVariant": true,
     "hullId": "diableavionics_hayle",

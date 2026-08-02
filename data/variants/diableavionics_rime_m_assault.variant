@@ -1,7 +1,7 @@
 {
     "displayName": "Assault",
     "fluxCapacitors": 0,
-    "fluxVents": 4,
+    "fluxVents": 0,
     "hullId": "diableavionics_rime_m",
     "hullMods": ["safetyoverrides"],
     "permaMods": [],
@@ -40,11 +40,6 @@
                 "WS0004": "diableavionics_winee",
                 "WS0005": "diableavionics_winee"
             }
-        },
-        {
-            "autofire": true,
-            "mode": "LINKED",
-            "weapons": {"WS0003": "diableavionics_ibis"}
         }
     ],
     "wings": [

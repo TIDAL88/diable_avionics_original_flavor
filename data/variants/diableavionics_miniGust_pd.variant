@@ -1,6 +1,6 @@
 {
     "displayName": "PD",
-    "fluxCapacitors": 5,
+    "fluxCapacitors": 4,
     "fluxVents": 20,
     "hullId": "diableavionics_miniGust",
     "hullMods": [],

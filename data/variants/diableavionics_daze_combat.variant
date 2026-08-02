@@ -1,6 +1,6 @@
 {
     "displayName": "Combat",
-    "fluxCapacitors": 6,
+    "fluxCapacitors": 16,
     "fluxVents": 30,
     "goalVariant": true,
     "hullId": "diableavionics_daze",

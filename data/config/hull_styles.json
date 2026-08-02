@@ -10,7 +10,7 @@
 		"shieldRingColor":[255,255,255,255],
 		"shieldInnerColor":[125,125,255,75],
 		"fluxVentCoreColor":[155,190,195,255],
-		"fluxVentFringeColor":[45,110,130,255],
+		"fluxVentFringeColor":[49,108,126,255],
 
 		"engineLoopSet":"engine_loop",
 		"engineAccelerateSet":"engine_accelerate",

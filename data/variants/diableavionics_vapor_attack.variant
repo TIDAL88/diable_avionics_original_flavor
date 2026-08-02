@@ -1,6 +1,6 @@
 {
     "displayName": "Attack",
-    "fluxCapacitors": 10,
+    "fluxCapacitors": 9,
     "fluxVents": 10,
     "goalVariant": true,
     "hullId": "diableavionics_vapor",
@@ -14,7 +14,7 @@
             "mode": "ALTERNATING",
             "weapons": {
                 "WS0001": "diableavionics_state",
-                "WS0002": "diableavionics_state"
+                "WS0002": "diableavionics_nocturne"
             }
         },
         {
