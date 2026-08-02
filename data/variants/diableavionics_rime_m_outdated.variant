@@ -1,6 +1,6 @@
 {
     "displayName": "Outdated",
-    "fluxCapacitors": 4,
+    "fluxCapacitors": 8,
     "fluxVents": 30,
     "goalVariant": true,
     "hullId": "diableavionics_rime_m",

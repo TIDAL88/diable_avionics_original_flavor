@@ -1,7 +1,7 @@
 {
     "displayName": "Beamer",
     "fluxCapacitors": 0,
-    "fluxVents": 46,
+    "fluxVents": 48,
     "goalVariant": true,
     "hullId": "diableavionics_maelstrom",
     "hullMods": ["targetingunit"],

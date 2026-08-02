@@ -1,6 +1,6 @@
 {
     "displayName": "Vanguard",
-    "fluxCapacitors": 0,
+    "fluxCapacitors": 6,
     "fluxVents": 50,
     "goalVariant": true,
     "hullId": "diableavionics_maelstrom",

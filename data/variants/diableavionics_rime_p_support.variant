@@ -1,7 +1,7 @@
 {
     "displayName": "Support",
     "fluxCapacitors": 0,
-    "fluxVents": 20,
+    "fluxVents": 30,
     "goalVariant": true,
     "hullId": "diableavionics_rime_p",
     "hullMods": ["converted_hangar"],

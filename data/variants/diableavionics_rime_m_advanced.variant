@@ -1,7 +1,7 @@
 {
     "displayName": "Advanced",
     "fluxCapacitors": 0,
-    "fluxVents": 15,
+    "fluxVents": 23,
     "goalVariant": true,
     "hullId": "diableavionics_rime_m",
     "hullMods": [],

@@ -1,7 +1,7 @@
 {
     "displayName": "Craze",
     "fluxCapacitors": 0,
-    "fluxVents": 8,
+    "fluxVents": 18,
     "hullId": "diableavionics_daze",
     "hullMods": [
         "safetyoverrides",
