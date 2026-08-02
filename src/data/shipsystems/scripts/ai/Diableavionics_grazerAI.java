@@ -1,5 +1,6 @@
 package data.shipsystems.scripts.ai;
 
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.AIUtils;
@@ -36,14 +37,15 @@ public class Diableavionics_grazerAI implements ShipSystemAIScript {
     @Override
     public void advance(float amount, Vector2f missileDangerDir, Vector2f collisionDangerDir, ShipAPI target) {
         if (engine == null || ship == null || system == null || engine.isPaused()) return;
+        int charges=ship.getSystem().getMaxAmmo();
+        if (ship.getSystem().getAmmo() > charges-1 && !ship.areAnyEnemiesInRange()){
+            ship.giveCommand(ShipCommand.USE_SYSTEM, null, 0);
+            return;
+        }
         ShipAPI nearestEnemy= AIUtils.getNearestEnemy(ship);
         if (nearestEnemy==null) return;
         float aggroRange = getAggroRange(nearestEnemy);
         float distance = MathUtils.getDistance(ship, nearestEnemy);
-        if (ship.getSystem().getAmmo() >= 3 && !ship.areAnyEnemiesInRange()) {
-            ship.giveCommand(ShipCommand.USE_SYSTEM, null, 0);
-            return;
-        }
         if (ship.getFluxTracker().getFluxLevel() >= 0.8f && ship.getSystem().getAmmo() >= 1) {
             if (ship.getShield() != null) {
                 ship.getShield().toggleOff();
@@ -53,12 +55,12 @@ public class Diableavionics_grazerAI implements ShipSystemAIScript {
             ship.giveCommand(ShipCommand.TOGGLE_SHIELD_OR_PHASE_CLOAK,null,0);
             return;
         }
-        if (ship.getSystem().getAmmo()>=3 && distance>aggroRange && timer<=0f){
+        if (ship.getSystem().getAmmo()>charges-1 && distance>aggroRange && timer<=0f){
             ship.giveCommand(ShipCommand.USE_SYSTEM,null,0);
             timer=4f;
             return;
         }
-        if (ship.getSystem().getAmmo()>=3 && distance<aggroRange){
+        if (ship.getSystem().getAmmo()>charges-1 && distance<aggroRange){
             ship.giveCommand(ShipCommand.USE_SYSTEM,null,0);
             return;
         }
