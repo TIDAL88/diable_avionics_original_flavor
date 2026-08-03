@@ -16,9 +16,9 @@ However, such a complex modification raises the deployment point cost of the shi
 ,,,,,,,,,,,,,,,,,,,
 # WANZER GANTRY,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,
-Wanzer Servicing Gantry,diableavionics_universaldecksExtra,,,Diable Avionics,,,,TRUE,,,10,15,25,40,data.hullmods.WanzerGantry,"Enlarged launch bays that ease servicing oversized space vehicles such as Wanzers. Optimized tooling and space usage allow the deck crew to manage %s for each installed Wanzer wing.
+Wanzer Servicing Gantry,diableavionics_universaldecksExtra,,,Diable Avionics,no_build_in,,,TRUE,,,10,15,25,40,data.hullmods.WanzerGantry,"Enlarged launch bays that ease servicing oversized space vehicles such as Wanzers. Optimized tooling and space usage allow the deck crew to manage %s for each installed Wanzer wing.
 
-These specialized facilities do not offer any tangible benefit, nor drawback, when operating regular fighters wings.",,"Once per combat, when the fighter replacement rate reaches %s, the fighter launch bays are switched to operate from a ""B-deck"". Standby fighters are launched to rapidly bring wings back to full strength, and the fighter replacement rate is set to %s.",graphics/da/hullmods/diableavionics_decks.png
+These specialized facilities do not offer any tangible benefit, nor drawback, when operating regular fighters wings.",,,graphics/da/hullmods/diableavionics_decks.png
 Wanzer Disruption,diableavionics_subsystem_wanzerdisruption,,,,,,,,TRUE,,0,0,0,0,data.hullmods.WanzerBurstHullmod,"This Gulf-class ship is armed with an experimental tactical disruption provider, which allows a small EMP burst to be projected through its Wanzers at their targets every 30 seconds. Although the EMP damage is limited, each burst carries a disruptive charge that halves the repair rate of disabled weapons and engines for 10 seconds.",,,graphics/da/hullmods/diableavionics_quantumsensor.png
 ,,,,,,,,,,,,,,,,,,,
 # COMMISSIONED CREW,,,,,,,,,,,,,,,,,,,
@@ -99,7 +99,7 @@ Assault Configuration,assault_configuration,,,Diable Avionics,diable,,15000,,TRU
 Artillery Configuration,artillery_configuration,,,Diable Avionics,diable,,15000,,TRUE,,0,0,0,0,data.hullmods.ArtilleryConfig,"A novel reconfiguration of the Pandemonium's core reactor grid, engineered exclusively for long-range orbital bombardment and fire-support operations. By aggressively redirecting power from the auxiliary propulsion systems and secondary capacitor banks into the primary fire-control arrays, the hull gains an unprecedented boost to tactical targeting fidelity and maximum weapon range. However, starving the main engines and smaller mounts results in a degradation of tactical mobility alongside a minor drop in overall weapon cycling speeds.",Artillery Configuration. Optimized for long range.,,graphics/da/hullmods/diableavionics_tuning.png
 ,,,,,,,,,,,,,,,,,,,
 #GULF,,,,,,,,,,,,,,,,,,,
-Deep Strike Conversion,gulf_deep_strike,,,Diable Avionics,"diable, no_drop, no_drop_salvage, codex_unlockable",,,,FALSE,,0,0,25,0,data.hullmods.DiableAvionicsGulf_DeepStrike,"Installs a Deep Strike Catapult in the Gulf’s foremost large weapon mount and integrates the control systems required for a Wanzer-delivered EMP strike.
+Deep Strike Conversion,gulf_deep_strike,,,Diable Avionics,"diable, no_build_in, no_drop, no_drop_salvage, codex_unlockable",,,,FALSE,,0,0,25,0,data.hullmods.DiableAvionicsGulf_DeepStrike,"Installs a Deep Strike Catapult in the Gulf’s foremost large weapon mount and integrates the control systems required for a Wanzer-delivered EMP strike.
 
 The necessary structural modifications, power-routing equipment, and launch hardware leave insufficient space for the ship’s Wanzer-specific gantries.",,,graphics/da/hullmods/diableavionics_tuning.png
 master,gulf_master,,,Diable Avionics,diable,,,,TRUE,TRUE,0,0,0,0,data.hullmods.DiableAvionicsGulf_Master,,,,

@@ -167,7 +167,6 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
                     .setFleetName(txt("virtuousFleet"))
                     .setFleetType(FleetTypes.TASK_FORCE)
                     .setFlagshipName(txt("virtuousShip"))
-                    .setFlagshipAlwaysRecoverable(true)
                     .setFlagshipVariant(variant)
                     .setFlagshipAutofit(false)
                     .setCaptain(virtuousCaptain)
@@ -183,6 +182,8 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
 
             virtuous.setDiscoverable(false);
             virtuous.addTag(Tags.NEUTRINO);
+            virtuous.getFlagship().getVariant().addTag(Tags.VARIANT_UNBOARDABLE);
+            virtuous.getFlagship().getVariant().removeTag(Tags.VARIANT_ALWAYS_RECOVERABLE);
             virtuous.getFlagship().getStats().getDynamic().getMod(Stats.INDIVIDUAL_SHIP_RECOVERY_MOD).modifyFlat(Diableavionics_ids.UNIQUE, -2000);
             virtuous.addEventListener(new Diableavionics_virtuousLoot());
 

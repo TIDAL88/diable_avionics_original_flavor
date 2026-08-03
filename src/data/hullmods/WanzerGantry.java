@@ -1,10 +1,8 @@
 package data.hullmods;
 
-import com.fs.starfarer.api.GameState;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.combat.ShipAPI.HullSize;
-import com.fs.starfarer.api.combat.listeners.AdvanceableListener;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.ui.Alignment;
@@ -28,17 +26,6 @@ public class WanzerGantry extends BaseHullMod {
         }
         return null;
     }
-
-    @Override
-    public String getSModDescriptionParam(int index, HullSize hullSize) {
-        if (index == 0) {
-            return Math.round(REPLACEMENT_RATE_THRESHOLD * 100f) + "%";
-        } else if (index == 1) {
-            return Math.round(REPLACEMENT_RATE_RESET * 100f) + "%";
-        }
-        return super.getSModDescriptionParam(index, hullSize);
-    }
-
 
     @Override
     public void addPostDescriptionSection(TooltipMakerAPI tooltip, ShipAPI.HullSize hullSize, ShipAPI ship, float width, boolean isForModSpec) {
@@ -138,6 +125,11 @@ public class WanzerGantry extends BaseHullMod {
 
     @Override
     public void applyEffectsBeforeShipCreation(HullSize hullSize, MutableShipStatsAPI stats, String id) {
+        // Save compatibility: remove the obsolete S-mod marker from existing variants.
+        // This remains a harmless no-op once all old saves have migrated.
+        stats.getVariant().getSMods().remove(GANTRY_ID);
+        stats.getVariant().getSModdedBuiltIns().remove(GANTRY_ID);
+
         //reset the "check" mutable stat so that it is applied next deployment
         stats.getFighterRefitTimeMult().unmodify(ID);
     }
@@ -154,11 +146,6 @@ public class WanzerGantry extends BaseHullMod {
         }
         if (extraCrafts > 0) {
             ship.getMutableStats().getDynamic().getMod(Stats.REPLACEMENT_RATE_DECREASE_MULT).modifyMult(id, (crafts + extraCrafts) / crafts);
-        }
-
-        boolean sMod = isSMod(ship);
-        if (sMod) {
-            ship.addListener(new BDeckListener(ship));
         }
     }
 
@@ -198,54 +185,5 @@ public class WanzerGantry extends BaseHullMod {
     @Override
     public boolean showInRefitScreenModPickerFor(ShipAPI ship) {
         return ship.getVariant().hasHullMod(GANTRY_ID);
-    }
-
-    public static float REPLACEMENT_RATE_THRESHOLD = 0.4f;
-    public static float REPLACEMENT_RATE_RESET = 0.75f;
-
-    public static class BDeckListener implements AdvanceableListener {
-        protected ShipAPI ship;
-        protected boolean fired = false;
-
-        public BDeckListener(ShipAPI ship) {
-            this.ship = ship;
-        }
-
-        public void advance(float amount) {
-            float cr = ship.getCurrentCR();
-
-            if (!fired && cr >= 0) {
-                if (ship.getSharedFighterReplacementRate() <= REPLACEMENT_RATE_THRESHOLD) {
-                    fired = true;
-
-                    for (FighterLaunchBayAPI bay : ship.getLaunchBaysCopy()) {
-                        if (bay.getWing() == null) continue;
-
-                        float rate = REPLACEMENT_RATE_RESET;
-                        bay.setCurrRate(rate);
-
-                        bay.makeCurrentIntervalFast();
-                        FighterWingSpecAPI spec = bay.getWing().getSpec();
-
-                        int maxTotal = spec.getNumFighters();
-                        int actualAdd = maxTotal - bay.getWing().getWingMembers().size();
-                        if (actualAdd > 0) {
-                            bay.setFastReplacements(bay.getFastReplacements() + actualAdd);
-                        }
-                    }
-                }
-            }
-
-            if (Global.getCurrentState() == GameState.COMBAT &&
-                    Global.getCombatEngine() != null && Global.getCombatEngine().getPlayerShip() == ship) {
-
-                String status = txt("hm_gantry_s02_standby");
-                boolean penalty = false;
-                if (fired) status = txt("hm_gantry_s02_active");
-                Global.getCombatEngine().maintainStatusForPlayerShip("da_bdeck",
-                        Global.getSettings().getSpriteName("ui", "icon_tactical_bdeck"),
-                        txt("hm_gantry_s02"), status, penalty);
-            }
-        }
     }
 }

@@ -8,6 +8,7 @@ import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.FleetEncounterContext;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
+import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
 import com.fs.starfarer.api.util.Misc;
 import data.campaign.DANexVirtuousFleetInteractionDialogPluginImpl;
@@ -27,6 +28,8 @@ public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
         virtuousMember.setCaptain(null);
         virtuousMember.setFlagship(false);
         virtuousMember.getStats().getDynamic().getMod(Stats.INDIVIDUAL_SHIP_RECOVERY_MOD).unmodify(Diableavionics_ids.UNIQUE);
+        virtuousMember.getVariant().removeTag(Tags.VARIANT_UNBOARDABLE);
+        virtuousMember.getVariant().addTag(Tags.VARIANT_ALWAYS_RECOVERABLE);
         targetFleet.getFleetData().removeFleetMember(virtuousMember);
         targetFleet.getMemoryWithoutUpdate().unset("$virtuous");
         targetFleet.getFleetData().ensureHasFlagship();
