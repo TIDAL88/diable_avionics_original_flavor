@@ -1,11 +1,7 @@
 package data.scripts.campaign.gulf;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.CampaignFleetAPI;
-import com.fs.starfarer.api.campaign.FleetAssignment;
-import com.fs.starfarer.api.campaign.LocationAPI;
-import com.fs.starfarer.api.campaign.SectorEntityToken;
-import com.fs.starfarer.api.campaign.FactionAPI;
+import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.characters.FullName;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
@@ -14,14 +10,18 @@ import com.fs.starfarer.api.impl.campaign.ids.Ranks;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.lwjgl.util.vector.Vector2f;
+import second_in_command.SCData;
+import second_in_command.SCUtils;
+import second_in_command.specs.SCOfficer;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Creates and maintains the real campaign fleet used by the Gulf Part II encounter.
- *
+ * <p>
  * The station is only the quest interaction point. The save-authored escort is a normal campaign
  * fleet,
  * while the Classic station continues to enter the battle through DiableGulfPart2CombatPlugin.
@@ -161,7 +161,7 @@ public final class DiableGulfPart2FleetFactory {
             if (flagship == null) flagship = member;
         }
 
-        if (flagship != null) fleet.getFleetData().setFlagship(flagship);
+        fleet.getFleetData().setFlagship(flagship);
 
         fleet.getFleetData().sort();
         fleet.forceSync();
@@ -177,6 +177,7 @@ public final class DiableGulfPart2FleetFactory {
         placeBeyondStation(fleet, site);
         prepareForDialog(fleet);
         site.getMemoryWithoutUpdate().set(SITE_FLEET_MEMKEY, fleet);
+
         return fleet;
     }
 
@@ -376,6 +377,7 @@ public final class DiableGulfPart2FleetFactory {
                 siteLocation.x + x * SPAWN_DISTANCE,
                 siteLocation.y + y * SPAWN_DISTANCE
         );
+        if (Global.getSettings().getModManager().isModEnabled("second_in_command")) applySecondInCommandLoadout(fleet);
     }
 
     private static boolean isUsable(CampaignFleetAPI fleet) {
@@ -391,15 +393,68 @@ public final class DiableGulfPart2FleetFactory {
                 == FLEET_VERSION;
     }
 
-    private static final class FleetEntry {
-        private final String variantId;
-        private final String shipName;
-        private final String captainType;
-
-        private FleetEntry(String variantId, String shipName, String captainType) {
-            this.variantId = variantId;
-            this.shipName = shipName;
-            this.captainType = captainType;
+    private static void applySecondInCommandLoadout(CampaignFleetAPI fleet) {
+        if (fleet == null) {
+            return;
         }
+        try {
+            fleet.addTag("sc_do_not_generate_skills");
+            SCData data = SCUtils.getFleetData(fleet);
+            clearExistingOfficers(data);
+            addOfficer(data, fleet, 0, "sc_technology",
+                    "sc_technology_flux_regulation",
+                    "sc_technology_unlocked_engines",
+                    "sc_technology_advanced_weaponry",
+                    "sc_technology_reinforced_grid",
+                    "sc_technology_optimised_shields",
+                    "sc_technology_focused_lenses");
+            addOfficer(data, fleet, 1, "sc_warfare",
+                    "sc_warfare_iron_sight",
+                    "sc_warfare_reserve_thrusters",
+                    "sc_warfare_stabilised_targeting",
+                    "sc_warfare_surefire_impact",
+                    "sc_warfare_tenacity",
+                    "sc_warfare_overwhelming_force");
+            addOfficer(data, fleet, 2, "sc_smallcraft",
+                    "sc_smallcraft_wolfpack_tactics",
+                    "sc_smallcraft_safe_recovery",
+                    "sc_smallcraft_coordinated_maneuvers",
+                    "sc_smallcraft_jumpstart",
+                    "sc_smallcraft_leader_of_the_pack",
+                    "sc_smallcraft_quick_as_the_wind");
+            Global.getLogger(DiableGulfPart2FleetFactory.class).info("Succesfully applied Second in Command Officers");
+        } catch (Throwable ex) {
+            Global.getLogger(DiableGulfPart2FleetFactory.class).info("Failed to apply Second In Command officers to Gulf Station.", ex);
+        }
+    }
+
+    private static void clearExistingOfficers(SCData data) {
+        if (data == null) {
+            return;
+        }
+        for (SCOfficer officer : data.getOfficersInFleet()) {
+            if (officer != null) {
+                data.removeOfficerFromFleet(officer);
+            }
+        }
+    }
+
+    private static void addOfficer(SCData data, CampaignFleetAPI fleet, int slotIndex, String aptitudeId, String... skillIds) {
+        if (data == null || fleet == null) {
+            return;
+        }
+        SCOfficer officer = SCUtils.createRandomSCOfficer(aptitudeId, fleet.getFaction(), new Random());
+        officer.increaseLevel(9);
+        if (skillIds != null) {
+            for (String skillId : skillIds) {
+                if (skillId != null && !skillId.isEmpty()) {
+                    officer.addSkill(skillId);
+                }
+            }
+        }
+        data.addOfficerToFleet(officer);
+        data.setOfficerInSlot(slotIndex, officer);
+    }
+    private record FleetEntry(String variantId, String shipName, String captainType) {
     }
 }
