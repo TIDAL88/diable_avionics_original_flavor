@@ -82,10 +82,11 @@ public class DiableAvionicsVirtuous_system extends BaseHullMod {
 
     @Override
     public void applyEffectsBeforeShipCreation(HullSize hullSize, MutableShipStatsAPI stats, String id) {
-        if (stats.getFleetMember() == null
-                || (stats.getFleetMember().getFleetData() == null || stats.getFleetMember().getFleetData().getFleet() != Global.getSector().getPlayerFleet())) {
-            //prevent direct recovery from Last Line fleet because we spawn a derelict after combat
-
+        if (stats.getFleetMember() != null
+                && stats.getFleetMember().getFleetData() != null
+                && stats.getFleetMember().getFleetData().getFleet() != null
+                && stats.getFleetMember().getFleetData().getFleet().getMemoryWithoutUpdate().getBoolean("$virtuous")) {
+            // The Last Line encounter drops a separate recoverable wreck after combat.
             if (!stats.getVariant().hasTag(Tags.VARIANT_UNBOARDABLE))
                 stats.getVariant().addTag(Tags.VARIANT_UNBOARDABLE);
 
@@ -94,8 +95,7 @@ public class DiableAvionicsVirtuous_system extends BaseHullMod {
         } else if (stats.getFleetMember() != null
                 && stats.getFleetMember().getFleetData() != null
                 && stats.getFleetMember().getFleetData().getFleet() == Global.getSector().getPlayerFleet()) {
-
-            //always recover if in player fleet
+            // Player-owned Virtuous copies, including the Nexerelin start, must remain recoverable.
             if (stats.getVariant().hasTag(Tags.VARIANT_UNBOARDABLE))
                 stats.getVariant().removeTag(Tags.VARIANT_UNBOARDABLE);
 
