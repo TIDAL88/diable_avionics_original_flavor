@@ -11,8 +11,8 @@
 	"explosionRadius":125, # purely visual
 	"flameoutTime":3,
 	"engineSpec":
-                        {"turnAcc":90,
-                        "turnRate":90,
+                        {"turnAcc":180,
+                        "turnRate":120,
                         "acc":50,
                         "dec":50},
 	"engineSlots":[
@@ -30,4 +30,3 @@
 			"length":20.0,
 			"angle":40.0}],			    
 }
-

@@ -20,6 +20,13 @@ Wanzer Servicing Gantry,diableavionics_universaldecksExtra,,,Diable Avionics,no_
 
 These specialized facilities do not offer any tangible benefit, nor drawback, when operating regular fighters wings.",,,graphics/da/hullmods/diableavionics_decks.png
 Wanzer Disruption,diableavionics_subsystem_wanzerdisruption,,,,,,,,TRUE,,0,0,0,0,data.hullmods.WanzerBurstHullmod,"This Gulf-class ship is armed with an experimental tactical disruption provider, which allows a small EMP burst to be projected through its Wanzers at their targets every 30 seconds. Although the EMP damage is limited, each burst carries a disruptive charge that halves the repair rate of disabled weapons and engines for 10 seconds.",,,graphics/da/hullmods/diableavionics_quantumsensor.png
+Adaptive Flight Deck,diableavionics_rime_flightdeck_active,,,Diable Avionics,"diable, no_build_in, no_drop, no_drop_salvage",Fighters,0,,TRUE,FALSE,0,0,0,0,com.fs.starfarer.api.combat.BaseHullMod,"An adaptive flight deck designed to enter standby when not in use, freeing the maintenance and command resources normally devoted to carrier operations.
+
+An empty flight deck does not count toward the fleet's fighter bay total, and automatically returns to active service when a fighter wing is installed.",Empty flight deck excluded from fleet totals.,,graphics/da/hullmods/diableavionics_decks.png
+Adaptive Flight Deck,diableavionics_rime_flightdeck_standby,,,Diable Avionics,"diable, no_build_in, no_drop, no_drop_salvage",Fighters,0,,TRUE,FALSE,0,0,0,0,com.fs.starfarer.api.combat.BaseHullMod,"An adaptive flight deck designed to enter standby when not in use, freeing the maintenance and command resources normally devoted to carrier operations.
+
+An empty flight deck does not count toward the fleet's fighter bay total, and automatically returns to active service when a fighter wing is installed.",Empty flight deck excluded from fleet totals.,,graphics/da/hullmods/diableavionics_decks.png
+Rime Flight Deck Controller,diableavionics_rime_flightdeck_controller,,,Diable Avionics,"diable, no_build_in, no_drop, no_drop_salvage",,0,,TRUE,TRUE,0,0,0,0,data.hullmods.RimeFlightDeckController,,,,graphics/da/hullmods/diableavionics_decks.png
 ,,,,,,,,,,,,,,,,,,,
 # COMMISSIONED CREW,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,

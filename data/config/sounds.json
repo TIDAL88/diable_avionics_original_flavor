@@ -639,9 +639,9 @@
 	], 	
         
 	"diableavionics_plover_fire":[
-            {"file":"sounds/diablefx/da_plover_fire.ogg","pitch":1.0, "volume":0.28},
-            {"file":"sounds/diablefx/da_plover_fire.ogg","pitch":0.97, "volume":0.27},
-            {"file":"sounds/diablefx/da_plover_fire.ogg","pitch":0.94, "volume":0.29}
+            {"file":"sounds/diablefx/da_plover_fire.ogg","pitch":1.0, "volume":0.40},
+            {"file":"sounds/diablefx/da_plover_fire.ogg","pitch":0.97, "volume":0.38},
+            {"file":"sounds/diablefx/da_plover_fire.ogg","pitch":0.94, "volume":0.41}
 	],
 	
         
