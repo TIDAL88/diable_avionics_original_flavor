@@ -1,11 +1,11 @@
 {
   "id": "diableavionics",
-  "name": "Diable Original Flavor",
-  "author": "Tartiflette, formerly created by Flashfrozen with the participation of Debido. Maintened by TIDAL and After/Aero",
+  "name": "Diable Avionics Original Flavor",
+  "author": "Tartiflette, formerly created by Flashfrozen with the participation of Debido. Maintained by TIDAL and After/Aero",
   "version": {
     "major": 3,
     "minor": 0,
-    "patch": 2
+    "patch": 3
   },
   "description": "Claiming ownership over the possessions of millions seems to be a bold claim, but is one the Diable Avionics Corporation intends to enforce, with deadly means if necessary.",
   "gameVersion": "0.98a-RC8",

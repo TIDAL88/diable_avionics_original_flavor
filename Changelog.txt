@@ -1,5 +1,75 @@
-﻿===============================================================================
-DATE: 00/07/2026
+===============================================================================
+DATE: 04/08/2026
+VERSION: Version 3.0.3 - “No Safety Nets”
+===============================================================================
+
+Bugfixes
+* 62 variants changed: some outdated builds changed, OP values corrected.
+* Coupled Lazyhorns (storm exclusive built-ins): removed from shops and arms dealers/drops. Keep 'em as souvenirs if you already bought some :).
+* Dead Frequency quest reward now has no_drop and no_drop_salvage, preventing random station/salvage drops.
+* The Gulf will now save weapons groups without issue
+* Made gulf XO chatter more visible during quest
+* Deep Strike Conversion Hullmod is now impossible to S-mod (oops)
+* Fixed Virtuous being unrecoverable on certain occasions (Nexerelin-start and other player-owned copies), this was a collateral of how The Last Line fleet is coded.
+* Diable Aesthetics now overrides Advanced Avionics’ engine trails when both hullmods are installed, allowing its selected trail color to display correctly.
+
+Ships
+* Improved Grazer AI : Better charge awareness, better battlefield movement while disengaged
+* Chinook: Increased fuel capacity from 400 → 600
+* Stratus: Increased cargo capacity from 250 → 300
+* Shear : Deployment and recovery cost increased from 5 → 7.
+   * It’s a straight upgrade to the ox. It’s not counted as a combat ship, so its DP should be of little consequence.
+* Rime (F) Freighter : Fuel capacity increased from 500 → 550.
+   * Added Adaptive Flight Deck: When left empty, the Rime’s flight deck enters standby and no longer counts toward the fleet’s fighter-bay total. Installing a fighter wing automatically returns it to active service.
+   * Reasoning: Reinforces the Rime’s role as a flexible logistics ship without penalizing fleets that do not use its optional fighter bay.
+
+Weapons
+* IBIS and Raptor full revert:
+   * Refire delay: 0.05 → 0.10s (peak dps is halved,but can fire for twice as long on the same magazine)
+   * Projectile speed: 2000 → 1000
+   * IBIS turn speed: 180 → 90°/s
+   * Raptor turn speed: 180 → 75°/s, matching the Vulcan.
+   * Raptor ammo capacity: 64 → 48
+   * Ibis magazine now lasts twice as long.
+   * Raptor magazine now lasts 50% longer.
+   * Reasoning: Restoring Tartiflette’s original profile reins in their excessive burst damage while preserving their magazine fed character, giving both weapons a longer and more deliberate firing cycle.
+* Banish Torpedoes (Applies to both small and medium variants)
+   * Actual damage and EMP restored from `1,500 → 2,000`, matching the tooltip. Bugfix resulting in a buff.
+   * Warhead turn rate increased from `90 → 120°/s`.
+   * Turn acceleration increased from `90 → 180°/s²`.
+   * Custom non-ECCM target-leading penalty removed entirely.
+   * Minimum aiming time reduced: Adjusted the launch animation for a punchier release.
+      * Without ECCM: 1.5 → 1 second
+      * With ECCM: 0.75 → 0.6 seconds
+   * Reasoning: The hidden target leading debuff came from an old custom ECCM check that predates vanilla’s current bonuses. It basically turned ECCM into an on/off switch for target leading. That’s gone. ECCM is still advised to make the torpedo get past defenses more often, but it is no longer required for the torpedo to aim properly. The faster rotation is mostly a visual feedback/game-feel tweak for today’s starsector. ECCM will still make the aim animation faster, as intended by its original designt.
+* Versant - Harvest Burst Mode: Damage per shot reduced from 150 to 100, lowering combined DPS from 900 to 600 with a 420 flux/second consumption.
+   * Reasoning: Restores the original intent of three distinct profiles: Automatic for sustained fire and EMP, Burst for accurate and efficient volleys, and Semi-auto for long-range, high-damage shots.
+* Micromissile reload sizes normalized to clean multiples of burst size: Negligible changes for the player, more about having clean stats for easier balancing in the future.
+* Pandemonium Micromissile Arrays: Magazine capacity reverted from 300 to 20. This is not a nerf: their regeneration fully sustains continuous firing after the Micromissile revert, just like it did originally. The oversized magazine served no practical purpose.
+* Plover: increased volume very slightly for feedback during combat.
+* Deep Strike Catapult : Added the “Deep Strike” role and clarified its reload cycle in the tooltip.
+   * Reload Cycle: With its magazine depleted and no Deep Strike pods still active, the catapult readies another launch.
+
+Hullmods
+* Wanzer Servicing Gantries: Removed S-mod bonus and ability to S-mod.
+   * Reasoning: Restored the original design. Unlike Dampers, S-modded Gantries provided an unconditional failsafe that conflicts with our “No Safety Nets” approach. Recent improvements to Wanzer survivability, the Zephyr, Gust-family AI, and the wider roster have made this safeguard unnecessary while encouraging active support from Strifes, Valiants, Hoars, and Zephyrs.
+
+Codex
+* Updated Codex integration to current vanilla conventions.
+   * Diable ship, weapon, and Wanzer blueprint packages now unlock when discovered.
+   * Gulf, Virtuous, and all four Diable station cores now unlock upon encounter instead of remaining permanently hidden.
+   * Diable station modules and the Draft’s Arcus armor module remain hidden as standalone entries and now use the MODULE hint, matching vanilla conventions.
+   * Named built-in weapons now appear in the Codex; mirrored left/right definitions remain hidden.
+   * Dead Frequency rewards are Codex-unlockable.
+
+Crossmod QOL changes
+* Leveling the playing field: The Dead Frequency quest was balanced around vanilla systems and a player using a 240dp fleet, but we added support for Second In Command to the boss fight, so that SIC players aren't unfairly advantaged.
+   * features a tailored fit of second in command officers: will greatly increase difficulty due to using 3 hand chosen officers with skills and max level (6)
+* Virtuous: Reduced minimum crew requirement 30 -> 20.
+   * A small gift for Arma Armatura players.
+
+===============================================================================
+DATE: 29/07/2026
 VERSION: Version 3.02 - “Choicelicious” 
 ===============================================================================
 
