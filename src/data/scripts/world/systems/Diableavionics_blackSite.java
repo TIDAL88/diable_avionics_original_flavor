@@ -44,9 +44,6 @@ public class Diableavionics_blackSite {
     private static final String ACCRETION_OUTER_ID = "diableavionics_blacksite_accretion_outer";
     private static final String CINDER_RING_ID = "diableavionics_blacksite_cinder_ring";
     private static final String PERIMETER_NEBULA_ID = "diableavionics_blacksite_perimeter_nebula";
-    /**
-     * Legacy visual ID retained so the rejected planet ring is removed from saves.
-     */
     private static final String PLANET_DEBRIS_RING_ID = "diableavionics_blacksite_planet_debris_ring";
     private static final String WRECKAGE_ID = "diableavionics_blacksite_wreckage";
     private static final String DEBRIS_TRAIL_TAG = "diableavionics_blacksite_debris_trail";
