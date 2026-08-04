@@ -81,7 +81,7 @@ Thrush LRM System,diableavionics_thrush,1,,1150,7000,,750,,65,30,13,10,0.13334,2
 ,debris_launcher7,,,,200,,1,2,,0,,,,,FRAGMENTATION,,,,,,,5,5,0,0,,375,,,10,,,SYSTEM,,,,,,,,,,,,,,,
 ,debris_launcher8,,,,200,,1,2,,0,,,,,FRAGMENTATION,,,,,,,5,5,0,0,,385,,,10,,,SYSTEM,,,,,,,,,,,,,,,
 ,diableavionics_hexafire_ricochet,,,,500,,66,10,,,,,,,ENERGY,,,,,,,0,0,0,0,,700,,,120,,,SYSTEM,,,,,,,,,,,,,,,
-,diableavionics_banishWarhead,,,,1100,,1500,1500,500,,,,,,ENERGY,,,,,,,0,0,0,0,,500,500,6,300,,,SYSTEM,,,,,,,,,,,,,,,
+,diableavionics_banishWarhead,,,,1100,,2000,2000,500,,,,,,ENERGY,,,,,,,0,0,0,0,,500,500,6,300,,,SYSTEM,,,,,,,,,,,,,,,
 ,diableavionics_derechoSystem,,,,1,1,,,,,,,,,,,,,10,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
 ,diableavionics_ecmModuleSystem,,,,1,1,,,,,,,,,,,,,10,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
 ,diableavionics_rime_system,,,,1,1,,,,,,,,,,,,,10,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
@@ -89,9 +89,9 @@ Thrush LRM System,diableavionics_thrush,1,,1150,7000,,750,,65,30,13,10,0.13334,2
 ,diableavionics_calmSystem,,,,1,1,,,,,,,,,,,,,10,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
 ,diableavionics_armor,,,,1,1,,,,,,,,,,,,,10,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
 ,diableavionics_armorModule,,,,1,1,,,,,,,,,,,,,10,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
-Deep Strike Pod,diableavionics_station_deepStrike,4,,350,10000,,500,2000,500,0,0,1,,,ENERGY,0,,1,30,1,,0,0,0,0,,500,50,20,500,,,"STRIKE,DO_NOT_AIM,SYSTEM, SHOW_IN_CODEX","strike20, missile20, codex_unlockable",,Diable Avionics,,,,,,,,,,,TRUE,9.7
+Deep Strike Pod,diableavionics_station_deepStrike,4,,350,10000,,500,2000,500,0,0,1,,,ENERGY,0,,1,30,1,,0,0,0,0,,500,50,20,500,,,"STRIKE,DO_NOT_AIM,SYSTEM, SHOW_IN_CODEX","strike20, missile20, codex_unlockable",,Diable Avionics,,,,,,,"%s: With its magazine depleted and no Deep Strike pods still active, the catapult readies %s.",Reload Cycle|another launch,,,TRUE,9.7
 ,diableavionics_deepStrikeGlow,,,,1,1,,,,,,,,,,,,,10,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
-Deep Strike Catapult,diableavionics_deep_strike_catapult,4,,350,10000,,500,2000,500,0,0,1,,,ENERGY,0,,1,30,1,,0,0,0,0,,500,50,20,500,,,"STRIKE,DO_NOT_AIM,SYSTEM, SHOW_IN_CODEX","strike20, missile20, codex_unlockable",,Diable Avionics,,,,,,,,,,,TRUE,9.7
+Deep Strike Catapult,diableavionics_deep_strike_catapult,4,,350,10000,,500,2000,500,0,0,1,,,ENERGY,0,,1,30,1,,0,0,0,0,,500,50,20,500,,,"STRIKE,DO_NOT_AIM,SYSTEM, SHOW_IN_CODEX","strike20, missile20, codex_unlockable",,Diable Avionics,,Deep Strike,,,,,"%s: With its magazine depleted and no Deep Strike pods still active, the catapult readies %s.",Reload Cycle|another launch,,,TRUE,9.7
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #VERSANT FRIGATE,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

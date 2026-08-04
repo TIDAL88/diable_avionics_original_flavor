@@ -34,9 +34,9 @@ public class Diableavionics_banishAI implements MissileAIPlugin, GuidedMissileAI
     //Leading loss without ECCM hullmod. The higher, the less accurate the leading calculation will be.
     //   1: perfect leading with and without ECCM
     //   2: half precision without ECCM
-    //   3: a third as precise without ECCM. Default
+    //   3: a third as precise without ECCM
     //   4, 5, 6 etc : 1/4th, 1/5th, 1/6th etc precision.
-    private float ECCM=2;   //A VALUE BELOW 1 WILL PREVENT THE MISSILE FROM EVER HITTING ITS TARGET!    
+    private float ECCM=1;   //A VALUE BELOW 1 WILL PREVENT THE MISSILE FROM EVER HITTING ITS TARGET!
     
     //////////////////////
     //    VARIABLES     //
@@ -64,9 +64,9 @@ public class Diableavionics_banishAI implements MissileAIPlugin, GuidedMissileAI
         MAX_RANGE = (int)missile.getWeapon().getRange();
         if (missile.getSource().getVariant().getHullMods().contains("eccm")){
             ECCM=1;
-            DELAY=0.75f;
+            DELAY=0.6f;
         } else {
-            DELAY=1.5f;
+            DELAY=1f;
         }
     }
     

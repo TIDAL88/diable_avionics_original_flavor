@@ -41,8 +41,7 @@ public final class DiableGulfPart2FleetFactory {
     private static final String FLEET_SKILLS_KEY = "fleet_commander_skills";
 
     /**
-     * Exact combat ships from the DIABLE CLASSIC FLEET save. The Dram and Phaeton were templates:
-     * the Dram supplied fleetwide skills and the Phaeton supplied the station captain.
+     * Boss fleet
      */
     private static final FleetEntry[] FLEET = {
             new FleetEntry(
@@ -262,8 +261,7 @@ public final class DiableGulfPart2FleetFactory {
     }
 
     /**
-     * The Phaeton captain from the template save, augmented with the Dram player's fleetwide
-     * skills. This person commands the campaign fleet and an equivalent copy pilots the station
+     * This person commands the campaign fleet and an equivalent copy pilots the station
      * when it arrives, ensuring the delayed combat spawn receives the same profile.
      */
     public static PersonAPI createStationCommander() {
@@ -274,7 +272,7 @@ public final class DiableGulfPart2FleetFactory {
     }
 
     /**
-     * Adversary-style officer construction: one JSON captain template per hull, instantiated as a
+     * A one JSON captain template per hull, instantiated as a
      * new person for every ship.
      */
     private static PersonAPI createOfficer(String specKey, boolean fleetCommander) {

@@ -23,6 +23,8 @@ import java.util.Map;
 
 public class DiableAvionicsUpgrade extends BaseHullMod {
 
+    private static final String AESTHETICS_ID = "abyss_diable_afterimage_suite";
+
     @Override
     public void applyEffectsBeforeShipCreation(HullSize hullSize, MutableShipStatsAPI stats, String id) {
         stats.getBallisticWeaponDamageMult().modifyPercent(id, 30);
@@ -100,7 +102,10 @@ public class DiableAvionicsUpgrade extends BaseHullMod {
                 lastFluxCap = newFlux;
             }
 
-            if (avionicsBoost) {
+            boolean aestheticsOverride = ship.getVariant() != null
+                    && ship.getVariant().hasHullMod(AESTHETICS_ID);
+
+            if (avionicsBoost && !aestheticsOverride) {
                 engineEffectLevel += amount;
 
                 effectInterval.advance(amount);

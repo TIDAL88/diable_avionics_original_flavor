@@ -16,6 +16,7 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import data.campaign.DACampaignPlugin;
 import data.scripts.campaign.gulf.DiableGulfPart2Intel;
 import data.scripts.campaign.gulf.DiableGulfPart2TriggerScript;
+import data.scripts.campaign.RimeFlightDeckManager;
 import data.scripts.ai.*;
 import data.scripts.world.DiableavionicsGen;
 import data.scripts.world.MarketHelpers;
@@ -106,6 +107,7 @@ public class DAModPlugin extends BaseModPlugin {
         Global.getSector().registerPlugin(new DACampaignPlugin());
         new DiableavionicsGen().generate(Global.getSector());
         setupGulfPart2();
+        setupRimeFlightDeckManager();
 
         if (!haveNexerelin || SectorManager.getManager().isCorvusMode()) {
             if (!Global.getSector().getMemoryWithoutUpdate().contains(MEMKEY_INTIALIZED)) {
@@ -152,6 +154,16 @@ public class DAModPlugin extends BaseModPlugin {
 
             Global.getSector().getMemoryWithoutUpdate().set(MEMKEY_VERSION, 2.82);
         }
+    }
+
+    private void setupRimeFlightDeckManager() {
+        Global.getSector().removeTransientScriptsOfClass(RimeFlightDeckManager.class);
+        Global.getSector().getListenerManager().removeListenerOfClass(RimeFlightDeckManager.class);
+
+        RimeFlightDeckManager manager = new RimeFlightDeckManager();
+        Global.getSector().addTransientScript(manager);
+        Global.getSector().getListenerManager().addListener(manager, true);
+        manager.synchronize();
     }
 
     private void setupGulfPart2() {
