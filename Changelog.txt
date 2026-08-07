@@ -1,6 +1,6 @@
 ===============================================================================
 DATE: 04/08/2026
-VERSION: Version 3.0.3 - “No Safety Nets”
+VERSION: Version 3.0.3
 ===============================================================================
 
 Bugfixes
@@ -52,7 +52,7 @@ Weapons
 
 Hullmods
 * Wanzer Servicing Gantries: Removed S-mod bonus and ability to S-mod.
-   * Reasoning: Restored the original design. Unlike Dampers, S-modded Gantries provided an unconditional failsafe that conflicts with our “No Safety Nets” approach. Recent improvements to Wanzer survivability, the Zephyr, Gust-family AI, and the wider roster have made this safeguard unnecessary while encouraging active support from Strifes, Valiants, Hoars, and Zephyrs.
+   * Reasoning: Restored the original design. Unlike Dampers, S-modded Gantries provided an unconditional failsafe that conflicts with our pro player-agency approach.  approach. Recent improvements to Wanzer survivability, the Zephyr, Gust-family AI, and the wider roster have made this safeguard unnecessary while encouraging active support from Strifes, Valiants, Hoars, and Zephyrs.
 
 Codex
 * Updated Codex integration to current vanilla conventions.
