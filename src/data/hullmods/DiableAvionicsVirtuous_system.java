@@ -7,14 +7,12 @@ import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipAPI.HullSize;
 import com.fs.starfarer.api.combat.ShipHullSpecAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 
 import static data.scripts.util.Diableavionics_stringsManager.txt;
 
-import data.campaign.ids.Diableavionics_ids;
 import org.magiclib.util.MagicIncompatibleHullmods;
 
 import java.awt.Color;
