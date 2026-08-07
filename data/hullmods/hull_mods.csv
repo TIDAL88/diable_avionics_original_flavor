@@ -11,8 +11,7 @@ Oversized Hull,diableavionics_oversized,,,,,,,,TRUE,,0,0,0,0,data.hullmods.Diabl
 ,,,,,,,,,,,,,,,,,,,
 Dampened Mounts,diableavionics_mountBI,4,,Diable Avionics,,,,TRUE,,,0,0,0,0,data.hullmods.DiableAvionicsMountBI,"The ship's weapon emplacements are designed around strengthened recoil dampeners, enabling projectile weapons to fire at a marginally increased range of %s with a %s reduction in recoil. Projectile weapons in large slots enjoy an extended range of %s range instead.",,"The ship's weapon emplacements are redesigned around installing Diable Avionics weaponry, reducing the OP cost by %s/%s/%s according to size for ballistic and energy weapons from the corporation.
 However, such a complex modification raises the deployment point cost of the ship by %s/%s/%s/%s according to the ship's size.",graphics/da/hullmods/diableavionics_mount.png
-Dampened Mounts,diableavionics_mount,3,0.33,Diable Avionics,"offensive, req_spaceport","Weapons, Requires Dock",15000,,,,8,12,20,30,data.hullmods.DampenedMounts,"The ship's weapon emplacements are fitted with additional recoil dampeners, enabling projectile weapons to fire at a marginally increased range of %s with a %s reduction in recoil, but only at %s of their maximum firerate. The extra recoil dampeners introduce more points of failure, causing weapon mounts to take %s more damage.",,"The ship's weapon emplacements become fully integrated with the additional recoil dampeners, removing the fire rate penalty. Diable Avionics weaponry is notably simpler to install on the new emplacements, reducing the OP cost by %s/%s/%s according to size for ballistic and energy weapons from the corporation.
-However, such a complex modification raises the deployment point cost of the ship by %s/%s/%s/%s according to the ship's size.",graphics/da/hullmods/diableavionics_mount.png
+Dampened Mounts,diableavionics_mount,,,Diable Avionics,"no_build_in, no_drop, no_drop_salvage, no_sell, codex_hidden","Weapons, Requires Dock",15000,,TRUE,TRUE,8,12,20,30,com.fs.starfarer.api.combat.BaseHullMod,,,,
 ,,,,,,,,,,,,,,,,,,,
 # WANZER GANTRY,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,
@@ -99,12 +98,17 @@ Assault Configuration,assault_configuration,,,Diable Avionics,diable,,15000,,TRU
 Artillery Configuration,artillery_configuration,,,Diable Avionics,diable,,15000,,TRUE,,0,0,0,0,data.hullmods.ArtilleryConfig,"A novel reconfiguration of the Pandemonium's core reactor grid, engineered exclusively for long-range orbital bombardment and fire-support operations. By aggressively redirecting power from the auxiliary propulsion systems and secondary capacitor banks into the primary fire-control arrays, the hull gains an unprecedented boost to tactical targeting fidelity and maximum weapon range. However, starving the main engines and smaller mounts results in a degradation of tactical mobility alongside a minor drop in overall weapon cycling speeds.",Artillery Configuration. Optimized for long range.,,graphics/da/hullmods/diableavionics_tuning.png
 ,,,,,,,,,,,,,,,,,,,
 #GULF,,,,,,,,,,,,,,,,,,,
-Deep Strike Conversion,gulf_deep_strike,,,Diable Avionics,"diable, no_build_in, no_drop, no_drop_salvage, codex_unlockable",,,,FALSE,,0,0,25,0,data.hullmods.DiableAvionicsGulf_DeepStrike,"Installs a Deep Strike Catapult in the Gulf’s foremost large weapon mount and integrates the control systems required for a Wanzer-delivered EMP strike.
+Deep Strike Conversion,gulf_deep_strike,,,Diable Avionics,"diable, no_build_in, no_drop, no_drop_salvage, no_sell, codex_unlockable",,,,FALSE,,0,0,25,0,data.hullmods.DiableAvionicsGulf_DeepStrike,"Installs a Deep Strike Catapult in the Gulf’s foremost large weapon mount and integrates the control systems required for a Wanzer-delivered EMP strike.
 
 The necessary structural modifications, power-routing equipment, and launch hardware leave insufficient space for the ship’s Wanzer-specific gantries.",,,graphics/da/hullmods/diableavionics_tuning.png
 master,gulf_master,,,Diable Avionics,"diable, no_build_in, no_drop, no_drop_salvage",,,,TRUE,TRUE,0,0,0,0,data.hullmods.DiableAvionicsGulf_Master,,,,
 DA,diableavionics_phase_visuals,,,Diable Avionics,diable,,,,TRUE,TRUE,0,0,0,0,data.hullmods.Diableavionics_phaseVisuals,,,,
 #RIME,,,,,,,,,,,,,,,,,,,
 master,rime_master,,,,"diable, no_build_in, no_drop, no_drop_salvage",,,,TRUE,TRUE,0,0,0,0,data.hullmods.DiableAvionicsRime_Master,,,,
-Active Bay,rime_active_bay,,,Diable Avionics,,,,,,,0,0,0,0,data.hullmods.RimeFlightDeckAdder,,,,graphics/da/hullmods/diableavionics_tuning.png
-Standby Bay,rime_standby_bay,,,Diable Avionics,,,,,,,0,0,0,0,data.hullmods.RimeFlightDeckRemover,,,,graphics/da/hullmods/diableavionics_tuning.png
+Active Bay,rime_active_bay,,,Diable Avionics,"no_drop, no_drop_salvage, no_build_in, , no_dealer",,,,TRUE,"",0,0,0,0,data.hullmods.RimeFlightDeckAdder,The flight deck is active and counts toward the fleet’s fighter bay total. Press R to refresh the refit screen after removal.,,,graphics/da/hullmods/diableavionics_decksON.png
+Standby Bay,rime_standby_bay,,,Diable Avionics,"no_drop, no_drop_salvage, no_build_in, no_sell, no_dealer",,,,TRUE,"",0,0,0,0,data.hullmods.RimeFlightDeckRemover,The flight deck is placed on standby and does not count toward the fleet’s fighter bay total. Press R to refresh the refit screen after removal.,,,graphics/da/hullmods/diableavionics_decksOFF.png
+,,,,,,,,,,,,,,,,,,,
+#DEPRECATED DELETE AT 98.5,,,,,,,,,,,,,,,,,,,
+Legacy Rime Deck,diableavionics_rime_flightdeck_active,,,Diable Avionics,"no_build_in, no_drop, no_drop_salvage, no_sell, no_dealer",,0,,TRUE,TRUE,0,0,0,0,com.fs.starfarer.api.combat.BaseHullMod,,,,
+Legacy Rime Deck,diableavionics_rime_flightdeck_standby,,,Diable Avionics,"no_build_in, no_drop, no_drop_salvage, no_sell, no_dealer",,0,,TRUE,TRUE,0,0,0,0,com.fs.starfarer.api.combat.BaseHullMod,,,,
+Legacy Rime Deck,diableavionics_rime_flightdeck_controller,,,Diable Avionics,"no_build_in, no_drop, no_drop_salvage, no_sell, no_dealer",,0,,TRUE,TRUE,0,0,0,0,com.fs.starfarer.api.combat.BaseHullMod,,,,
