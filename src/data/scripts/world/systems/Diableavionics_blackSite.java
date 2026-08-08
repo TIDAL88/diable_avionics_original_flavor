@@ -6,11 +6,14 @@ import com.fs.starfarer.api.impl.MusicPlayerPluginImpl;
 import com.fs.starfarer.api.impl.campaign.DerelictShipEntityPlugin;
 import com.fs.starfarer.api.impl.campaign.GateEntityPlugin;
 import com.fs.starfarer.api.impl.campaign.ids.*;
+import com.fs.starfarer.api.impl.campaign.procgen.NebulaEditor;
 import com.fs.starfarer.api.impl.campaign.procgen.StarSystemGenerator;
 import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.special.ShipRecoverySpecial;
 import com.fs.starfarer.api.impl.campaign.terrain.BaseTiledTerrain;
 import com.fs.starfarer.api.impl.campaign.terrain.EventHorizonPlugin;
+import com.fs.starfarer.api.impl.campaign.terrain.HyperspaceTerrainPlugin;
 import com.fs.starfarer.api.impl.campaign.terrain.MagneticFieldTerrainPlugin;
+import com.fs.starfarer.api.util.Misc;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -73,7 +76,9 @@ public class Diableavionics_blackSite {
     private static final float GATE_ORBIT_RADIUS =
             CINDER_RING_RADIUS - CINDER_RING_WIDTH * 0.5f + 15f;
     private static final float GATE_SPIN_DEGREES_PER_DAY = 2f;
-    private static final Color WELL_COLOR = new Color(181, 22, 62);
+    public static final float HYPERSPACE_PROTECTION_RADIUS = 1000f;
+    private static final float HYPERSPACE_CLEAR_RADIUS = 500f;
+    private static final Color WELL_COLOR = new Color(205, 82, 72);
 
     private static final GateWreckSpec[] GATE_WRECKS = {
             // Capital wrecks clumped between the ruptured gate and the black hole.
@@ -106,6 +111,7 @@ public class Diableavionics_blackSite {
             system = createSystem(sector);
         }
         ensureGateCluster(system);
+        ensureHyperspaceProtection(sector, system);
     }
 
     private StarSystemAPI createSystem(SectorAPI sector) {
@@ -172,6 +178,33 @@ public class Diableavionics_blackSite {
         system.generateAnchorIfNeeded();
         system.updateAllOrbits();
         return system;
+    }
+
+    private void ensureHyperspaceProtection(SectorAPI sector, StarSystemAPI system) {
+        if (!sector.getListenerManager().hasListenerOfClass(Diableavionics_blackSiteSlipstreamBlocker.class)) {
+            sector.getListenerManager().addListener(new Diableavionics_blackSiteSlipstreamBlocker(), true);
+        }
+
+        CampaignTerrainAPI terrain = Misc.getHyperspaceTerrain();
+        if (terrain == null || !(terrain.getPlugin() instanceof HyperspaceTerrainPlugin)) return;
+
+        HyperspaceTerrainPlugin plugin = (HyperspaceTerrainPlugin) terrain.getPlugin();
+        NebulaEditor editor = new NebulaEditor(plugin);
+        float centerX = system.getLocation().x;
+        float centerY = system.getLocation().y;
+        float radius = HYPERSPACE_CLEAR_RADIUS;
+        Object storedWell = sector.getMemoryWithoutUpdate().get(NASCENT_WELL_KEY);
+        if (storedWell instanceof NascentGravityWellAPI) {
+            NascentGravityWellAPI well = (NascentGravityWellAPI) storedWell;
+            well.setColorOverride(WELL_COLOR);
+            centerX = well.getLocation().x;
+            centerY = well.getLocation().y;
+            radius += well.getRadius();
+        }
+
+        float edge = plugin.getTileSize() * 2f;
+        editor.clearArc(centerX, centerY, 0f, radius + edge * 0.5f, 0f, 360f);
+        editor.clearArc(centerX, centerY, 0f, radius + edge, 0f, 360f, 0.25f);
     }
 
     private void ensureGateCluster(StarSystemAPI system) {
