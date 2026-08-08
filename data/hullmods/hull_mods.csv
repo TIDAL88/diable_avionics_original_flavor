@@ -105,8 +105,8 @@ master,gulf_master,,,Diable Avionics,"diable, no_build_in, no_drop, no_drop_salv
 DA,diableavionics_phase_visuals,,,Diable Avionics,diable,,,,TRUE,TRUE,0,0,0,0,data.hullmods.Diableavionics_phaseVisuals,,,,
 #RIME,,,,,,,,,,,,,,,,,,,
 master,rime_master,,,,"diable, no_build_in, no_drop, no_drop_salvage",,,,TRUE,TRUE,0,0,0,0,data.hullmods.DiableAvionicsRime_Master,,,,
-Active Bay,rime_active_bay,,,Diable Avionics,"no_drop, no_drop_salvage, no_build_in, , no_dealer",,,,TRUE,"",0,0,0,0,data.hullmods.RimeFlightDeckAdder,The flight deck is active and counts toward the fleet’s fighter bay total. Press R to refresh the refit screen after removal.,,,graphics/da/hullmods/diableavionics_decksON.png
-Standby Bay,rime_standby_bay,,,Diable Avionics,"no_drop, no_drop_salvage, no_build_in, no_sell, no_dealer",,,,TRUE,"",0,0,0,0,data.hullmods.RimeFlightDeckRemover,The flight deck is placed on standby and does not count toward the fleet’s fighter bay total. Press R to refresh the refit screen after removal.,,,graphics/da/hullmods/diableavionics_decksOFF.png
+Active Bay,rime_active_bay,,,Diable Avionics,"no_drop, no_drop_salvage, no_build_in, , no_dealer",,,,TRUE,"",0,0,0,0,data.hullmods.RimeFlightDeckAdder,The flight deck is active and counts toward the fleet’s fighter bay total.,,,graphics/da/hullmods/diableavionics_decksON.png
+Standby Bay,rime_standby_bay,,,Diable Avionics,"no_drop, no_drop_salvage, no_build_in, no_sell, no_dealer",,,,TRUE,"",0,0,0,0,data.hullmods.RimeFlightDeckRemover,The flight deck is placed on standby and does not count toward the fleet’s fighter bay total.,,,graphics/da/hullmods/diableavionics_decksOFF.png
 ,,,,,,,,,,,,,,,,,,,
 #DEPRECATED DELETE AT 98.5,,,,,,,,,,,,,,,,,,,
 Legacy Rime Deck,diableavionics_rime_flightdeck_active,,,Diable Avionics,"no_build_in, no_drop, no_drop_salvage, no_sell, no_dealer",,0,,TRUE,TRUE,0,0,0,0,com.fs.starfarer.api.combat.BaseHullMod,,,,

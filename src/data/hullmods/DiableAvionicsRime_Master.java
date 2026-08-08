@@ -22,9 +22,10 @@ public class DiableAvionicsRime_Master extends BaseHullMod {
 
     @Override
     public void applyEffectsBeforeShipCreation(ShipAPI.HullSize hullSize, MutableShipStatsAPI stats, String id) {
-        ShipVariantAPI variant = (stats.getFleetMember() != null)
-                ? stats.getFleetMember().getVariant()
-                : stats.getVariant();
+        ShipVariantAPI variant = stats.getVariant();
+        if (variant == null && stats.getFleetMember() != null) {
+            variant = stats.getFleetMember().getVariant();
+        }
         if (variant == null) return;
 
         boolean switchMode = true;
