@@ -1,2 +1,3 @@
 fieldID,fieldName,fieldType,defaultValue,secondaryValue,fieldDescription,minValue,maxValue,tab
 diable_shield_color,Diable Avionics Shield Color,Radio,Stock,"Stock,Advanced Avionics Red,Phase Grazer Cyan","Selects the shield color for Diable Avionics hulls.",,,Visuals
+diable_last_line_easy,Classic Last Line Fleet (Easy Mode),Boolean,false,,"Uses Tartiflette's classic procedurally generated The Last Line fleet instead of the revamped handmade encounter. This is the easier mode and normally requires a new campaign.",,,Gameplay

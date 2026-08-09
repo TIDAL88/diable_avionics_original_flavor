@@ -12,6 +12,7 @@ import com.fs.starfarer.api.util.WeightedRandomPicker;
 import data.campaign.ids.Diableavionics_ids;
 import data.campaign.special.Diableavionics_gulfLoot;
 import data.campaign.special.Diableavionics_virtuousLoot;
+import data.scripts.DAOptionalLunaSettings;
 import data.scripts.world.systems.Diableavionics_blackSite;
 import data.scripts.world.systems.Diableavionics_fob;
 import data.scripts.world.systems.Diableavionics_outerTerminus;
@@ -21,6 +22,8 @@ import org.magiclib.util.MagicCampaign;
 import static data.scripts.util.Diableavionics_stringsManager.txt;
 
 public class DiableavionicsGen implements SectorGeneratorPlugin {
+    private static final String LUNALIB_ID = "lunalib";
+
     @Override
     public void generate(SectorAPI sector) {
         if (sector.getStarSystem("diableavionics_outerTerminus") == null) {
@@ -162,12 +165,48 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
 
             String variant = VIRTUOUS.pick();
             virtuousVariant = variant;
-            CampaignFleetAPI virtuous = MagicCampaign.createFleetBuilder()
+            CampaignFleetAPI virtuous;
+            if (useClassicLastLineFleet()) {
+                virtuous = createClassicLastLineFleet(
+                        target,
+                        virtuousCaptain,
+                        variant
+                );
+            } else {
+                virtuous = createHandmadeLastLineFleet(
+                        target,
+                        virtuousCaptain,
+                        variant
+                );
+            }
+
+            virtuous.setDiscoverable(false);
+            virtuous.addTag(Tags.NEUTRINO);
+            virtuous.getFlagship().getVariant().addTag(Tags.VARIANT_UNBOARDABLE);
+            virtuous.getFlagship().getVariant().removeTag(Tags.VARIANT_ALWAYS_RECOVERABLE);
+            virtuous.getFlagship().getStats().getDynamic().getMod(Stats.INDIVIDUAL_SHIP_RECOVERY_MOD).modifyFlat(Diableavionics_ids.UNIQUE, -2000);
+            virtuous.addEventListener(new Diableavionics_virtuousLoot());
+
+            virtuousCaptain.getMemoryWithoutUpdate().set("$virtuous", true);
+            virtuous.getMemoryWithoutUpdate().set("$virtuous", true);
+        }
+    }
+
+    /**
+     * Tartiflette's original procedurally reinforced The Last Line encounter.
+     * Keep this builder unchanged: LunaLib's easy-mode setting points here.
+     */
+    private static CampaignFleetAPI createClassicLastLineFleet(
+            SectorEntityToken target,
+            PersonAPI virtuousCaptain,
+            String virtuousVariant
+    ) {
+        return MagicCampaign.createFleetBuilder()
                     .setFleetFaction("diableavionics")
                     .setFleetName(txt("virtuousFleet"))
                     .setFleetType(FleetTypes.TASK_FORCE)
                     .setFlagshipName(txt("virtuousShip"))
-                    .setFlagshipVariant(variant)
+                    .setFlagshipVariant(virtuousVariant)
                     .setFlagshipAutofit(false)
                     .setCaptain(virtuousCaptain)
                     .setMinFP(300)
@@ -179,16 +218,30 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
                     .setIsImportant(false)
                     .setTransponderOn(true)
                     .create();
+    }
 
-            virtuous.setDiscoverable(false);
-            virtuous.addTag(Tags.NEUTRINO);
-            virtuous.getFlagship().getVariant().addTag(Tags.VARIANT_UNBOARDABLE);
-            virtuous.getFlagship().getVariant().removeTag(Tags.VARIANT_ALWAYS_RECOVERABLE);
-            virtuous.getFlagship().getStats().getDynamic().getMod(Stats.INDIVIDUAL_SHIP_RECOVERY_MOD).modifyFlat(Diableavionics_ids.UNIQUE, -2000);
-            virtuous.addEventListener(new Diableavionics_virtuousLoot());
+    /**
+     * Entry point for the save-authored fleet. Until THE LAST LINE save is supplied and
+     * converted, use the locked classic builder so development builds remain playable.
+     */
+    private static CampaignFleetAPI createHandmadeLastLineFleet(
+            SectorEntityToken target,
+            PersonAPI virtuousCaptain,
+            String virtuousVariant
+    ) {
+        return createClassicLastLineFleet(target, virtuousCaptain, virtuousVariant);
+    }
 
-            virtuousCaptain.getMemoryWithoutUpdate().set("$virtuous", true);
-            virtuous.getMemoryWithoutUpdate().set("$virtuous", true);
+    private static boolean useClassicLastLineFleet() {
+        if (!Global.getSettings().getModManager().isModEnabled(LUNALIB_ID)) {
+            return false;
+        }
+
+        try {
+            return DAOptionalLunaSettings.useClassicLastLineFleet();
+        } catch (Throwable ignored) {
+            // LunaLib is optional; the revamped handmade fleet is the default.
+            return false;
         }
     }
 
