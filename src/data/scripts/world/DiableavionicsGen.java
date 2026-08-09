@@ -5,6 +5,7 @@ import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.characters.FullName;
 import com.fs.starfarer.api.characters.PersonAPI;
+import com.fs.starfarer.api.campaign.listeners.FleetEventListener;
 import com.fs.starfarer.api.impl.campaign.events.OfficerManagerEvent;
 import com.fs.starfarer.api.impl.campaign.ids.*;
 import com.fs.starfarer.api.impl.campaign.shared.SharedData;
@@ -13,6 +14,7 @@ import data.campaign.ids.Diableavionics_ids;
 import data.campaign.special.Diableavionics_gulfLoot;
 import data.campaign.special.Diableavionics_virtuousLoot;
 import data.scripts.DAOptionalLunaSettings;
+import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
 import data.scripts.world.systems.Diableavionics_blackSite;
 import data.scripts.world.systems.Diableavionics_fob;
 import data.scripts.world.systems.Diableavionics_outerTerminus;
@@ -163,10 +165,13 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
                     .setSkillPreference(OfficerManagerEvent.SkillPickPreference.YES_ENERGY_YES_BALLISTIC_YES_MISSILE_YES_DEFENSE)
                     .create();
 
-            String variant = VIRTUOUS.pick();
+            boolean useClassicFleet = useClassicLastLineFleet();
+            String variant = useClassicFleet
+                    ? VIRTUOUS.pick()
+                    : DiableLastLineFleetFactory.VIRTUOUS_VARIANT_ID;
             virtuousVariant = variant;
             CampaignFleetAPI virtuous;
-            if (useClassicLastLineFleet()) {
+            if (useClassicFleet) {
                 virtuous = createClassicLastLineFleet(
                         target,
                         virtuousCaptain,
@@ -175,21 +180,58 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
             } else {
                 virtuous = createHandmadeLastLineFleet(
                         target,
-                        virtuousCaptain,
-                        variant
+                        virtuousCaptain
                 );
             }
 
-            virtuous.setDiscoverable(false);
-            virtuous.addTag(Tags.NEUTRINO);
-            virtuous.getFlagship().getVariant().addTag(Tags.VARIANT_UNBOARDABLE);
-            virtuous.getFlagship().getVariant().removeTag(Tags.VARIANT_ALWAYS_RECOVERABLE);
-            virtuous.getFlagship().getStats().getDynamic().getMod(Stats.INDIVIDUAL_SHIP_RECOVERY_MOD).modifyFlat(Diableavionics_ids.UNIQUE, -2000);
-            virtuous.addEventListener(new Diableavionics_virtuousLoot());
-
-            virtuousCaptain.getMemoryWithoutUpdate().set("$virtuous", true);
-            virtuous.getMemoryWithoutUpdate().set("$virtuous", true);
+            configureVirtuousEncounter(virtuous, virtuousCaptain);
         }
+    }
+
+    /**
+     * Applies the quest and recovery hooks shared by both Last Line modes.
+     */
+    private static void configureVirtuousEncounter(
+            CampaignFleetAPI virtuous,
+            PersonAPI virtuousCaptain
+    ) {
+        virtuous.setDiscoverable(false);
+        virtuous.addTag(Tags.NEUTRINO);
+        virtuous.getFlagship().getVariant().addTag(Tags.VARIANT_UNBOARDABLE);
+        virtuous.getFlagship().getVariant().removeTag(
+                Tags.VARIANT_ALWAYS_RECOVERABLE
+        );
+        virtuous.getFlagship().getStats().getDynamic()
+                .getMod(Stats.INDIVIDUAL_SHIP_RECOVERY_MOD)
+                .modifyFlat(Diableavionics_ids.UNIQUE, -2000);
+
+        boolean hasLootListener = false;
+        for (FleetEventListener listener : virtuous.getEventListeners()) {
+            if (listener instanceof Diableavionics_virtuousLoot) {
+                hasLootListener = true;
+                break;
+            }
+        }
+        if (!hasLootListener) {
+            virtuous.addEventListener(new Diableavionics_virtuousLoot());
+        }
+
+        virtuousCaptain.getMemoryWithoutUpdate().set("$virtuous", true);
+        virtuous.getMemoryWithoutUpdate().set("$virtuous", true);
+    }
+
+    /**
+     * One-time, in-place update for a classic fleet serialized by an older release.
+     */
+    public static void migrateLastLineFleetIfNeeded() {
+        CampaignFleetAPI migrated =
+                DiableLastLineFleetFactory.migrateExistingFleet(
+                        useClassicLastLineFleet()
+                );
+        if (migrated == null) return;
+
+        virtuousVariant = DiableLastLineFleetFactory.VIRTUOUS_VARIANT_ID;
+        configureVirtuousEncounter(migrated, migrated.getCommander());
     }
 
     /**
@@ -221,15 +263,13 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
     }
 
     /**
-     * Entry point for the save-authored fleet. Until THE LAST LINE save is supplied and
-     * converted, use the locked classic builder so development builds remain playable.
+     * Entry point for the save-authored default encounter.
      */
     private static CampaignFleetAPI createHandmadeLastLineFleet(
             SectorEntityToken target,
-            PersonAPI virtuousCaptain,
-            String virtuousVariant
+            PersonAPI virtuousCaptain
     ) {
-        return createClassicLastLineFleet(target, virtuousCaptain, virtuousVariant);
+        return DiableLastLineFleetFactory.createFleet(target, virtuousCaptain);
     }
 
     private static boolean useClassicLastLineFleet() {

@@ -1,0 +1,41 @@
+{
+    "displayName": "Attack",
+    "fluxCapacitors": 11,
+    "fluxVents": 8,
+    "goalVariant": false,
+    "hullId": "diableavionics_vapor",
+    "hullMods": [
+        "advancedoptics",
+        "hardenedshieldemitter"
+    ],
+    "permaMods": [
+        "advancedoptics",
+        "hardenedshieldemitter"
+    ],
+    "sMods": [
+        "advancedoptics",
+        "hardenedshieldemitter"
+    ],
+    "tags": [
+        "ship_recoverable"
+    ],
+    "variantId": "diableavionics_lastline_vapor",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0001": "diableavionics_state",
+                "WS0002": "diableavionics_nocturne"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0003": "diableavionics_ibis",
+                "WS0004": "diableavionics_ibis"
+            }
+        }
+    ]
+}

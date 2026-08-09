@@ -119,6 +119,8 @@ public class DAModPlugin extends BaseModPlugin {
             Global.getSector().getMemoryWithoutUpdate().set(MEMKEY_SPECIAL_FLEETS_INITIALIZED, true);
         }
 
+        DiableavionicsGen.migrateLastLineFleetIfNeeded();
+
         if (!Global.getSector().getMemoryWithoutUpdate().contains(MEMKEY_VERSION)
                 || ((Double) Global.getSector().getMemoryWithoutUpdate().get(MEMKEY_VERSION)) < 2.80) {
 

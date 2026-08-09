@@ -1,0 +1,81 @@
+{
+    "displayName": "Custom",
+    "fluxCapacitors": 10,
+    "fluxVents": 7,
+    "goalVariant": false,
+    "hullId": "diableavionics_storm",
+    "hullMods": [
+        "abyss_diable_afterimage_suite",
+        "abyss_diable_afterimage_mode_blue",
+        "eccm",
+        "targetingunit",
+        "ML_skinSwap"
+    ],
+    "permaMods": [
+        "eccm",
+        "targetingunit",
+        "ML_skinSwap"
+    ],
+    "sMods": [
+        "eccm",
+        "targetingunit"
+    ],
+    "tags": [
+        "ship_recoverable",
+        "ML_paintjob-diableavionics_battlehardened_storm",
+        "abyss_diable_afterimage_last_blue"
+    ],
+    "variantId": "diableavionics_lastline_storm",
+    "weaponGroups": [
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0010": "diableavionics_microcluster_left"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0001": "diableavionics_thrush",
+                "WS0002": "diableavionics_thrush"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0003": "diableavionics_srab",
+                "WS0004": "diableavionics_srab"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0007": "diableavionics_winee"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0005": "diableavionics_lazyhorn_storm",
+                "WS0006": "diableavionics_lazyhorn_storm"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0009": "diableavionics_ibis",
+                "WS0008": "diableavionics_ibis"
+            }
+        }
+    ],
+    "wings": [
+        "diableavionics_blizzaia_wing",
+        "diableavionics_avalanche_wing"
+    ]
+}
