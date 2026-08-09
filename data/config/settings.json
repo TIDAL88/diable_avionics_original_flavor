@@ -87,6 +87,8 @@
       "DS_doorRight": "graphics/da/ships/station/diableavionics_deepStrikeDoorRight.png",
       "DS_afterimage": "graphics/da/ships/station/diableavionics_deepStrikeM_afterimage.png",
 
+      "VIRTUOUS_body": "graphics/da/ships/virtuous/diableavionics_virtuous_body.png",
+
       "BUBBLE_trail": "graphics/da/ships/virtuous/bubble/diableavionics_bubbleTrail.png",
 
       "BUBBLE_top00": "graphics/da/ships/virtuous/bubble/diableavionics_bubbleBlank.png",
