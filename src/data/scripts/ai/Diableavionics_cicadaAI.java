@@ -31,7 +31,7 @@ public class Diableavionics_cicadaAI implements MissileAIPlugin, GuidedMissileAI
             mult = 2;
         }
 
-        missile.setArmingTime((missile.getArmingTime() - (float) (Math.random() / 2)) * launchingShip.getMutableStats().getMissileWeaponRangeBonus().getBonusMult());
+        missile.setArmingTime(missile.getArmingTime() - (float) (Math.random() / 2));
     }
 
     @Override
