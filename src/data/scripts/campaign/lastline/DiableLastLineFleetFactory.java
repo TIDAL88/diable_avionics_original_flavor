@@ -15,6 +15,7 @@ import com.fs.starfarer.api.impl.campaign.ids.FleetTypes;
 import com.fs.starfarer.api.impl.campaign.ids.Ranks;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.magiclib.util.MagicCampaign;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public final class DiableLastLineFleetFactory {
             "diableavionics_lastline_virtuous";
     public static final String FLEET_VERSION_MEMKEY =
             "$da_last_line_fleet_version";
-    public static final int FLEET_VERSION = 1;
+    public static final int FLEET_VERSION = 2;
     private static final String MIGRATION_VERSION_MEMKEY =
             "$da_last_line_migration_version";
 
@@ -185,19 +186,10 @@ public final class DiableLastLineFleetFactory {
             );
         }
 
-        configureSubject71FleetSkills(subject71);
-
-        CampaignFleetAPI fleet = Global.getFactory().createEmptyFleet(
-                "diableavionics",
-                FleetTypes.TASK_FORCE,
-                true
-        );
-        if (fleet == null) {
-            throw new IllegalStateException("Unable to create The Last Line fleet");
-        }
+        CampaignFleetAPI fleet = createMagicFlagshipFleet(subject71);
 
         configureFleetIdentity(fleet, subject71);
-        populateFleet(fleet, subject71);
+        populateFleet(fleet, subject71, fleet.getFlagship());
         finishFleet(fleet);
 
         LocationAPI location = target.getContainingLocation();
@@ -248,10 +240,14 @@ public final class DiableLastLineFleetFactory {
                     return null;
                 }
 
-                configureSubject71FleetSkills(subject71);
+                CampaignFleetAPI flagshipFleet =
+                        createMagicFlagshipFleet(subject71);
+                FleetMemberAPI virtuous = flagshipFleet.getFlagship();
+                flagshipFleet.getFleetData().removeFleetMember(virtuous);
+
                 clearFleetMembersAndOfficers(fleet);
                 configureFleetIdentity(fleet, subject71);
-                populateFleet(fleet, subject71);
+                populateFleet(fleet, subject71, virtuous);
                 finishFleet(fleet);
                 markMigrationComplete();
                 return fleet;
@@ -261,6 +257,48 @@ public final class DiableLastLineFleetFactory {
         // Destroyed, transferred, despawned, or never present: nothing to resurrect.
         markMigrationComplete();
         return null;
+    }
+
+    /**
+     * Creates the fixed Virtuous preset through the same flagship path used by
+     * Tartiflette's classic Last Line builder. The fleet remains unspawned until
+     * the handmade escorts and officers have been installed.
+     */
+    private static CampaignFleetAPI createMagicFlagshipFleet(
+            PersonAPI subject71
+    ) {
+        CampaignFleetAPI fleet = MagicCampaign.createFleetBuilder()
+                .setFleetFaction("diableavionics")
+                .setFleetName(txt("virtuousFleet"))
+                .setFleetType(FleetTypes.TASK_FORCE)
+                .setFlagshipName(txt("virtuousShip"))
+                .setFlagshipVariant(VIRTUOUS_VARIANT_ID)
+                .setFlagshipAutofit(false)
+                .setCaptain(subject71)
+                .setMinFP(0)
+                .setQualityOverride(2f)
+                .setIsImportant(false)
+                .setTransponderOn(true)
+                .create();
+
+        if (fleet == null || fleet.getFlagship() == null) {
+            throw new IllegalStateException(
+                    "Unable to create The Last Line Virtuous"
+            );
+        }
+
+        // MagicFleetBuilder generates commander skills and may generate officers.
+        // Restore the save-authored admiral build and retain no generated officers.
+        configureSubject71FleetSkills(subject71);
+        for (OfficerDataAPI officer : fleet.getFleetData().getOfficersCopy()) {
+            if (officer.getPerson() != subject71) {
+                fleet.getFleetData().removeOfficer(officer.getPerson());
+            }
+        }
+
+        fleet.getFlagship().setCaptain(subject71);
+        fleet.setCommander(subject71);
+        return fleet;
     }
 
     private static void configureFleetIdentity(
@@ -276,11 +314,12 @@ public final class DiableLastLineFleetFactory {
 
     private static void populateFleet(
             CampaignFleetAPI fleet,
-            PersonAPI subject71
+            PersonAPI subject71,
+            FleetMemberAPI virtuous
     ) {
-        FleetMemberAPI virtuous = fleet.getFleetData().addFleetMember(
-                VIRTUOUS_VARIANT_ID
-        );
+        if (!fleet.getFleetData().getMembersListCopy().contains(virtuous)) {
+            fleet.getFleetData().addFleetMember(virtuous);
+        }
         virtuous.setShipName(txt("virtuousShip"));
         virtuous.setCaptain(subject71);
         prepareMember(virtuous);
