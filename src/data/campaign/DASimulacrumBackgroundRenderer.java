@@ -5,53 +5,71 @@ import com.fs.starfarer.api.combat.BaseCombatLayeredRenderingPlugin;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.CombatEngineLayers;
 import com.fs.starfarer.api.combat.ViewportAPI;
-import com.fs.starfarer.api.graphics.SpriteAPI;
+import com.fs.starfarer.api.util.Misc;
+import org.dark.shaders.util.ShaderLib;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector2f;
 
-import java.awt.Color;
 import java.util.EnumSet;
 
 /**
- * Map-sized, stencil-backed backdrop for Subject 71's fleet simulator.
+ * Color grading for Subject 71's native-rendered simulator background.
  */
 public class DASimulacrumBackgroundRenderer
         extends BaseCombatLayeredRenderingPlugin {
 
-    private static final String DOMAIN_BACKGROUND_PRIMARY =
-            "graphics/da/backgrounds/diableavionics_simulacrum.png";
+    private static final String DOMAIN_SHADER =
+            "data/shaders/diableavionics_simulacrum.shader";
     private static final Vector2f MAP_CENTER = new Vector2f(0f, 0f);
-    private static final Color BASE_COLOR = Color.WHITE;
+    private static final float SHADER_STRENGTH = 0.70f;
 
-    private final SpriteAPI background;
+    private static int shader = 0;
+    private static boolean shaderInit = false;
 
+    private final boolean mapScale;
     private float currentRadius = 0f;
+    private float effectLevel = 0f;
 
-    public DASimulacrumBackgroundRenderer() {
-        this.background = loadSpriteOrFallback();
+    public DASimulacrumBackgroundRenderer(boolean mapScale) {
+        this.mapScale = mapScale;
+        ensureShaderLoaded();
     }
 
-    private SpriteAPI loadSpriteOrFallback() {
-        SpriteAPI sprite = tryLoadSprite(DOMAIN_BACKGROUND_PRIMARY);
-        if (sprite != null) return sprite;
-        sprite = tryLoadSprite("graphics/backgrounds/hyperspace1.jpg");
-        if (sprite != null) return sprite;
-        return Global.getSettings().getSprite("misc", "nebula_particles");
-    }
-
-    private SpriteAPI tryLoadSprite(String path) {
-        if (path == null || path.isEmpty()) return null;
+    private static void ensureShaderLoaded() {
+        if (shaderInit) return;
+        shaderInit = true;
         try {
-            Global.getSettings().loadTexture(path);
-            return Global.getSettings().getSprite(path);
+            shader = ShaderLib.loadShader(
+                    Global.getSettings().loadText(
+                            "data/shaders/baseVertex.shader"
+                    ),
+                    Global.getSettings().loadText(DOMAIN_SHADER)
+            );
+            if (shader != 0) {
+                GL20.glUseProgram(shader);
+                GL20.glUniform1i(
+                        GL20.glGetUniformLocation(shader, "tex"),
+                        0
+                );
+                GL20.glUseProgram(0);
+            }
         } catch (Throwable ignored) {
-            return null;
+            shader = 0;
         }
     }
 
+    public void setActiveState(float effectLevel, float radius) {
+        this.effectLevel = Math.max(0f, Math.min(1f, effectLevel));
+        float desiredRadius = mapScale
+                ? computeMapRadius()
+                : Math.max(0f, radius);
+        currentRadius = desiredRadius * this.effectLevel;
+    }
+
     public void setMapActiveState(float effectLevel) {
-        float clampedLevel = Math.max(0f, Math.min(1f, effectLevel));
-        currentRadius = computeMapRadius() * clampedLevel;
+        setActiveState(effectLevel, 0f);
     }
 
     private float computeMapRadius() {
@@ -71,61 +89,68 @@ public class DASimulacrumBackgroundRenderer
     @Override
     public void render(CombatEngineLayers layer, ViewportAPI viewport) {
         if (viewport == null
-                || currentRadius <= 5f
-                || layer != CombatEngineLayers.BELOW_PLANETS) {
+                || layer != CombatEngineLayers.JUST_BELOW_WIDGETS) {
             return;
         }
-        startStencil(MAP_CENTER, currentRadius, 160);
-        try {
-            renderDomainBackdrop(viewport);
-        } finally {
-            endStencil();
+        renderShaderMask();
+    }
+
+    private void renderShaderMask() {
+        if (shader == 0
+                || ShaderLib.getScreenTexture() == 0
+                || currentRadius <= 5f) {
+            return;
         }
-    }
 
-    private void renderDomainBackdrop(ViewportAPI viewport) {
-        float width = viewport.getVisibleWidth();
-        float height = viewport.getVisibleHeight();
-        float x = viewport.getLLX() + (width * 0.5f);
-        float y = viewport.getLLY() + (height * 0.5f);
+        Vector2f worldEdge = Misc.getUnitVectorAtDegreeAngle(0f);
+        worldEdge.scale(currentRadius);
+        worldEdge = Vector2f.add(MAP_CENTER, worldEdge, new Vector2f());
+        Vector2f screenCenter = ShaderLib.transformWorldToScreen(MAP_CENTER);
+        Vector2f screenEdge = ShaderLib.transformWorldToScreen(worldEdge);
+        float radiusPx = Misc.getDistance(screenCenter, screenEdge);
+        Vector2f centerUV = ShaderLib.transformScreenToUV(screenCenter);
 
-        background.setNormalBlend();
-        background.setColor(BASE_COLOR);
-        background.setAlphaMult(viewport.getAlphaMult());
-        background.setSize(width, height);
-        background.setAngle(0f);
-        background.renderAtCenter(x, y);
-    }
-
-    private void startStencil(Vector2f center, float radius, int segments) {
-        GL11.glClearStencil(0);
-        GL11.glStencilMask(0xff);
-        GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
-        GL11.glColorMask(false, false, false, false);
-        GL11.glEnable(GL11.GL_STENCIL_TEST);
-        GL11.glStencilFunc(GL11.GL_ALWAYS, 1, 0xff);
-        GL11.glStencilMask(0xff);
-        GL11.glStencilOp(
-                GL11.GL_REPLACE,
-                GL11.GL_REPLACE,
-                GL11.GL_REPLACE
+        ShaderLib.beginDraw(shader);
+        GL20.glUniform1f(
+                GL20.glGetUniformLocation(shader, "intensity"),
+                effectLevel * SHADER_STRENGTH
         );
-        GL11.glBegin(GL11.GL_POLYGON);
-        for (int i = 0; i <= segments; i++) {
-            double angle = (2d * Math.PI * i) / segments;
-            GL11.glVertex2d(
-                    center.x + Math.cos(angle) * radius,
-                    center.y + Math.sin(angle) * radius
-            );
-        }
-        GL11.glEnd();
-        GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_KEEP);
-        GL11.glColorMask(true, true, true, true);
-        GL11.glStencilFunc(GL11.GL_EQUAL, 1, 0xff);
-    }
-
-    private void endStencil() {
-        GL11.glDisable(GL11.GL_STENCIL_TEST);
+        GL20.glUniform2f(
+                GL20.glGetUniformLocation(shader, "centerUV"),
+                centerUV.x,
+                centerUV.y
+        );
+        GL20.glUniform1f(
+                GL20.glGetUniformLocation(shader, "radiusPx"),
+                radiusPx
+        );
+        GL20.glUniform1f(
+                GL20.glGetUniformLocation(shader, "screenWidth"),
+                Global.getSettings().getScreenWidthPixels()
+        );
+        GL20.glUniform1f(
+                GL20.glGetUniformLocation(shader, "screenHeight"),
+                Global.getSettings().getScreenHeightPixels()
+        );
+        GL20.glUniform1f(
+                GL20.glGetUniformLocation(shader, "visibleU"),
+                ShaderLib.getVisibleU()
+        );
+        GL20.glUniform1f(
+                GL20.glGetUniformLocation(shader, "visibleV"),
+                ShaderLib.getVisibleV()
+        );
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL11.glBindTexture(
+                GL11.GL_TEXTURE_2D,
+                ShaderLib.getScreenTexture()
+        );
+        GL11.glDisable(GL11.GL_BLEND);
+        ShaderLib.screenDraw(
+                ShaderLib.getScreenTexture(),
+                GL13.GL_TEXTURE0
+        );
+        ShaderLib.exitDraw();
     }
 
     @Override
@@ -140,6 +165,6 @@ public class DASimulacrumBackgroundRenderer
 
     @Override
     public EnumSet<CombatEngineLayers> getActiveLayers() {
-        return EnumSet.of(CombatEngineLayers.BELOW_PLANETS);
+        return EnumSet.of(CombatEngineLayers.JUST_BELOW_WIDGETS);
     }
 }
