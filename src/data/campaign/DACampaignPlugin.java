@@ -3,12 +3,36 @@ package data.campaign;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.PluginPick;
 import com.fs.starfarer.api.campaign.BaseCampaignPlugin;
+import com.fs.starfarer.api.campaign.BattleCreationPlugin;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogPlugin;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
+import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
 import data.scripts.world.systems.Diableavionics_blackSite;
 
 public class DACampaignPlugin extends BaseCampaignPlugin {
+    @Override
+    public PluginPick<BattleCreationPlugin> pickBattleCreationPlugin(
+            SectorEntityToken opponent
+    ) {
+        if (opponent instanceof CampaignFleetAPI) {
+            CampaignFleetAPI fleet = (CampaignFleetAPI) opponent;
+            boolean isNormalLastLineSimulation =
+                    hasMemoryInFleet(fleet, "$virtuous")
+                    && hasMemoryInFleet(fleet, "$simulationRunning")
+                    && fleet.getMemoryWithoutUpdate().contains(
+                            DiableLastLineFleetFactory.FLEET_VERSION_MEMKEY
+                    );
+            if (isNormalLastLineSimulation) {
+                return new PluginPick<BattleCreationPlugin>(
+                        new DASubject71BattleCreationPlugin(),
+                        PickPriority.HIGHEST
+                );
+            }
+        }
+        return super.pickBattleCreationPlugin(opponent);
+    }
+
     @Override
     public PluginPick<InteractionDialogPlugin> pickInteractionDialogPlugin(SectorEntityToken interactionTarget) {
         if (Diableavionics_blackSite.RUPTURED_GATE_ID.equals(interactionTarget.getId())) {
