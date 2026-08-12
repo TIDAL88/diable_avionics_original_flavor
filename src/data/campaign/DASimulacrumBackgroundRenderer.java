@@ -28,21 +28,26 @@ public class DASimulacrumBackgroundRenderer
             "data/shaders/diableavionics_simulacrum.shader";
     private static final Vector2f MAP_CENTER = new Vector2f(0f, 0f);
     private static final Color BASE_COLOR = Color.WHITE;
+    private static final float BACKGROUND_OVERSCAN = 1.20f;
+    private static final float PARALLAX_STRENGTH = 0.85f;
 
     private static int shader = 0;
     private static boolean shaderInit = false;
 
     private final boolean mapScale;
     private final SpriteAPI background;
+    private final float backgroundAspectRatio;
 
     private float targetRadius = 0f;
     private float currentRadius = 0f;
     private float effectLevel = 0f;
-    private float time = 0f;
 
     public DASimulacrumBackgroundRenderer(boolean mapScale) {
         this.mapScale = mapScale;
         this.background = loadSpriteOrFallback();
+        this.backgroundAspectRatio = background.getHeight() > 0f
+                ? background.getWidth() / background.getHeight()
+                : 1f;
         ensureShaderLoaded();
     }
 
@@ -117,15 +122,6 @@ public class DASimulacrumBackgroundRenderer
     }
 
     @Override
-    public void advance(float amount) {
-        CombatEngineAPI engine = Global.getCombatEngine();
-        if (engine == null || engine.isPaused()) return;
-        time += amount;
-        currentRadius += (targetRadius - currentRadius)
-                * Math.min(1f, amount * 10f);
-    }
-
-    @Override
     public void render(CombatEngineLayers layer, ViewportAPI viewport) {
         if (viewport == null) return;
         if (layer == CombatEngineLayers.JUST_BELOW_WIDGETS) {
@@ -133,7 +129,7 @@ public class DASimulacrumBackgroundRenderer
             return;
         }
         if (currentRadius <= 5f) return;
-        if (layer == CombatEngineLayers.BELOW_PLANETS) {
+        if (layer == CombatEngineLayers.ABOVE_PLANETS) {
             startStencil(MAP_CENTER, currentRadius, mapScale ? 160 : 96);
             try {
                 renderDomainBackdrop(viewport);
@@ -202,28 +198,56 @@ public class DASimulacrumBackgroundRenderer
     }
 
     private void renderDomainBackdrop(ViewportAPI viewport) {
-        float width = viewport.getVisibleWidth();
-        float height = viewport.getVisibleHeight();
-        float x = viewport.getLLX() + (width * 0.5f);
-        float y = viewport.getLLY() + (height * 0.5f);
-        float alpha = viewport.getAlphaMult()
-                * Math.max(0.25f, effectLevel);
-        float pulseA = 1.16f
-                + (float) Math.sin(time * 0.45f) * 0.03f;
-        float pulseB = 1.26f
-                + (float) Math.cos(time * 0.35f) * 0.02f;
+        float viewportWidth = viewport.getVisibleWidth();
+        float viewportHeight = viewport.getVisibleHeight();
+        float viewportAspect = viewportWidth / viewportHeight;
+
+        // Cover the viewport without distorting the square source image,
+        // leaving enough overdraw for smooth, bounded camera parallax.
+        float renderWidth;
+        float renderHeight;
+        if (backgroundAspectRatio > viewportAspect) {
+            renderHeight = viewportHeight * BACKGROUND_OVERSCAN;
+            renderWidth = renderHeight * backgroundAspectRatio;
+        } else {
+            renderWidth = viewportWidth * BACKGROUND_OVERSCAN;
+            renderHeight = renderWidth / backgroundAspectRatio;
+        }
+
+        Vector2f cameraCenter = viewport.getCenter();
+        CombatEngineAPI engine = Global.getCombatEngine();
+        float cameraX = 0f;
+        float cameraY = 0f;
+        if (engine != null) {
+            float horizontalTravel = Math.max(
+                    1f,
+                    (engine.getMapWidth() - viewportWidth) * 0.5f
+            );
+            float verticalTravel = Math.max(
+                    1f,
+                    (engine.getMapHeight() - viewportHeight) * 0.5f
+            );
+            cameraX = clamp(cameraCenter.x / horizontalTravel, -1f, 1f);
+            cameraY = clamp(cameraCenter.y / verticalTravel, -1f, 1f);
+        }
+
+        float horizontalMargin = (renderWidth - viewportWidth) * 0.5f;
+        float verticalMargin = (renderHeight - viewportHeight) * 0.5f;
+        float x = cameraCenter.x
+                - cameraX * horizontalMargin * PARALLAX_STRENGTH;
+        float y = cameraCenter.y
+                - cameraY * verticalMargin * PARALLAX_STRENGTH;
 
         background.setNormalBlend();
         background.setColor(BASE_COLOR);
-        background.setAlphaMult(alpha * 0.85f);
-        background.setSize(width * pulseA, height * pulseA);
-        background.setAngle((float) Math.sin(time * 0.05f) * 1.5f);
+        background.setAlphaMult(effectLevel);
+        background.setSize(renderWidth, renderHeight);
+        background.setAngle(0f);
         background.renderAtCenter(x, y);
+    }
 
-        background.setAlphaMult(alpha * 0.28f);
-        background.setSize(width * pulseB, height * pulseB);
-        background.setAngle((float) Math.cos(time * 0.04f) * 1.5f);
-        background.renderAtCenter(x, y);
+    private float clamp(float value, float min, float max) {
+        return Math.max(min, Math.min(max, value));
     }
 
     private void startStencil(Vector2f center, float radius, int segments) {
@@ -270,7 +294,7 @@ public class DASimulacrumBackgroundRenderer
     @Override
     public EnumSet<CombatEngineLayers> getActiveLayers() {
         return EnumSet.of(
-                CombatEngineLayers.BELOW_PLANETS,
+                CombatEngineLayers.ABOVE_PLANETS,
                 CombatEngineLayers.JUST_BELOW_WIDGETS
         );
     }
