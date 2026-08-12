@@ -10,9 +10,13 @@ import com.fs.starfarer.api.characters.FullName;
 import com.fs.starfarer.api.characters.MutableCharacterStatsAPI;
 import com.fs.starfarer.api.characters.OfficerDataAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
+import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.impl.campaign.ids.FleetTypes;
+import com.fs.starfarer.api.impl.campaign.ids.Personalities;
 import com.fs.starfarer.api.impl.campaign.ids.Ranks;
+import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.magiclib.util.MagicCampaign;
@@ -35,13 +39,15 @@ public final class DiableLastLineFleetFactory {
             "diableavionics_lastline_virtuous";
     public static final String FLEET_VERSION_MEMKEY =
             "$da_last_line_fleet_version";
-    public static final int FLEET_VERSION = 2;
+    public static final int FLEET_VERSION = 3;
     private static final String MIGRATION_VERSION_MEMKEY =
             "$da_last_line_migration_version";
 
     private static final String OFFICER_CONFIG =
             "data/config/modFiles/last_line_officers.json";
     private static final String FLEET_SKILLS_KEY = "subject71_fleet_skills";
+    private static final String COMBAT_SKILLS_KEY = "subject71_combat_skills";
+    private static final int SUBJECT_71_LEVEL = 7;
 
     private static final FleetEntry[] ESCORTS = {
             new FleetEntry(
@@ -63,106 +69,52 @@ public final class DiableLastLineFleetFactory {
                     "D3"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_storm",
+                    "diableavionics_lastline_daze",
                     "DSF Last Line-04",
-                    "diableavionics_storm",
+                    "diableavionics_daze",
                     "D4"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_daze",
+                    "diableavionics_lastline_gust_raven",
                     "DSF Last Line-05",
-                    "diableavionics_daze",
+                    "diableavionics_gust",
                     "D5"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_daze",
+                    "diableavionics_lastline_gust_raven",
                     "DSF Last Line-06",
-                    "diableavionics_daze",
+                    "diableavionics_gust",
                     "D6"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_coanda",
+                    "diableavionics_lastline_rime",
                     "DSF Last Line-07",
-                    null,
-                    null
+                    "diableavionics_rime_m",
+                    "D7"
             ),
             new FleetEntry(
                     "diableavionics_lastline_coanda",
                     "DSF Last Line-08",
-                    null,
-                    null
-            ),
-            new FleetEntry(
-                    "diableavionics_lastline_gust_raven",
-                    "DSF Last Line-09",
-                    "diableavionics_gust",
-                    "D7"
-            ),
-            new FleetEntry(
-                    "diableavionics_lastline_gust_zephyr",
-                    "DSF Last Line-10",
-                    "diableavionics_gust",
+                    "diableavionics_coanda",
                     "D8"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_gust_raven",
-                    "DSF Last Line-11",
-                    "diableavionics_gust",
+                    "diableavionics_lastline_coanda",
+                    "DSF Last Line-09",
+                    "diableavionics_coanda",
                     "D9"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_minigust",
-                    "DSF Last Line-12",
-                    "diableavionics_miniGust",
+                    "diableavionics_lastline_vapor",
+                    "DSF Last Line-10",
+                    "diableavionics_vapor",
                     "D10"
             ),
             new FleetEntry(
                     "diableavionics_lastline_minigust",
-                    "DSF Last Line-13",
+                    "DSF Last Line-11",
                     "diableavionics_miniGust",
                     "D11"
-            ),
-            new FleetEntry(
-                    "diableavionics_lastline_minigust",
-                    "DSF Last Line-14",
-                    "diableavionics_miniGust",
-                    "D12"
-            ),
-            new FleetEntry(
-                    "diableavionics_lastline_vapor",
-                    "DSF Last Line-15",
-                    null,
-                    null
-            ),
-            new FleetEntry(
-                    "diableavionics_lastline_vapor",
-                    "DSF Last Line-16",
-                    null,
-                    null
-            ),
-            new FleetEntry(
-                    "diableavionics_lastline_rime_standby",
-                    "DSF Last Line-17",
-                    null,
-                    null
-            ),
-            new FleetEntry(
-                    "diableavionics_lastline_rime_standby",
-                    "DSF Last Line-18",
-                    null,
-                    null
-            ),
-            new FleetEntry(
-                    "diableavionics_lastline_rime_standby",
-                    "DSF Last Line-19",
-                    null,
-                    null
-            ),
-            new FleetEntry(
-                    "diableavionics_lastline_rime_standby",
-                    "DSF Last Line-20",
-                    null,
-                    null
             )
     };
 
@@ -288,8 +240,8 @@ public final class DiableLastLineFleetFactory {
         }
 
         // MagicFleetBuilder generates commander skills and may generate officers.
-        // Restore the save-authored admiral build and retain no generated officers.
-        configureSubject71FleetSkills(subject71);
+        // Restore the save-authored Subject 71 build and retain no generated officers.
+        configureSubject71Skills(subject71);
         for (OfficerDataAPI officer : fleet.getFleetData().getOfficersCopy()) {
             if (officer.getPerson() != subject71) {
                 fleet.getFleetData().removeOfficer(officer.getPerson());
@@ -326,7 +278,8 @@ public final class DiableLastLineFleetFactory {
         fleet.getFleetData().setFlagship(virtuous);
 
         for (FleetEntry entry : ESCORTS) {
-            FleetMemberAPI member = fleet.getFleetData().addFleetMember(entry.variantId);
+            FleetMemberAPI member = createAuthoredMember(entry.variantId);
+            fleet.getFleetData().addFleetMember(member);
             member.setShipName(entry.shipName);
 
             if (entry.captainType != null) {
@@ -334,6 +287,36 @@ public final class DiableLastLineFleetFactory {
             }
             prepareMember(member);
         }
+    }
+
+    /**
+     * Creates an exact clone of an authored variant and protects it from the
+     * fleet autofit/quality pass. This is the same protection MagicFleetBuilder
+     * applies to preset ships when support autofit is disabled.
+     */
+    private static FleetMemberAPI createAuthoredMember(String variantId) {
+        ShipVariantAPI variant = Global.getSettings().getVariant(variantId);
+        if (variant == null) {
+            throw new IllegalStateException(
+                    "Missing The Last Line variant " + variantId
+            );
+        }
+
+        FleetMemberAPI member = Global.getFactory().createFleetMember(
+                FleetMemberType.SHIP,
+                variant
+        );
+        if (member == null) {
+            throw new IllegalStateException(
+                    "Unable to create The Last Line member " + variantId
+            );
+        }
+
+        member.getVariant().addTag(Tags.TAG_NO_AUTOFIT);
+        member.getVariant().addTag(
+                Tags.VARIANT_ALWAYS_RETAIN_SMODS_ON_SALVAGE
+        );
+        return member;
     }
 
     private static void finishFleet(CampaignFleetAPI fleet) {
@@ -397,32 +380,29 @@ public final class DiableLastLineFleetFactory {
     }
 
     /**
-     * Replaces old rng admiral skills while preserving Subject 71's ten
-     * randomly selected elite combat skills. this one's for you tarti
+     * Replaces the generated build with the level-seven DATA save build.
+     * The existing authored admiral skills remain unchanged.
      */
-    private static void configureSubject71FleetSkills(PersonAPI subject71) {
-        JSONObject skills = getOfficerConfig().optJSONObject(FLEET_SKILLS_KEY);
-        if (skills == null) {
-            throw new IllegalStateException("Missing Subject 71 fleet skills");
+    private static void configureSubject71Skills(PersonAPI subject71) {
+        JSONObject fleetSkills = getOfficerConfig().optJSONObject(FLEET_SKILLS_KEY);
+        JSONObject combatSkills = getOfficerConfig().optJSONObject(COMBAT_SKILLS_KEY);
+        if (fleetSkills == null || combatSkills == null) {
+            throw new IllegalStateException("Missing Subject 71 skill configuration");
         }
 
+        subject71.setPersonality(Personalities.STEADY);
         subject71.getStats().setSkipRefresh(true);
         try {
+            subject71.getStats().setLevel(SUBJECT_71_LEVEL);
             for (MutableCharacterStatsAPI.SkillLevelAPI skill
                     : subject71.getStats().getSkillsCopy()) {
-                if (skill.getSkill() != null && skill.getSkill().isAdmiralSkill()) {
+                if (skill.getSkill() != null) {
                     subject71.getStats().setSkillLevel(skill.getSkill().getId(), 0f);
                 }
             }
 
-            java.util.Iterator<?> keys = skills.keys();
-            while (keys.hasNext()) {
-                String skillId = String.valueOf(keys.next());
-                subject71.getStats().setSkillLevel(
-                        skillId,
-                        (float) skills.optDouble(skillId, 0f)
-                );
-            }
+            applySkillLevels(subject71, combatSkills);
+            applySkillLevels(subject71, fleetSkills);
         } finally {
             subject71.getStats().setSkipRefresh(false);
         }
@@ -457,19 +437,18 @@ public final class DiableLastLineFleetFactory {
         pilot.setFaction(factionId);
         pilot.setRankId(Ranks.SPACE_LIEUTENANT);
         pilot.setPostId(Ranks.POST_OFFICER);
-        pilot.setPersonality(config.optString("officer_personality", "aggressive"));
+        pilot.setPersonality(config.optString("officer_personality", "steady"));
 
         pilot.getStats().setSkipRefresh(true);
         pilot.getStats().setLevel(config.optInt("officer_level", 1));
-        applySkills(pilot, config.optJSONObject("officer_skills"));
+        applySkillLevels(pilot, config.optJSONObject("officer_skills"));
         pilot.getStats().setSkipRefresh(false);
         return pilot;
     }
 
-    private static void applySkills(PersonAPI person, JSONObject skills) {
+    private static void applySkillLevels(PersonAPI person, JSONObject skills) {
         if (person == null || skills == null) return;
 
-        person.getStats().setSkipRefresh(true);
         java.util.Iterator<?> keys = skills.keys();
         while (keys.hasNext()) {
             String skillId = String.valueOf(keys.next());
@@ -478,7 +457,6 @@ public final class DiableLastLineFleetFactory {
                     (float) skills.optDouble(skillId, 0f)
             );
         }
-        person.getStats().setSkipRefresh(false);
     }
 
     private static JSONObject getOfficerConfig() {

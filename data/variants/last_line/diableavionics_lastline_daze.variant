@@ -8,15 +8,15 @@
         "advancedoptics",
         "abyss_diable_afterimage_suite",
         "hardenedshieldemitter",
-        "abyss_diable_afterimage_mode_blue",
+        "ML_skinSwap",
         "targetingunit",
         "magazines",
-        "ML_skinSwap"
+        "abyss_diable_afterimage_mode_blue"
     ],
     "permaMods": [
+        "ML_skinSwap",
         "targetingunit",
-        "magazines",
-        "ML_skinSwap"
+        "magazines"
     ],
     "sMods": [
         "targetingunit",
@@ -33,12 +33,12 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0005": "diableavionics_microcluster2",
-                "WS0006": "diableavionics_microcluster2",
                 "WS0001": "diableavionics_micromissile",
                 "WS0002": "diableavionics_micromissile",
                 "WS0003": "diableavionics_micromissile",
-                "WS0004": "diableavionics_micromissile"
+                "WS0004": "diableavionics_micromissile",
+                "WS0005": "diableavionics_microcluster2",
+                "WS0006": "diableavionics_microcluster2"
             }
         },
         {

@@ -6,15 +6,15 @@
     "hullId": "diableavionics_storm",
     "hullMods": [
         "abyss_diable_afterimage_suite",
-        "abyss_diable_afterimage_mode_blue",
+        "ML_skinSwap",
         "eccm",
         "targetingunit",
-        "ML_skinSwap"
+        "abyss_diable_afterimage_mode_blue"
     ],
     "permaMods": [
+        "ML_skinSwap",
         "eccm",
-        "targetingunit",
-        "ML_skinSwap"
+        "targetingunit"
     ],
     "sMods": [
         "eccm",
@@ -69,8 +69,8 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0009": "diableavionics_ibis",
-                "WS0008": "diableavionics_ibis"
+                "WS0008": "diableavionics_ibis",
+                "WS0009": "diableavionics_ibis"
             }
         }
     ],

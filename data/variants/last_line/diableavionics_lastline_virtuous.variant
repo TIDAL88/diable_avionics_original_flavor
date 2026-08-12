@@ -1,19 +1,19 @@
 {
     "displayName": "Breacher",
-    "fluxCapacitors": 25,
-    "fluxVents": 11,
+    "fluxCapacitors": 0,
+    "fluxVents": 23,
     "goalVariant": true,
     "hullId": "diableavionics_virtuous_brawler",
     "hullMods": [
-        "diableavionics_virtuous_beast_L",
         "hardenedshieldemitter",
         "targetingunit",
-        "diableavionics_virtuous_headB",
-        "diableavionics_virtuous_snowblast_R",
         "diableavionics_virtuous_brawler",
-        "escort_package",
         "autorepair",
-        "magazines"
+        "magazines",
+        "diableavionics_virtuous_headA",
+        "diableavionics_virtuous_snowblast_L",
+        "diableavionics_virtuous_grasshopper_R",
+        "missleracks"
     ],
     "permaMods": [
         "autorepair",
@@ -30,40 +30,46 @@
     "variantId": "diableavionics_lastline_virtuous",
     "weaponGroups": [
         {
-            "autofire": true,
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0003": "diableavionics_magicbox",
+                "WS0004": "diableavionics_magicbox"
+            }
+        },
+        {
+            "autofire": false,
             "mode": "LINKED",
             "weapons": {
-                "LEFT": "diableavionics_virtuous_beast_L"
+                "RIGHT": "diableavionics_virtuous_grasshopper_R"
             }
         },
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0003": "diableavionics_micromissile",
-                "WS0004": "diableavionics_micromissile"
+                "LEFT": "diableavionics_virtuous_snowblast_L"
             }
         },
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "RIGHT": "diableavionics_virtuous_snowblast_R"
+                "WS0005": "diableavionics_artassault"
             }
         },
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "HEAD": "diableavionics_virtuous_headB"
+                "WS0006": "diableavionics_winee"
             }
         },
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0005": "diableavionics_ibis",
-                "WS0006": "diableavionics_ibis"
+                "HEAD": "diableavionics_virtuous_headA"
             }
         }
     ]

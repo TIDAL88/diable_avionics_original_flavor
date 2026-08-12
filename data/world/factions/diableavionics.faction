@@ -29,6 +29,10 @@
         "modern":1,
     },
 
+    "simulatorData":{
+        "showInSimulator":true,
+    },
+
     # variantOverrides restricts hulls to listed variants and adjusts their probability
     #"variantOverrides":{
         #"diableavionics_versant_assault":30,

@@ -1,26 +1,30 @@
 {
     "displayName": "Beamer",
-    "fluxCapacitors": 55,
-    "fluxVents": 30,
+    "fluxCapacitors": 67,
+    "fluxVents": 18,
     "goalVariant": false,
     "hullId": "diableavionics_maelstrom",
     "hullMods": [
+        "ML_skinSwap",
+        "autorepair",
+        "magazines",
         "stabilizedshieldemitter",
         "abyss_diable_afterimage_suite",
         "abyss_diable_afterimage_mode_blue",
         "targetingunit",
-        "autorepair",
-        "hardenedshieldemitter",
-        "ML_skinSwap"
+        "hardenedshieldemitter"
     ],
     "permaMods": [
+        "ML_skinSwap",
         "autorepair",
-        "hardenedshieldemitter",
-        "ML_skinSwap"
+        "magazines"
     ],
     "sMods": [
         "autorepair",
-        "hardenedshieldemitter"
+        "magazines"
+    ],
+    "sModdedBuiltIns": [
+        "diableavionics_mountBI"
     ],
     "tags": [
         "ML_paintjob-diableavionics_battlehardened_maelstrom",
@@ -32,30 +36,23 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0001": "diableavionics_hexafire2",
-                "WS0005": "diableavionics_hexafire"
+                "WS0001": "diableavionics_opfergv"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0002": "diableavionics_microarray"
             }
         },
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0004": "diableavionics_gravemg"
-            }
-        },
-        {
-            "autofire": true,
-            "mode": "LINKED",
-            "weapons": {
-                "WS0003": "diableavionics_glowtusk"
-            }
-        },
-        {
-            "autofire": true,
-            "mode": "LINKED",
-            "weapons": {
-                "WS0002": "diableavionics_microarray",
-                "WS0006": "diableavionics_raptor"
+                "WS0003": "diableavionics_artdeux",
+                "WS0004": "diableavionics_artdeux",
+                "WS0005": "diableavionics_artdeux"
             }
         },
         {
@@ -70,16 +67,6 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0014": "diableavionics_micromissile",
-                "WS0015": "diableavionics_micromissile",
-                "WS0016": "diableavionics_micromissile",
-                "WS0017": "diableavionics_micromissile"
-            }
-        },
-        {
-            "autofire": true,
-            "mode": "LINKED",
-            "weapons": {
                 "WS0009": "diableavionics_ibis",
                 "WS0010": "diableavionics_ibis",
                 "WS0012": "diableavionics_ibis",
@@ -88,10 +75,17 @@
                 "WS0023": "diableavionics_ibis",
                 "WS0024": "diableavionics_ibis"
             }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0006": "diableavionics_raptor"
+            }
         }
     ],
     "wings": [
-        "diableavionics_warlust_wing",
-        "diableavionics_valiant_wing"
+        "diableavionics_hoar_wing",
+        "diableavionics_hoar_wing"
     ]
 }

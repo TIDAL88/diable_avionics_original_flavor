@@ -9,14 +9,14 @@
         "targetingunit",
         "autorepair",
         "abyss_diable_afterimage_mode_blue",
+        "ML_skinSwap",
         "hardenedshieldemitter",
-        "magazines",
-        "ML_skinSwap"
+        "magazines"
     ],
     "permaMods": [
+        "ML_skinSwap",
         "hardenedshieldemitter",
-        "magazines",
-        "ML_skinSwap"
+        "magazines"
     ],
     "sMods": [
         "hardenedshieldemitter",
@@ -41,8 +41,8 @@
             "mode": "LINKED",
             "weapons": {
                 "WS0003": "diableavionics_micromissile",
-                "WS0005": "diableavionics_micromissile",
                 "WS0004": "diableavionics_micromissile",
+                "WS0005": "diableavionics_micromissile",
                 "WS0006": "diableavionics_micromissile"
             }
         },
@@ -64,11 +64,11 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
+                "WS0008": "diableavionics_ibis",
+                "WS0009": "diableavionics_ibis",
+                "WS0010": "diableavionics_ibis",
                 "WS0011": "diableavionics_ibis",
                 "WS0014": "diableavionics_ibis",
-                "WS0010": "diableavionics_ibis",
-                "WS0009": "diableavionics_ibis",
-                "WS0008": "diableavionics_ibis",
                 "WS0015": "diableavionics_ibis"
             }
         }
