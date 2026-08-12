@@ -1,5 +1,44 @@
-{        
+{
 	#CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK
+
+	# Explicit selectors for DA's custom hull styles. Without these, 0.98a's
+	# hull-size fallback pools can select Threat or Dweller ship sounds.
+	"engine_loop":{
+		"DA":{"sounds":[0,1,2,3,4], "pitch":0.8, "volume":0.9},
+		"DA_WANZER":{"sounds":[0,1,2,3,4], "pitch":0.8, "volume":0.9},
+	},
+	"engine_accelerate":{
+		"DA":{"sounds":[0,1,2], "pitch":0.65, "volume":1.3},
+		"DA_WANZER":{"sounds":[0,1,2], "pitch":0.65, "volume":1.3},
+	},
+	"shield_burnout":{
+		"DA":{"sounds":[0], "pitch":0.9, "volume":1},
+		"DA_WANZER":{"sounds":[0], "pitch":0.9, "volume":1},
+	},
+	"emp_loop":{
+		"DA":{"sounds":[0], "pitch":0.8, "volume":1.2},
+		"DA_WANZER":{"sounds":[0], "pitch":0.8, "volume":1.2},
+	},
+	"flux_loop":{
+		"DA":{"sounds":[0], "pitch":0.8, "volume":1.35},
+		"DA_WANZER":{"sounds":[0], "pitch":0.8, "volume":1.35},
+	},
+	"vent_flux":{
+		"DA":{"sounds":[0], "pitch":0.65, "volume":1.2},
+		"DA_WANZER":{"sounds":[0], "pitch":0.65, "volume":1.2},
+	},
+	"shield_lower":{
+		"DA":{"sounds":[0,1,2], "pitch":0.95, "volume":0.8},
+		"DA_WANZER":{"sounds":[0,1,2], "pitch":0.95, "volume":0.8},
+	},
+	"shield_raise":{
+		"DA":{"sounds":[0,1,2], "pitch":1.0, "volume":0.85},
+		"DA_WANZER":{"sounds":[0,1,2], "pitch":1.0, "volume":0.85},
+	},
+	"explosion_ship":{
+		"DA":{"sounds":[0,1,2,3], "pitch":0.99, "volume":1.1},
+		"DA_WANZER":{"sounds":[0,1,2,3], "pitch":0.99, "volume":1.1},
+	},
 
 
         "diableavionics_virtuousSyphon_loop":[

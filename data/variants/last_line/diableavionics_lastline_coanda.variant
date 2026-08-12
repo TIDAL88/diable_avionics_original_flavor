@@ -1,24 +1,24 @@
 {
     "displayName": "Custom",
     "fluxCapacitors": 25,
-    "fluxVents": 15,
+    "fluxVents": 2,
     "goalVariant": false,
     "hullId": "diableavionics_coanda",
     "hullMods": [
         "targetingunit",
         "abyss_diable_afterimage_suite",
-        "hardenedshieldemitter",
         "abyss_diable_afterimage_mode_blue",
         "escort_package",
+        "hardenedshieldemitter",
         "autorepair"
     ],
     "permaMods": [
-        "escort_package",
-        "autorepair"
+        "autorepair",
+        "escort_package"
     ],
     "sMods": [
-        "escort_package",
-        "autorepair"
+        "autorepair",
+        "escort_package"
     ],
     "tags": [
         "ship_recoverable",
@@ -27,10 +27,17 @@
     "variantId": "diableavionics_lastline_coanda",
     "weaponGroups": [
         {
-            "autofire": true,
+            "autofire": false,
             "mode": "LINKED",
             "weapons": {
                 "WS0012": "diableavionics_microcluster_left2"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0001": "diableavionics_thrush"
             }
         },
         {
@@ -45,9 +52,9 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
+                "WS0004": "diableavionics_artassault",
                 "WS0005": "diableavionics_artassault",
-                "WS0006": "diableavionics_artassault",
-                "WS0004": "diableavionics_artassault"
+                "WS0006": "diableavionics_artassault"
             }
         },
         {
@@ -62,15 +69,7 @@
             "mode": "LINKED",
             "weapons": {
                 "WS0008": "diableavionics_ibis",
-                "WS0009": "diableavionics_ibis",
-                "WS0011": "diableavionics_magicbox"
-            }
-        },
-        {
-            "autofire": false,
-            "mode": "LINKED",
-            "weapons": {
-                "WS0001": "diableavionics_banish"
+                "WS0009": "diableavionics_ibis"
             }
         }
     ]

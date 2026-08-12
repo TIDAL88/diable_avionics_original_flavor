@@ -9,14 +9,14 @@
         "abyss_diable_afterimage_mode_blue",
         "targetingunit",
         "escort_package",
+        "ML_skinSwap",
         "hardenedshieldemitter",
-        "eccm",
-        "ML_skinSwap"
+        "eccm"
     ],
     "permaMods": [
+        "ML_skinSwap",
         "hardenedshieldemitter",
-        "eccm",
-        "ML_skinSwap"
+        "eccm"
     ],
     "sMods": [
         "hardenedshieldemitter",
@@ -55,8 +55,8 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0003": "diableavionics_recson",
-                "WS0002": "diableavionics_recson"
+                "WS0002": "diableavionics_recson",
+                "WS0003": "diableavionics_recson"
             }
         },
         {

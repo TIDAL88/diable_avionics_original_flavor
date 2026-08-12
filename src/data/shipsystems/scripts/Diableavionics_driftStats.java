@@ -17,6 +17,13 @@ public class Diableavionics_driftStats extends BaseShipSystemScript {
     private final Integer DECCEL_BUFF = 300;
     private final Integer SPEED_BUFF = 200;
     private final Integer TIME_BUFF = 1000;
+
+    private final Integer MAELSTROM_TURN_ACC_BUFF = 817;
+    private final Integer MAELSTROM_TURN_RATE_BUFF = 425;
+    private final Integer MAELSTROM_ACCEL_BUFF = 400;
+    private final Integer MAELSTROM_DECCEL_BUFF = 161;
+    private final Integer MAELSTROM_SPEED_BUFF = 145;
+    private final Integer MAELSTROM_TIME_BUFF = 800;
     
     @Override
     public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {
@@ -54,17 +61,25 @@ public class Diableavionics_driftStats extends BaseShipSystemScript {
             }
         }
         
+        boolean maelstrom = ship != null && "diableavionics_maelstrom".equals(ship.getHullSpec().getBaseHullId());
+        int turnAccBuff = maelstrom ? MAELSTROM_TURN_ACC_BUFF : TURN_ACC_BUFF;
+        int turnRateBuff = maelstrom ? MAELSTROM_TURN_RATE_BUFF : TURN_RATE_BUFF;
+        int accelBuff = maelstrom ? MAELSTROM_ACCEL_BUFF : ACCEL_BUFF;
+        int deccelBuff = maelstrom ? MAELSTROM_DECCEL_BUFF : DECCEL_BUFF;
+        int speedBuff = maelstrom ? MAELSTROM_SPEED_BUFF : SPEED_BUFF;
+        int timeBuff = maelstrom ? MAELSTROM_TIME_BUFF : TIME_BUFF;
+
         //ship can reorient
-        stats.getTurnAcceleration().modifyPercent(id, TURN_ACC_BUFF * effect);
-        stats.getMaxTurnRate().modifyPercent(id, TURN_RATE_BUFF * effect);
+        stats.getTurnAcceleration().modifyPercent(id, turnAccBuff * effect);
+        stats.getMaxTurnRate().modifyPercent(id, turnRateBuff * effect);
         
         //ship can slightly jump forward
-        stats.getMaxSpeed().modifyPercent(id, SPEED_BUFF * effect);
-        stats.getAcceleration().modifyPercent(id, ACCEL_BUFF);
-        stats.getDeceleration().modifyPercent(id, DECCEL_BUFF);
+        stats.getMaxSpeed().modifyPercent(id, speedBuff * effect);
+        stats.getAcceleration().modifyPercent(id, accelBuff);
+        stats.getDeceleration().modifyPercent(id, deccelBuff);
         
         //time drift
-        stats.getTimeMult().modifyPercent(id, TIME_BUFF * effect);
+        stats.getTimeMult().modifyPercent(id, timeBuff * effect);
         
         
     }

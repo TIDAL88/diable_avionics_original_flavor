@@ -20,6 +20,7 @@ public class DASubject71_BattleSim extends BaseCommandPlugin {
 
         BattleCreationContext bcc = new BattleCreationContext(Global.getSector().getPlayerFleet(), FleetGoal.ATTACK, targetFleet, FleetGoal.ATTACK);
         bcc.setPlayerCommandPoints((int) Global.getSector().getPlayerFleet().getCommanderStats().getCommandPoints().getModifiedValue());
+        // bcc.enemyDeployAll = true;
 
         dialog.getVisualPanel().fadeVisualOut();
         dialog.startBattle(bcc);
