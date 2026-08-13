@@ -1,7 +1,7 @@
 {
-    "displayName": "Attack",
-    "fluxCapacitors": 10,
-    "fluxVents": 7,
+    "displayName": "Last Line",
+    "fluxCapacitors": 7,
+    "fluxVents": 10,
     "goalVariant": false,
     "hullId": "diableavionics_vapor",
     "hullMods": [
@@ -10,14 +10,9 @@
         "ML_skinSwap"
     ],
     "permaMods": [
-        "advancedoptics",
-        "hardenedshieldemitter",
         "ML_skinSwap"
     ],
-    "sMods": [
-        "advancedoptics",
-        "hardenedshieldemitter"
-    ],
+    "sMods": [],
     "tags": [
         "ship_recoverable",
         "ML_paintjob-diableavionics_battlehardened_vapor"

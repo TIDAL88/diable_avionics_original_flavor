@@ -23,7 +23,7 @@ public class Diableavionics_driftStats extends BaseShipSystemScript {
     private final Integer MAELSTROM_ACCEL_BUFF = 400;
     private final Integer MAELSTROM_DECCEL_BUFF = 161;
     private final Integer MAELSTROM_SPEED_BUFF = 145;
-    private final Integer MAELSTROM_TIME_BUFF = 800;
+    private final Integer MAELSTROM_TIME_BUFF = 1000;
     
     @Override
     public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {

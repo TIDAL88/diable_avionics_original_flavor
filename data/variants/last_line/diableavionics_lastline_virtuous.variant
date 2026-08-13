@@ -1,32 +1,27 @@
 {
-    "displayName": "Breacher",
-    "fluxCapacitors": 0,
-    "fluxVents": 23,
-    "goalVariant": true,
+    "displayName": "Last Line",
+    "fluxCapacitors": 23,
+    "fluxVents": 0,
+    "goalVariant": false,
     "hullId": "diableavionics_virtuous_brawler",
     "hullMods": [
-        "hardenedshieldemitter",
+        "diableavionics_virtuousMasterHullmod",
         "targetingunit",
         "diableavionics_virtuous_brawler",
-        "autorepair",
-        "magazines",
         "diableavionics_virtuous_headA",
         "diableavionics_virtuous_snowblast_L",
         "diableavionics_virtuous_grasshopper_R",
-        "missleracks"
+        "missleracks",
+        "hardenedshieldemitter",
+        "extendedshieldemitter",
+        "magazines",
+        "rat_controller"
     ],
     "permaMods": [
-        "autorepair",
-        "magazines"
+        "rat_controller"
     ],
-    "sMods": [
-        "autorepair",
-        "magazines"
-    ],
-    "tags": [
-        "ship_recoverable",
-        "always_recoverable"
-    ],
+    "sMods": [],
+    "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_virtuous",
     "weaponGroups": [
         {
@@ -71,6 +66,19 @@
             "weapons": {
                 "HEAD": "diableavionics_virtuous_headA"
             }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "SHOULDER_L": "diableavionics_virtuous_shoulderL",
+                "PAULDRON_L": "diableavionics_virtuous_pauldronA_L",
+                "PAULDRON_LG": "diableavionics_virtuous_pauldronA_LG",
+                "PAULDRON_R": "diableavionics_virtuous_pauldronA_R",
+                "PAULDRON_RG": "diableavionics_virtuous_pauldronA_RG",
+                "SHOULDER_R": "diableavionics_virtuous_shoulderR"
+            }
         }
-    ]
+    ],
+    "wings": []
 }

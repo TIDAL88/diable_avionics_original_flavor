@@ -1,30 +1,24 @@
 {
-    "displayName": "Custom",
-    "fluxCapacitors": 10,
-    "fluxVents": 7,
+    "displayName": "Last Line",
+    "fluxCapacitors": 7,
+    "fluxVents": 10,
     "goalVariant": false,
     "hullId": "diableavionics_storm",
     "hullMods": [
+        "diableavionics_universaldecksExtra",
         "abyss_diable_afterimage_suite",
+        "abyss_diable_afterimage_mode_blue",
         "ML_skinSwap",
         "eccm",
         "targetingunit",
-        "abyss_diable_afterimage_mode_blue"
+        "rat_controller"
     ],
     "permaMods": [
         "ML_skinSwap",
-        "eccm",
-        "targetingunit"
+        "rat_controller"
     ],
-    "sMods": [
-        "eccm",
-        "targetingunit"
-    ],
-    "tags": [
-        "ship_recoverable",
-        "ML_paintjob-diableavionics_battlehardened_storm",
-        "abyss_diable_afterimage_last_blue"
-    ],
+    "sMods": [],
+    "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_storm",
     "weaponGroups": [
         {
@@ -69,13 +63,18 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0008": "diableavionics_ibis",
-                "WS0009": "diableavionics_ibis"
+                "WS0009": "diableavionics_ibis",
+                "WS0008": "diableavionics_ibis"
             }
         }
     ],
     "wings": [
         "diableavionics_blizzaia_wing",
         "diableavionics_avalanche_wing"
+    ],
+    "tags": [
+        "ship_recoverable",
+        "ML_paintjob-diableavionics_battlehardened_storm",
+        "abyss_diable_afterimage_last_blue"
     ]
 }

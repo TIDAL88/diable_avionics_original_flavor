@@ -39,7 +39,7 @@ public final class DiableLastLineFleetFactory {
             "diableavionics_lastline_virtuous";
     public static final String FLEET_VERSION_MEMKEY =
             "$da_last_line_fleet_version";
-    public static final int FLEET_VERSION = 3;
+    public static final int FLEET_VERSION = 4;
     private static final String MIGRATION_VERSION_MEMKEY =
             "$da_last_line_migration_version";
 
@@ -69,33 +69,33 @@ public final class DiableLastLineFleetFactory {
                     "D3"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_daze",
+                    "diableavionics_lastline_gust_avalanche",
                     "DSF Last Line-04",
-                    "diableavionics_daze",
+                    "diableavionics_gust",
                     "D4"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_gust_raven",
+                    "diableavionics_lastline_gust_avalanche",
                     "DSF Last Line-05",
                     "diableavionics_gust",
                     "D5"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_gust_raven",
+                    "diableavionics_lastline_gust_blizzaia",
                     "DSF Last Line-06",
                     "diableavionics_gust",
                     "D6"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_rime",
+                    "diableavionics_lastline_gust_blizzaia",
                     "DSF Last Line-07",
-                    "diableavionics_rime_m",
+                    "diableavionics_gust",
                     "D7"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_coanda",
+                    "diableavionics_lastline_minigust",
                     "DSF Last Line-08",
-                    "diableavionics_coanda",
+                    "diableavionics_miniGust",
                     "D8"
             ),
             new FleetEntry(
@@ -105,16 +105,10 @@ public final class DiableLastLineFleetFactory {
                     "D9"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_vapor",
+                    "diableavionics_lastline_daze",
                     "DSF Last Line-10",
-                    "diableavionics_vapor",
+                    "diableavionics_daze",
                     "D10"
-            ),
-            new FleetEntry(
-                    "diableavionics_lastline_minigust",
-                    "DSF Last Line-11",
-                    "diableavionics_miniGust",
-                    "D11"
             )
     };
 
@@ -239,6 +233,8 @@ public final class DiableLastLineFleetFactory {
             );
         }
 
+        applyBossVirtuousSMods(fleet.getFlagship().getVariant());
+
         // MagicFleetBuilder generates commander skills and may generate officers.
         // Restore the save-authored Subject 71 build and retain no generated officers.
         configureSubject71Skills(subject71);
@@ -251,6 +247,11 @@ public final class DiableLastLineFleetFactory {
         fleet.getFlagship().setCaptain(subject71);
         fleet.setCommander(subject71);
         return fleet;
+    }
+
+    private static void applyBossVirtuousSMods(ShipVariantAPI variant) {
+        addSMods(variant, "extendedshieldemitter", "magazines");
+        variant.addTag(Tags.VARIANT_ALWAYS_RETAIN_SMODS_ON_SALVAGE);
     }
 
     private static void configureFleetIdentity(
@@ -312,11 +313,44 @@ public final class DiableLastLineFleetFactory {
             );
         }
 
+        applyEscortSMods(variantId, member.getVariant());
         member.getVariant().addTag(Tags.TAG_NO_AUTOFIT);
         member.getVariant().addTag(
                 Tags.VARIANT_ALWAYS_RETAIN_SMODS_ON_SALVAGE
         );
         return member;
+    }
+
+    private static void applyEscortSMods(
+            String variantId,
+            ShipVariantAPI variant
+    ) {
+        if ("diableavionics_lastline_maelstrom".equals(variantId)) {
+            addSMods(variant, "autorepair", "magazines");
+        } else if ("diableavionics_lastline_storm".equals(variantId)) {
+            addSMods(variant, "eccm", "targetingunit");
+        } else if ("diableavionics_lastline_daze".equals(variantId)) {
+            addSMods(variant, "targetingunit", "magazines");
+        } else if ("diableavionics_lastline_gust_raven".equals(variantId)
+                || "diableavionics_lastline_gust_zephyr".equals(variantId)
+                || "diableavionics_lastline_gust_blizzaia".equals(variantId)
+                || "diableavionics_lastline_gust_avalanche".equals(variantId)) {
+            addSMods(variant, "hardenedshieldemitter", "magazines");
+        } else if ("diableavionics_lastline_rime".equals(variantId)) {
+            addSMods(variant, "eccm", "targetingunit");
+        } else if ("diableavionics_lastline_coanda".equals(variantId)) {
+            addSMods(variant, "autorepair", "escort_package");
+        } else if ("diableavionics_lastline_vapor".equals(variantId)) {
+            addSMods(variant, "advancedoptics", "hardenedshieldemitter");
+        } else if ("diableavionics_lastline_minigust".equals(variantId)) {
+            addSMods(variant, "hardenedshieldemitter", "eccm");
+        }
+    }
+
+    private static void addSMods(ShipVariantAPI variant, String... hullmodIds) {
+        for (String hullmodId : hullmodIds) {
+            variant.addPermaMod(hullmodId, true);
+        }
     }
 
     private static void finishFleet(CampaignFleetAPI fleet) {
@@ -345,9 +379,13 @@ public final class DiableLastLineFleetFactory {
         if (!fleet.getMemoryWithoutUpdate().getBoolean("$virtuous")) {
             return false;
         }
+        if (findSubject71(fleet) != null) {
+            return true;
+        }
 
         for (FleetMemberAPI member : fleet.getFleetData().getMembersListCopy()) {
-            if (member.getHullSpec().getBaseHullId()
+            if (member.getHullSpec() != null
+                    && member.getHullSpec().getBaseHullId()
                     .startsWith("diableavionics_virtuous")) {
                 return true;
             }
@@ -390,7 +428,7 @@ public final class DiableLastLineFleetFactory {
             throw new IllegalStateException("Missing Subject 71 skill configuration");
         }
 
-        subject71.setPersonality(Personalities.STEADY);
+        subject71.setPersonality(Personalities.RECKLESS);
         subject71.getStats().setSkipRefresh(true);
         try {
             subject71.getStats().setLevel(SUBJECT_71_LEVEL);

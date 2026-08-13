@@ -1,0 +1,88 @@
+{
+    "displayName": "Last Line",
+    "fluxCapacitors": 23,
+    "fluxVents": 0,
+    "goalVariant": false,
+    "hullId": "diableavionics_virtuous_brawler",
+    "hullMods": [
+        "diableavionics_virtuousMasterHullmod",
+        "targetingunit",
+        "diableavionics_virtuous_brawler",
+        "diableavionics_virtuous_headA",
+        "diableavionics_virtuous_snowblast_L",
+        "diableavionics_virtuous_grasshopper_R",
+        "missleracks",
+        "hardenedshieldemitter",
+        "extendedshieldemitter",
+        "magazines",
+        "rat_controller"
+    ],
+    "permaMods": [
+        "rat_controller"
+    ],
+    "sMods": [],
+    "sModdedBuiltIns": [],
+    "variantId": "diableavionics_lastline_virtuous_player",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0003": "diableavionics_magicbox",
+                "WS0004": "diableavionics_magicbox"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "RIGHT": "diableavionics_virtuous_grasshopper_R"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "LEFT": "diableavionics_virtuous_snowblast_L"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0005": "diableavionics_artassault"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0006": "diableavionics_winee"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "HEAD": "diableavionics_virtuous_headA"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "SHOULDER_L": "diableavionics_virtuous_shoulderL",
+                "PAULDRON_L": "diableavionics_virtuous_pauldronA_L",
+                "PAULDRON_LG": "diableavionics_virtuous_pauldronA_LG",
+                "PAULDRON_R": "diableavionics_virtuous_pauldronA_R",
+                "PAULDRON_RG": "diableavionics_virtuous_pauldronA_RG",
+                "SHOULDER_R": "diableavionics_virtuous_shoulderR"
+            }
+        }
+    ],
+    "wings": [],
+    "tags": [
+        "ship_recoverable",
+        "always_recoverable"
+    ]
+}
