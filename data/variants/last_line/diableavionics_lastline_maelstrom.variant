@@ -1,42 +1,34 @@
 {
-    "displayName": "Beamer",
-    "fluxCapacitors": 67,
-    "fluxVents": 18,
+    "displayName": "Last Line",
+    "fluxCapacitors": 55,
+    "fluxVents": 6,
     "goalVariant": false,
     "hullId": "diableavionics_maelstrom",
     "hullMods": [
+        "diableavionics_mountBI",
+        "stabilizedshieldemitter",
+        "abyss_diable_afterimage_suite",
+        "targetingunit",
+        "hardenedshieldemitter",
+        "abyss_diable_afterimage_mode_blue",
         "ML_skinSwap",
         "autorepair",
         "magazines",
-        "stabilizedshieldemitter",
-        "abyss_diable_afterimage_suite",
-        "abyss_diable_afterimage_mode_blue",
-        "targetingunit",
-        "hardenedshieldemitter"
+        "rat_controller"
     ],
     "permaMods": [
         "ML_skinSwap",
-        "autorepair",
-        "magazines"
+        "rat_controller"
     ],
-    "sMods": [
-        "autorepair",
-        "magazines"
-    ],
-    "sModdedBuiltIns": [
-        "diableavionics_mountBI"
-    ],
-    "tags": [
-        "ML_paintjob-diableavionics_battlehardened_maelstrom",
-        "abyss_diable_afterimage_last_blue"
-    ],
+    "sMods": [],
+    "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_maelstrom",
     "weaponGroups": [
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0001": "diableavionics_opfergv"
+                "WS0001": "diableavionics_uhlan"
             }
         },
         {
@@ -51,29 +43,8 @@
             "mode": "LINKED",
             "weapons": {
                 "WS0003": "diableavionics_artdeux",
-                "WS0004": "diableavionics_artdeux",
-                "WS0005": "diableavionics_artdeux"
-            }
-        },
-        {
-            "autofire": true,
-            "mode": "LINKED",
-            "weapons": {
-                "WS0007": "diableavionics_recson",
-                "WS0008": "diableavionics_recson"
-            }
-        },
-        {
-            "autofire": true,
-            "mode": "LINKED",
-            "weapons": {
-                "WS0009": "diableavionics_ibis",
-                "WS0010": "diableavionics_ibis",
-                "WS0012": "diableavionics_ibis",
-                "WS0013": "diableavionics_ibis",
-                "WS0022": "diableavionics_ibis",
-                "WS0023": "diableavionics_ibis",
-                "WS0024": "diableavionics_ibis"
+                "WS0005": "diableavionics_artdeux",
+                "WS0004": "diableavionics_artdeux"
             }
         },
         {
@@ -82,10 +53,24 @@
             "weapons": {
                 "WS0006": "diableavionics_raptor"
             }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0012": "diableavionics_burchel",
+                "WS0022": "diableavionics_burchel",
+                "WS0009": "diableavionics_burchel"
+            }
         }
     ],
     "wings": [
-        "diableavionics_hoar_wing",
+        "diableavionics_strife_wing",
         "diableavionics_hoar_wing"
+    ],
+    "tags": [
+        "ship_recoverable",
+        "ML_paintjob-diableavionics_battlehardened_maelstrom",
+        "abyss_diable_afterimage_last_blue"
     ]
 }

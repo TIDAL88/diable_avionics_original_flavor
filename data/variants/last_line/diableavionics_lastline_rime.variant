@@ -1,7 +1,7 @@
 {
-    "displayName": "Standard",
-    "fluxCapacitors": 0,
-    "fluxVents": 12,
+    "displayName": "Last Line",
+    "fluxCapacitors": 12,
+    "fluxVents": 0,
     "goalVariant": false,
     "hullId": "diableavionics_rime_m",
     "hullMods": [
@@ -13,14 +13,9 @@
         "ML_skinSwap"
     ],
     "permaMods": [
-        "eccm",
-        "targetingunit",
         "ML_skinSwap"
     ],
-    "sMods": [
-        "eccm",
-        "targetingunit"
-    ],
+    "sMods": [],
     "tags": [
         "ship_recoverable",
         "abyss_diable_afterimage_last_blue",

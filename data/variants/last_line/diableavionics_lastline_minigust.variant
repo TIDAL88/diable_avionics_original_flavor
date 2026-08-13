@@ -1,7 +1,7 @@
 {
-    "displayName": "Support",
-    "fluxCapacitors": 13,
-    "fluxVents": 1,
+    "displayName": "Last Line",
+    "fluxCapacitors": 1,
+    "fluxVents": 13,
     "goalVariant": false,
     "hullId": "diableavionics_miniGust",
     "hullMods": [
@@ -11,22 +11,15 @@
         "escort_package",
         "ML_skinSwap",
         "hardenedshieldemitter",
-        "eccm"
+        "eccm",
+        "rat_controller"
     ],
     "permaMods": [
         "ML_skinSwap",
-        "hardenedshieldemitter",
-        "eccm"
+        "rat_controller"
     ],
-    "sMods": [
-        "hardenedshieldemitter",
-        "eccm"
-    ],
-    "tags": [
-        "ship_recoverable",
-        "abyss_diable_afterimage_last_blue",
-        "ML_paintjob-diableavionics_battlehardened_miniGust"
-    ],
+    "sMods": [],
+    "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_minigust",
     "weaponGroups": [
         {
@@ -55,8 +48,8 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0002": "diableavionics_recson",
-                "WS0003": "diableavionics_recson"
+                "WS0003": "diableavionics_recson",
+                "WS0002": "diableavionics_recson"
             }
         },
         {
@@ -72,9 +65,21 @@
             "weapons": {
                 "WS0004": "diableavionics_burchel"
             }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "SYSTEM": "diableavionics_gustSystem"
+            }
         }
     ],
     "wings": [
         "diableavionics_valiant_wing"
+    ],
+    "tags": [
+        "ship_recoverable",
+        "abyss_diable_afterimage_last_blue",
+        "ML_paintjob-diableavionics_battlehardened_miniGust"
     ]
 }

@@ -1,5 +1,5 @@
 {
-    "displayName": "Custom",
+    "displayName": "Last Line",
     "fluxCapacitors": 35,
     "fluxVents": 10,
     "goalVariant": false,
@@ -14,14 +14,9 @@
         "ML_skinSwap"
     ],
     "permaMods": [
-        "hardenedshieldemitter",
-        "magazines",
         "ML_skinSwap"
     ],
-    "sMods": [
-        "hardenedshieldemitter",
-        "magazines"
-    ],
+    "sMods": [],
     "tags": [
         "ship_recoverable",
         "ML_paintjob-diableavionics_battlehardened_gust",

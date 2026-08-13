@@ -1,44 +1,37 @@
 {
-    "displayName": "Custom",
-    "fluxCapacitors": 35,
-    "fluxVents": 11,
+    "displayName": "Last Line",
+    "fluxCapacitors": 11,
+    "fluxVents": 35,
     "goalVariant": false,
     "hullId": "diableavionics_daze",
     "hullMods": [
         "advancedoptics",
         "abyss_diable_afterimage_suite",
         "hardenedshieldemitter",
+        "abyss_diable_afterimage_mode_blue",
         "ML_skinSwap",
         "targetingunit",
         "magazines",
-        "abyss_diable_afterimage_mode_blue"
+        "rat_controller"
     ],
     "permaMods": [
         "ML_skinSwap",
-        "targetingunit",
-        "magazines"
+        "rat_controller"
     ],
-    "sMods": [
-        "targetingunit",
-        "magazines"
-    ],
-    "tags": [
-        "ship_recoverable",
-        "ML_paintjob-diableavionics_battlehardened_daze",
-        "abyss_diable_afterimage_last_blue"
-    ],
+    "sMods": [],
+    "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_daze",
     "weaponGroups": [
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
+                "WS0005": "diableavionics_microcluster2",
+                "WS0006": "diableavionics_microcluster2",
                 "WS0001": "diableavionics_micromissile",
                 "WS0002": "diableavionics_micromissile",
                 "WS0003": "diableavionics_micromissile",
-                "WS0004": "diableavionics_micromissile",
-                "WS0005": "diableavionics_microcluster2",
-                "WS0006": "diableavionics_microcluster2"
+                "WS0004": "diableavionics_micromissile"
             }
         },
         {
@@ -68,5 +61,11 @@
                 "WS0014": "diableavionics_ibis"
             }
         }
+    ],
+    "wings": [],
+    "tags": [
+        "ship_recoverable",
+        "ML_paintjob-diableavionics_battlehardened_daze",
+        "abyss_diable_afterimage_last_blue"
     ]
 }

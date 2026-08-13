@@ -17,13 +17,12 @@ public class DACampaignPlugin extends BaseCampaignPlugin {
     ) {
         if (opponent instanceof CampaignFleetAPI) {
             CampaignFleetAPI fleet = (CampaignFleetAPI) opponent;
-            boolean isNormalLastLineSimulation =
+            boolean isNormalLastLineEncounter =
                     hasMemoryInFleet(fleet, "$virtuous")
-                    && hasMemoryInFleet(fleet, "$simulationRunning")
                     && fleet.getMemoryWithoutUpdate().contains(
                             DiableLastLineFleetFactory.FLEET_VERSION_MEMKEY
                     );
-            if (isNormalLastLineSimulation) {
+            if (isNormalLastLineEncounter) {
                 return new PluginPick<BattleCreationPlugin>(
                         new DASubject71BattleCreationPlugin(),
                         PickPriority.HIGHEST

@@ -1,7 +1,7 @@
 {
-    "displayName": "Custom",
-    "fluxCapacitors": 35,
-    "fluxVents": 8,
+    "displayName": "Last Line",
+    "fluxCapacitors": 8,
+    "fluxVents": 35,
     "goalVariant": false,
     "hullId": "diableavionics_gust",
     "hullMods": [
@@ -14,14 +14,9 @@
         "magazines"
     ],
     "permaMods": [
-        "ML_skinSwap",
-        "hardenedshieldemitter",
-        "magazines"
+        "ML_skinSwap"
     ],
-    "sMods": [
-        "hardenedshieldemitter",
-        "magazines"
-    ],
+    "sMods": [],
     "tags": [
         "ship_recoverable",
         "ML_paintjob-diableavionics_battlehardened_gust",

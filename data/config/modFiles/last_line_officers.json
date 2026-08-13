@@ -54,7 +54,7 @@
         "officer_skills": {
             "missile_specialization": 2,
             "target_analysis": 1,
-            "gunnery_implants": 1,
+            "point_defense": 1,
             "helmsmanship": 1,
             "field_modulation": 1
         }
@@ -90,7 +90,7 @@
         "officer_skills": {
             "missile_specialization": 2,
             "target_analysis": 1,
-            "gunnery_implants": 1,
+            "point_defense": 1,
             "helmsmanship": 1,
             "field_modulation": 1
         }
@@ -99,10 +99,11 @@
         "missile_specialization": 2,
         "target_analysis": 2,
         "ballistic_mastery": 2,
-        "gunnery_implants": 2,
+        "damage_control": 2,
         "systems_expertise": 2,
         "helmsmanship": 2,
-        "field_modulation": 2
+        "field_modulation": 2,
+        "polarized_armor": 2
     },
     "subject71_fleet_skills": {
         "crew_training": 1,

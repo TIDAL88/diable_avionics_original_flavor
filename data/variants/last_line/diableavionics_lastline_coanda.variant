@@ -1,29 +1,25 @@
 {
-    "displayName": "Custom",
-    "fluxCapacitors": 25,
-    "fluxVents": 2,
+    "displayName": "Last Line",
+    "fluxCapacitors": 2,
+    "fluxVents": 25,
     "goalVariant": false,
     "hullId": "diableavionics_coanda",
     "hullMods": [
+        "diableavionics_mountBI",
+        "missleracks",
         "targetingunit",
         "abyss_diable_afterimage_suite",
         "abyss_diable_afterimage_mode_blue",
-        "escort_package",
         "hardenedshieldemitter",
-        "autorepair"
+        "autorepair",
+        "escort_package",
+        "rat_controller"
     ],
     "permaMods": [
-        "autorepair",
-        "escort_package"
+        "rat_controller"
     ],
-    "sMods": [
-        "autorepair",
-        "escort_package"
-    ],
-    "tags": [
-        "ship_recoverable",
-        "abyss_diable_afterimage_last_blue"
-    ],
+    "sMods": [],
+    "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_coanda",
     "weaponGroups": [
         {
@@ -44,16 +40,16 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0002": "diableavionics_graveac",
-                "WS0003": "diableavionics_graveac"
+                "WS0003": "diableavionics_graveac",
+                "WS0002": "diableavionics_graveac"
             }
         },
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0004": "diableavionics_artassault",
                 "WS0005": "diableavionics_artassault",
+                "WS0004": "diableavionics_artassault",
                 "WS0006": "diableavionics_artassault"
             }
         },
@@ -68,9 +64,14 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0008": "diableavionics_ibis",
-                "WS0009": "diableavionics_ibis"
+                "WS0009": "diableavionics_ibis",
+                "WS0008": "diableavionics_ibis"
             }
         }
+    ],
+    "wings": [],
+    "tags": [
+        "ship_recoverable",
+        "abyss_diable_afterimage_last_blue"
     ]
 }

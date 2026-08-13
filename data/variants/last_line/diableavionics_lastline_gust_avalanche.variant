@@ -1,16 +1,18 @@
 {
     "displayName": "Last Line",
-    "fluxCapacitors": 7,
-    "fluxVents": 10,
+    "fluxCapacitors": 14,
+    "fluxVents": 35,
     "goalVariant": false,
-    "hullId": "diableavionics_storm",
+    "hullId": "diableavionics_gust",
     "hullMods": [
         "diableavionics_universaldecksExtra",
         "abyss_diable_afterimage_suite",
-        "abyss_diable_afterimage_mode_blue",
-        "ML_skinSwap",
-        "eccm",
+        "abyss_diable_afterimage_mode_red",
         "targetingunit",
+        "autorepair",
+        "ML_skinSwap",
+        "hardenedshieldemitter",
+        "magazines",
         "rat_controller"
     ],
     "permaMods": [
@@ -19,29 +21,30 @@
     ],
     "sMods": [],
     "sModdedBuiltIns": [],
-    "variantId": "diableavionics_lastline_storm",
+    "variantId": "diableavionics_lastline_gust_avalanche",
     "weaponGroups": [
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0010": "diableavionics_microcluster_left"
+                "WS0001": "diableavionics_opfergv"
             }
         },
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0001": "diableavionics_thrush",
-                "WS0002": "diableavionics_thrush"
+                "WS0003": "diableavionics_micromissile",
+                "WS0005": "diableavionics_micromissile",
+                "WS0004": "diableavionics_micromissile",
+                "WS0006": "diableavionics_micromissile"
             }
         },
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0003": "diableavionics_srab",
-                "WS0004": "diableavionics_srab"
+                "WS0002": "diableavionics_artdeux"
             }
         },
         {
@@ -55,26 +58,28 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0005": "diableavionics_lazyhorn_storm",
-                "WS0006": "diableavionics_lazyhorn_storm"
+                "WS0011": "diableavionics_ibis",
+                "WS0014": "diableavionics_ibis",
+                "WS0010": "diableavionics_ibis",
+                "WS0009": "diableavionics_ibis",
+                "WS0008": "diableavionics_ibis",
+                "WS0015": "diableavionics_ibis"
             }
         },
         {
-            "autofire": true,
+            "autofire": false,
             "mode": "LINKED",
             "weapons": {
-                "WS0009": "diableavionics_ibis",
-                "WS0008": "diableavionics_ibis"
+                "SYSTEM": "diableavionics_gustSystem"
             }
         }
     ],
     "wings": [
-        "diableavionics_blizzaia_wing",
         "diableavionics_avalanche_wing"
     ],
     "tags": [
         "ship_recoverable",
-        "ML_paintjob-diableavionics_battlehardened_storm",
-        "abyss_diable_afterimage_last_blue"
+        "ML_paintjob-diableavionics_battlehardened_gust",
+        "abyss_diable_afterimage_last_red"
     ]
 }

@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
+    private static final String PLAYER_VIRTUOUS_VARIANT_ID =
+            "diableavionics_lastline_virtuous_player";
+
     @Override
     public boolean execute(String ruleId, InteractionDialogAPI dialog, List<Misc.Token> params, Map<String, MemoryAPI> memoryMap) {
         CampaignFleetAPI targetFleet = (CampaignFleetAPI) dialog.getInteractionTarget();
@@ -27,6 +30,11 @@ public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
         targetFleet.getFleetData().removeOfficer(targetFleet.getCommander());
         virtuousMember.setCaptain(null);
         virtuousMember.setFlagship(false);
+        virtuousMember.setVariant(
+                Global.getSettings().getVariant(PLAYER_VIRTUOUS_VARIANT_ID).clone(),
+                false,
+                true
+        );
         virtuousMember.getStats().getDynamic().getMod(Stats.INDIVIDUAL_SHIP_RECOVERY_MOD).unmodify(Diableavionics_ids.UNIQUE);
         virtuousMember.getVariant().removeTag(Tags.VARIANT_UNBOARDABLE);
         virtuousMember.getVariant().addTag(Tags.VARIANT_ALWAYS_RECOVERABLE);
