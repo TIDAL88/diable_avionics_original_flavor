@@ -3,6 +3,7 @@ package data.campaign;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CombatDamageData;
 import com.fs.starfarer.api.campaign.FleetEncounterContextPlugin;
+import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.EngagementResultAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
@@ -10,8 +11,19 @@ import com.fs.starfarer.api.impl.campaign.FleetInteractionDialogPluginImpl;
 
 public class DAVirtuousFleetInteractionDialogPluginImpl extends FleetInteractionDialogPluginImpl {
     @Override
+    public void init(InteractionDialogAPI dialog) {
+        super.init(dialog);
+        DASubject71DialogMusic.start(dialog);
+    }
+
+    @Override
     public void backFromEngagement(EngagementResultAPI result) {
+        if (DACampaignPlugin.hasMemoryInFleet(otherFleet, "$virtuous")) {
+            DASubject71CombatMusic.stopAndRestoreCampaignMusic();
+            DASubject71DialogMusic.start(dialog);
+        }
         if (DACampaignPlugin.hasMemoryInFleet(otherFleet, "$virtuous") && DACampaignPlugin.hasMemoryInFleet(otherFleet, "$simulationRunning")) {
+            DASubject71BattleCreationPlugin.restoreSimulationBackground();
             restoreOrigCaptains();
             if (origFlagship != null) {
                 if (selectedFlagship != null) {

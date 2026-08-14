@@ -8,6 +8,7 @@ import com.fs.starfarer.api.combat.BattleCreationContext;
 import com.fs.starfarer.api.fleet.FleetGoal;
 import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
 import com.fs.starfarer.api.util.Misc;
+import data.campaign.DASubject71BattleCreationPlugin;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,15 @@ public class DASubject71_BattleSim extends BaseCommandPlugin {
         bcc.enemyDeployAll = true;
 
         dialog.getVisualPanel().fadeVisualOut();
-        dialog.startBattle(bcc);
+        DASubject71BattleCreationPlugin.prepareSimulationBackground(
+                Global.getSector().getPlayerFleet().getContainingLocation()
+        );
+        try {
+            dialog.startBattle(bcc);
+        } catch (RuntimeException ex) {
+            DASubject71BattleCreationPlugin.restoreSimulationBackground();
+            throw ex;
+        }
         return true;
     }
 }

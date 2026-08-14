@@ -802,5 +802,11 @@
                 "diableavionics_market_interaction_friendly":[
                         {"file":"DA_friendly_interaction.ogg","source":"sounds/diablemusic/","volume":0.35,"randomStart":true},
                 ],
+                "diableavionics_lastline_combat":[
+                        {"file":"DA_sim.ogg","source":"sounds/diablemusic/","volume":0.55,"randomStart":false},
+                ],
+                "diableavionics_lastline_dialog":[
+                        {"file":"DA_Lastline.ogg","source":"sounds/diablemusic/","volume":0.35,"randomStart":false},
+                ],
         }
 }
