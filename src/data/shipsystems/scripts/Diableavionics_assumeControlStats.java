@@ -68,8 +68,8 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
                     CYAN_JITTER_COLOR,
                     0.25f*effectLevel,
                     3,
-                    1+2f*effectLevel,
-                    3+6f*effectLevel
+                    1+3f*effectLevel,
+                    3+7f*effectLevel
             );
         }
 
