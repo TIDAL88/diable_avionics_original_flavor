@@ -39,7 +39,7 @@ public final class DiableLastLineFleetFactory {
             "diableavionics_lastline_virtuous";
     public static final String FLEET_VERSION_MEMKEY =
             "$da_last_line_fleet_version";
-    public static final int FLEET_VERSION = 4;
+    public static final int FLEET_VERSION = 5;
     private static final String MIGRATION_VERSION_MEMKEY =
             "$da_last_line_migration_version";
 
@@ -47,7 +47,13 @@ public final class DiableLastLineFleetFactory {
             "data/config/modFiles/last_line_officers.json";
     private static final String FLEET_SKILLS_KEY = "subject71_fleet_skills";
     private static final String COMBAT_SKILLS_KEY = "subject71_combat_skills";
-    private static final int SUBJECT_71_LEVEL = 7;
+    private static final int SUBJECT_71_LEVEL = 8;
+    private static final String NEX_AUTORESOLVE_STRENGTH_MULT_KEY =
+            "$nex_autoresolve_strMult";
+    private static final float NEX_AUTORESOLVE_STRENGTH_MULT = 3f;
+    private static final String NEX_NO_KEEP_SMODS_KEY = "$nex_noKeepSMods";
+    private static final String ESCORT_PORTRAIT =
+            "graphics/da/portraits/diableavionics_thelastline.png";
 
     private static final FleetEntry[] ESCORTS = {
             new FleetEntry(
@@ -158,6 +164,8 @@ public final class DiableLastLineFleetFactory {
     public static CampaignFleetAPI migrateExistingFleet(boolean keepClassicFleet) {
         if (Global.getSector() == null) return null;
 
+        syncExistingFleetState();
+
         int migrationVersion = Global.getSector().getMemoryWithoutUpdate()
                 .getInt(MIGRATION_VERSION_MEMKEY);
         if (migrationVersion >= FLEET_VERSION) return null;
@@ -233,8 +241,6 @@ public final class DiableLastLineFleetFactory {
             );
         }
 
-        applyBossVirtuousSMods(fleet.getFlagship().getVariant());
-
         // MagicFleetBuilder generates commander skills and may generate officers.
         // Restore the save-authored Subject 71 build and retain no generated officers.
         configureSubject71Skills(subject71);
@@ -249,11 +255,6 @@ public final class DiableLastLineFleetFactory {
         return fleet;
     }
 
-    private static void applyBossVirtuousSMods(ShipVariantAPI variant) {
-        addSMods(variant, "extendedshieldemitter", "magazines");
-        variant.addTag(Tags.VARIANT_ALWAYS_RETAIN_SMODS_ON_SALVAGE);
-    }
-
     private static void configureFleetIdentity(
             CampaignFleetAPI fleet,
             PersonAPI subject71
@@ -263,6 +264,11 @@ public final class DiableLastLineFleetFactory {
         fleet.setNoAutoDespawn(true);
         fleet.setTransponderOn(true);
         fleet.setCommander(subject71);
+        fleet.getMemoryWithoutUpdate().set(
+                NEX_AUTORESOLVE_STRENGTH_MULT_KEY,
+                NEX_AUTORESOLVE_STRENGTH_MULT
+        );
+        fleet.getMemoryWithoutUpdate().set(NEX_NO_KEEP_SMODS_KEY, true);
     }
 
     private static void populateFleet(
@@ -313,44 +319,8 @@ public final class DiableLastLineFleetFactory {
             );
         }
 
-        applyEscortSMods(variantId, member.getVariant());
         member.getVariant().addTag(Tags.TAG_NO_AUTOFIT);
-        member.getVariant().addTag(
-                Tags.VARIANT_ALWAYS_RETAIN_SMODS_ON_SALVAGE
-        );
         return member;
-    }
-
-    private static void applyEscortSMods(
-            String variantId,
-            ShipVariantAPI variant
-    ) {
-        if ("diableavionics_lastline_maelstrom".equals(variantId)) {
-            addSMods(variant, "autorepair", "magazines");
-        } else if ("diableavionics_lastline_storm".equals(variantId)) {
-            addSMods(variant, "eccm", "targetingunit");
-        } else if ("diableavionics_lastline_daze".equals(variantId)) {
-            addSMods(variant, "targetingunit", "magazines");
-        } else if ("diableavionics_lastline_gust_raven".equals(variantId)
-                || "diableavionics_lastline_gust_zephyr".equals(variantId)
-                || "diableavionics_lastline_gust_blizzaia".equals(variantId)
-                || "diableavionics_lastline_gust_avalanche".equals(variantId)) {
-            addSMods(variant, "hardenedshieldemitter", "magazines");
-        } else if ("diableavionics_lastline_rime".equals(variantId)) {
-            addSMods(variant, "eccm", "targetingunit");
-        } else if ("diableavionics_lastline_coanda".equals(variantId)) {
-            addSMods(variant, "autorepair", "escort_package");
-        } else if ("diableavionics_lastline_vapor".equals(variantId)) {
-            addSMods(variant, "advancedoptics", "hardenedshieldemitter");
-        } else if ("diableavionics_lastline_minigust".equals(variantId)) {
-            addSMods(variant, "hardenedshieldemitter", "eccm");
-        }
-    }
-
-    private static void addSMods(ShipVariantAPI variant, String... hullmodIds) {
-        for (String hullmodId : hullmodIds) {
-            variant.addPermaMod(hullmodId, true);
-        }
     }
 
     private static void finishFleet(CampaignFleetAPI fleet) {
@@ -418,7 +388,7 @@ public final class DiableLastLineFleetFactory {
     }
 
     /**
-     * Replaces the generated build with the level-seven DATA save build.
+     * Replaces the generated build with the level-eight DATA save build.
      * The existing authored admiral skills remain unchanged.
      */
     private static void configureSubject71Skills(PersonAPI subject71) {
@@ -447,6 +417,11 @@ public final class DiableLastLineFleetFactory {
     }
 
     private static void prepareMember(FleetMemberAPI member) {
+        // MagicFleetBuilder preserves enemy S-mods by default. Last Line boss
+        // S-mods are combat-only and must be stripped by normal recovery.
+        member.getVariant().removeTag(
+                Tags.VARIANT_ALWAYS_RETAIN_SMODS_ON_SALVAGE
+        );
         member.getRepairTracker().setMothballed(false);
         member.getRepairTracker().setCR(member.getRepairTracker().getMaxCR());
     }
@@ -473,6 +448,7 @@ public final class DiableLastLineFleetFactory {
         PersonAPI pilot = faction.createRandomPerson();
         pilot.setName(new FullName(serialName, "", pilot.getGender()));
         pilot.setFaction(factionId);
+        pilot.setPortraitSprite(ESCORT_PORTRAIT);
         pilot.setRankId(Ranks.SPACE_LIEUTENANT);
         pilot.setPostId(Ranks.POST_OFFICER);
         pilot.setPersonality(config.optString("officer_personality", "steady"));
@@ -482,6 +458,44 @@ public final class DiableLastLineFleetFactory {
         applySkillLevels(pilot, config.optJSONObject("officer_skills"));
         pilot.getStats().setSkipRefresh(false);
         return pilot;
+    }
+
+    /**
+     * Presentation and recovery state are mutable campaign data, so update
+     * existing Last Line fleets in place instead of rebuilding them.
+     */
+    private static void syncExistingFleetState() {
+        for (LocationAPI location : Global.getSector().getAllLocations()) {
+            for (CampaignFleetAPI fleet : location.getFleets()) {
+                if (!isActiveLastLineFleet(fleet)) continue;
+
+                fleet.getMemoryWithoutUpdate().set(
+                        NEX_AUTORESOLVE_STRENGTH_MULT_KEY,
+                        NEX_AUTORESOLVE_STRENGTH_MULT
+                );
+                fleet.getMemoryWithoutUpdate().set(NEX_NO_KEEP_SMODS_KEY, true);
+
+                PersonAPI subject71 = findSubject71(fleet);
+                if (subject71 != null) {
+                    subject71.getStats().setSkipRefresh(true);
+                    subject71.getStats().setLevel(SUBJECT_71_LEVEL);
+                    subject71.getStats().setSkipRefresh(false);
+                }
+
+                for (FleetMemberAPI member : fleet.getFleetData().getMembersListCopy()) {
+                    PersonAPI captain = member.getCaptain();
+                    member.getVariant().removeTag(
+                            Tags.VARIANT_ALWAYS_RETAIN_SMODS_ON_SALVAGE
+                    );
+                    if (captain != null
+                            && member.getHullSpec() != null
+                            && !member.getHullSpec().getBaseHullId()
+                            .startsWith("diableavionics_virtuous")) {
+                        captain.setPortraitSprite(ESCORT_PORTRAIT);
+                    }
+                }
+            }
+        }
     }
 
     private static void applySkillLevels(PersonAPI person, JSONObject skills) {

@@ -11,14 +11,17 @@
         "escort_package",
         "ML_skinSwap",
         "hardenedshieldemitter",
-        "eccm",
-        "rat_controller"
+        "eccm"
     ],
     "permaMods": [
         "ML_skinSwap",
-        "rat_controller"
+        "hardenedshieldemitter",
+        "eccm"
     ],
-    "sMods": [],
+    "sMods": [
+        "hardenedshieldemitter",
+        "eccm"
+    ],
     "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_minigust",
     "weaponGroups": [

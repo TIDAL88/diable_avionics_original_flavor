@@ -10,14 +10,17 @@
         "abyss_diable_afterimage_mode_blue",
         "ML_skinSwap",
         "eccm",
-        "targetingunit",
-        "rat_controller"
+        "targetingunit"
     ],
     "permaMods": [
         "ML_skinSwap",
-        "rat_controller"
+        "eccm",
+        "targetingunit"
     ],
-    "sMods": [],
+    "sMods": [
+        "eccm",
+        "targetingunit"
+    ],
     "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_storm",
     "weaponGroups": [

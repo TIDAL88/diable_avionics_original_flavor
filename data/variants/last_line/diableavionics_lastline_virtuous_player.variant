@@ -14,12 +14,9 @@
         "missleracks",
         "hardenedshieldemitter",
         "extendedshieldemitter",
-        "magazines",
-        "rat_controller"
+        "magazines"
     ],
-    "permaMods": [
-        "rat_controller"
-    ],
+    "permaMods": [],
     "sMods": [],
     "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_virtuous_player",

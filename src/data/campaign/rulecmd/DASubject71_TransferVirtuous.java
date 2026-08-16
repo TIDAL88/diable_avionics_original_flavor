@@ -3,10 +3,13 @@ package data.campaign.rulecmd;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.BattleAPI;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
+import com.fs.starfarer.api.campaign.CargoAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
+import com.fs.starfarer.api.campaign.SpecialItemData;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.FleetEncounterContext;
+import com.fs.starfarer.api.impl.campaign.ids.Items;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
@@ -22,6 +25,7 @@ import java.util.Map;
 public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
     private static final String PLAYER_VIRTUOUS_VARIANT_ID =
             "diableavionics_lastline_virtuous_player";
+    private static final String SIMULATION_REWARD_CLAIMED_KEY = "$da_lastline_simulation_reward_claimed";
 
     @Override
     public boolean execute(String ruleId, InteractionDialogAPI dialog, List<Misc.Token> params, Map<String, MemoryAPI> memoryMap) {
@@ -44,6 +48,7 @@ public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
 
         CampaignFleetAPI playerFleet = Global.getSector().getPlayerFleet();
         playerFleet.getFleetData().addFleetMember(virtuousMember);
+        grantSimulationReward(targetFleet, playerFleet.getCargo());
 
         //reset battle so that the visual fleet also updates, showing no damage to the fleet.
         FleetEncounterContext context = (FleetEncounterContext) dialog.getPlugin().getContext();
@@ -54,12 +59,20 @@ public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
         if (DAModPlugin.haveNexerelin) {
             DANexVirtuousFleetInteractionDialogPluginImpl plugin = (DANexVirtuousFleetInteractionDialogPluginImpl) dialog.getPlugin();
             plugin.pullFleets();
-            plugin.refreshFleetInfo();
         } else if (dialog.getPlugin() instanceof DAVirtuousFleetInteractionDialogPluginImpl) {
             DAVirtuousFleetInteractionDialogPluginImpl plugin = (DAVirtuousFleetInteractionDialogPluginImpl) dialog.getPlugin();
             plugin.pullFleets();
-            plugin.refreshFleetInfo();
         }
         return true;
     }
+
+    private void grantSimulationReward(CampaignFleetAPI targetFleet, CargoAPI playerCargo) {
+        if (targetFleet.getMemoryWithoutUpdate().getBoolean(SIMULATION_REWARD_CLAIMED_KEY)) {
+            return;
+        }
+
+        playerCargo.addSpecial(new SpecialItemData(Items.SHIP_BP, "diableavionics_maelstrom"), 1);
+        targetFleet.getMemoryWithoutUpdate().set(SIMULATION_REWARD_CLAIMED_KEY, true);
+    }
+
 }

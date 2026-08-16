@@ -12,14 +12,17 @@
         "autorepair",
         "ML_skinSwap",
         "hardenedshieldemitter",
-        "magazines",
-        "rat_controller"
+        "magazines"
     ],
     "permaMods": [
         "ML_skinSwap",
-        "rat_controller"
+        "hardenedshieldemitter",
+        "magazines"
     ],
-    "sMods": [],
+    "sMods": [
+        "hardenedshieldemitter",
+        "magazines"
+    ],
     "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_gust_avalanche",
     "weaponGroups": [

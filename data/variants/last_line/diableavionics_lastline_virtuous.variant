@@ -14,13 +14,16 @@
         "missleracks",
         "hardenedshieldemitter",
         "extendedshieldemitter",
-        "magazines",
-        "rat_controller"
+        "magazines"
     ],
     "permaMods": [
-        "rat_controller"
+        "extendedshieldemitter",
+        "magazines"
     ],
-    "sMods": [],
+    "sMods": [
+        "extendedshieldemitter",
+        "magazines"
+    ],
     "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_virtuous",
     "weaponGroups": [

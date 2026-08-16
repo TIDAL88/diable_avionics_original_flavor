@@ -395,14 +395,14 @@
 		{"file":"sounds/diablefx/da_thunderboltpod_fire.ogg","pitch":0.94, "volume":0.32}
 	],
 	"diableavionics_banish_blast":[
-		{"file":"sounds/diablefx/da_banish_blast.ogg","pitch":1.0, "volume":0.66},
-		{"file":"sounds/diablefx/da_banish_blast.ogg","pitch":0.95, "volume":0.66},
-		{"file":"sounds/diablefx/da_banish_blast.ogg","pitch":1.05, "volume":0.66}
+		{"file":"sounds/diablefx/da_banish_blast.ogg","pitch":1.0, "volume":0.80},
+		{"file":"sounds/diablefx/da_banish_blast.ogg","pitch":0.95, "volume":0.80},
+		{"file":"sounds/diablefx/da_banish_blast.ogg","pitch":1.05, "volume":0.80}
 	],		
 	"diableavionics_banish_stage":[
-		{"file":"sounds/diablefx/da_banish_stage.ogg","pitch":1.0, "volume":1},
-		{"file":"sounds/diablefx/da_banish_stage.ogg","pitch":0.95, "volume":1},
-		{"file":"sounds/diablefx/da_banish_stage.ogg","pitch":1.05, "volume":1}
+		{"file":"sounds/diablefx/da_banish_stage.ogg","pitch":1.0, "volume":1.15},
+		{"file":"sounds/diablefx/da_banish_stage.ogg","pitch":0.95, "volume":1.15},
+		{"file":"sounds/diablefx/da_banish_stage.ogg","pitch":1.05, "volume":1.15}
 	],
 	"diableavionics_micromissile_firing":[
 		{"file":"sounds/diablefx/da_micromissile_fire.ogg","pitch":1, "volume":0.3},
