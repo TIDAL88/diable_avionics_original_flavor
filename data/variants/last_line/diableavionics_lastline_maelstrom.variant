@@ -1,7 +1,7 @@
 {
     "displayName": "Last Line",
     "fluxCapacitors": 55,
-    "fluxVents": 6,
+    "fluxVents": 16,
     "goalVariant": false,
     "hullId": "diableavionics_maelstrom",
     "hullMods": [
@@ -13,14 +13,17 @@
         "abyss_diable_afterimage_mode_blue",
         "ML_skinSwap",
         "autorepair",
-        "magazines",
-        "rat_controller"
+        "magazines"
     ],
     "permaMods": [
         "ML_skinSwap",
-        "rat_controller"
+        "autorepair",
+        "magazines"
     ],
-    "sMods": [],
+    "sMods": [
+        "autorepair",
+        "magazines"
+    ],
     "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_maelstrom",
     "weaponGroups": [
@@ -28,7 +31,7 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0001": "diableavionics_uhlan"
+                "WS0001": "diableavionics_opfergv"
             }
         },
         {

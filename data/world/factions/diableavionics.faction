@@ -424,6 +424,7 @@
     "ranks":{
             "ranks":{
                     "spaceCommander":{"name":"Central Commander"},
+                    "dsfTll":{"name":"DSF-TLL"},
             },
             "posts":{
                     "patrolCommander":{"name":"Patrol Manager"},

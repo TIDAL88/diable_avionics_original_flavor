@@ -12,7 +12,10 @@
     "permaMods": [
         "ML_skinSwap"
     ],
-    "sMods": [],
+    "sMods": [
+         "advancedoptics",
+         "hardenedshieldemitter",
+    ],
     "tags": [
         "ship_recoverable",
         "ML_paintjob-diableavionics_battlehardened_vapor"

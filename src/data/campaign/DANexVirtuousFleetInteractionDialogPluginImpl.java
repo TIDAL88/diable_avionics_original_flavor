@@ -1,14 +1,13 @@
 package data.campaign;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.CombatDamageData;
 import com.fs.starfarer.api.campaign.FleetEncounterContextPlugin;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
+import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.EngagementResultAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
-import com.fs.starfarer.api.impl.campaign.FleetInteractionDialogPluginImpl;
 import exerelin.campaign.battle.NexFleetInteractionDialogPluginImpl;
 
 public class DANexVirtuousFleetInteractionDialogPluginImpl extends NexFleetInteractionDialogPluginImpl {
@@ -88,17 +87,35 @@ public class DANexVirtuousFleetInteractionDialogPluginImpl extends NexFleetInter
             context.setEngagedInHostilities(false);
 
             showFleetInfo();
-            optionSelected("", OptionId.OPEN_COMM);
+            openPostSimulationTransferComm();
             return;
         }
         super.backFromEngagement(result);
     }
 
-    public void refreshFleetInfo() {
-        showFleetInfo();
-    }
-
     public void pullFleets() {
         pullInNearbyFleets();
+    }
+
+    /**
+     * Vanilla redraws the fleet commander after OpenCommLink rules finish.
+     * Suppress that redraw only for this call so the transfer contact selected
+     * by the rules remains visible, then restore the original memory state.
+     */
+    private void openPostSimulationTransferComm() {
+        MemoryAPI memory = dialog.getInteractionTarget().getMemoryWithoutUpdate();
+        boolean hadPreviousValue = memory.contains(DO_NOT_AUTO_SHOW_FC_PORTRAIT);
+        Object previousValue = memory.get(DO_NOT_AUTO_SHOW_FC_PORTRAIT);
+
+        memory.set(DO_NOT_AUTO_SHOW_FC_PORTRAIT, true);
+        try {
+            optionSelected("", OptionId.OPEN_COMM);
+        } finally {
+            if (hadPreviousValue) {
+                memory.set(DO_NOT_AUTO_SHOW_FC_PORTRAIT, previousValue);
+            } else {
+                memory.unset(DO_NOT_AUTO_SHOW_FC_PORTRAIT);
+            }
+        }
     }
 }

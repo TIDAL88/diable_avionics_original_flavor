@@ -12,13 +12,16 @@
         "abyss_diable_afterimage_mode_blue",
         "hardenedshieldemitter",
         "autorepair",
-        "escort_package",
-        "rat_controller"
+        "escort_package"
     ],
     "permaMods": [
-        "rat_controller"
+        "autorepair",
+        "escort_package"
     ],
-    "sMods": [],
+    "sMods": [
+        "autorepair",
+        "escort_package"
+    ],
     "sModdedBuiltIns": [],
     "variantId": "diableavionics_lastline_coanda",
     "weaponGroups": [

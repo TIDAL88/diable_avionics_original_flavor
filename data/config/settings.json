@@ -13,7 +13,8 @@
   "graphics": {
     "characters": {
       "da_subject71": "graphics/da/portraits/diableavionics_s71.png",
-      "da_gulf": "graphics/da/portraits/diableavionics_gulfOwner.png"
+      "da_gulf": "graphics/da/portraits/diableavionics_gulfOwner.png",
+      "da_lastline": "graphics/da/portraits/diableavionics_thelastline.png"
     },
     "diableavionics_intel": {
       "gulfPart2Signal": "graphics/da/fx/da_signal.png",
