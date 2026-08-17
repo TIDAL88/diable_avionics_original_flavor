@@ -23,7 +23,8 @@ public class DANexVirtuousFleetInteractionDialogPluginImpl extends NexFleetInter
             DASubject71CombatMusic.stopAndRestoreCampaignMusic();
             DASubject71DialogMusic.start(dialog);
         }
-        if (DACampaignPlugin.hasMemoryInFleet(otherFleet, "$virtuous") && DACampaignPlugin.hasMemoryInFleet(otherFleet, "$simulationRunning")) {
+        if (DACampaignPlugin.hasMemoryInFleet(otherFleet, "$virtuous")
+                && DASubject71BattleCreationPlugin.isSimulationBattleActive()) {
             DASubject71BattleCreationPlugin.restoreSimulationBackground();
             restoreOrigCaptains();
             if (origFlagship != null) {

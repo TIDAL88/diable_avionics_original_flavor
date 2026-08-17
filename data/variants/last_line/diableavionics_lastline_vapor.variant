@@ -1,20 +1,24 @@
 {
     "displayName": "Last Line",
-    "fluxCapacitors": 7,
-    "fluxVents": 10,
+    "fluxCapacitors": 15,
+    "fluxVents": 4,
     "goalVariant": false,
     "hullId": "diableavionics_vapor",
     "hullMods": [
         "advancedoptics",
         "hardenedshieldemitter",
+        "abyss_diable_afterimage_suite",
+        "abyss_diable_afterimage_mode_blue",
         "ML_skinSwap"
     ],
     "permaMods": [
-        "ML_skinSwap"
+        "ML_skinSwap",
+        "advancedoptics",
+        "hardenedshieldemitter"
     ],
     "sMods": [
          "advancedoptics",
-         "hardenedshieldemitter",
+         "hardenedshieldemitter"
     ],
     "tags": [
         "ship_recoverable",
@@ -26,8 +30,8 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0003": "diableavionics_magicbox",
-                "WS0004": "diableavionics_magicbox"
+                "WS0003": "diableavionics_ibis",
+                "WS0004": "diableavionics_ibis"
             }
         },
         {

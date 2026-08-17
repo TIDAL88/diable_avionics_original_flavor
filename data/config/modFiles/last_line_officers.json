@@ -77,10 +77,22 @@
         "officer_level": 5,
         "officer_skills": {
             "energy_weapon_mastery": 1,
-            "target_analysis": 1,
+            "gunnery_implants": 2,
             "systems_expertise": 1,
             "helmsmanship": 1,
             "field_modulation": 1
+        }
+    },
+    "diableavionics_draft": {
+        "officer_personality": "steady",
+        "officer_faction": "diableavionics",
+        "officer_level": 5,
+        "officer_skills": {
+            "helmsmanship": 1,
+            "target_analysis": 1,
+            "gunnery_implants": 2,
+            "point_defense": 1,
+            "missile_specialization": 1
         }
     },
     "diableavionics_miniGust": {
