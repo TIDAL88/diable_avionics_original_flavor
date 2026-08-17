@@ -12,9 +12,12 @@ import com.fs.starfarer.api.mission.MissionDefinitionAPI;
 public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
     private static final String SIMULACRUM_BACKGROUND =
             "graphics/da/backgrounds/diableavionics_simulacrum.png";
+    private static final String COMBAT_SETUP_KEY =
+            "diableavionics_lastline_combat_setup";
 
     private static LocationAPI swappedLocation;
     private static String originalBackground;
+    private static BattleCreationContext simulationContext;
 
     private boolean simulation;
 
@@ -23,8 +26,12 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
      * battle builder copies the containing location's background during
      * combat definition creation.
      */
-    public static void prepareSimulationBackground(LocationAPI location) {
+    public static void prepareSimulationBattle(
+            BattleCreationContext context,
+            LocationAPI location
+    ) {
         restoreSimulationBackground();
+        simulationContext = context;
         if (location == null) return;
 
         swappedLocation = location;
@@ -38,6 +45,11 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
         }
         swappedLocation = null;
         originalBackground = null;
+        simulationContext = null;
+    }
+
+    public static boolean isSimulationBattleActive() {
+        return simulationContext != null;
     }
 
     @Override
@@ -46,14 +58,22 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
             MissionDefinitionAPI loader
     ) {
         context.enemyDeployAll = true;
-        simulation = swappedLocation != null || isSimulation(context);
+        simulation = context != null && context == simulationContext;
+        if (!simulation) {
+            // Clean up any swap left behind by an interrupted simulation.
+            restoreSimulationBackground();
+        }
         super.initBattle(context, loader);
     }
 
     @Override
     public void afterDefinitionLoad(CombatEngineAPI engine) {
         super.afterDefinitionLoad(engine);
+        if (engine.getCustomData().containsKey(COMBAT_SETUP_KEY)) return;
+        engine.getCustomData().put(COMBAT_SETUP_KEY, Boolean.TRUE);
+
         DASubject71CombatMusic.start();
+        engine.addPlugin(new DALastLineInitialDeploymentPlugin());
         if (simulation) {
             engine.addPlugin(
                     new DASimulacrumScanlineOverlay()
@@ -68,12 +88,4 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
         }
     }
 
-    private boolean isSimulation(BattleCreationContext context) {
-        return context != null
-                && context.getOtherFleet() != null
-                && DACampaignPlugin.hasMemoryInFleet(
-                        context.getOtherFleet(),
-                        "$simulationRunning"
-                );
-    }
 }

@@ -178,11 +178,9 @@ FireAll PopulateOptions","Access denied.
 That doesn't seem particularly useful.",,
 DASubject71_ExecBattleSim,DialogOptionSelected,"$virtuous
 $option == subject71ExecBattleSim
-!$simulationSuccessful","$simulationRunning = true
-SetTextHighlightColors textGreenColor
-SetTextHighlights ""Entering simulation...""
-FireBest DA_Subject71_showCommandPrompt
-DASubject71_BattleSim",Entering simulation...,,
+!$simulationSuccessful","FireBest DA_Subject71_showCommandPrompt
+FireAll PopulateOptions
+DASubject71_BattleSim",,,
 DASubject71_ExecBattleSimSimulationSuccessful,DialogOptionSelected,"$virtuous
 $option == subject71ExecBattleSim
 $simulationSuccessful","SetTextHighlightColors textGreenColor
