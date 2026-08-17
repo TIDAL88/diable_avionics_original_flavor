@@ -5,6 +5,7 @@
     "hullId": "diableavionics_module_tip",
     "hullMods": [
         "magazines",
+        "eccm",
         "abyss_diable_afterimage_suite",
         "abyss_diable_afterimage_mode_red"
     ],

@@ -25,12 +25,22 @@ import java.util.Map;
 public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
     private static final String PLAYER_VIRTUOUS_VARIANT_ID =
             "diableavionics_lastline_virtuous_player";
+    private static final String VIRTUOUS_CLAIMED_KEY = "$da_lastline_virtuous_claimed";
     private static final String SIMULATION_REWARD_CLAIMED_KEY = "$da_lastline_simulation_reward_claimed";
 
     @Override
     public boolean execute(String ruleId, InteractionDialogAPI dialog, List<Misc.Token> params, Map<String, MemoryAPI> memoryMap) {
+        MemoryAPI sectorMemory = Global.getSector().getMemoryWithoutUpdate();
+        if (sectorMemory.getBoolean(VIRTUOUS_CLAIMED_KEY)) {
+            return false;
+        }
+
         CampaignFleetAPI targetFleet = (CampaignFleetAPI) dialog.getInteractionTarget();
         FleetMemberAPI virtuousMember = targetFleet.getFleetData().getMemberWithCaptain(targetFleet.getCommander());
+        if (virtuousMember == null) {
+            return false;
+        }
+
         targetFleet.getFleetData().removeOfficer(targetFleet.getCommander());
         virtuousMember.setCaptain(null);
         virtuousMember.setFlagship(false);
@@ -48,6 +58,7 @@ public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
 
         CampaignFleetAPI playerFleet = Global.getSector().getPlayerFleet();
         playerFleet.getFleetData().addFleetMember(virtuousMember);
+        sectorMemory.set(VIRTUOUS_CLAIMED_KEY, true);
         grantSimulationReward(targetFleet, playerFleet.getCargo());
 
         //reset battle so that the visual fleet also updates, showing no damage to the fleet.
