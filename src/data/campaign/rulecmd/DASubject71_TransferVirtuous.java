@@ -70,8 +70,7 @@ public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
         if (DAModPlugin.haveNexerelin) {
             DANexVirtuousFleetInteractionDialogPluginImpl plugin = (DANexVirtuousFleetInteractionDialogPluginImpl) dialog.getPlugin();
             plugin.pullFleets();
-        } else if (dialog.getPlugin() instanceof DAVirtuousFleetInteractionDialogPluginImpl) {
-            DAVirtuousFleetInteractionDialogPluginImpl plugin = (DAVirtuousFleetInteractionDialogPluginImpl) dialog.getPlugin();
+        } else if (dialog.getPlugin() instanceof DAVirtuousFleetInteractionDialogPluginImpl plugin) {
             plugin.pullFleets();
         }
         return true;

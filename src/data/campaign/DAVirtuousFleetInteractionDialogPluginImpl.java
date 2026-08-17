@@ -39,7 +39,7 @@ public class DAVirtuousFleetInteractionDialogPluginImpl extends FleetInteraction
 
             otherFleet.getMemoryWithoutUpdate().set("$simulationSuccessful", result.didPlayerWin());
             otherFleet.getCommander().getMemoryWithoutUpdate().set("$simulationSuccessful", result.didPlayerWin());
-
+            Global.getCombatEngine().removePlugin(new DASubject71CombatMusic());
             result.setLastCombatDamageData(new CombatDamageData());
 
             result.getWinnerResult().getReserves().clear();

@@ -39,9 +39,7 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
     private static final String REDACTED_COMBAT_MESSAGE2 = "CIC-EW : LARGE PHASE-SPACE SIGNATURE...";
     private static final String REDACTED_COMBAT_MESSAGE3 = "CIC-XO : All hands, prepare for turbulence";
     private static final String REDACTED_COMBAT_MESSAGE4 = "CIC-XO : Divide and conquer, that thing is not going anywhere.";
-
-
-
+    private boolean music_started=false;
     private boolean checkedBattle;
     private boolean targetBattle;
     private boolean firstMessage;
@@ -49,7 +47,7 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
     private boolean arrivalStarted;
     private boolean stationArrived;
     private float elapsed;
-
+    private static final String COMBAT_MUSIC_SET = "diableavionics_blacksite_combat";
     @Override
     public void advance(float amount, List<InputEventAPI> events) {
         if (Global.getCurrentState() != GameState.COMBAT
@@ -60,7 +58,13 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
 
         CombatEngineAPI engine = Global.getCombatEngine();
         if (engine == null) return;
-
+        if (!music_started){
+            Global.getSoundPlayer().pauseMusic();
+        }
+        if (!music_started){
+            Global.getSoundPlayer().playCustomMusic(1, 1, COMBAT_MUSIC_SET, true);
+            music_started=true;
+        }
         if (!checkedBattle) {
             BattleAPI battle = Global.getSector().getPlayerFleet().getBattle();
             if (battle == null) return;

@@ -1,5 +1,6 @@
 package data.campaign;
 
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.LocationAPI;
 import com.fs.starfarer.api.combat.BattleCreationContext;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
@@ -58,7 +59,7 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
             MissionDefinitionAPI loader
     ) {
         context.enemyDeployAll = true;
-        simulation = context != null && context == simulationContext;
+        simulation = context == simulationContext;
         if (!simulation) {
             // Clean up any swap left behind by an interrupted simulation.
             restoreSimulationBackground();
@@ -71,8 +72,7 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
         super.afterDefinitionLoad(engine);
         if (engine.getCustomData().containsKey(COMBAT_SETUP_KEY)) return;
         engine.getCustomData().put(COMBAT_SETUP_KEY, Boolean.TRUE);
-
-        DASubject71CombatMusic.start();
+        engine.addPlugin(new DASubject71CombatMusic());
         DALastLineInitialDeploymentPlugin.install(engine);
         if (simulation) {
             engine.addPlugin(
