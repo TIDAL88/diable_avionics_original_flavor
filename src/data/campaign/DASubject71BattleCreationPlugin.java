@@ -73,7 +73,7 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
         engine.getCustomData().put(COMBAT_SETUP_KEY, Boolean.TRUE);
 
         DASubject71CombatMusic.start();
-        engine.addPlugin(new DALastLineInitialDeploymentPlugin());
+        DALastLineInitialDeploymentPlugin.install(engine);
         if (simulation) {
             engine.addPlugin(
                     new DASimulacrumScanlineOverlay()
