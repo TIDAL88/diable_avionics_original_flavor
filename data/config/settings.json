@@ -3,7 +3,6 @@
     "data.campaign.rulecmd"
   ],
   "plugins": {
-    "DiableGulfPart2CombatPlugin": "data.scripts.campaign.gulf.DiableGulfPart2CombatPlugin",
     "DiableShieldColorCombatPlugin": "data.scripts.DiableShieldColorCombatPlugin"
   },
   "textGreenColor":[0,255,0,255],
