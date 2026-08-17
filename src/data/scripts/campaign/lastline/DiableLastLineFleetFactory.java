@@ -387,6 +387,27 @@ public final class DiableLastLineFleetFactory {
         return null;
     }
 
+    /**
+     * Subject 71 dies at the end of a successful fleet simulation. Keep the
+     * commander object required by the encounter, but permanently present it
+     * as the Maelstrom's D1 unit from this point onward.
+     */
+    public static void convertSubject71ToD1(CampaignFleetAPI fleet) {
+        PersonAPI subject71 = findSubject71(fleet);
+        if (subject71 == null) {
+            Global.getLogger(DiableLastLineFleetFactory.class).warn(
+                    "Unable to convert Subject 71 to D1 after simulation"
+            );
+            return;
+        }
+
+        subject71.setName(new FullName("D1", "", subject71.getGender()));
+        subject71.setPortraitSprite(ESCORT_PORTRAIT);
+        Global.getLogger(DiableLastLineFleetFactory.class).info(
+                "Converted Subject 71 identity to Last Line D1"
+        );
+    }
+
     private static void markMigrationComplete() {
         Global.getSector().getMemoryWithoutUpdate().set(
                 MIGRATION_VERSION_MEMKEY,

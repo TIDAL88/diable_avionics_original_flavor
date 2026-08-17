@@ -8,6 +8,7 @@ import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.EngagementResultAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
 import exerelin.campaign.battle.NexFleetInteractionDialogPluginImpl;
 
 public class DANexVirtuousFleetInteractionDialogPluginImpl extends NexFleetInteractionDialogPluginImpl {
@@ -39,6 +40,9 @@ public class DANexVirtuousFleetInteractionDialogPluginImpl extends NexFleetInter
 
             otherFleet.getMemoryWithoutUpdate().set("$simulationSuccessful", result.didPlayerWin());
             otherFleet.getCommander().getMemoryWithoutUpdate().set("$simulationSuccessful", result.didPlayerWin());
+            if (result.didPlayerWin()) {
+                DiableLastLineFleetFactory.convertSubject71ToD1(otherFleet);
+            }
             Global.getCombatEngine().removePlugin(new DASubject71CombatMusic());
             result.setLastCombatDamageData(new CombatDamageData());
 

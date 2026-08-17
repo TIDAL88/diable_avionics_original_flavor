@@ -9,6 +9,7 @@ import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.EngagementResultAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.FleetInteractionDialogPluginImpl;
+import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
 
 public class DAVirtuousFleetInteractionDialogPluginImpl extends FleetInteractionDialogPluginImpl {
     public DAVirtuousFleetInteractionDialogPluginImpl() {
@@ -39,6 +40,9 @@ public class DAVirtuousFleetInteractionDialogPluginImpl extends FleetInteraction
 
             otherFleet.getMemoryWithoutUpdate().set("$simulationSuccessful", result.didPlayerWin());
             otherFleet.getCommander().getMemoryWithoutUpdate().set("$simulationSuccessful", result.didPlayerWin());
+            if (result.didPlayerWin()) {
+                DiableLastLineFleetFactory.convertSubject71ToD1(otherFleet);
+            }
             Global.getCombatEngine().removePlugin(new DASubject71CombatMusic());
             result.setLastCombatDamageData(new CombatDamageData());
 

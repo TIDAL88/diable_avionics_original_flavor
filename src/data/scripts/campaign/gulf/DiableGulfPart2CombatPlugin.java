@@ -1,9 +1,6 @@
 package data.scripts.campaign.gulf;
 
-import com.fs.starfarer.api.GameState;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.BattleAPI;
-import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;
 import com.fs.starfarer.api.combat.CombatEntityAPI;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
@@ -13,6 +10,7 @@ import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.input.InputEventAPI;
+import com.fs.starfarer.api.mission.FleetSide;
 import data.scripts.util.Diableavionics_graphicLibEffects;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
@@ -39,45 +37,54 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
     private static final String REDACTED_COMBAT_MESSAGE2 = "CIC-EW : LARGE PHASE-SPACE SIGNATURE...";
     private static final String REDACTED_COMBAT_MESSAGE3 = "CIC-XO : All hands, prepare for turbulence";
     private static final String REDACTED_COMBAT_MESSAGE4 = "CIC-XO : Divide and conquer, that thing is not going anywhere.";
-    private boolean music_started=false;
-    private boolean checkedBattle;
-    private boolean targetBattle;
+    private static final String COMBAT_MUSIC_SET = "diableavionics_blacksite_combat";
+
+    private CombatEngineAPI engine;
+    private boolean musicStarted;
     private boolean firstMessage;
     private boolean secondMessage;
     private boolean arrivalStarted;
     private boolean stationArrived;
     private float elapsed;
-    private static final String COMBAT_MUSIC_SET = "diableavionics_blacksite_combat";
+
+    @Override
+    public void init(CombatEngineAPI engine) {
+        this.engine = engine;
+        engine.setCombatNotOverForAtLeast(32f);
+
+        CombatFleetManagerAPI enemy =
+                engine.getFleetManager(FleetSide.ENEMY);
+        if (enemy != null) {
+            enemy.setCanForceShipsToEngageWhenBattleClearlyLost(true);
+        }
+    }
+
     @Override
     public void advance(float amount, List<InputEventAPI> events) {
-        if (Global.getCurrentState() != GameState.COMBAT
-                || Global.getSector() == null
-                || Global.getSector().getPlayerFleet() == null) {
-            return;
-        }
-
-        CombatEngineAPI engine = Global.getCombatEngine();
         if (engine == null) return;
-        if (!music_started){
-            Global.getSoundPlayer().pauseMusic();
-        }
-        if (!music_started){
-            Global.getSoundPlayer().playCustomMusic(1, 1, COMBAT_MUSIC_SET, true);
-            music_started=true;
-        }
-        if (!checkedBattle) {
-            BattleAPI battle = Global.getSector().getPlayerFleet().getBattle();
-            if (battle == null) return;
-            checkedBattle = true;
-            targetBattle = isGulfPartTwoBattle(battle);
-            if (targetBattle) {
-                // Guarantees the ambush can arrive even if all ten Vapors are destroyed quickly.
-                engine.setCombatNotOverForAtLeast(32f);
-                engine.getFleetManager(1).setCanForceShipsToEngageWhenBattleClearlyLost(true);
+
+        if (!musicStarted) {
+            musicStarted = true;
+            try {
+                Global.getSoundPlayer().pauseMusic();
+                Global.getSoundPlayer().playCustomMusic(
+                        1,
+                        1,
+                        COMBAT_MUSIC_SET,
+                        true
+                );
+                Global.getLogger(DiableGulfPart2CombatPlugin.class).info(
+                        "Requested First Relay combat music"
+                );
+            } catch (RuntimeException ex) {
+                Global.getLogger(DiableGulfPart2CombatPlugin.class).warn(
+                        "Unable to play First Relay combat music",
+                        ex
+                );
             }
         }
 
-        if (!targetBattle || engine.isPaused()) return;
+        if (engine.isPaused()) return;
 
         elapsed += amount;
 
@@ -103,16 +110,6 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
         }
 
     }
-
-    private boolean isGulfPartTwoBattle(BattleAPI battle) {
-        for (CampaignFleetAPI fleet : battle.getNonPlayerSide()) {
-            if (fleet.getMemoryWithoutUpdate().getBoolean(DiableGulfPart2Intel.DEFENDER_MEMKEY)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void beginArrival(CombatEngineAPI engine) {
         arrivalStarted = true;
         engine.setCombatNotOverForAtLeast(13f);
@@ -243,14 +240,28 @@ public class DiableGulfPart2CombatPlugin extends BaseEveryFrameCombatPlugin {
 
     private void finishArrival(CombatEngineAPI engine) {
         stationArrived = true;
-        ShipAPI station = spawnStation(engine);
-        if (station == null) return;
+        try {
+            ShipAPI station = spawnStation(engine);
+            if (station == null) {
+                Global.getLogger(DiableGulfPart2CombatPlugin.class).warn(
+                        "First Relay station spawn returned null"
+                );
+                return;
+            }
 
-        station.getVelocity().set(0f, 0f);
-
-        renderArrivalBurst(engine, station);
-
-        engine.getCombatUI().addMessage(0, Color.YELLOW, REDACTED_COMBAT_MESSAGE4);
+            station.getVelocity().set(0f, 0f);
+            renderArrivalBurst(engine, station);
+            engine.getCombatUI().addMessage(
+                    0,
+                    Color.YELLOW,
+                    REDACTED_COMBAT_MESSAGE4
+            );
+            Global.getLogger(DiableGulfPart2CombatPlugin.class).info(
+                    "First Relay station arrival completed"
+            );
+        } finally {
+            engine.removePlugin(this);
+        }
     }
 
     private ShipAPI getEffectAnchor(CombatEngineAPI engine) {

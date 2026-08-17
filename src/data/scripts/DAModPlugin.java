@@ -17,7 +17,6 @@ import com.fs.starfarer.api.impl.campaign.missions.hub.BaseHubMission;
 import com.fs.starfarer.api.impl.campaign.world.GateHaulerLocation;
 import data.campaign.DACampaignPlugin;
 import data.campaign.DASubject71DialogMusic;
-import data.scripts.campaign.gulf.DiableGulfPart2CombatPlugin;
 import data.scripts.campaign.gulf.DiableGulfPart2Intel;
 import data.scripts.campaign.gulf.DiableGulfPart2TriggerScript;
 import data.scripts.ai.*;
@@ -113,7 +112,6 @@ public class DAModPlugin extends BaseModPlugin {
         }
         new DiableavionicsGen().generate(Global.getSector());
         setupGulfPart2();
-        if (Global.getCombatEngine().hasPluginOfClass(DiableGulfPart2CombatPlugin.class)) Global.getCombatEngine().removePlugin(new DiableGulfPart2CombatPlugin());
         if (!haveNexerelin || SectorManager.getManager().isCorvusMode()) {
             if (!Global.getSector().getMemoryWithoutUpdate().contains(MEMKEY_INTIALIZED)) {
                 addToOngoingGame();

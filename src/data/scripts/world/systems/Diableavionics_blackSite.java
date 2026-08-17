@@ -162,6 +162,7 @@ public class Diableavionics_blackSite {
         );
 
         station.setCustomDescriptionId(STATION_ID);
+        applyAmbienceMusic(station);
         station.setCircularOrbitPointingDown(planet, 180f, 850f, 55f);
         station.setDiscoverable(true);
         station.setDiscoveryXP(500f);
@@ -178,6 +179,14 @@ public class Diableavionics_blackSite {
         system.generateAnchorIfNeeded();
         system.updateAllOrbits();
         return system;
+    }
+
+    public static void applyAmbienceMusic(SectorEntityToken entity) {
+        if (entity == null) return;
+        entity.getMemoryWithoutUpdate().set(
+                MusicPlayerPluginImpl.MUSIC_SET_MEM_KEY,
+                MUSIC_SET_ID
+        );
     }
 
     private void ensureHyperspaceProtection(SectorAPI sector, StarSystemAPI system) {

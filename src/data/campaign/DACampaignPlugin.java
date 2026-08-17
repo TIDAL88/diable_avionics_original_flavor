@@ -7,6 +7,7 @@ import com.fs.starfarer.api.campaign.BattleCreationPlugin;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogPlugin;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
+import data.scripts.campaign.gulf.DiableGulfPart2Intel;
 import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
 import data.scripts.world.systems.Diableavionics_blackSite;
 
@@ -17,6 +18,15 @@ public class DACampaignPlugin extends BaseCampaignPlugin {
     ) {
         if (opponent instanceof CampaignFleetAPI) {
             CampaignFleetAPI fleet = (CampaignFleetAPI) opponent;
+            if (fleet.getMemoryWithoutUpdate().getBoolean(
+                    DiableGulfPart2Intel.DEFENDER_MEMKEY
+            )) {
+                return new PluginPick<BattleCreationPlugin>(
+                        new DiableGulfPart2BattleCreationPlugin(),
+                        PickPriority.HIGHEST
+                );
+            }
+
             boolean isNormalLastLineEncounter =
                     hasMemoryInFleet(fleet, "$virtuous")
                     && fleet.getMemoryWithoutUpdate().contains(

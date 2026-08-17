@@ -4,11 +4,14 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.AdmiralAIPlugin;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.CombatFleetManagerAPI;
+import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.mission.FleetSide;
 import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
+import org.lwjgl.util.vector.Vector2f;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -23,6 +26,11 @@ import java.util.Set;
 public final class DALastLineInitialDeploymentPlugin
         implements AdmiralAIPlugin.AdmiralPluginDelegate {
 
+    private static final float SPAWN_FACING = 270f;
+    private static final float SPAWN_DELAY = 3f;
+    private static final float SPAWN_PADDING = 150f;
+    private static final float MAP_EDGE_PADDING = 100f;
+
     private static final Set<String> REQUIRED_VARIANT_IDS =
             Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
                     DiableLastLineFleetFactory.VIRTUOUS_VARIANT_ID,
@@ -35,10 +43,17 @@ public final class DALastLineInitialDeploymentPlugin
             Collections.newSetFromMap(
                     new IdentityHashMap<FleetMemberAPI, Boolean>()
             );
+    private final CombatEngineAPI engine;
+    private final CombatFleetManagerAPI enemyFleetManager;
 
     private boolean initialDeploymentFinished;
 
-    private DALastLineInitialDeploymentPlugin() {
+    private DALastLineInitialDeploymentPlugin(
+            CombatEngineAPI engine,
+            CombatFleetManagerAPI enemyFleetManager
+    ) {
+        this.engine = engine;
+        this.enemyFleetManager = enemyFleetManager;
     }
 
     public static void install(CombatEngineAPI engine) {
@@ -54,7 +69,10 @@ public final class DALastLineInitialDeploymentPlugin
         }
 
         DALastLineInitialDeploymentPlugin delegate =
-                new DALastLineInitialDeploymentPlugin();
+                new DALastLineInitialDeploymentPlugin(
+                        engine,
+                        enemyFleetManager
+                );
         Set<String> foundVariantIds = new HashSet<String>();
         for (FleetMemberAPI member : enemyFleetManager.getDeployedCopy()) {
             delegate.addRequiredMember(member, foundVariantIds, false);
@@ -98,7 +116,120 @@ public final class DALastLineInitialDeploymentPlugin
 
     @Override
     public void doAdditionalInitialDeployment() {
-        initialDeploymentFinished = true;
+        if (initialDeploymentFinished) return;
+
+        try {
+            List<ShipAPI> forcedShips = new ArrayList<ShipAPI>();
+            List<String> forcedVariantIds = new ArrayList<String>();
+            List<FleetMemberAPI> reserves =
+                    enemyFleetManager.getReservesCopy();
+
+            for (FleetMemberAPI member : requiredMembers) {
+                if (enemyFleetManager.getShipFor(member) != null) continue;
+
+                String variantId = getRequiredVariantId(member);
+                if (!reserves.contains(member)) {
+                    Global.getLogger(
+                            DALastLineInitialDeploymentPlugin.class
+                    ).warn(
+                            "Unable to force-deploy missing Last Line ship "
+                                    + variantId + ": member is not in reserves"
+                    );
+                    continue;
+                }
+
+                Vector2f initialLocation = new Vector2f(
+                        0f,
+                        engine.getMapHeight() / 2f - MAP_EDGE_PADDING
+                );
+                ShipAPI spawned = enemyFleetManager.spawnFleetMember(
+                        member,
+                        initialLocation,
+                        SPAWN_FACING,
+                        SPAWN_DELAY
+                );
+
+                if (spawned != null) {
+                    enemyFleetManager.removeFromReserves(member);
+                    forcedShips.add(spawned);
+                    forcedVariantIds.add(variantId);
+                } else {
+                    Global.getLogger(
+                            DALastLineInitialDeploymentPlugin.class
+                    ).warn(
+                            "Unable to force-deploy missing Last Line ship "
+                                    + variantId + ": spawn returned null"
+                    );
+                }
+            }
+
+            moveToSafeSpawnLocations(forcedShips);
+            if (!forcedVariantIds.isEmpty()) {
+                Global.getLogger(
+                        DALastLineInitialDeploymentPlugin.class
+                ).info(
+                        "Force-deployed missing Last Line initial ships: "
+                                + forcedVariantIds
+                );
+            }
+        } finally {
+            // Once every missing required member has been handled, Vanilla may
+            // fill any remaining deployment capacity normally.
+            initialDeploymentFinished = true;
+        }
+    }
+
+    private void moveToSafeSpawnLocations(List<ShipAPI> ships) {
+        for (ShipAPI ship : ships) {
+            Vector2f safeLocation = findSafeSpawnLocation(ship);
+            if (safeLocation != null) {
+                ship.getLocation().set(safeLocation.x, safeLocation.y);
+            } else {
+                Global.getLogger(
+                        DALastLineInitialDeploymentPlugin.class
+                ).warn(
+                        "Unable to find collision-free initial position for "
+                                + ship.getName()
+                );
+            }
+        }
+    }
+
+    private Vector2f findSafeSpawnLocation(ShipAPI ship) {
+        float radius = Math.max(50f, ship.getCollisionRadius());
+        float halfWidth = engine.getMapWidth() / 2f;
+        float halfHeight = engine.getMapHeight() / 2f;
+        float minX = -halfWidth + radius + MAP_EDGE_PADDING;
+        float maxX = halfWidth - radius - MAP_EDGE_PADDING;
+        float minY = -halfHeight + radius + MAP_EDGE_PADDING;
+        float maxY = halfHeight - radius - MAP_EDGE_PADDING;
+        float step = radius * 2f + SPAWN_PADDING;
+
+        for (float y = maxY; y >= minY; y -= step) {
+            for (float x = minX; x <= maxX; x += step) {
+                Vector2f candidate = new Vector2f(x, y);
+                if (isCollisionFree(ship, candidate)) {
+                    return candidate;
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean isCollisionFree(ShipAPI ship, Vector2f candidate) {
+        for (ShipAPI other : engine.getShips()) {
+            if (other == ship || !other.isAlive()) continue;
+
+            float clearance = ship.getCollisionRadius()
+                    + other.getCollisionRadius()
+                    + SPAWN_PADDING;
+            float dx = candidate.x - other.getLocation().x;
+            float dy = candidate.y - other.getLocation().y;
+            if (dx * dx + dy * dy < clearance * clearance) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void addRequiredMember(
