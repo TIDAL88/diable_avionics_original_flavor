@@ -14,6 +14,7 @@ import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.impl.campaign.ids.FleetTypes;
+import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.impl.campaign.ids.Personalities;
 import com.fs.starfarer.api.impl.campaign.ids.Ranks;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
@@ -404,7 +405,7 @@ public final class DiableLastLineFleetFactory {
             throw new IllegalStateException("Missing Subject 71 skill configuration");
         }
 
-        subject71.setPersonality(Personalities.RECKLESS);
+        subject71.setPersonality(Personalities.AGGRESSIVE);
         subject71.getStats().setSkipRefresh(true);
         try {
             subject71.getStats().setLevel(SUBJECT_71_LEVEL);
@@ -480,9 +481,14 @@ public final class DiableLastLineFleetFactory {
                         NEX_AUTORESOLVE_STRENGTH_MULT
                 );
                 fleet.getMemoryWithoutUpdate().set(NEX_NO_KEEP_SMODS_KEY, true);
+                fleet.getMemoryWithoutUpdate().set(
+                        MemFlags.FLEET_FIGHT_TO_THE_LAST,
+                        true
+                );
 
                 PersonAPI subject71 = findSubject71(fleet);
                 if (subject71 != null) {
+                    subject71.setPersonality(Personalities.AGGRESSIVE);
                     subject71.getStats().setSkipRefresh(true);
                     subject71.getStats().setLevel(SUBJECT_71_LEVEL);
                     subject71.getStats().setSkipRefresh(false);

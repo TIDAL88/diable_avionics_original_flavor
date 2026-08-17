@@ -159,7 +159,7 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
                     .setGender(FullName.Gender.ANY)
                     .setRankId(Ranks.SPECIAL_AGENT)
                     .setPostId(Ranks.POST_UNKNOWN)
-                    .setPersonality(Personalities.STEADY)
+                    .setPersonality(Personalities.AGGRESSIVE)
                     .setLevel(10)
                     .setEliteSkillsOverride(10)
                     .setSkillPreference(OfficerManagerEvent.SkillPickPreference.YES_ENERGY_YES_BALLISTIC_YES_MISSILE_YES_DEFENSE)
@@ -197,6 +197,10 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
     ) {
         virtuous.setDiscoverable(false);
         virtuous.addTag(Tags.NEUTRINO);
+        virtuous.getMemoryWithoutUpdate().set(
+                MemFlags.FLEET_FIGHT_TO_THE_LAST,
+                true
+        );
         virtuous.getFlagship().getVariant().addTag(Tags.VARIANT_UNBOARDABLE);
         virtuous.getFlagship().getVariant().removeTag(
                 Tags.VARIANT_ALWAYS_RECOVERABLE
