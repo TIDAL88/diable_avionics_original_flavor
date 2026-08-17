@@ -105,12 +105,17 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
     private static void syncBlackSiteStation() {
         if (Global.getSector() == null) return;
 
+        ensureIntelScriptsRegistered();
+
         SectorEntityToken station = getBlackSiteStation();
         boolean started = Global.getSector().getMemoryWithoutUpdate().getBoolean(STARTED_MEMKEY);
         boolean complete = Global.getSector().getMemoryWithoutUpdate().getBoolean(COMPLETE_MEMKEY);
 
         removeLegacyRelay();
         if (station == null) return;
+
+        // Keep the system ambience continuous when an existing save opens First Relay's dialog.
+        Diableavionics_blackSite.applyAmbienceMusic(station);
 
         if (started && !complete) {
             configureActiveSite(station);
@@ -164,6 +169,15 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
         }
     }
 
+    private static void ensureIntelScriptsRegistered() {
+        for (IntelInfoPlugin intel : Global.getSector().getIntelManager().getIntel(DiableGulfPart2Intel.class)) {
+            if (intel instanceof DiableGulfPart2Intel
+                    && !Global.getSector().getScripts().contains(intel)) {
+                Global.getSector().addScript((DiableGulfPart2Intel) intel);
+            }
+        }
+    }
+
     private static void removeLegacyRelay() {
         SectorEntityToken legacy = Global.getSector().getEntityById(SITE_ID);
         if (legacy != null && legacy.getContainingLocation() != null) {
@@ -192,6 +206,9 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
     private static void addIntel(SectorEntityToken site) {
         DiableGulfPart2Intel intel = new DiableGulfPart2Intel(site);
         Global.getSector().getIntelManager().addIntel(intel);
+        if (!Global.getSector().getScripts().contains(intel)) {
+            Global.getSector().addScript(intel);
+        }
     }
 
     private String getCurrentSystemName() {
@@ -287,7 +304,6 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
     @Override
     public Set<String> getIntelTags(SectorMapAPI map) {
         Set<String> tags = new LinkedHashSet<String>(super.getIntelTags(map));
-        tags.add(Tags.INTEL_IMPORTANT);
         tags.add(Tags.INTEL_ACCEPTED);
         tags.add(Tags.INTEL_MISSIONS);
         tags.add(Tags.INTEL_BOUNTY);

@@ -790,7 +790,7 @@
                         {"file":"DA_scary.ogg","source":"sounds/diablemusic/","volume":0.35,"randomStart":false},
                 ],
                 "diableavionics_blacksite_combat":[
-                        {"file":"DA_scary2.ogg","source":"sounds/diablemusic/","volume":0.55,"randomStart":false},
+                        {"file":"DA_scary2.ogg","source":"sounds/diablemusic/","volume":0.75,"randomStart":false},
                 ],
 				
                 "diableavionics_market_interaction_neutral":[
@@ -803,7 +803,7 @@
                         {"file":"DA_friendly_interaction.ogg","source":"sounds/diablemusic/","volume":0.35,"randomStart":true},
                 ],
                 "diableavionics_lastline_combat":[
-                        {"file":"DA_TLL_combat.ogg","source":"sounds/diablemusic/","volume":0.50,"randomStart":false},
+                        {"file":"DA_TLL_combat.ogg","source":"sounds/diablemusic/","volume":1.0,"randomStart":false},
                 ],
                 "diableavionics_lastline_dialog":[
                         {"file":"DA_Lastline.ogg","source":"sounds/diablemusic/","volume":0.70,"randomStart":false},
