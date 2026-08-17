@@ -11,18 +11,18 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import exerelin.campaign.battle.NexFleetInteractionDialogPluginImpl;
 
 public class DANexVirtuousFleetInteractionDialogPluginImpl extends NexFleetInteractionDialogPluginImpl {
+    public DANexVirtuousFleetInteractionDialogPluginImpl() {
+        super(DASubject71DialogMusic.createFleetInteractionConfig());
+    }
+
     @Override
     public void init(InteractionDialogAPI dialog) {
         super.init(dialog);
-        DASubject71DialogMusic.start(dialog);
+        DASubject71DialogMusic.start();
     }
 
     @Override
     public void backFromEngagement(EngagementResultAPI result) {
-        if (DACampaignPlugin.hasMemoryInFleet(otherFleet, "$virtuous")) {
-            DASubject71CombatMusic.stopAndRestoreCampaignMusic();
-            DASubject71DialogMusic.start(dialog);
-        }
         if (DACampaignPlugin.hasMemoryInFleet(otherFleet, "$virtuous")
                 && DASubject71BattleCreationPlugin.isSimulationBattleActive()) {
             DASubject71BattleCreationPlugin.restoreSimulationBackground();
@@ -89,9 +89,11 @@ public class DANexVirtuousFleetInteractionDialogPluginImpl extends NexFleetInter
 
             showFleetInfo();
             openPostSimulationTransferComm();
+            DASubject71DialogMusic.start();
             return;
         }
         super.backFromEngagement(result);
+        DASubject71DialogMusic.start();
     }
 
     public void pullFleets() {
