@@ -2,12 +2,10 @@ package data.campaign;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.AdmiralAIPlugin;
-import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.CombatFleetManagerAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
-import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.mission.FleetSide;
 import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
 
@@ -23,7 +21,6 @@ import java.util.Set;
  * fills the rest of The Last Line's normal initial deployment batch.
  */
 public final class DALastLineInitialDeploymentPlugin
-        extends BaseEveryFrameCombatPlugin
         implements AdmiralAIPlugin.AdmiralPluginDelegate {
 
     private static final Set<String> REQUIRED_VARIANT_IDS =
@@ -39,45 +36,47 @@ public final class DALastLineInitialDeploymentPlugin
                     new IdentityHashMap<FleetMemberAPI, Boolean>()
             );
 
-    private CombatFleetManagerAPI enemyFleetManager;
     private boolean initialDeploymentFinished;
-    private boolean verificationPending;
-    private int verificationFrames;
 
-    @Override
-    public void init(CombatEngineAPI engine) {
-        enemyFleetManager = engine.getFleetManager(FleetSide.ENEMY);
+    private DALastLineInitialDeploymentPlugin() {
+    }
+
+    public static void install(CombatEngineAPI engine) {
+        CombatFleetManagerAPI enemyFleetManager =
+                engine.getFleetManager(FleetSide.ENEMY);
         if (enemyFleetManager == null
                 || enemyFleetManager.getAdmiralAI() == null) {
-            Global.getLogger(getClass()).warn(
+            Global.getLogger(DALastLineInitialDeploymentPlugin.class).warn(
                     "Unable to install The Last Line initial deployment gate: "
                             + "enemy admiral AI is unavailable"
             );
             return;
         }
 
+        DALastLineInitialDeploymentPlugin delegate =
+                new DALastLineInitialDeploymentPlugin();
         Set<String> foundVariantIds = new HashSet<String>();
         for (FleetMemberAPI member : enemyFleetManager.getDeployedCopy()) {
-            addRequiredMember(member, foundVariantIds, false);
+            delegate.addRequiredMember(member, foundVariantIds, false);
         }
         for (FleetMemberAPI member : enemyFleetManager.getReservesCopy()) {
-            addRequiredMember(member, foundVariantIds, true);
+            delegate.addRequiredMember(member, foundVariantIds, true);
         }
 
         if (!foundVariantIds.containsAll(REQUIRED_VARIANT_IDS)) {
             Set<String> missing = new HashSet<String>(REQUIRED_VARIANT_IDS);
             missing.removeAll(foundVariantIds);
-            Global.getLogger(getClass()).warn(
+            Global.getLogger(DALastLineInitialDeploymentPlugin.class).warn(
                     "The Last Line initial deployment is missing required variants: "
                             + missing
             );
         }
 
-        if (!requiredMembers.isEmpty()) {
-            enemyFleetManager.getAdmiralAI().setDelegate(this);
-            Global.getLogger(getClass()).info(
+        if (!delegate.requiredMembers.isEmpty()) {
+            enemyFleetManager.getAdmiralAI().setDelegate(delegate);
+            Global.getLogger(DALastLineInitialDeploymentPlugin.class).info(
                     "Installed The Last Line initial deployment gate for "
-                            + requiredMembers.size() + " key ships"
+                            + delegate.requiredMembers.size() + " key ships"
             );
         }
     }
@@ -100,33 +99,6 @@ public final class DALastLineInitialDeploymentPlugin
     @Override
     public void doAdditionalInitialDeployment() {
         initialDeploymentFinished = true;
-        verificationPending = true;
-    }
-
-    @Override
-    public void advance(float amount, List<InputEventAPI> events) {
-        if (!verificationPending || enemyFleetManager == null) return;
-
-        // Wait until the initial deployment spec has been applied to the fleet manager.
-        verificationFrames++;
-        if (verificationFrames < 2) return;
-        verificationPending = false;
-
-        boolean missingKeyShip = false;
-        for (FleetMemberAPI member : requiredMembers) {
-            if (enemyFleetManager.getShipFor(member) == null) {
-                missingKeyShip = true;
-                Global.getLogger(getClass()).warn(
-                        "The Last Line key ship was not present in the initial "
-                                + "deployment: " + member.getShipName()
-                );
-            }
-        }
-        if (!missingKeyShip) {
-            Global.getLogger(getClass()).info(
-                    "Verified The Last Line key ships in the initial deployment"
-            );
-        }
     }
 
     private void addRequiredMember(
