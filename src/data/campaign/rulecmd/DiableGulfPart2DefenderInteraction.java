@@ -1,5 +1,6 @@
 package data.campaign.rulecmd;
 
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.CargoAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
@@ -13,8 +14,8 @@ import com.fs.starfarer.api.impl.campaign.FleetInteractionDialogPluginImpl;
 import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
 import com.fs.starfarer.api.impl.campaign.rulecmd.FireBest;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.campaign.gulf.DiableGulfPart2CombatPlugin;
 import data.scripts.campaign.gulf.DiableGulfPart2FleetFactory;
-import data.scripts.campaign.gulf.DiableGulfPart2Music;
 
 import java.util.List;
 import java.util.Map;
@@ -41,14 +42,16 @@ public class DiableGulfPart2DefenderInteraction extends BaseCommandPlugin {
         if (dialog == null) return false;
 
         final SectorEntityToken station = dialog.getInteractionTarget();
-        final CampaignFleetAPI enemyFleet =
-                DiableGulfPart2FleetFactory.getOrCreateFleet(station);
+        final CampaignFleetAPI enemyFleet = DiableGulfPart2FleetFactory.getOrCreateFleet(station);
         if (enemyFleet == null) {
-            DiableGulfPart2Music.stopAndRestoreCampaignMusic();
+            Global.getSoundPlayer().playCustomMusic(1, 0, null, false);
+            Global.getSoundPlayer().restartCurrentMusic();
             return false;
         }
 
         DiableGulfPart2FleetFactory.prepareForDialog(enemyFleet);
+        Global.getCombatEngine().addPlugin(new DiableGulfPart2CombatPlugin());
+        Global.getLogger(DiableGulfPart2DefenderInteraction.class).info(Global.getCombatEngine().hasPluginOfClass(DiableGulfPart2CombatPlugin.class));
         enemyFleet.getMemoryWithoutUpdate().set(FLEET_DESC_SHOWN_KEY, true);
 
         final InteractionDialogPlugin originalPlugin = dialog.getPlugin();
@@ -61,13 +64,12 @@ public class DiableGulfPart2DefenderInteraction extends BaseCommandPlugin {
             @Override
             public void notifyLeave(InteractionDialogAPI encounterDialog) {
                 boolean playerWon = enemyFleet.isEmpty();
-                if (plugin.getContext() instanceof FleetEncounterContext) {
-                    FleetEncounterContext context =
-                            (FleetEncounterContext) plugin.getContext();
+                if (plugin.getContext() instanceof FleetEncounterContext context) {
                     playerWon |= context.didPlayerWinEncounterOutright();
                 }
 
-                DiableGulfPart2Music.stopAndRestoreCampaignMusic();
+                Global.getSoundPlayer().playCustomMusic(1, 0, null, false);
+                Global.getSoundPlayer().restartCurrentMusic();
 
                 if (!playerWon) {
                     DiableGulfPart2FleetFactory.resumeIntercept(enemyFleet);
@@ -80,8 +82,7 @@ public class DiableGulfPart2DefenderInteraction extends BaseCommandPlugin {
                 encounterDialog.setInteractionTarget(station);
 
                 Map<String, MemoryAPI> currentMemoryMap = memoryMap;
-                if (originalPlugin instanceof RuleBasedDialog) {
-                    RuleBasedDialog rules = (RuleBasedDialog) originalPlugin;
+                if (originalPlugin instanceof RuleBasedDialog rules) {
                     rules.updateMemory();
                     currentMemoryMap = rules.getMemoryMap();
                 }

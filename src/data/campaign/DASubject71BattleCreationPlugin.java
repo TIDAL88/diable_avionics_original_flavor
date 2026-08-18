@@ -34,7 +34,6 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
         restoreSimulationBackground();
         simulationContext = context;
         if (location == null) return;
-
         swappedLocation = location;
         originalBackground = location.getBackgroundTextureFilename();
         location.setBackgroundTextureFilename(SIMULACRUM_BACKGROUND);
