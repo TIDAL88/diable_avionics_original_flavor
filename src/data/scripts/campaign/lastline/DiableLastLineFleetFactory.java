@@ -18,6 +18,7 @@ import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.impl.campaign.ids.Personalities;
 import com.fs.starfarer.api.impl.campaign.ids.Ranks;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
+import data.campaign.LastLineFID;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.magiclib.util.MagicCampaign;
@@ -166,7 +167,7 @@ public final class DiableLastLineFleetFactory {
                 target,
                 Float.MAX_VALUE
         );
-
+        fleet.getMemoryWithoutUpdate().set(MemFlags.FLEET_INTERACTION_DIALOG_CONFIG_OVERRIDE_GEN, new LastLineFID());
         return fleet;
     }
 
