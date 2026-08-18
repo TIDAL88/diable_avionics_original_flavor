@@ -58,7 +58,6 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
             BattleCreationContext context,
             MissionDefinitionAPI loader
     ) {
-        context.enemyDeployAll = true;
         simulation = context == simulationContext;
         if (!simulation) {
             // Clean up any swap left behind by an interrupted simulation.
@@ -73,7 +72,6 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
         if (engine.getCustomData().containsKey(COMBAT_SETUP_KEY)) return;
         engine.getCustomData().put(COMBAT_SETUP_KEY, Boolean.TRUE);
         engine.addPlugin(new DASubject71CombatMusic());
-        DALastLineInitialDeploymentPlugin.install(engine);
         if (simulation) {
             engine.addPlugin(
                     new DASimulacrumScanlineOverlay()

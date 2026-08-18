@@ -34,6 +34,7 @@
     "trigger_marketFaction_any": ["tritachyon"],
     "trigger_marketFaction_alliedWith": true,
     "trigger_min_fleet_size": 200,
+    "trigger_memKeys_none": {"$da_lastline_virtuous_claimed": true},
     #"trigger_min_days_elapsed": 720, 
 
     "job_name": "Save the Children",

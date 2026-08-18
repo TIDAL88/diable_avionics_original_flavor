@@ -21,7 +21,8 @@ import java.util.Set;
 
 /**
  * Guarantees that the authored key ships are selected before the enemy admiral
- * fills the rest of The Last Line's normal initial deployment batch.
+ * fills the rest of The Last Line's normal initial deployment batch, then
+ * deploys any ships the admiral left in reserve.
  */
 public final class DALastLineInitialDeploymentPlugin
         implements AdmiralAIPlugin.AdmiralPluginDelegate {
@@ -35,8 +36,7 @@ public final class DALastLineInitialDeploymentPlugin
             Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
                     DiableLastLineFleetFactory.VIRTUOUS_VARIANT_ID,
                     "diableavionics_lastline_maelstrom",
-                    "diableavionics_lastline_vapor",
-                    "diableavionics_lastline_draft"
+                    "diableavionics_lastline_vapor"
             )));
 
     private final Set<FleetMemberAPI> requiredMembers =
@@ -124,15 +124,15 @@ public final class DALastLineInitialDeploymentPlugin
             List<FleetMemberAPI> reserves =
                     enemyFleetManager.getReservesCopy();
 
-            for (FleetMemberAPI member : requiredMembers) {
+            for (FleetMemberAPI member : reserves) {
                 if (enemyFleetManager.getShipFor(member) != null) continue;
 
-                String variantId = getRequiredVariantId(member);
+                String variantId = getVariantId(member);
                 if (!reserves.contains(member)) {
                     Global.getLogger(
                             DALastLineInitialDeploymentPlugin.class
                     ).warn(
-                            "Unable to force-deploy missing Last Line ship "
+                            "Unable to force-deploy remaining Last Line ship "
                                     + variantId + ": member is not in reserves"
                     );
                     continue;
@@ -157,7 +157,7 @@ public final class DALastLineInitialDeploymentPlugin
                     Global.getLogger(
                             DALastLineInitialDeploymentPlugin.class
                     ).warn(
-                            "Unable to force-deploy missing Last Line ship "
+                            "Unable to force-deploy remaining Last Line ship "
                                     + variantId + ": spawn returned null"
                     );
                 }
@@ -168,13 +168,13 @@ public final class DALastLineInitialDeploymentPlugin
                 Global.getLogger(
                         DALastLineInitialDeploymentPlugin.class
                 ).info(
-                        "Force-deployed missing Last Line initial ships: "
+                        "Force-deployed remaining Last Line initial ships: "
                                 + forcedVariantIds
                 );
             }
         } finally {
-            // Once every missing required member has been handled, Vanilla may
-            // fill any remaining deployment capacity normally.
+            // Only force the initial reserve once. Later reinforcements should
+            // remain under Vanilla's normal battle logic.
             initialDeploymentFinished = true;
         }
     }
@@ -266,5 +266,18 @@ public final class DALastLineInitialDeploymentPlugin
             return DiableLastLineFleetFactory.VIRTUOUS_VARIANT_ID;
         }
         return null;
+    }
+
+    private String getVariantId(FleetMemberAPI member) {
+        if (member == null) return "unknown";
+
+        ShipVariantAPI variant = member.getVariant();
+        if (variant != null && variant.getHullVariantId() != null) {
+            return variant.getHullVariantId();
+        }
+        if (member.getHullSpec() != null) {
+            return member.getHullSpec().getHullId();
+        }
+        return "unknown";
     }
 }

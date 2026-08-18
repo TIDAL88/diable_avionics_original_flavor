@@ -3,86 +3,81 @@
     "fluxCapacitors": 9,
     "fluxVents": 0,
     "goalVariant": false,
-    "hullId": "diableavionics_miniGust",
+    "hullId": "diableavionics_storm",
     "hullMods": [
+        "diableavionics_universaldecksExtra",
         "abyss_diable_afterimage_suite",
         "abyss_diable_afterimage_mode_blue",
-        "targetingunit",
-        "missleracks",
         "ML_skinSwap",
-        "hardenedshieldemitter",
-        "eccm"
+        "eccm",
+        "targetingunit"
     ],
     "permaMods": [
         "ML_skinSwap",
-        "hardenedshieldemitter",
-        "eccm"
+        "eccm",
+        "targetingunit"
     ],
     "sMods": [
-        "hardenedshieldemitter",
-        "eccm"
+        "eccm",
+        "targetingunit"
     ],
     "sModdedBuiltIns": [],
-    "variantId": "diableavionics_lastline_minigust",
+    "variantId": "diableavionics_lastline_storm_zephyr",
     "weaponGroups": [
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0006": "diableavionics_microcluster",
-                "WS0008": "diableavionics_micromissile"
-            }
-        },
-        {
-            "autofire": false,
-            "mode": "LINKED",
-            "weapons": {
-                "WS0007": "diableavionics_magicbox"
+                "WS0010": "diableavionics_microcluster_left"
             }
         },
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0001": "diableavionics_thrush"
+                "WS0001": "diableavionics_thrush",
+                "WS0002": "diableavionics_thrush"
             }
         },
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0003": "diableavionics_recson",
-                "WS0002": "diableavionics_recson"
+                "WS0003": "diableavionics_srab",
+                "WS0004": "diableavionics_srab"
             }
         },
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0005": "diableavionics_winee"
+                "WS0007": "diableavionics_winee"
             }
         },
         {
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0004": "diableavionics_burchel"
+                "WS0005": "diableavionics_lazyhorn_storm",
+                "WS0006": "diableavionics_lazyhorn_storm"
             }
         },
         {
-            "autofire": false,
+            "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "SYSTEM": "diableavionics_gustSystem"
+                "WS0009": "diableavionics_ibis",
+                "WS0008": "diableavionics_ibis"
             }
         }
     ],
     "wings": [
-        "diableavionics_valiant_wing"
+        "diableavionics_zephyr_wing",
+        "diableavionics_zephyr_wing"
     ],
     "tags": [
         "ship_recoverable",
-        "abyss_diable_afterimage_last_blue",
-        "ML_paintjob-diableavionics_battlehardened_miniGust"
+        "ML_paintjob-diableavionics_battlehardened_storm",
+        "abyss_diable_afterimage_last_blue"
     ]
 }

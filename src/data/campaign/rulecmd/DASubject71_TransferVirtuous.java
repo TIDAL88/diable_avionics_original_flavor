@@ -18,6 +18,8 @@ import data.campaign.DANexVirtuousFleetInteractionDialogPluginImpl;
 import data.campaign.DAVirtuousFleetInteractionDialogPluginImpl;
 import data.campaign.ids.Diableavionics_ids;
 import data.scripts.DAModPlugin;
+import org.magiclib.bounty.ActiveBounty;
+import org.magiclib.bounty.MagicBountyCoordinator;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,8 @@ import java.util.Map;
 public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
     private static final String PLAYER_VIRTUOUS_VARIANT_ID =
             "diableavionics_lastline_virtuous_player";
+    private static final String SAVE_THE_CHILDREN_BOUNTY_KEY =
+            "diable_virtuous";
     private static final String VIRTUOUS_CLAIMED_KEY = "$da_lastline_virtuous_claimed";
     private static final String SIMULATION_REWARD_CLAIMED_KEY = "$da_lastline_simulation_reward_claimed";
 
@@ -59,6 +63,7 @@ public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
         CampaignFleetAPI playerFleet = Global.getSector().getPlayerFleet();
         playerFleet.getFleetData().addFleetMember(virtuousMember);
         sectorMemory.set(VIRTUOUS_CLAIMED_KEY, true);
+        cancelSaveTheChildrenBounty();
         grantSimulationReward(targetFleet, playerFleet.getCargo());
 
         //reset battle so that the visual fleet also updates, showing no damage to the fleet.
@@ -74,6 +79,27 @@ public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
             plugin.pullFleets();
         }
         return true;
+    }
+
+    private void cancelSaveTheChildrenBounty() {
+        MagicBountyCoordinator coordinator = MagicBountyCoordinator.getInstance();
+        ActiveBounty bounty = coordinator.getActiveBounty(SAVE_THE_CHILDREN_BOUNTY_KEY);
+        if (bounty == null) {
+            return;
+        }
+        if (bounty.getStage().ordinal() > ActiveBounty.Stage.Accepted.ordinal()) {
+            return;
+        }
+
+        bounty.endBounty(new ActiveBounty.BountyResult.EndedWithoutPlayerInvolvement());
+        if (bounty.getIntel() != null) {
+            bounty.getIntel().endImmediately();
+        }
+        coordinator.getActiveBounties();
+        Global.getLogger(DASubject71_TransferVirtuous.class).info(
+                "Cancelled MagicBounty " + SAVE_THE_CHILDREN_BOUNTY_KEY
+                        + " because the Virtuous was claimed through simulation"
+        );
     }
 
     private void grantSimulationReward(CampaignFleetAPI targetFleet, CargoAPI playerCargo) {
