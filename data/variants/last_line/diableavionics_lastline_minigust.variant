@@ -1,14 +1,14 @@
 {
     "displayName": "Last Line",
-    "fluxCapacitors": 1,
-    "fluxVents": 13,
+    "fluxCapacitors": 9,
+    "fluxVents": 0,
     "goalVariant": false,
     "hullId": "diableavionics_miniGust",
     "hullMods": [
         "abyss_diable_afterimage_suite",
         "abyss_diable_afterimage_mode_blue",
         "targetingunit",
-        "escort_package",
+        "missleracks",
         "ML_skinSwap",
         "hardenedshieldemitter",
         "eccm"
@@ -44,7 +44,7 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0001": "diableavionics_srab"
+                "WS0001": "diableavionics_thrush"
             }
         },
         {

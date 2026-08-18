@@ -4,10 +4,10 @@
         "officer_faction": "diableavionics",
         "officer_level": 5,
         "officer_skills": {
-            "target_analysis": 1,
+            "ballistic_mastery": 2,
             "gunnery_implants": 1,
             "systems_expertise": 1,
-            "helmsmanship": 2,
+            "helmsmanship": 1,
             "field_modulation": 1
         }
     },
@@ -24,7 +24,7 @@
         }
     },
     "diableavionics_daze": {
-        "officer_personality": "steady",
+        "officer_personality": "aggressive",
         "officer_faction": "diableavionics",
         "officer_level": 5,
         "officer_skills": {
@@ -40,15 +40,15 @@
         "officer_faction": "diableavionics",
         "officer_level": 5,
         "officer_skills": {
-            "target_analysis": 1,
+            "ballistic_mastery": 2,
             "gunnery_implants": 1,
             "systems_expertise": 1,
-            "helmsmanship": 2,
+            "helmsmanship": 1,
             "field_modulation": 1
         }
     },
     "diableavionics_rime_m": {
-        "officer_personality": "steady",
+        "officer_personality": "aggressive",
         "officer_faction": "diableavionics",
         "officer_level": 5,
         "officer_skills": {
@@ -60,7 +60,7 @@
         }
     },
     "diableavionics_coanda": {
-        "officer_personality": "steady",
+        "officer_personality": "aggressive",
         "officer_faction": "diableavionics",
         "officer_level": 5,
         "officer_skills": {
@@ -76,15 +76,15 @@
         "officer_faction": "diableavionics",
         "officer_level": 5,
         "officer_skills": {
-            "energy_weapon_mastery": 1,
-            "gunnery_implants": 2,
+            "ballistic_mastery": 2,
+            "gunnery_implants": 1,
             "systems_expertise": 1,
             "helmsmanship": 1,
             "field_modulation": 1
         }
     },
     "diableavionics_draft": {
-        "officer_personality": "steady",
+        "officer_personality": "aggressive",
         "officer_faction": "diableavionics",
         "officer_level": 5,
         "officer_skills": {
@@ -96,7 +96,7 @@
         }
     },
     "diableavionics_miniGust": {
-        "officer_personality": "steady",
+        "officer_personality": "aggressive",
         "officer_faction": "diableavionics",
         "officer_level": 5,
         "officer_skills": {

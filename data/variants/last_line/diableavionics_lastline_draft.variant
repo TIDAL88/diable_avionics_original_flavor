@@ -1,6 +1,6 @@
 {
     "displayName": "Last Line",
-    "fluxCapacitors": 0,
+    "fluxCapacitors": 6,
     "fluxVents": 2,
     "goalVariant": false,
     "hullId": "diableavionics_draft",
@@ -8,7 +8,6 @@
         "rugged",
         "eccm",
         "missleracks",
-        "heavyarmor",
         "reinforcedhull",
         "ML_skinSwap",
         "abyss_diable_afterimage_suite",
@@ -30,12 +29,12 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0001": "diableavionics_lazyhorn"
+                "WS0001": "diableavionics_srab"
             }
         },
         {
             "autofire": false,
-            "mode": "ALTERNATING",
+            "mode": "LINKED",
             "weapons": {
                 "WS0003": "diableavionics_banishsmall",
                 "WS0002": "diableavionics_banishsmall",

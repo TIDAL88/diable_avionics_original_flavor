@@ -47,7 +47,6 @@ public class DASubject71_BattleSim extends BaseCommandPlugin {
         );
 
         BattleCreationContext bcc = getBattleCreationContext(playerFleet, targetFleet);
-        bcc.enemyDeployAll = true;
         dialog.getVisualPanel().fadeVisualOut();
         DASubject71BattleCreationPlugin.prepareSimulationBattle(
                 bcc,

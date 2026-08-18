@@ -1,7 +1,7 @@
 {
     "displayName": "Last Line",
-    "fluxCapacitors": 2,
-    "fluxVents": 25,
+    "fluxCapacitors": 18,
+    "fluxVents": 9,
     "goalVariant": false,
     "hullId": "diableavionics_coanda",
     "hullMods": [

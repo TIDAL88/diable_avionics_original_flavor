@@ -40,7 +40,7 @@ public final class DiableLastLineFleetFactory {
             "diableavionics_lastline_virtuous";
     public static final String FLEET_VERSION_MEMKEY =
             "$da_last_line_fleet_version";
-    public static final int FLEET_VERSION = 7;
+    public static final int FLEET_VERSION = 14;
     private static final String MIGRATION_VERSION_MEMKEY =
             "$da_last_line_migration_version";
 
@@ -64,25 +64,25 @@ public final class DiableLastLineFleetFactory {
                     "D1"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_storm",
+                    "diableavionics_lastline_storm_avalanche",
                     "DSF Last Line-02",
                     "diableavionics_storm",
                     "D2"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_storm",
+                    "diableavionics_lastline_storm_avalanche",
                     "DSF Last Line-03",
                     "diableavionics_storm",
                     "D3"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_gust_avalanche",
+                    "diableavionics_lastline_gust_blizzaia",
                     "DSF Last Line-04",
                     "diableavionics_gust",
                     "D4"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_gust_avalanche",
+                    "diableavionics_lastline_gust_blizzaia",
                     "DSF Last Line-05",
                     "diableavionics_gust",
                     "D5"
@@ -100,9 +100,9 @@ public final class DiableLastLineFleetFactory {
                     "D7"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_minigust",
+                    "diableavionics_lastline_vapor",
                     "DSF Last Line-08",
-                    "diableavionics_miniGust",
+                    "diableavionics_vapor",
                     "D8"
             ),
             new FleetEntry(
@@ -112,16 +112,22 @@ public final class DiableLastLineFleetFactory {
                     "D9"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_daze",
+                    "diableavionics_lastline_coanda",
                     "DSF Last Line-10",
-                    "diableavionics_daze",
+                    "diableavionics_coanda",
                     "D10"
             ),
             new FleetEntry(
-                    "diableavionics_lastline_draft",
+                    "diableavionics_lastline_coanda",
                     "DSF Last Line-11",
-                    "diableavionics_draft",
+                    "diableavionics_coanda",
                     "D11"
+            ),
+            new FleetEntry(
+                    "diableavionics_lastline_coanda",
+                    "DSF Last Line-12",
+                    "diableavionics_coanda",
+                    "D12"
             )
     };
 
