@@ -9,6 +9,7 @@ import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.campaign.gulf.DiableGulfPart2FleetFactory;
 import data.scripts.campaign.gulf.DiableGulfPart2Intel;
+import data.scripts.campaign.gulf.DiableGulfPart2Music;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ import java.util.Map;
 public class DiableGulfPart2ContactScreen extends BaseCommandPlugin {
 
     public static final String ATTEMPT_CONTACT_OPTION_ID = "DAGulfPart2AttemptContact";
-    private static final String COMBAT_MUSIC_SET = "diableavionics_blacksite_combat";
+
     @Override
     public boolean execute(
             String ruleId,
@@ -41,7 +42,8 @@ public class DiableGulfPart2ContactScreen extends BaseCommandPlugin {
             dialog.getOptionPanel().addOption("Leave", "defaultLeave");
             return false;
         }
-        Global.getSoundPlayer().playCustomMusic(1, 1, COMBAT_MUSIC_SET, true);
+
+        DiableGulfPart2Music.start();
 
         PersonAPI contact = defenderFleet.getCommander();
         if (contact == null) {
