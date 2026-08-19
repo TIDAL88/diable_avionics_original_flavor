@@ -49,7 +49,7 @@ ordnance points,min crew,max crew,number,mass,max turn rate,turn acceleration,de
 90,70,150,29,1750,20,10,25,300,75,600,35,6000,6000,Rime (P),Diable Avionics,OMNI,diableavionics_rime_p,microburn,Q ship,10,,0,,150,0.5,1.1,,,400,150,3.5,,9,70000,5,20,420,0.1,14,14,,rare_bp,,0.5,2,3,
 110,170,250,292,1750,20,10,25,400,95,600,35,7000,6000,Rime,Diable Avionics,OMNI,diableavionics_rime_m,diableavionics_capacitors,Recon Cruiser,12,,2,,150,0.4,1,,,175,125,3.5,,9,90000,4,16,480,0.1,16,16,,diable_ship_bp,,0.5,2,3,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-235,430,550,33,3250,8,6,23,1250,55,1100,30,18000,13000,Maelstrom,Diable Avionics,FRONT,diableavionics_maelstrom,diableavionics_drift,Battlecruiser,26,,2,,90,0.4,1,,,325,300,10,,8,325000,2.5,15,660,0.075,42,40,,rare_bp,,0.6,2,4,
+235,430,550,33,3250,8,6,23,1250,55,1100,30,18000,13000,Maelstrom,Diable Avionics,FRONT,diableavionics_maelstrom,diableavionics_drift,Battlecruiser,26,,2,,90,0.4,1,,,325,300,10,,8,325000,2.5,15,660,0.075,45,40,,rare_bp,,0.6,2,4,
 375,550,750,34,5050,4,2,8,1500,30,1300,12,22000,20000,Pandemonium(Assault),Diable Avionics,FRONT,diableavionics_pandemonium,diableavionics_drift,Dreadnought,35,,3,,90,0.5,1,,,550,400,11,,7,525000,2,25,720,0.075,75,75,,rare_bp,0.1,0.75,3,5,
 375,550,750,34,5050,4,2,8,1500,30,1300,12,22000,20000,Pandemonium(Artillery),Diable Avionics,FRONT,diableavionics_pandemonium_large,diableavionics_drift,Dreadnought,35,,3,,90,0.5,1,,,550,400,11,,7,525000,2,25,720,0.075,75,75,,rare_bp,0.1,0.75,3,5,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

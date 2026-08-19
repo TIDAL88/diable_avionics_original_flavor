@@ -41,7 +41,7 @@ public final class DiableLastLineFleetFactory {
             "diableavionics_lastline_virtuous";
     public static final String FLEET_VERSION_MEMKEY =
             "$da_last_line_fleet_version";
-    public static final int FLEET_VERSION = 14;
+    public static final int FLEET_VERSION = 17;
     private static final String MIGRATION_VERSION_MEMKEY =
             "$da_last_line_migration_version";
 
@@ -167,7 +167,6 @@ public final class DiableLastLineFleetFactory {
                 target,
                 Float.MAX_VALUE
         );
-        fleet.getMemoryWithoutUpdate().set(MemFlags.FLEET_INTERACTION_DIALOG_CONFIG_OVERRIDE_GEN, new LastLineFID());
         return fleet;
     }
 
@@ -283,6 +282,10 @@ public final class DiableLastLineFleetFactory {
                 NEX_AUTORESOLVE_STRENGTH_MULT
         );
         fleet.getMemoryWithoutUpdate().set(NEX_NO_KEEP_SMODS_KEY, true);
+        fleet.getMemoryWithoutUpdate().set(
+                MemFlags.FLEET_INTERACTION_DIALOG_CONFIG_OVERRIDE_GEN,
+                new LastLineFID()
+        );
     }
 
     private static void populateFleet(
@@ -512,6 +515,10 @@ public final class DiableLastLineFleetFactory {
                 fleet.getMemoryWithoutUpdate().set(
                         MemFlags.FLEET_FIGHT_TO_THE_LAST,
                         true
+                );
+                fleet.getMemoryWithoutUpdate().set(
+                        MemFlags.FLEET_INTERACTION_DIALOG_CONFIG_OVERRIDE_GEN,
+                        new LastLineFID()
                 );
 
                 PersonAPI subject71 = findSubject71(fleet);

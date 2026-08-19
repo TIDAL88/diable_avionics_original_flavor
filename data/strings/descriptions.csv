@@ -783,7 +783,7 @@ diableavionics_booster,SHIP_SYSTEM,Detatches the large booster engine used to qu
 ,,,,,
 diableavionics_fastRefit,SHIP_SYSTEM,Halve the refit time of carried fighter wings but doubles the Fighter replacement rate gauge consumption.,Special,Halve the refit time of carried fighter wings but doubles the Fighter replacement rate gauge consumption.,
 ,,,,,
-diableavionics_assumeControl,SHIP_SYSTEM,Increases the entire wing's timeflow by 25% and its durability by 33% by unlocking the Wanzers' limiters. Temporarily gives remote control of the resident wing to an Ace safely piloting from the carrier.,Fighter,Increases the entire wing's timeflow by 25% and its durability by 34% by unlocking the Wanzers' limiters. Temporarily gives remote control of the resident wing to an Ace safely piloting from the carrier.,
+diableavionics_assumeControl,SHIP_SYSTEM,Increases the entire wing's timeflow by 25% by unlocking the Wanzers' limiters. Temporarily gives remote control of the resident wing to an Ace safely piloting from the carrier.,Fighter,Increases the entire wing's timeflow by 25% by unlocking the Wanzers' limiters. Temporarily gives remote control of the resident wing to an Ace safely piloting from the carrier.,
 ,,,,,
 diableavionics_shield,SHIP_SYSTEM,"Redirects all power from the weapon systems to shields, greatly increasing the efficiency at which damage is absorbed. This process generates hard flux at a steady rate even if the shields are not taking any fire. This is a licensed version that has been artificially limited.",Defensive,"Reduces the damage taken by shields to a minimum for a short duration, but generates hard flux while active.",
 ,,,,,

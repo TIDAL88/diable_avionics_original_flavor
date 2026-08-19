@@ -9,8 +9,8 @@
         "targetingunit",
         "diableavionics_virtuous_brawler",
         "diableavionics_virtuous_headA",
-        "diableavionics_virtuous_snowblast_L",
-        "diableavionics_virtuous_grasshopper_R",
+        "diableavionics_virtuous_roar_L",
+        "diableavionics_virtuous_excision_R",
         "missleracks",
         "hardenedshieldemitter",
         "extendedshieldemitter",
@@ -19,7 +19,7 @@
     "permaMods": [],
     "sMods": [],
     "sModdedBuiltIns": [],
-    "variantId": "diableavionics_lastline_virtuous_player",
+    "variantId": "diableavionics_lastline_virtuous",
     "weaponGroups": [
         {
             "autofire": false,

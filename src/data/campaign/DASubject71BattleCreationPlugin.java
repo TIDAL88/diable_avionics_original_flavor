@@ -58,6 +58,8 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
             BattleCreationContext context,
             MissionDefinitionAPI loader
     ) {
+        context.aiRetreatAllowed = false;
+        context.fightToTheLast = true;
         simulation = context == simulationContext;
         if (!simulation) {
             // Clean up any swap left behind by an interrupted simulation.
