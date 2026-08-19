@@ -58,9 +58,6 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
             float mult = stats.getSystemRangeBonus().getBonusMult();
             float shipTimeMult = 1f + (MAX_TIME_MULT + mult - 2f) * effectLevel;
             fighter.getMutableStats().getTimeMult().modifyMult(SYSTEM_ID, shipTimeMult);
-            fighter.getMutableStats().getHullDamageTakenMult().modifyMult(SYSTEM_ID, 0.66f);
-            fighter.getMutableStats().getArmorDamageTakenMult().modifyMult(SYSTEM_ID, 0.66f);
-            fighter.getMutableStats().getShieldDamageTakenMult().modifyMult(SYSTEM_ID, 0.66f);
 
             //visual effect
             fighter.setWeaponGlow(effectLevel, Misc.setAlpha(WEAPON_GLOW_COLOR, 50), EnumSet.allOf(WeaponType.class));
@@ -114,9 +111,6 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
             if (fighter.isHulk()) continue;
             fighter.setWeaponGlow(0, Color.BLACK, EnumSet.allOf(WeaponType.class));
             fighter.getMutableStats().getTimeMult().unmodify(id);
-            fighter.getMutableStats().getHullDamageTakenMult().unmodify(id);
-            fighter.getMutableStats().getArmorDamageTakenMult().unmodify(id);
-            fighter.getMutableStats().getShieldDamageTakenMult().unmodify(id);
 
             MagicSubsystemsManager.removeSubsystemFromShip(fighter, ControlCarrierSwitch.class);
             MagicSubsystemsManager.removeSubsystemFromShip(fighter, ControlFighterSwitch.class);
