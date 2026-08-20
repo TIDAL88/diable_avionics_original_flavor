@@ -159,7 +159,7 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
                     .setGender(FullName.Gender.ANY)
                     .setRankId(Ranks.SPECIAL_AGENT)
                     .setPostId(Ranks.POST_UNKNOWN)
-                    .setPersonality(Personalities.AGGRESSIVE)
+                    .setPersonality(Personalities.RECKLESS)
                     .setLevel(10)
                     .setEliteSkillsOverride(10)
                     .setSkillPreference(OfficerManagerEvent.SkillPickPreference.YES_ENERGY_YES_BALLISTIC_YES_MISSILE_YES_DEFENSE)
