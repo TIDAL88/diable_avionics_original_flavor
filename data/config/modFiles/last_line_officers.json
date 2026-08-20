@@ -1,33 +1,36 @@
 {
     "diableavionics_maelstrom": {
-        "officer_personality": "aggressive",
+        "officer_personality": "steady",
         "officer_faction": "diableavionics",
-        "officer_level": 5,
+        "officer_level": 6,
         "officer_skills": {
             "ballistic_mastery": 2,
             "gunnery_implants": 1,
             "systems_expertise": 1,
-            "helmsmanship": 1,
+            "helmsmanship": 2,
+            "target_analysis": 1,
             "field_modulation": 1
         }
     },
     "diableavionics_storm": {
         "officer_personality": "steady",
         "officer_faction": "diableavionics",
-        "officer_level": 5,
+        "officer_level": 6,
         "officer_skills": {
             "missile_specialization": 2,
             "target_analysis": 1,
+            "point_defense": 2,
             "gunnery_implants": 1,
             "helmsmanship": 1,
             "field_modulation": 1
         }
     },
     "diableavionics_daze": {
-        "officer_personality": "aggressive",
+        "officer_personality": "steady",
         "officer_faction": "diableavionics",
-        "officer_level": 5,
+        "officer_level": 6,
         "officer_skills": {
+            "energy_weapon_mastery": 2,
             "target_analysis": 1,
             "gunnery_implants": 1,
             "systems_expertise": 1,
@@ -38,19 +41,20 @@
     "diableavionics_gust": {
         "officer_personality": "steady",
         "officer_faction": "diableavionics",
-        "officer_level": 5,
+        "officer_level": 6,
         "officer_skills": {
+            "target_analysis": 1,
             "ballistic_mastery": 2,
             "gunnery_implants": 1,
             "systems_expertise": 1,
-            "helmsmanship": 1,
+            "helmsmanship": 2,
             "field_modulation": 1
         }
     },
     "diableavionics_rime_m": {
         "officer_personality": "aggressive",
         "officer_faction": "diableavionics",
-        "officer_level": 5,
+        "officer_level": 6,
         "officer_skills": {
             "missile_specialization": 2,
             "target_analysis": 1,
@@ -62,8 +66,9 @@
     "diableavionics_coanda": {
         "officer_personality": "aggressive",
         "officer_faction": "diableavionics",
-        "officer_level": 5,
+        "officer_level": 6,
         "officer_skills": {
+            "ballistic_mastery": 2,
             "missile_specialization": 2,
             "target_analysis": 1,
             "systems_expertise": 1,
@@ -74,8 +79,9 @@
     "diableavionics_vapor": {
         "officer_personality": "steady",
         "officer_faction": "diableavionics",
-        "officer_level": 5,
+        "officer_level": 6,
         "officer_skills": {
+            "target_analysis": 2,
             "ballistic_mastery": 2,
             "gunnery_implants": 1,
             "systems_expertise": 1,
@@ -86,19 +92,20 @@
     "diableavionics_draft": {
         "officer_personality": "aggressive",
         "officer_faction": "diableavionics",
-        "officer_level": 5,
+        "officer_level": 6,
         "officer_skills": {
             "helmsmanship": 1,
             "target_analysis": 1,
             "gunnery_implants": 2,
             "point_defense": 1,
-            "missile_specialization": 1
+            "systems_expertise": 1,
+            "missile_specialization": 2
         }
     },
     "diableavionics_miniGust": {
         "officer_personality": "aggressive",
         "officer_faction": "diableavionics",
-        "officer_level": 5,
+        "officer_level": 6,
         "officer_skills": {
             "missile_specialization": 2,
             "target_analysis": 1,
@@ -121,6 +128,7 @@
         "crew_training": 1,
         "flux_regulation": 1,
         "fighter_uplink": 1,
+        "officer_training": 1,
         "electronic_warfare": 1,
         "carrier_group": 1,
         "wolfpack_tactics": 1,

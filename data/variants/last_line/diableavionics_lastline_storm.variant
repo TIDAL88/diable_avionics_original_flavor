@@ -1,7 +1,7 @@
 {
     "displayName": "Last Line",
-    "fluxCapacitors": 7,
-    "fluxVents": 10,
+    "fluxCapacitors": 0,
+    "fluxVents": 9,
     "goalVariant": false,
     "hullId": "diableavionics_storm",
     "hullMods": [
@@ -72,8 +72,8 @@
         }
     ],
     "wings": [
-        "diableavionics_blizzaia_wing",
-        "diableavionics_avalanche_wing"
+        "diableavionics_raven_wing",
+        "diableavionics_zephyr_wing"
     ],
     "tags": [
         "ship_recoverable",
