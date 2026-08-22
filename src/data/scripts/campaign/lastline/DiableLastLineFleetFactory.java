@@ -19,12 +19,17 @@ import com.fs.starfarer.api.impl.campaign.ids.Personalities;
 import com.fs.starfarer.api.impl.campaign.ids.Ranks;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import data.campaign.LastLineFID;
+import data.scripts.campaign.gulf.DiableGulfPart2FleetFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.magiclib.util.MagicCampaign;
+import second_in_command.SCData;
+import second_in_command.SCUtils;
+import second_in_command.specs.SCOfficer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static data.scripts.util.Diableavionics_stringsManager.txt;
 
@@ -167,6 +172,8 @@ public final class DiableLastLineFleetFactory {
                 target,
                 Float.MAX_VALUE
         );
+        applySecondInCommandLoadout(fleet);
+        fleet.forceSync();
         return fleet;
     }
 
@@ -189,7 +196,7 @@ public final class DiableLastLineFleetFactory {
         }
 
         for (LocationAPI location : Global.getSector().getAllLocations()) {
-            for (CampaignFleetAPI fleet : new ArrayList<CampaignFleetAPI>(
+            for (CampaignFleetAPI fleet : new ArrayList<>(
                     location.getFleets()
             )) {
                 if (!isActiveLastLineFleet(fleet)) continue;
@@ -215,6 +222,7 @@ public final class DiableLastLineFleetFactory {
                 clearFleetMembersAndOfficers(fleet);
                 configureFleetIdentity(fleet, subject71);
                 populateFleet(fleet, subject71, virtuous);
+                applySecondInCommandLoadout(fleet);
                 finishFleet(fleet);
                 markMigrationComplete();
                 return fleet;
@@ -573,6 +581,70 @@ public final class DiableLastLineFleetFactory {
                     ex
             );
         }
+    }
+
+    private static void applySecondInCommandLoadout(CampaignFleetAPI fleet) {
+        if (fleet == null) {
+            return;
+        }
+        try {
+            fleet.addTag("sc_do_not_generate_skills");
+            SCData data = SCUtils.getFleetData(fleet);
+            clearExistingOfficers(data);
+            addOfficer(data, fleet, 0, "sc_technology",
+                    "sc_technology_flux_regulation",
+                    "sc_technology_unlocked_engines",
+                    "sc_technology_advanced_weaponry",
+                    "sc_technology_reinforced_grid",
+                    "sc_technology_optimised_shields",
+                    "sc_technology_focused_lenses");
+            addOfficer(data, fleet, 1, "sc_warfare",
+                    "sc_warfare_iron_sight",
+                    "sc_warfare_reserve_thrusters",
+                    "sc_warfare_stabilised_targeting",
+                    "sc_warfare_surefire_impact",
+                    "sc_warfare_tenacity",
+                    "sc_warfare_overwhelming_force");
+            addOfficer(data, fleet, 2, "sc_strikecraft",
+                    "sc_strikecraft_fighter_uplink",
+                    "sc_strikecraft_mobile_defenses",
+                    "sc_strikecraft_carrier_group",
+                    "sc_strikecraft_system_proficiency",
+                    "sc_strikecraft_advanced_maneuvers",
+                    "sc_strikecraft_barrage");
+            Global.getLogger(DiableGulfPart2FleetFactory.class).info("Succesfully applied Second in Command Officers");
+        } catch (Throwable ex) {
+            Global.getLogger(DiableGulfPart2FleetFactory.class).info("Failed to apply Second In Command officers to Gulf Station.", ex);
+        }
+    }
+
+    private static void clearExistingOfficers(SCData data) {
+        if (data == null) {
+            return;
+        }
+        for (SCOfficer officer : data.getOfficersInFleet()) {
+            if (officer != null) {
+                data.removeOfficerFromFleet(officer);
+            }
+        }
+    }
+
+    private static void addOfficer(SCData data, CampaignFleetAPI fleet, int slotIndex, String aptitudeId, String... skillIds) {
+        if (data == null || fleet == null) {
+            return;
+        }
+        SCOfficer officer = SCUtils.createRandomSCOfficer(aptitudeId, fleet.getFaction(), new Random());
+        officer.increaseLevel(9);
+        if (skillIds != null) {
+            for (String skillId : skillIds) {
+                if (skillId != null && !skillId.isEmpty()) {
+                    officer.addSkill(skillId);
+                }
+            }
+        }
+        officer.getPerson().setPortraitSprite("graphics/da/portraits/diableavionics_thelastline.png");
+        data.addOfficerToFleet(officer);
+        data.setOfficerInSlot(slotIndex, officer);
     }
 
     private record FleetEntry(
