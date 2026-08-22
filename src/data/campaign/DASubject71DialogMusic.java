@@ -92,7 +92,6 @@ public final class DASubject71DialogMusic implements EveryFrameScript {
         playRequested = false;
         SoundPlayerAPI soundPlayer = Global.getSoundPlayer();
         if (soundPlayer == null) return;
-
         soundPlayer.setSuspendDefaultMusicPlayback(false);
         soundPlayer.restartCurrentMusic();
     }
