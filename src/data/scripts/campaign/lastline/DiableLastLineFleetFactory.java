@@ -41,7 +41,7 @@ public final class DiableLastLineFleetFactory {
             "diableavionics_lastline_virtuous";
     public static final String FLEET_VERSION_MEMKEY =
             "$da_last_line_fleet_version";
-    public static final int FLEET_VERSION = 24;
+    public static final int FLEET_VERSION = 27;
     private static final String MIGRATION_VERSION_MEMKEY =
             "$da_last_line_migration_version";
 
@@ -436,7 +436,7 @@ public final class DiableLastLineFleetFactory {
             throw new IllegalStateException("Missing Subject 71 skill configuration");
         }
 
-        subject71.setPersonality(Personalities.RECKLESS);
+        subject71.setPersonality(Personalities.AGGRESSIVE);
         subject71.getStats().setSkipRefresh(true);
         try {
             subject71.getStats().setLevel(SUBJECT_71_LEVEL);
@@ -523,7 +523,7 @@ public final class DiableLastLineFleetFactory {
 
                 PersonAPI subject71 = findSubject71(fleet);
                 if (subject71 != null) {
-                    subject71.setPersonality(Personalities.RECKLESS);
+                    subject71.setPersonality(Personalities.AGGRESSIVE);
                     subject71.getStats().setSkipRefresh(true);
                     subject71.getStats().setLevel(SUBJECT_71_LEVEL);
                     subject71.getStats().setSkipRefresh(false);

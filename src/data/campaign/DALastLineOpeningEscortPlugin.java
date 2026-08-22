@@ -18,7 +18,7 @@ import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
 import java.util.List;
 
 /**
- * Leashes the Last Line Virtuous to the highest-DP deployed allied ship for
+ * Leashes the Last Line Virtuous to the second-highest-DP deployed allied ship for
  * the opening of combat. The timer begins with the first enemy deployment and
  * advances only while combat is unpaused.
  */
@@ -99,7 +99,7 @@ public final class DALastLineOpeningEscortPlugin
         }
         virtuousWasDeployed = true;
 
-        DeployedFleetMemberAPI target = findHighestDpTarget(virtuous);
+        DeployedFleetMemberAPI target = findSecondHighestDpTarget(virtuous);
         if (target == null) {
             removeEscortAssignment(false);
             return;
@@ -125,11 +125,13 @@ public final class DALastLineOpeningEscortPlugin
         return null;
     }
 
-    private DeployedFleetMemberAPI findHighestDpTarget(
+    private DeployedFleetMemberAPI findSecondHighestDpTarget(
             DeployedFleetMemberAPI virtuous
     ) {
-        DeployedFleetMemberAPI best = null;
-        float bestDp = -1f;
+        DeployedFleetMemberAPI highest = null;
+        DeployedFleetMemberAPI secondHighest = null;
+        float highestDp = -1f;
+        float secondHighestDp = -1f;
 
         for (DeployedFleetMemberAPI deployed
                 : fleetManager.getDeployedCopyDFM()) {
@@ -139,13 +141,19 @@ public final class DALastLineOpeningEscortPlugin
             if (member == null) continue;
 
             float dp = member.getDeploymentPointsCost();
-            if (dp > bestDp
-                    || dp == bestDp && deployed == escortTarget) {
-                best = deployed;
-                bestDp = dp;
+            if (dp > highestDp) {
+                secondHighest = highest;
+                secondHighestDp = highestDp;
+                highest = deployed;
+                highestDp = dp;
+            } else if (secondHighest == null
+                    || dp > secondHighestDp
+                    || dp == secondHighestDp && deployed == escortTarget) {
+                secondHighest = deployed;
+                secondHighestDp = dp;
             }
         }
-        return best;
+        return secondHighest;
     }
 
     private void maintainEscortAssignment(
@@ -155,12 +163,25 @@ public final class DALastLineOpeningEscortPlugin
         CombatFleetManagerAPI.AssignmentInfo current =
                 taskManager.getAssignmentFor(virtuous.getShip());
         boolean targetChanged = target != escortTarget;
-        boolean ourOrderIsCurrent = current == escortAssignment
-                && current != null
+        boolean escortOrderIsCurrent = current != null
                 && current.getType() == CombatAssignmentType.HEAVY_ESCORT
                 && current.getTarget() == target;
 
-        if (ourOrderIsCurrent && !targetChanged) return;
+        if (escortOrderIsCurrent && !targetChanged) {
+            // Keep the live task-manager reference so cleanup removes the
+            // actual active escort task even if Vanilla replaced its object.
+            escortAssignment = current;
+            return;
+        }
+
+        if (escortAssignment != null && !targetChanged) {
+            Global.getLogger(DALastLineOpeningEscortPlugin.class).info(
+                    "Virtuous opening escort was replaced by "
+                            + describeAssignment(current)
+                            + "; reapplying escort to "
+                            + target.getMember().getShipName()
+            );
+        }
 
         removeEscortAssignment(false);
         escortAssignment = taskManager.createAssignment(
@@ -172,15 +193,20 @@ public final class DALastLineOpeningEscortPlugin
         taskManager.giveAssignment(virtuous, escortAssignment, false);
         escortTarget = target;
 
-        if (targetChanged) {
-            Global.getLogger(DALastLineOpeningEscortPlugin.class).info(
-                    "Ordered Virtuous to escort opening target "
-                            + target.getMember().getShipName()
-                            + " ("
-                            + target.getMember().getDeploymentPointsCost()
-                            + " DP)"
-            );
-        }
+        Global.getLogger(DALastLineOpeningEscortPlugin.class).info(
+                "Applied Virtuous opening escort to "
+                        + target.getMember().getShipName()
+                        + " ("
+                        + target.getMember().getDeploymentPointsCost()
+                        + " DP)"
+        );
+    }
+
+    private String describeAssignment(
+            CombatFleetManagerAPI.AssignmentInfo assignment
+    ) {
+        if (assignment == null) return "no task";
+        return assignment.getType().toString();
     }
 
     private boolean isActiveShip(DeployedFleetMemberAPI deployed) {
