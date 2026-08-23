@@ -22,6 +22,7 @@ Any work contained in this mod is free to be reused, modified, or adapted for ot
 * **TIDAL:** Balance, Code QC, AI implementation (Grazer/Assume Control), Gulf hullmods
 <br>
 
+* **Spectros:** Playtesting.
 * **Tranquility:** Fleetbuilder tweaks and code.
 * **Zone51:** Calm AI code and initial Coanda sprite modification.
 * **Nia Tahl:** Paintjobs.
