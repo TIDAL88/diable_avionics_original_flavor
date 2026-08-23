@@ -214,8 +214,8 @@ FireAll PopulateOptions","Process exited with error code -1.
 That doesn't seem particularly useful.",,
 DASubject71_ExecTransferVirtuousSimulationSuccessful,DialogOptionSelected,"$virtuous
 $option == subject71TransferVirtuous
-!$global.da_lastline_virtuous_claimed","SetTextHighlightColors textGreenColor textGreenColor textGreenColor
-SetTextHighlights ""Executing transfer..."" ""Maelstrom blueprint"" ""Not bad.""
+!$global.da_lastline_virtuous_claimed","SetTextHighlightColors textGreenColor textGreenColor highlight
+SetTextHighlights ""Executing transfer..."" ""Maelstrom blueprint"" ""\""Not bad.\""""
 DASubject71_TransferVirtuous","Executing transfer...
 
 An active drive field signature is detected from the fleet. Your security officer instinctively moves his hand towards the alert switch, but after a second glance towards the sensors, moves it away.
@@ -223,7 +223,7 @@ An active drive field signature is detected from the fleet. Your security office
 The Virtuous mech approaches your fleet and another message appears on the display.
 The archive contains a Maelstrom blueprint.
 
-The Last Line pings your IFF codes back to you. One line has been added: “Not bad.”
+The Last Line pings your IFF codes back to you. One line has been added: ""Not bad.""
 
 Disconnecting...
 The comm link closes and the display goes black.
