@@ -25,8 +25,8 @@
             "autofire": false,
             "mode": "ALTERNATING",
             "weapons": {
-                "WS0003": "diableavionics_magicbox",
-                "WS0004": "diableavionics_magicbox"
+                "WS0003": "diableavionics_banishsmall",
+                "WS0004": "diableavionics_banishsmall"
             }
         },
         {
@@ -47,21 +47,9 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0005": "diableavionics_artassault"
-            }
-        },
-        {
-            "autofire": true,
-            "mode": "LINKED",
-            "weapons": {
-                "WS0006": "diableavionics_winee"
-            }
-        },
-        {
-            "autofire": true,
-            "mode": "LINKED",
-            "weapons": {
-                "HEAD": "diableavionics_virtuous_headA"
+                "HEAD": "diableavionics_virtuous_headA",
+                "WS0005": "diableavionics_ibis",
+                "WS0006": "diableavionics_ibis"
             }
         },
         {
@@ -77,9 +65,5 @@
             }
         }
     ],
-    "wings": [],
-    "tags": [
-        "ship_recoverable",
-        "always_recoverable"
-    ]
+    "wings": []
 }
