@@ -1,4 +1,108 @@
 ===============================================================================
+DATE: 23/08/2026
+VERSION: Version 3.0.4 - "The Last Line"
+===============================================================================
+
+The Last Line
+* Fleet strength reduced from over 310 DP to a hard cap of 240 DP.
+* Subject 71 reduced from level 10 -> 8. But numbers can be deceiving.
+* Rebuilt the entire fleet from scratch as a fully handcrafted mid-game-and-up boss fight.
+* Handcrafted Encounter: Replaced the procedurally generated supporting fleet with a fixed special-unit escort and a Virtuous loadout created specifically for the encounter.
+* Assigned Subject 71 a fixed set of fleet-wide skills instead of randomized ones. Subject 71 does not have access to capstone admiral skills.
+* Added admiral AI tweaks.
+* Officers are now hand-picked and respect the fleet's skill limitations.
+* Added migration support for unresolved Last Line encounters in existing saves.
+* Classic Fleet / Easy Mode: Added a LunaLib option to restore the old procedurally generated Last Line fleet. This normally requires a new save.
+* Second in Command Support: If enabled, The Last Line uses a curated set of executives and skills.
+* The fleet composition, support captains, S-mods, and elite skills respect Starsector 0.98.5a's fleet-building rules. The encounter is roughly equivalent to fighting another player at the vanilla DP limit.
+* Added new simulation backgrounds and visual effects.
+* Added dedicated soundtracks for The Last Line's dialog, combat, and simulation.
+* Reminder: Players with friendly relations with Diable can experience this fight as a simulation and obtain the Virtuous peacefully. Talk to The Last Line to discover these options.
+
+Campaign & Rewards
+* Last Line Simulation Rules: The player is limited to 240 DP of active combat ships. Civilian, logistics, and mothballed ships do not count toward this limit. Nearby fleets can no longer join the simulation.
+* The real encounter has no deployment limit.
+* Simulation Reward: Winning the simulation allows the player to claim a pristine Virtuous and the Maelstrom blueprint without losing reputation with Diable.
+* Save the Children:
+   * Credit reward: 125,000 -> 1,250,000
+   * Tri-Tachyon reputation: +5 -> +15
+* Peacefully claiming the Virtuous after winning the simulation now cancels the Tri-Tachyon bounty, whether or not it has already been accepted.
+* Added autoresolve protection to reduce the chance of The Last Line being destroyed off-screen before the player encounters it.
+
+Dead Frequency & First Relay
+* Dead Frequency: Success now also grants a Diable Avionics Station Industry Blueprint.
+* 88 Ra:
+   * Cleared hyperspace storms immediately around the hidden gravity well.
+   * Added protection preventing slipstreams from passing through its hyperspace entrance.
+   * Adjusted the gravity well's visual color.
+   * Existing saves receive the new protection and visuals when loaded. Slipstreams already present must expire naturally.
+   * Fixed the system ambience and dedicated combat soundtrack not playing reliably.
+* First Relay: Rebalanced the station to maintain roughly the same difficulty as the previous patch.
+* Improved Dead Frequency boss-fight performance.
+
+Bugfixes
+* Diable Sound Profiles: Added explicit sound profiles for Diable ships and Wanzers, preventing Starsector from assigning Threat or Dweller sounds to them.
+   * Reasoning: Diable uses custom hull styles that could fall through to newer vanilla sound pools without explicit definitions.
+* Removed obsolete content that could still appear in rare drops, such as the Modular Dampened Mount hullmod.
+* Prevented quest hullmods from being dropped, salvaged, or sold where inappropriate.
+* Fixed Dead Frequency intel and the First Relay exclamation-point marker not clearing properly after completion.
+* Fixed rare music issues.
+
+Ships
+* Virtuous - Grasshopper Grenade Launcher:
+   * Improved AI ammunition management. The AI now conserves most grenades for exposed armor and hull and uses the weapon less freely against shields.
+   * Fixed a legacy detonation script that could reduce its effective range when ECCM or other missile-range bonuses were active.
+   * Reasoning: Fitting ECCM for missiles in the Virtuous' small mounts could unintentionally reduce the Grasshopper's range.
+* Versant: Removed High Speed Mode's transformation cooldown after two uses of the ship system, allowing more responsive switching between forms. This should also improve AI handling.
+* Maelstrom: Deployment cost increased from 42 -> 43 DP.
+   * Reasoning: The new custom AI allows the Maelstrom to perform better under AI control than any previous version of the ship, hence the small increase.
+* Gust Family:
+   * Assume Control no longer grants damage reduction to wings while active. It retains its time-flow acceleration.
+   * Slightly strengthened Assume Control's visual feedback.
+   * Reasoning: The damage reduction allowed one wing deployed by a cheaper Gust to outperform the two wings of a more expensive Storm, causing Diable's power to scale disproportionately into the late game. The broader rebalance has made this additional durability unnecessary.
+* Rime Freighter: Reworked the Adaptive Flight Deck into explicit Active Bay and Standby Bay modes.
+* Calm: Deployed system drones now inherit compatible MagicLib paintjobs from their parent Calm.
+* Pandemonium:
+   * CR per deployment: 25% -> 22.5%
+   * CR recovery per day: 2% -> 3%
+
+Wanzers
+* Raven PD: Reverted previous buffs.
+   * Burchel range: 600 -> 400
+   * Damage per second: 250 -> 200
+   * Maximum ammunition: 9 -> 6
+   * Damage against fighters and missiles: +25% -> removed
+   * Reasoning: This preserves the Raven's original overall damage output while reducing its ability to operate alone. It should still require support wings.
+* Valiant PD: Reverted a previous buff.
+   * Ilis PD range: 500 -> 400, matching the twin Culls.
+   * Reasoning: The Valiant is relatively cheap at 18 OP, and both main weapons now have PD tags. The Ilis retaining longer range was a legacy buff from when the Culls lacked PD classification. All three weapon ranges now match.
+* Warlust:
+   * Added the missing point-defense hint to the Magicbox Missile Rack, allowing the movement AI to use the DMR's full range.
+   * Warlusts should gain approximately 100 additional engagement range.
+
+Weapons
+* Thrush LRM System: Reverted previous buffs.
+   * Main-warhead damage: 750 -> 700
+   * Twin-launch damage: 1,500 -> 1,400
+   * Refire delay: 9 -> 10 seconds
+   * Ammunition regeneration: 0.13334 -> 0.06667 missiles per second
+   * Missile durability: 300 -> 150 hitpoints
+   * Micro-Missiles per warhead: 7 -> 5
+   * Micro-Missiles per twin launch: 14 -> 10
+   * Reasoning: Previous buffs caused the Thrush to scale too strongly into the late game, so its original balance has been restored.
+* Plover Rocket Pod:
+   * Rocket durability: 100 -> 200 hitpoints
+   * Reasoning: Plover rockets fell off sharply against late-game PD. This keeps them relevant without allowing them to brute-force dedicated defenses.
+* Banish Torpedo: Slightly increased volume.
+
+Simulator
+* Added Diable Avionics as an available faction in the refit-screen combat simulator.
+
+Compatibility & UI
+* LunaLib: Fixed the Diable Avionics menu icon being overwritten.
+
+
+===============================================================================
 DATE: 04/08/2026
 VERSION: Version 3.0.3
 ===============================================================================
