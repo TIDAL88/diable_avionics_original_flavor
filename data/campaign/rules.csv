@@ -113,7 +113,8 @@ DASubject71_optionRead,PopulateOptions,"$virtuous
 $helpUsed
 !$lsUsed",,,subject71Read:> read,
 DASubject71_optionReadSysInfo,PopulateOptions,"$virtuous
-$lsUsed",,,subject71ReadSysInfo:> read sysinfo.txt,
+$lsUsed
+!$global.da_lastline_virtuous_claimed",,,subject71ReadSysInfo:> read sysinfo.txt,
 DASubject71_optionExec,PopulateOptions,"$virtuous
 $helpUsed
 !$lsUsed",,,subject71Exec:> exec,
