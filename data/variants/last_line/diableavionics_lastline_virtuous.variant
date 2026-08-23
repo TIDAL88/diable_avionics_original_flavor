@@ -1,6 +1,6 @@
 {
     "displayName": "Last Line",
-    "fluxCapacitors": 24,
+    "fluxCapacitors": 20,
     "fluxVents": 0,
     "goalVariant": false,
     "hullId": "diableavionics_virtuous_brawler",
@@ -12,6 +12,7 @@
         "diableavionics_virtuous_snowblast_L",
         "diableavionics_virtuous_grasshopper_R",
         "missleracks",
+        "escort_package",
         "hardenedshieldemitter",
         "extendedshieldemitter",
         "magazines"
@@ -31,8 +32,8 @@
             "autofire": false,
             "mode": "ALTERNATING",
             "weapons": {
-                "WS0003": "diableavionics_magicbox",
-                "WS0004": "diableavionics_magicbox"
+                "WS0003": "diableavionics_banishsmall",
+                "WS0004": "diableavionics_banishsmall"
             }
         },
         {
@@ -53,21 +54,9 @@
             "autofire": true,
             "mode": "LINKED",
             "weapons": {
-                "WS0005": "diableavionics_artassault"
-            }
-        },
-        {
-            "autofire": true,
-            "mode": "LINKED",
-            "weapons": {
-                "WS0006": "diableavionics_graveac"
-            }
-        },
-        {
-            "autofire": true,
-            "mode": "LINKED",
-            "weapons": {
-                "HEAD": "diableavionics_virtuous_headA"
+                "HEAD": "diableavionics_virtuous_headA",
+                "WS0005": "diableavionics_ibis",
+                "WS0006": "diableavionics_ibis"
             }
         },
         {

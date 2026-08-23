@@ -18,9 +18,10 @@ import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
 import java.util.List;
 
 /**
- * Leashes the Last Line Virtuous to the second-highest-DP deployed allied ship for
- * the opening of combat. The timer begins with the first enemy deployment and
- * advances only while combat is unpaused.
+ * Leashes the Last Line Virtuous to a deployed Coanda, falling back to a Gust,
+ * for the opening of combat, then holds it on Search and Destroy. The timer
+ * begins with the first enemy deployment and advances only while combat is
+ * unpaused.
  */
 public final class DALastLineOpeningEscortPlugin
         extends BaseEveryFrameCombatPlugin {
@@ -43,6 +44,7 @@ public final class DALastLineOpeningEscortPlugin
     private boolean timerStarted;
     private boolean virtuousWasDeployed;
     private boolean firstOrderCheck = true;
+    private boolean searchAndDestroyStarted;
     private boolean finished;
 
     @Override
@@ -81,10 +83,6 @@ public final class DALastLineOpeningEscortPlugin
         }
 
         elapsed += amount;
-        if (elapsed >= LEASH_DURATION) {
-            finish(true);
-            return;
-        }
 
         orderCheck.advance(amount);
         if (!firstOrderCheck && !orderCheck.intervalElapsed()) return;
@@ -99,13 +97,46 @@ public final class DALastLineOpeningEscortPlugin
         }
         virtuousWasDeployed = true;
 
-        DeployedFleetMemberAPI target = findSecondHighestDpTarget(virtuous);
+        if (elapsed >= LEASH_DURATION) {
+            maintainSearchAndDestroyAssignment(virtuous);
+            return;
+        }
+
+        DeployedFleetMemberAPI target = findPreferredEscortTarget(virtuous);
         if (target == null) {
             removeEscortAssignment(false);
             return;
         }
 
         maintainEscortAssignment(virtuous, target);
+    }
+
+    private void maintainSearchAndDestroyAssignment(
+            DeployedFleetMemberAPI virtuous
+    ) {
+        CombatFleetManagerAPI.AssignmentInfo current =
+                taskManager.getAssignmentFor(virtuous.getShip());
+        boolean searchAndDestroyIsCurrent = current != null
+                && current.getType() == CombatAssignmentType.SEARCH_AND_DESTROY;
+
+        if (searchAndDestroyIsCurrent) return;
+
+        removeEscortAssignment(false);
+        taskManager.orderSearchAndDestroy(virtuous, false);
+
+        if (!searchAndDestroyStarted) {
+            searchAndDestroyStarted = true;
+            Global.getLogger(DALastLineOpeningEscortPlugin.class).info(
+                    "Ended Last Line opening escort after 35 unpaused seconds; "
+                            + "holding Virtuous on Search and Destroy"
+            );
+        } else {
+            Global.getLogger(DALastLineOpeningEscortPlugin.class).info(
+                    "Virtuous Search and Destroy was replaced by "
+                            + describeAssignment(current)
+                            + "; reapplying Search and Destroy"
+            );
+        }
     }
 
     private boolean hasDeployedShip() {
@@ -125,13 +156,14 @@ public final class DALastLineOpeningEscortPlugin
         return null;
     }
 
-    private DeployedFleetMemberAPI findSecondHighestDpTarget(
+    private DeployedFleetMemberAPI findPreferredEscortTarget(
             DeployedFleetMemberAPI virtuous
     ) {
-        DeployedFleetMemberAPI highest = null;
-        DeployedFleetMemberAPI secondHighest = null;
-        float highestDp = -1f;
-        float secondHighestDp = -1f;
+        if (isValidEscortTarget(escortTarget, virtuous)) {
+            return escortTarget;
+        }
+
+        DeployedFleetMemberAPI gust = null;
 
         for (DeployedFleetMemberAPI deployed
                 : fleetManager.getDeployedCopyDFM()) {
@@ -140,20 +172,31 @@ public final class DALastLineOpeningEscortPlugin
             FleetMemberAPI member = deployed.getMember();
             if (member == null) continue;
 
-            float dp = member.getDeploymentPointsCost();
-            if (dp > highestDp) {
-                secondHighest = highest;
-                secondHighestDp = highestDp;
-                highest = deployed;
-                highestDp = dp;
-            } else if (secondHighest == null
-                    || dp > secondHighestDp
-                    || dp == secondHighestDp && deployed == escortTarget) {
-                secondHighest = deployed;
-                secondHighestDp = dp;
+            String hullId = member.getHullId();
+            if ("diableavionics_coanda".equals(hullId)) {
+                return deployed;
+            }
+            if (gust == null && "diableavionics_gust".equals(hullId)) {
+                gust = deployed;
             }
         }
-        return secondHighest;
+        return gust;
+    }
+
+    private boolean isValidEscortTarget(
+            DeployedFleetMemberAPI target,
+            DeployedFleetMemberAPI virtuous
+    ) {
+        if (target == null || target == virtuous || !isActiveShip(target)) {
+            return false;
+        }
+
+        FleetMemberAPI member = target.getMember();
+        if (member == null) return false;
+
+        String hullId = member.getHullId();
+        return "diableavionics_coanda".equals(hullId)
+                || "diableavionics_gust".equals(hullId);
     }
 
     private void maintainEscortAssignment(
@@ -257,11 +300,6 @@ public final class DALastLineOpeningEscortPlugin
         finished = true;
 
         removeEscortAssignment(windowExpired);
-        if (windowExpired) {
-            Global.getLogger(DALastLineOpeningEscortPlugin.class).info(
-                    "Ended Last Line opening escort after 35 unpaused seconds"
-            );
-        }
         if (engine != null) {
             engine.removePlugin(this);
         }
