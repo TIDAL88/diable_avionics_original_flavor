@@ -46,7 +46,7 @@ public final class DiableLastLineFleetFactory {
             "diableavionics_lastline_virtuous";
     public static final String FLEET_VERSION_MEMKEY =
             "$da_last_line_fleet_version";
-    public static final int FLEET_VERSION = 28;
+    public static final int FLEET_VERSION = 30;
     private static final String MIGRATION_VERSION_MEMKEY =
             "$da_last_line_migration_version";
 

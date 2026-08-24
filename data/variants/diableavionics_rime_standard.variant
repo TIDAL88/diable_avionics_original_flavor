@@ -4,7 +4,7 @@
     "fluxVents": 9,
     "goalVariant": true,
     "hullId": "diableavionics_rime",
-    "hullMods": ["auxiliarythrusters"],
+    "hullMods": ["auxiliarythrusters", "rime_active_bay"],
     "permaMods": [],
     "sMods": [],
     "variantId": "diableavionics_rime_standard",
