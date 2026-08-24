@@ -3,6 +3,7 @@
     "skinHullId":"diableavionics_virtuous_destroyed",
     "hullName":"Destroyed Virtuous",
     "descriptionId":"diableavionics_virtuous_skirmisher",
+    "tags":["restricted", "no_sell", "no_dealer", "no_drop", "no_bp_drop", "no_derelict", "codex_unlockable"],
     "descriptionPrefix":"While this wreck was salvageable, the ship has been so thoroughly beat up that it will require a complete restoration to become usable again.",
     "systemId":"burndrive",
     "restoreToBaseHull":true,

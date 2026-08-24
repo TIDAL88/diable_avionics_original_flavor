@@ -3,6 +3,7 @@
     "skinHullId":"diableavionics_virtuous_defender",
     "hullName":"Virtuous",
     "descriptionId":"diableavionics_virtuous_skirmisher",
+    "tags":["restricted", "no_sell", "no_dealer", "no_drop", "no_bp_drop", "no_derelict", "codex_unlockable"],
     "systemId":"diableavionics_citadel",
     "removeBuiltInWeapons":[
         "PAULDRON_L",
