@@ -37,6 +37,13 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
     private static final Color WEAPON_GLOW_COLOR = new Color(150, 100, 50, 50);
     private static final Color CYAN_JITTER_COLOR = new Color(220, 250, 255, 170);
     private static final float MAX_TIME_MULT = 1.25f;
+    private static final float PLAYER_CONTROL_DAMAGE_TAKEN_MULT = 0.83f;
+    private static final float PLAYER_CONTROL_HANDLING_MULT = 1.25f;
+    private static final String PLAYER_CONTROL_DR_ID =
+            "diableavionics_assumeControl_player_dr";
+    private static final String PLAYER_CONTROL_HANDLING_ID =
+            "diableavionics_assumeControl_player_handling";
+    private static final String WANZER_TAG = "wanzer";
     public static final String SYSTEM_ID = "diableavionics_assumeControl";
 
     @Override
@@ -58,6 +65,7 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
             float mult = stats.getSystemRangeBonus().getBonusMult();
             float shipTimeMult = 1f + (MAX_TIME_MULT + mult - 2f) * effectLevel;
             fighter.getMutableStats().getTimeMult().modifyMult(SYSTEM_ID, shipTimeMult);
+            updatePlayerControlDamageReduction(fighter);
 
             //visual effect
             fighter.setWeaponGlow(effectLevel, Misc.setAlpha(WEAPON_GLOW_COLOR, 50), EnumSet.allOf(WeaponType.class));
@@ -97,6 +105,56 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
         return result;
     }
 
+    private static void updatePlayerControlDamageReduction(ShipAPI fighter) {
+        CombatEngineAPI engine = Global.getCombatEngine();
+        FighterWingAPI wing = fighter.getWing();
+        boolean playerPilotedWanzer = engine != null
+                && engine.getPlayerShip() == fighter
+                && wing != null
+                && wing.getSpec() != null
+                && wing.getSpec().hasTag(WANZER_TAG);
+
+        MutableShipStatsAPI fighterStats = fighter.getMutableStats();
+        if (playerPilotedWanzer) {
+            fighterStats.getHullDamageTakenMult().modifyMult(
+                    PLAYER_CONTROL_DR_ID,
+                    PLAYER_CONTROL_DAMAGE_TAKEN_MULT
+            );
+            fighterStats.getArmorDamageTakenMult().modifyMult(
+                    PLAYER_CONTROL_DR_ID,
+                    PLAYER_CONTROL_DAMAGE_TAKEN_MULT
+            );
+            fighterStats.getShieldDamageTakenMult().modifyMult(
+                    PLAYER_CONTROL_DR_ID,
+                    PLAYER_CONTROL_DAMAGE_TAKEN_MULT
+            );
+            fighterStats.getAcceleration().modifyMult(
+                    PLAYER_CONTROL_HANDLING_ID,
+                    PLAYER_CONTROL_HANDLING_MULT
+            );
+            fighterStats.getDeceleration().modifyMult(
+                    PLAYER_CONTROL_HANDLING_ID,
+                    PLAYER_CONTROL_HANDLING_MULT
+            );
+            fighterStats.getTurnAcceleration().modifyMult(
+                    PLAYER_CONTROL_HANDLING_ID,
+                    PLAYER_CONTROL_HANDLING_MULT
+            );
+        } else {
+            removePlayerControlDamageReduction(fighter);
+        }
+    }
+
+    private static void removePlayerControlDamageReduction(ShipAPI fighter) {
+        MutableShipStatsAPI fighterStats = fighter.getMutableStats();
+        fighterStats.getHullDamageTakenMult().unmodify(PLAYER_CONTROL_DR_ID);
+        fighterStats.getArmorDamageTakenMult().unmodify(PLAYER_CONTROL_DR_ID);
+        fighterStats.getShieldDamageTakenMult().unmodify(PLAYER_CONTROL_DR_ID);
+        fighterStats.getAcceleration().unmodify(PLAYER_CONTROL_HANDLING_ID);
+        fighterStats.getDeceleration().unmodify(PLAYER_CONTROL_HANDLING_ID);
+        fighterStats.getTurnAcceleration().unmodify(PLAYER_CONTROL_HANDLING_ID);
+    }
+
     @Override
     public void unapply(MutableShipStatsAPI stats, String id) {
         ShipAPI ship;
@@ -108,6 +166,16 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
         }
 
         for (ShipAPI fighter : getFighters(ship)) {
+            removePlayerControlDamageReduction(fighter);
+
+            // Return control before the hulk check.
+            CombatEngineAPI engine = Global.getCombatEngine();
+            if (engine != null
+                    && engine.getPlayerShip() == fighter
+                    && ship.isAlive()) {
+                switchToCarrier(ship, fighter);
+            }
+
             if (fighter.isHulk()) continue;
             fighter.setWeaponGlow(0, Color.BLACK, EnumSet.allOf(WeaponType.class));
             fighter.getMutableStats().getTimeMult().unmodify(id);
@@ -115,9 +183,6 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
             MagicSubsystemsManager.removeSubsystemFromShip(fighter, ControlCarrierSwitch.class);
             MagicSubsystemsManager.removeSubsystemFromShip(fighter, ControlFighterSwitch.class);
 
-            if (Global.getCombatEngine().getPlayerShip() == fighter) {
-                switchToCarrier(ship, fighter);
-            }
         }
 
         if (hasControlSubsystem(ship)) {
