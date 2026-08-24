@@ -1,6 +1,6 @@
 {
     "displayName": "Jaw",
-    "fluxCapacitors": 0,
+    "fluxCapacitors": 2,
     "fluxVents": 25,
     "goalVariant": true,
     "hullId": "diableavionics_IBBgulf",

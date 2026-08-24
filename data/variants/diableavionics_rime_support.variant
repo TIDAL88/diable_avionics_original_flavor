@@ -4,7 +4,7 @@
     "fluxVents": 30,
     "goalVariant": true,
     "hullId": "diableavionics_rime",
-    "hullMods": [],
+    "hullMods": ["rime_active_bay"],
     "permaMods": [],
     "variantId": "diableavionics_rime_support",
     "weaponGroups": [
