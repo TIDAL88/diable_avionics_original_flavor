@@ -1,4 +1,42 @@
 ===============================================================================
+DATE: 25/08/2026
+VERSION: Version 3.0.6 - "3.0.5 is missing"
+===============================================================================
+
+Bugfixing
+* Fixed the Last Line boss Virtuous missing a few capacitors.
+* Fixed the last 8 variants with unused OP, I hope.
+* Protected the Virtuous from dealer interactions and other things like it.
+
+Ship System
+* Gust Family Player-exclusive buffs:
+   * Assume Wing Control: The Wanzer directly controlled by the player now takes 20% less damage and gains 25% maneuverability on top of the already present Assume Control 25% timeflow bonus.
+   * Reasoning: A subset of players that like to pilot Gust family ships themselves were strongly impacted by last patch's nerfs, so we are restoring that single Wanzer damage reduction with an added maneuverability bonus if the player pilots it directly. No impact on balance since that bonus isn't fleetwide; if it can increase the fun factor for some players, why not :)
+* Fixed rare failure to return control to the carrier bug when the controlled Wanzer dies.
+
+The Last Line - Campaign Protection
+* Increased The Last Line's Nexerelin autoresolve strength to better reflect its actual combat power.
+
+Support from Sivie
+* The Last Line now retreats to Sivie after losing the Virtuous to NPC fleets and returns after 30 days.
+* If completely destroyed by NPCs, Sivie rebuilds the fleet after 30 days.
+* Lost escorts are replenished if the Virtuous survives.
+* NPC battles cannot generate a recoverable Virtuous wreck.
+* This support pauses while Sivie is outside Diable control and resumes if the system is reclaimed.
+
+Player Interactions
+* Escort losses persist for 10 days if the player retreats without destroying the Virtuous.
+* Peacefully claiming the Virtuous cancels Save the Children.
+* If NPCs destroy The Last Line, the bounty becomes available again when the fleet returns.
+* Existing unresolved encounters receive these changes automatically.
+
+After the player conquers the Virtuous
+* After peacefully claiming the Virtuous through the simulated match, the Maelstrom pilot takes command of The Last Line.
+* After the player destroys the Virtuous, The Last Line eventually returns with a Storm replacing it.
+* In both cases, Sivie will keep maintaining The Last Line without restoring its Virtuous.
+
+
+===============================================================================
 DATE: 23/08/2026
 VERSION: Version 3.0.4 - "The Last Line"
 ===============================================================================
