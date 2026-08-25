@@ -2,6 +2,7 @@ package data.scripts.world;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
+import com.fs.starfarer.api.campaign.econ.Industry;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.characters.FullName;
 import com.fs.starfarer.api.characters.PersonAPI;
@@ -11,6 +12,7 @@ import com.fs.starfarer.api.impl.campaign.ids.*;
 import com.fs.starfarer.api.impl.campaign.shared.SharedData;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
 import data.campaign.ids.Diableavionics_ids;
+import data.campaign.industry.DALastLineFleetIndustry;
 import data.campaign.special.Diableavionics_gulfLoot;
 import data.campaign.special.Diableavionics_virtuousLoot;
 import data.scripts.DAOptionalLunaSettings;
@@ -25,6 +27,8 @@ import static data.scripts.util.Diableavionics_stringsManager.txt;
 
 public class DiableavionicsGen implements SectorGeneratorPlugin {
     private static final String LUNALIB_ID = "lunalib";
+    private static final String VIRTUOUS_CLAIMED_MEMKEY =
+            "$da_lastline_virtuous_claimed";
 
     @Override
     public void generate(SectorAPI sector) {
@@ -151,40 +155,75 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
             }
         }
 
-        if (target != null) {
-            PersonAPI virtuousCaptain = MagicCampaign.createCaptainBuilder("diableavionics")
-                    .setFirstName(txt("virtuousFN"))
-                    .setLastName(txt("virtuousLN"))
-                    .setPortraitId("da_subject71")
-                    .setGender(FullName.Gender.ANY)
-                    .setRankId(Ranks.SPECIAL_AGENT)
-                    .setPostId(Ranks.POST_UNKNOWN)
-                    .setPersonality(Personalities.RECKLESS)
-                    .setLevel(10)
-                    .setEliteSkillsOverride(10)
-                    .setSkillPreference(OfficerManagerEvent.SkillPickPreference.YES_ENERGY_YES_BALLISTIC_YES_MISSILE_YES_DEFENSE)
-                    .create();
+        spawnVirtuous(target);
+    }
 
-            boolean useClassicFleet = useClassicLastLineFleet();
-            String variant = useClassicFleet
-                    ? VIRTUOUS.pick()
-                    : DiableLastLineFleetFactory.VIRTUOUS_VARIANT_ID;
-            virtuousVariant = variant;
-            CampaignFleetAPI virtuous;
-            if (useClassicFleet) {
-                virtuous = createClassicLastLineFleet(
-                        target,
-                        virtuousCaptain,
-                        variant
-                );
-            } else {
-                virtuous = createHandmadeLastLineFleet(
-                        target,
-                        virtuousCaptain
-                );
-            }
+    /** Creates one managed Last Line fleet at the supplied source. */
+    public static CampaignFleetAPI spawnVirtuous(SectorEntityToken target) {
+        if (target == null) return null;
 
+        PersonAPI virtuousCaptain = MagicCampaign.createCaptainBuilder("diableavionics")
+                .setFirstName(txt("virtuousFN"))
+                .setLastName(txt("virtuousLN"))
+                .setPortraitId("da_subject71")
+                .setGender(FullName.Gender.ANY)
+                .setRankId(Ranks.SPECIAL_AGENT)
+                .setPostId(Ranks.POST_UNKNOWN)
+                .setPersonality(Personalities.RECKLESS)
+                .setLevel(10)
+                .setEliteSkillsOverride(10)
+                .setSkillPreference(OfficerManagerEvent.SkillPickPreference.YES_ENERGY_YES_BALLISTIC_YES_MISSILE_YES_DEFENSE)
+                .create();
+
+        boolean virtuousClaimed = Global.getSector().getMemoryWithoutUpdate()
+                .getBoolean(VIRTUOUS_CLAIMED_MEMKEY);
+        boolean useClassicFleet = useClassicLastLineFleet();
+        String variant = useClassicFleet
+                ? VIRTUOUS.pick()
+                : DiableLastLineFleetFactory.VIRTUOUS_VARIANT_ID;
+        virtuousVariant = variant;
+        CampaignFleetAPI virtuous;
+        if (useClassicFleet) {
+            virtuous = createClassicLastLineFleet(
+                    target,
+                    virtuousCaptain,
+                    variant
+            );
+        } else {
+            virtuous = createHandmadeLastLineFleet(
+                    target,
+                    virtuousCaptain
+            );
+        }
+
+        if (virtuousClaimed && !useClassicFleet) {
+            DiableLastLineFleetFactory.convertToGuardianFleet(virtuous);
+        } else {
             configureVirtuousEncounter(virtuous, virtuousCaptain);
+        }
+        return virtuous;
+    }
+
+    /** Adds the hidden fleet manager to Sivie and adopts legacy fleets. */
+    public static void ensureLastLineFleetIndustry() {
+        if (useClassicLastLineFleet()) return;
+
+        SectorEntityToken prison = Global.getSector().getEntityById(
+                "diableavionics_prison"
+        );
+        if (prison == null || prison.getMarket() == null) return;
+
+        MarketAPI market = prison.getMarket();
+        if (!market.hasIndustry(DALastLineFleetIndustry.INDUSTRY_ID)) {
+            market.addIndustry(DALastLineFleetIndustry.INDUSTRY_ID);
+        }
+
+        Industry industry = market.getIndustry(
+                DALastLineFleetIndustry.INDUSTRY_ID
+        );
+        if (industry instanceof DALastLineFleetIndustry) {
+            ((DALastLineFleetIndustry) industry)
+                    .adoptExistingFleetIfPresent();
         }
     }
 
@@ -222,6 +261,12 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
 
         virtuousCaptain.getMemoryWithoutUpdate().set("$virtuous", true);
         virtuous.getMemoryWithoutUpdate().set("$virtuous", true);
+        if (!useClassicLastLineFleet()) {
+            virtuous.getMemoryWithoutUpdate().set(
+                    DiableLastLineFleetFactory.GUARDIAN_FLEET_MEMKEY,
+                    true
+            );
+        }
     }
 
     /**
@@ -276,7 +321,7 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         return DiableLastLineFleetFactory.createFleet(target, virtuousCaptain);
     }
 
-    private static boolean useClassicLastLineFleet() {
+    public static boolean useClassicLastLineFleet() {
         if (!Global.getSettings().getModManager().isModEnabled(LUNALIB_ID)) {
             return false;
         }

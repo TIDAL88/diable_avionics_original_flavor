@@ -18,6 +18,8 @@ import data.campaign.DANexVirtuousFleetInteractionDialogPluginImpl;
 import data.campaign.DAVirtuousFleetInteractionDialogPluginImpl;
 import data.campaign.ids.Diableavionics_ids;
 import data.scripts.DAModPlugin;
+import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
+import data.scripts.world.DiableavionicsGen;
 import org.magiclib.bounty.ActiveBounty;
 import org.magiclib.bounty.MagicBountyCoordinator;
 
@@ -63,6 +65,13 @@ public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
         CampaignFleetAPI playerFleet = Global.getSector().getPlayerFleet();
         playerFleet.getFleetData().addFleetMember(virtuousMember);
         sectorMemory.set(VIRTUOUS_CLAIMED_KEY, true);
+        if (DiableavionicsGen.useClassicLastLineFleet()) {
+            DiableLastLineFleetFactory.removeVirtuousEncounterHooks(
+                    targetFleet
+            );
+        } else {
+            DiableLastLineFleetFactory.convertToGuardianFleet(targetFleet);
+        }
         cancelSaveTheChildrenBounty();
         grantSimulationReward(targetFleet, playerFleet.getCargo());
 

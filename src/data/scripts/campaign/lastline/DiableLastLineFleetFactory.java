@@ -6,6 +6,7 @@ import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.FleetAssignment;
 import com.fs.starfarer.api.campaign.LocationAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
+import com.fs.starfarer.api.campaign.listeners.FleetEventListener;
 import com.fs.starfarer.api.characters.FullName;
 import com.fs.starfarer.api.characters.MutableCharacterStatsAPI;
 import com.fs.starfarer.api.characters.OfficerDataAPI;
@@ -19,6 +20,7 @@ import com.fs.starfarer.api.impl.campaign.ids.Personalities;
 import com.fs.starfarer.api.impl.campaign.ids.Ranks;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import data.campaign.LastLineFID;
+import data.campaign.special.Diableavionics_virtuousLoot;
 import data.scripts.campaign.gulf.DiableGulfPart2FleetFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +31,9 @@ import second_in_command.specs.SCOfficer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import static data.scripts.util.Diableavionics_stringsManager.txt;
 
@@ -46,7 +50,9 @@ public final class DiableLastLineFleetFactory {
             "diableavionics_lastline_virtuous";
     public static final String FLEET_VERSION_MEMKEY =
             "$da_last_line_fleet_version";
-    public static final int FLEET_VERSION = 30;
+    public static final String GUARDIAN_FLEET_MEMKEY =
+            "$da_last_line_guardian";
+    public static final int FLEET_VERSION = 31;
     private static final String MIGRATION_VERSION_MEMKEY =
             "$da_last_line_migration_version";
 
@@ -57,7 +63,10 @@ public final class DiableLastLineFleetFactory {
     private static final int SUBJECT_71_LEVEL = 8;
     private static final String NEX_AUTORESOLVE_STRENGTH_MULT_KEY =
             "$nex_autoresolve_strMult";
-    private static final float NEX_AUTORESOLVE_STRENGTH_MULT = 3f;
+    // Keep this unique roaming encounter near 1,000 effective FP in Nex
+    // autoresolve. NPC losses are handled by Sivie's hidden respawn industry;
+    // player combat is unchanged.
+    private static final float NEX_AUTORESOLVE_STRENGTH_MULT = 6f;
     private static final String NEX_NO_KEEP_SMODS_KEY = "$nex_noKeepSMods";
     private static final String ESCORT_PORTRAIT =
             "graphics/da/portraits/diableavionics_thelastline.png";
@@ -137,6 +146,15 @@ public final class DiableLastLineFleetFactory {
             )
     };
 
+    private static final FleetEntry[] GUARDIAN_ESCORTS = {
+            new FleetEntry(
+                    "diableavionics_lastline_storm",
+                    "DSF Last Line-13",
+                    "diableavionics_storm",
+                    "D13"
+            )
+    };
+
     private static JSONObject officerConfig;
 
     private DiableLastLineFleetFactory() {
@@ -184,16 +202,15 @@ public final class DiableLastLineFleetFactory {
     public static CampaignFleetAPI migrateExistingFleet(boolean keepClassicFleet) {
         if (Global.getSector() == null) return null;
 
+        if (keepClassicFleet) {
+            return null;
+        }
+
         syncExistingFleetState();
 
         int migrationVersion = Global.getSector().getMemoryWithoutUpdate()
                 .getInt(MIGRATION_VERSION_MEMKEY);
         if (migrationVersion >= FLEET_VERSION) return null;
-
-        if (keepClassicFleet) {
-            markMigrationComplete();
-            return null;
-        }
 
         for (LocationAPI location : Global.getSector().getAllLocations()) {
             for (CampaignFleetAPI fleet : new ArrayList<>(
@@ -290,10 +307,123 @@ public final class DiableLastLineFleetFactory {
                 NEX_AUTORESOLVE_STRENGTH_MULT
         );
         fleet.getMemoryWithoutUpdate().set(NEX_NO_KEEP_SMODS_KEY, true);
+        fleet.getMemoryWithoutUpdate().set(GUARDIAN_FLEET_MEMKEY, true);
         fleet.getMemoryWithoutUpdate().set(
                 MemFlags.FLEET_INTERACTION_DIALOG_CONFIG_OVERRIDE_GEN,
                 new LastLineFID()
         );
+    }
+
+    /**
+     * Converts the managed encounter into its post-simulation guardian state.
+     * The Virtuous and its special interaction hooks are removed permanently,
+     * while the authored escorts remain under Sivie's fleet manager.
+     */
+    public static void convertToGuardianFleet(CampaignFleetAPI fleet) {
+        if (fleet == null) return;
+
+        boolean authoredFleet = FLEET_ID.equals(fleet.getId())
+                || fleet.getMemoryWithoutUpdate().getInt(
+                FLEET_VERSION_MEMKEY
+        ) > 0;
+
+        for (FleetMemberAPI member
+                : new ArrayList<>(fleet.getFleetData().getMembersListCopy())) {
+            if (member.getHullSpec() == null
+                    || !member.getHullSpec().getBaseHullId()
+                    .startsWith("diableavionics_virtuous")) {
+                continue;
+            }
+
+            PersonAPI captain = member.getCaptain();
+            if (captain != null) {
+                fleet.getFleetData().removeOfficer(captain);
+                captain.getMemoryWithoutUpdate().unset("$virtuous");
+            }
+            fleet.getFleetData().removeFleetMember(member);
+        }
+
+        removeVirtuousEncounterHooks(fleet);
+        fleet.getMemoryWithoutUpdate().set(GUARDIAN_FLEET_MEMKEY, true);
+        fleet.setDiscoverable(false);
+        fleet.addTag(Tags.NEUTRINO);
+        fleet.getMemoryWithoutUpdate().set(
+                MemFlags.FLEET_FIGHT_TO_THE_LAST,
+                true
+        );
+        fleet.getMemoryWithoutUpdate().set(
+                NEX_AUTORESOLVE_STRENGTH_MULT_KEY,
+                NEX_AUTORESOLVE_STRENGTH_MULT
+        );
+        fleet.getMemoryWithoutUpdate().set(NEX_NO_KEEP_SMODS_KEY, true);
+
+        addMissingEntries(fleet, GUARDIAN_ESCORTS);
+        configureGuardianCommander(fleet);
+        if (authoredFleet) {
+            finishFleet(fleet);
+        } else {
+            fleet.getFleetData().sort();
+            fleet.forceSync();
+            fleet.updateCounts();
+        }
+    }
+
+    /** Updates an already-serialized guardian without healing prior losses. */
+    public static void upgradeGuardianFleetIfNeeded(CampaignFleetAPI fleet) {
+        if (fleet == null
+                || fleet.getMemoryWithoutUpdate().getInt(
+                FLEET_VERSION_MEMKEY
+        ) >= FLEET_VERSION
+                || !isVirtuouslessGuardian(fleet)) {
+            return;
+        }
+
+        addMissingEntries(fleet, GUARDIAN_ESCORTS);
+        configureGuardianCommander(fleet);
+        fleet.getFleetData().sort();
+        fleet.forceSync();
+        fleet.updateCounts();
+        fleet.getMemoryWithoutUpdate().set(
+                FLEET_VERSION_MEMKEY,
+                FLEET_VERSION
+        );
+    }
+
+    /** Removes boss-only hooks after Virtuous leaves either fleet mode. */
+    public static void removeVirtuousEncounterHooks(CampaignFleetAPI fleet) {
+        if (fleet == null) return;
+
+        for (FleetEventListener listener
+                : new ArrayList<>(fleet.getEventListeners())) {
+            if (listener instanceof Diableavionics_virtuousLoot) {
+                fleet.removeEventListener(listener);
+            }
+        }
+        fleet.getMemoryWithoutUpdate().unset("$virtuous");
+        fleet.getMemoryWithoutUpdate().unset(
+                MemFlags.FLEET_INTERACTION_DIALOG_CONFIG_OVERRIDE_GEN
+        );
+    }
+
+    /** Removes manager-only memory flags from a fleet when classic mode wins. */
+    public static void removeManagedStateForClassicFleet(
+            CampaignFleetAPI fleet
+    ) {
+        if (fleet == null) return;
+
+        fleet.getMemoryWithoutUpdate().unset(GUARDIAN_FLEET_MEMKEY);
+        fleet.getMemoryWithoutUpdate().unset(
+                NEX_AUTORESOLVE_STRENGTH_MULT_KEY
+        );
+        fleet.getMemoryWithoutUpdate().unset(NEX_NO_KEEP_SMODS_KEY);
+        Object dialogOverride = fleet.getMemoryWithoutUpdate().get(
+                MemFlags.FLEET_INTERACTION_DIALOG_CONFIG_OVERRIDE_GEN
+        );
+        if (dialogOverride instanceof LastLineFID) {
+            fleet.getMemoryWithoutUpdate().unset(
+                    MemFlags.FLEET_INTERACTION_DIALOG_CONFIG_OVERRIDE_GEN
+            );
+        }
     }
 
     private static void populateFleet(
@@ -356,6 +486,160 @@ public final class DiableLastLineFleetFactory {
             member.getRepairTracker().setCR(member.getRepairTracker().getMaxCR());
         }
         fleet.getMemoryWithoutUpdate().set(FLEET_VERSION_MEMKEY, FLEET_VERSION);
+    }
+
+    /** Checks whether a managed authored fleet is missing an escort. */
+    public static boolean hasMissingAuthoredEscorts(
+            CampaignFleetAPI fleet
+    ) {
+        if (fleet == null
+                || fleet.getMemoryWithoutUpdate().getInt(FLEET_VERSION_MEMKEY)
+                <= 0
+                || !fleet.getMemoryWithoutUpdate().getBoolean(
+                GUARDIAN_FLEET_MEMKEY
+        )) {
+            return false;
+        }
+
+        Set<String> presentShipNames = new HashSet<>();
+        for (FleetMemberAPI member
+                : fleet.getFleetData().getMembersListCopy()) {
+            presentShipNames.add(member.getShipName());
+        }
+
+        for (FleetEntry entry : ESCORTS) {
+            if (!presentShipNames.contains(entry.shipName)) return true;
+        }
+        if (isVirtuouslessGuardian(fleet)) {
+            for (FleetEntry entry : GUARDIAN_ESCORTS) {
+                if (!presentShipNames.contains(entry.shipName)) return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Restores destroyed authored escorts to either form of the managed fleet.
+     * Ship names are the stable serial identifiers for repeated variants.
+     */
+    public static boolean restoreMissingAuthoredEscorts(
+            CampaignFleetAPI fleet
+    ) {
+        if (fleet == null
+                || fleet.getMemoryWithoutUpdate().getInt(FLEET_VERSION_MEMKEY)
+                <= 0
+                || !fleet.getMemoryWithoutUpdate().getBoolean(
+                GUARDIAN_FLEET_MEMKEY
+        )) {
+            return false;
+        }
+
+        Set<String> presentShipNames = new HashSet<>();
+        for (FleetMemberAPI member
+                : fleet.getFleetData().getMembersListCopy()) {
+            presentShipNames.add(member.getShipName());
+        }
+
+        boolean restoredAny = addMissingEntries(
+                fleet,
+                ESCORTS,
+                presentShipNames
+        );
+        if (isVirtuouslessGuardian(fleet)) {
+            restoredAny |= addMissingEntries(
+                    fleet,
+                    GUARDIAN_ESCORTS,
+                    presentShipNames
+            );
+            configureGuardianCommander(fleet);
+        }
+
+        if (restoredAny) {
+            fleet.getFleetData().sort();
+            fleet.forceSync();
+            fleet.updateCounts();
+            Global.getLogger(DiableLastLineFleetFactory.class).info(
+                    "Restored missing authored Last Line escorts"
+            );
+        }
+        return restoredAny;
+    }
+
+    private static void addMissingEntries(
+            CampaignFleetAPI fleet,
+            FleetEntry[] entries
+    ) {
+        Set<String> presentShipNames = new HashSet<>();
+        for (FleetMemberAPI member
+                : fleet.getFleetData().getMembersListCopy()) {
+            presentShipNames.add(member.getShipName());
+        }
+        addMissingEntries(fleet, entries, presentShipNames);
+    }
+
+    private static boolean addMissingEntries(
+            CampaignFleetAPI fleet,
+            FleetEntry[] entries,
+            Set<String> presentShipNames
+    ) {
+        boolean addedAny = false;
+        for (FleetEntry entry : entries) {
+            if (presentShipNames.contains(entry.shipName)) continue;
+
+            FleetMemberAPI member = createAuthoredMember(entry.variantId);
+            fleet.getFleetData().addFleetMember(member);
+            member.setShipName(entry.shipName);
+            if (entry.captainType != null) {
+                member.setCaptain(createOfficer(
+                        entry.captainType,
+                        entry.captainName
+                ));
+            }
+            prepareMember(member);
+            presentShipNames.add(entry.shipName);
+            addedAny = true;
+        }
+        return addedAny;
+    }
+
+    private static boolean isVirtuouslessGuardian(CampaignFleetAPI fleet) {
+        if (fleet == null
+                || !fleet.getMemoryWithoutUpdate().getBoolean(
+                GUARDIAN_FLEET_MEMKEY
+        )) {
+            return false;
+        }
+        for (FleetMemberAPI member
+                : fleet.getFleetData().getMembersListCopy()) {
+            if (member.getHullSpec() != null
+                    && member.getHullSpec().getBaseHullId()
+                    .startsWith("diableavionics_virtuous")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Makes the Maelstrom's D1 unit the guardian's permanent admiral. */
+    private static void configureGuardianCommander(CampaignFleetAPI fleet) {
+        FleetMemberAPI maelstrom = null;
+        for (FleetMemberAPI member
+                : fleet.getFleetData().getMembersListCopy()) {
+            if ("DSF Last Line-01".equals(member.getShipName())) {
+                maelstrom = member;
+                break;
+            }
+        }
+        if (maelstrom == null || maelstrom.getCaptain() == null) return;
+
+        PersonAPI d1 = maelstrom.getCaptain();
+        d1.setName(new FullName("D1", "", d1.getGender()));
+        d1.setPortraitSprite(ESCORT_PORTRAIT);
+        d1.setRankId(Ranks.SPACE_ADMIRAL);
+        d1.setPostId(Ranks.POST_FLEET_COMMANDER);
+        configureSubject71Skills(d1);
+        fleet.getFleetData().setFlagship(maelstrom);
+        fleet.setCommander(d1);
     }
 
     private static void clearFleetMembersAndOfficers(CampaignFleetAPI fleet) {
@@ -520,6 +804,10 @@ public final class DiableLastLineFleetFactory {
                         NEX_AUTORESOLVE_STRENGTH_MULT
                 );
                 fleet.getMemoryWithoutUpdate().set(NEX_NO_KEEP_SMODS_KEY, true);
+                fleet.getMemoryWithoutUpdate().set(
+                        GUARDIAN_FLEET_MEMKEY,
+                        true
+                );
                 fleet.getMemoryWithoutUpdate().set(
                         MemFlags.FLEET_FIGHT_TO_THE_LAST,
                         true

@@ -27,6 +27,7 @@
                 ["cryosanctum","gamma_core"],
                 ["heavybatteries","alpha_core"],
                 ["highcommand","alpha_core"],
+                ["diableavionics_last_line_support"],
                 ["diableavionics_starfortress_lock","alpha_core"],
                 #["waystation","gamma_core"],
             ],

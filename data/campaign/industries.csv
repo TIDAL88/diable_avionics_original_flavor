@@ -1,4 +1,5 @@
 id,name,cost mult,build time,income,upkeep,downgrade,upgrade,tags,data,image,plugin,desc,order
+diableavionics_last_line_support,Last Line Support Infrastructure,,,,,,,"unraidable, structure",,graphics/icons/industry/high_command.png,data.campaign.industry.DALastLineFleetIndustry,Hidden infrastructure responsible for maintaining The Last Line.,2690
 diableavionics_orbitalstation,Orbital Station - Diable Avionics,50,90,,3,,diableavionics_battlestation,"station, sub_item, unraidable, structure","{
 radius:55,
 variant:diableavionics_station_tier1,
