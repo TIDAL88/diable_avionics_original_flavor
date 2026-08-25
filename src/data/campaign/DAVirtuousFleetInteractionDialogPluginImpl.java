@@ -9,6 +9,7 @@ import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.EngagementResultAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.FleetInteractionDialogPluginImpl;
+import data.campaign.special.Diableavionics_virtuousLoot;
 import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
 
 public class DAVirtuousFleetInteractionDialogPluginImpl extends FleetInteractionDialogPluginImpl {
@@ -19,7 +20,9 @@ public class DAVirtuousFleetInteractionDialogPluginImpl extends FleetInteraction
     @Override
     public void init(InteractionDialogAPI dialog) {
         super.init(dialog);
-        DASubject71DialogMusic.start();
+        if (DACampaignPlugin.hasMemoryInFleet(otherFleet, "$virtuous")) {
+            DASubject71DialogMusic.start();
+        }
     }
 
     @Override
@@ -96,8 +99,20 @@ public class DAVirtuousFleetInteractionDialogPluginImpl extends FleetInteraction
             DASubject71DialogMusic.start();
             return;
         }
-        super.backFromEngagement(result);
-        DASubject71DialogMusic.start();
+        Diableavionics_virtuousLoot.recordLastLineEngagementOutcome(
+                otherFleet,
+                result
+        );
+        try {
+            super.backFromEngagement(result);
+        } finally {
+            Diableavionics_virtuousLoot.clearLastLineEngagementOutcome(
+                    otherFleet
+            );
+        }
+        if (DACampaignPlugin.hasMemoryInFleet(otherFleet, "$virtuous")) {
+            DASubject71DialogMusic.start();
+        }
     }
 
     public void pullFleets() {

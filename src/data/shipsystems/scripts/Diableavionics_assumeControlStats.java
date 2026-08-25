@@ -37,7 +37,7 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
     private static final Color WEAPON_GLOW_COLOR = new Color(150, 100, 50, 50);
     private static final Color CYAN_JITTER_COLOR = new Color(220, 250, 255, 170);
     private static final float MAX_TIME_MULT = 1.25f;
-    private static final float PLAYER_CONTROL_DAMAGE_TAKEN_MULT = 0.83f;
+    private static final float PLAYER_CONTROL_DAMAGE_TAKEN_MULT = 0.80f;
     private static final float PLAYER_CONTROL_HANDLING_MULT = 1.25f;
     private static final String PLAYER_CONTROL_DR_ID =
             "diableavionics_assumeControl_player_dr";

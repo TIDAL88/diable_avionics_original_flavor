@@ -50,7 +50,12 @@ public class DACampaignPlugin extends BaseCampaignPlugin {
                     PickPriority.MOD_SPECIFIC
             );
         }
-        if (interactionTarget.getMemoryWithoutUpdate().contains("$virtuous")) {
+        boolean isLastLineInteraction = interactionTarget
+                .getMemoryWithoutUpdate().contains("$virtuous")
+                || interactionTarget.getMemoryWithoutUpdate().getBoolean(
+                DiableLastLineFleetFactory.GUARDIAN_FLEET_MEMKEY
+        );
+        if (isLastLineInteraction) {
             if (Global.getSettings().getModManager().isModEnabled("nexerelin")) {
                 return new PluginPick<InteractionDialogPlugin>(new DANexVirtuousFleetInteractionDialogPluginImpl(), PickPriority.MOD_SPECIFIC);
             } else {

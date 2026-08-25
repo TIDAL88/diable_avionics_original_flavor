@@ -98,7 +98,7 @@ public class DAModPlugin extends BaseModPlugin {
             //no IBB system? it would be a shame to miss on the Gulf
             DiableavionicsGen.spawnGulf();
         }
-        DiableavionicsGen.spawnVirtuous();
+        DiableavionicsGen.ensureLastLineFleetIndustry();
         Global.getSector().getMemoryWithoutUpdate().set(MEMKEY_SPECIAL_FLEETS_INITIALIZED, true);
         Global.getSector().getMemoryWithoutUpdate().set(MEMKEY_VERSION, 2.84);
         setupGulfPart2();
@@ -124,6 +124,7 @@ public class DAModPlugin extends BaseModPlugin {
             Global.getSector().getMemoryWithoutUpdate().set(MEMKEY_SPECIAL_FLEETS_INITIALIZED, true);
         }
 
+        DiableavionicsGen.ensureLastLineFleetIndustry();
         DiableavionicsGen.migrateLastLineFleetIfNeeded();
 
         if (!Global.getSector().getMemoryWithoutUpdate().contains(MEMKEY_VERSION)
@@ -185,7 +186,7 @@ public class DAModPlugin extends BaseModPlugin {
             //no IBB system? it would be a shame to miss on the Gulf
             DiableavionicsGen.spawnGulf();
         }
-        DiableavionicsGen.spawnVirtuous();
+        DiableavionicsGen.ensureLastLineFleetIndustry();
     }
 
     protected void addToOngoingGame() {
