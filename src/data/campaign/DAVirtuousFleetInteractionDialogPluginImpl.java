@@ -11,8 +11,13 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.FleetInteractionDialogPluginImpl;
 import data.campaign.special.Diableavionics_virtuousLoot;
 import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
+import data.scripts.world.DiableavionicsGen;
+import org.magiclib.achievements.MagicAchievementManager;
 
 public class DAVirtuousFleetInteractionDialogPluginImpl extends FleetInteractionDialogPluginImpl {
+    private static final String DUELIST_ACHIEVEMENT_ID =
+            "diableavionics_duelist";
+
     public DAVirtuousFleetInteractionDialogPluginImpl() {
         super(DASubject71DialogMusic.createFleetInteractionConfig());
     }
@@ -44,6 +49,14 @@ public class DAVirtuousFleetInteractionDialogPluginImpl extends FleetInteraction
             otherFleet.getMemoryWithoutUpdate().set("$simulationSuccessful", result.didPlayerWin());
             otherFleet.getCommander().getMemoryWithoutUpdate().set("$simulationSuccessful", result.didPlayerWin());
             if (result.didPlayerWin()) {
+                if (!DiableavionicsGen.useClassicLastLineFleet()
+                        && otherFleet.getMemoryWithoutUpdate().getInt(
+                        DiableLastLineFleetFactory.FLEET_VERSION_MEMKEY
+                ) > 0) {
+                    MagicAchievementManager.getInstance().completeAchievement(
+                            DUELIST_ACHIEVEMENT_ID
+                    );
+                }
                 DiableLastLineFleetFactory.convertSubject71ToD1(otherFleet);
             }
             Global.getCombatEngine().removePlugin(new DASubject71CombatMusic());
