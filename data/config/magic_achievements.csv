@@ -1,0 +1,2 @@
+id,name,description,tooltip,script,image,spoilerLevel,rarity
+diableavionics_duelist,Duelist,Won a fleet duel against The Last Line on equal terms... Not bad.,,org.magiclib.achievements.MagicAchievement,graphics/da/portraits/diableavionics_thelastline.png,VISIBLE,RARE

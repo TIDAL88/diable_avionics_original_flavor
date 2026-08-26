@@ -7,6 +7,7 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.characters.FullName;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.campaign.listeners.FleetEventListener;
+import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.impl.campaign.events.OfficerManagerEvent;
 import com.fs.starfarer.api.impl.campaign.ids.*;
 import com.fs.starfarer.api.impl.campaign.shared.SharedData;
@@ -15,6 +16,7 @@ import data.campaign.ids.Diableavionics_ids;
 import data.campaign.industry.DALastLineFleetIndustry;
 import data.campaign.special.Diableavionics_gulfLoot;
 import data.campaign.special.Diableavionics_virtuousLoot;
+import data.scripts.DAModPlugin;
 import data.scripts.DAOptionalLunaSettings;
 import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
 import data.scripts.world.systems.Diableavionics_blackSite;
@@ -29,6 +31,8 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
     private static final String LUNALIB_ID = "lunalib";
     private static final String VIRTUOUS_CLAIMED_MEMKEY =
             "$da_lastline_virtuous_claimed";
+    private static final String RELATIONSHIPS_INITIALIZED_MEMKEY =
+            "$diableavionics_relationships_initialized";
 
     @Override
     public void generate(SectorAPI sector) {
@@ -46,6 +50,18 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         }
 
         SharedData.getData().getPersonBountyEventData().addParticipatingFaction("diableavionics");
+
+        // The generator is also called on game load to maintain DA's campaign content. Starting
+        // relationships must only be applied once or they overwrite live diplomacy every load.
+        MemoryAPI memory = sector.getMemoryWithoutUpdate();
+        if (memory.getBoolean(RELATIONSHIPS_INITIALIZED_MEMKEY)) return;
+
+        // Existing DA saves predate the dedicated key. Their initialized marker proves that their
+        // starting relationships were already established, so preserve their current diplomacy.
+        if (memory.getBoolean(DAModPlugin.MEMKEY_INTIALIZED)) {
+            memory.set(RELATIONSHIPS_INITIALIZED_MEMKEY, true);
+            return;
+        }
 
         FactionAPI diableavionics = sector.getFaction("diableavionics");
         FactionAPI player = sector.getFaction(Factions.PLAYER);
@@ -127,6 +143,8 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         diableavionics.setRelationship("nomads", -0.25f);
         diableavionics.setRelationship("thulelegacy", -0.25f);
         diableavionics.setRelationship("infected", -0.99f);
+
+        memory.set(RELATIONSHIPS_INITIALIZED_MEMKEY, true);
     }
 
     private static final WeightedRandomPicker<String> VIRTUOUS = new WeightedRandomPicker<>();
