@@ -519,7 +519,7 @@ Using such immature and inefficient technology could seem unwise for a military 
 # STATE,,,,,
 ,,,,,
 ,,,,,
-diableavionics_state,WEAPON,"An intermediate beam weapon consisting of a pair of linked positron emitters. Lower range compared to contemporary beams put packs a superior punch.
+diableavionics_state,WEAPON,"An intermediate beam weapon consisting of a pair of linked positron emitters. Lower range compared to contemporary beams but packs a superior punch.
 
 The ""State"" positron emitter system is a specialized particle beam connected to the host vessel's reactors to power the relatively inefficient matter/antimatter creation process. The choice of positrons limit range due to self repulsion, but that same property makes them much easier to manipulate into a weaponized beam.
 
