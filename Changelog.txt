@@ -5,9 +5,10 @@ VERSION: Version 3.0.7 - WIP
 
 Bugfixing
 * Fixed a bug that could reset faction reputation when loading a campaign.
+* Corrected typo in the state support beam's description
 
 Achievements
-* Added the "Duelist" achievement for winning The Last Line's new simulated fleet duel with the DP limitation.
+* Added the "Duelist" achievement for winning The Last Line's new simulated fleet duel. Only the sim gets this, due to it's DP limitation.
 ===============================================================================
 DATE: 25/08/2026
 VERSION: Version 3.0.6 - "3.0.5 is missing"

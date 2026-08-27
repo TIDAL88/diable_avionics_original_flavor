@@ -6,7 +6,6 @@ import com.fs.starfarer.api.combat.CollisionClass;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.CombatEngineLayers;
 import com.fs.starfarer.api.combat.CombatEntityAPI;
-import com.fs.starfarer.api.combat.CombatFleetManagerAPI;
 import com.fs.starfarer.api.combat.GuidedMissileAI;
 import com.fs.starfarer.api.combat.MissileAIPlugin;
 import com.fs.starfarer.api.combat.MissileAPI;
@@ -265,23 +264,16 @@ public class Diableavionics_deepStrikeAI implements MissileAIPlugin, GuidedMissi
     private void dropStrikeTeam(CombatEngineAPI engine, MissileAPI missile, ShipAPI target){
         
         
-        CombatFleetManagerAPI fleetManager = engine.getFleetManager(missile.getOwner());
-        boolean wasSuppressingDeploymentMessages = fleetManager.isSuppressDeploymentMessages();
-        ShipAPI dropPod;
-        fleetManager.setSuppressDeploymentMessages(true);
-        try {
-            dropPod = fleetManager.spawnShipOrWing(
-                    "diableavionics_deepStrike_"+MathUtils.getRandomNumberInRange(1, 5),
-                    missile.getLocation(),
-                    missile.getFacing()
-            );
-
-            // The pod remains an active combat entity, but should not be tracked as
-            // a deployed fleet ship or generate ship-loss notifications when destroyed.
-            fleetManager.removeDeployed(dropPod, false);
-        } finally {
-            fleetManager.setSuppressDeploymentMessages(wasSuppressingDeploymentMessages);
-        }
+//        ShipAPI teamate = engine.getFleetManager(missile.getOwner()).spawnShipOrWing(WANZERS.get(MathUtils.getRandomNumberInRange(0, WANZERS.size()-1)), missile.getLocation(), missile.getFacing());
+//        engine.getFleetManager(-1).setSuppressDeploymentMessages(true);
+        engine.getFleetManager(missile.getOwner()).setSuppressDeploymentMessages(true);
+        ShipAPI dropPod = engine.getFleetManager(missile.getOwner()).spawnShipOrWing(
+                "diableavionics_deepStrike_"+MathUtils.getRandomNumberInRange(1, 5),
+                missile.getLocation(),
+                missile.getFacing()
+        );
+//        engine.getFleetManager(-1).setSuppressDeploymentMessages(false);
+        engine.getFleetManager(missile.getOwner()).setSuppressDeploymentMessages(false);
         
         
         /*
