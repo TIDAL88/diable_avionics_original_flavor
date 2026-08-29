@@ -7,16 +7,17 @@ import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipAPI.HullSize;
 import com.fs.starfarer.api.combat.ShipHullSpecAPI;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
-
-import static data.scripts.util.Diableavionics_stringsManager.txt;
-
+import data.scripts.util.MiscUtilsKt;
 import org.magiclib.util.MagicIncompatibleHullmods;
 
 import java.awt.Color;
 import java.util.*;
+
+import static data.scripts.util.Diableavionics_stringsManager.txt;
 
 public class DiableAvionicsVirtuous_system extends BaseHullMod {
     private final Set<String> BLOCKED_HULLMODS = new HashSet<>();
@@ -80,6 +81,9 @@ public class DiableAvionicsVirtuous_system extends BaseHullMod {
 
     @Override
     public void applyEffectsBeforeShipCreation(HullSize hullSize, MutableShipStatsAPI stats, String id) {
+        boolean needSync = false;
+        boolean rebuild = false;
+
         if (stats.getFleetMember() != null
                 && stats.getFleetMember().getFleetData() != null
                 && stats.getFleetMember().getFleetData().getFleet() != null
@@ -111,15 +115,28 @@ public class DiableAvionicsVirtuous_system extends BaseHullMod {
         }
 
         //swap the source variant and add the proper hullmod
-        if (switchSystem && stats.getEntity() != null && ((ShipAPI) stats.getEntity()).getHullSpec() != null) {
-            int switchToIndex = SWITCH_SYSTEM_TO.get(((ShipAPI) stats.getEntity()).getHullSpec().getShipSystemId());
+        if (switchSystem && stats.getVariant() != null) {
+            String systemId = stats.getVariant().getHullSpec().getShipSystemId();
+            Integer switchToIndex = SWITCH_SYSTEM_TO.get(systemId);
+            if (switchToIndex == null) switchToIndex = 0;
             String switchTo = SWITCH_HULLSPECS.get(switchToIndex);
 
-            ShipHullSpecAPI ship = Global.getSettings().getHullSpec(switchTo);
-            ((ShipAPI) stats.getEntity()).getVariant().setHullSpecAPI(ship);
-
-            //add the proper hullmod
+            // 1. Add the hullmod FIRST so any recursive updateStats() call from setVariant evaluates switchSystem = false and aborts
             stats.getVariant().addMod(switchTo);
+
+            // 2. Only swap hullspec and setVariant if the hullspec is actually changing
+            if (!switchTo.equals(stats.getVariant().getHullSpec().getHullId())) {
+                ShipHullSpecAPI ship = Global.getSettings().getHullSpec(switchTo);
+                stats.getVariant().setHullSpecAPI(ship);
+
+                FleetMemberAPI member = stats.getFleetMember();
+                if (member != null && member.getVariant() != null) {
+                    member.getVariant().setHullSpecAPI(ship);
+                    member.setVariant(stats.getVariant(), false, true);
+                }
+                needSync = true;
+                rebuild = true; // Hullspec changed, set rebuild flag for syncVariant
+            }
         }
 
         //WEAPONS
@@ -155,6 +172,7 @@ public class DiableAvionicsVirtuous_system extends BaseHullMod {
             stats.getVariant().clearSlot(leftslotID);
             stats.getVariant().addWeapon(leftslotID, switchWeaponTo);
             stats.getVariant().autoGenerateWeaponGroups();
+            needSync = true;
         }
 
         //remove the weapons to change and swap the hullmod for the next fire mode
@@ -174,6 +192,7 @@ public class DiableAvionicsVirtuous_system extends BaseHullMod {
             stats.getVariant().clearSlot(rightslotID);
             stats.getVariant().addWeapon(rightslotID, switchWeaponTo);
             stats.getVariant().autoGenerateWeaponGroups();
+            needSync = true;
         }
 
         //trigger a head switch if none of the selector hullmods are present
@@ -187,7 +206,6 @@ public class DiableAvionicsVirtuous_system extends BaseHullMod {
 
         //remove the weapons to change and swap the hullmod for the next fire mode
         if (switchHead) {
-
             int switchHeadTo = 0;
             if (stats.getVariant().getWeaponId(headslotID) != null) {
                 switchHeadTo = SWITCH_HEAD_TO.get(stats.getVariant().getWeaponId(headslotID));
@@ -199,11 +217,17 @@ public class DiableAvionicsVirtuous_system extends BaseHullMod {
             //clear the weapons to replace
             stats.getVariant().clearSlot(headslotID);
 
-            //select and place the proper weapon 
+            //select and place the proper weapon
             String toInstallHead = SWITCH_HEAD.get(switchHeadTo);
             stats.getVariant().addWeapon(headslotID, toInstallHead);
 
             stats.getVariant().autoGenerateWeaponGroups();
+            needSync = true;
+        }
+
+        if (needSync) {
+            FleetMemberAPI member = stats.getFleetMember();
+            MiscUtilsKt.syncVariant(member, rebuild);
         }
     }
 
@@ -220,10 +244,10 @@ public class DiableAvionicsVirtuous_system extends BaseHullMod {
         if (ship.getOriginalOwner() < 0) {
             //undo fix for weapons put in cargo
             if (Global.getSector() != null &&
-                            Global.getSector().getPlayerFleet() != null &&
-                            Global.getSector().getPlayerFleet().getCargo() != null &&
-                            Global.getSector().getPlayerFleet().getCargo().getStacksCopy() != null &&
-                            !Global.getSector().getPlayerFleet().getCargo().getStacksCopy().isEmpty()) {
+                    Global.getSector().getPlayerFleet() != null &&
+                    Global.getSector().getPlayerFleet().getCargo() != null &&
+                    Global.getSector().getPlayerFleet().getCargo().getStacksCopy() != null &&
+                    !Global.getSector().getPlayerFleet().getCargo().getStacksCopy().isEmpty()) {
 
                 for (CargoStackAPI s : Global.getSector().getPlayerFleet().getCargo().getStacksCopy()) {
                     if (s.isWeaponStack() && s.getWeaponSpecIfWeapon().getWeaponId().startsWith("diableavionics_virtuous")) {
