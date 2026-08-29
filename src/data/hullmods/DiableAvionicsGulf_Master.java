@@ -1,14 +1,12 @@
 package data.hullmods;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.combat.BaseHullMod;
-import com.fs.starfarer.api.combat.MutableShipStatsAPI;
+import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.combat.ShipAPI.HullSize;
-import com.fs.starfarer.api.combat.ShipHullSpecAPI;
-import com.fs.starfarer.api.combat.ShipVariantAPI;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.loading.WeaponGroupSpec;
 import com.fs.starfarer.api.loading.WeaponGroupType;
-
+import data.scripts.util.MiscUtilsKt;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,27 +21,31 @@ public class DiableAvionicsGulf_Master extends BaseHullMod {
     private static final String WANZER_DISRUPTION = "diableavionics_subsystem_wanzerdisruption";
     @Override
     public void applyEffectsBeforeShipCreation(HullSize hullSize, MutableShipStatsAPI stats, String id) {
-        ShipVariantAPI variant = null;
-        if (stats.getFleetMember() != null) {
-            variant = stats.getFleetMember().getVariant();
-        } else {
-            variant = stats.getVariant();
-        }
+        ShipVariantAPI variant;
+        variant=stats.getVariant();
+        boolean needSync = false;
         if (variant == null) return;
 
         boolean hasHullmod = variant.getHullMods().contains(TOGGLE_HULLMOD);
 
         if (hasHullmod) {
+            ShipHullSpecAPI specialSpec = Global.getSettings().getHullSpec(SPECIAL_SKIN);
+            if ((!SPECIAL_SKIN.equals(variant.getHullSpec().getHullId()))){
+                FleetMemberAPI member=stats.getFleetMember();
+                if (member !=null){
+                    member.getVariant().setHullSpecAPI(specialSpec);
+                    if (member.getVariant()!=null){
+                        member.setVariant(variant,false,true);
+                    }
+                }
+                needSync=true;
+            }
             String installedWeapon = variant.getWeaponId(LARGE_SLOT);
             boolean needsCatapult = !CUSTOM_WEAPON.equals(installedWeapon);
             List<WeaponGroupSpec> weaponGroups = needsCatapult ? copyWeaponGroups(variant) : null;
-            boolean largeSlotWasGrouped = needsCatapult && isSlotGrouped(weaponGroups, LARGE_SLOT);
-
-            ShipHullSpecAPI specialSpec = Global.getSettings().getHullSpec(SPECIAL_SKIN);
-            variant.setHullSpecAPI(specialSpec);
+            boolean largeSlotWasGrouped = needsCatapult && isSlotGrouped(weaponGroups);
             variant.removeMod(WANZER_GANTRY);
             variant.removePermaMod(WANZER_GANTRY);
-
             if (needsCatapult) {
                 if (installedWeapon != null) {
                     variant.clearSlot(LARGE_SLOT);
@@ -60,9 +62,18 @@ public class DiableAvionicsGulf_Master extends BaseHullMod {
                 }
             }
         } else {
-
             ShipHullSpecAPI baseSpec = Global.getSettings().getHullSpec(BASE_HULL);
-            variant.setHullSpecAPI(baseSpec);
+            if ((!BASE_HULL.equals(variant.getHullSpec().getHullId()))){
+                variant.setHullSpecAPI(baseSpec);
+                FleetMemberAPI member=stats.getFleetMember();
+                if (member !=null){
+                    member.getVariant().setHullSpecAPI(baseSpec);
+                    if (member.getVariant()!=null){
+                        member.setVariant(variant,false,true);
+                    }
+                }
+                needSync=true;
+            }
             variant.removeMod(WANZER_DISRUPTION);
             variant.removePermaMod(WANZER_DISRUPTION);
             if (CUSTOM_WEAPON.equals(variant.getWeaponId(LARGE_SLOT))) {
@@ -71,13 +82,17 @@ public class DiableAvionicsGulf_Master extends BaseHullMod {
                     Global.getSector().getPlayerFleet().getCargo().removeWeapons(CUSTOM_WEAPON, 1);
                 }
             }
-
-
             if (Global.getSector() != null && Global.getSector().getPlayerFleet() != null) {
                 Global.getSector().getPlayerFleet().getCargo().removeWeapons(CUSTOM_WEAPON, 1);
             }
         }
+        if(needSync) {
+            needSync = false;
+            FleetMemberAPI member = stats.getFleetMember();
+            MiscUtilsKt.syncVariant(member,true);
+        }
     }
+
 
     private void refundWeaponToCargo(String weaponId) {
         if (Global.getSector() != null && Global.getSector().getPlayerFleet() != null) {
@@ -93,9 +108,9 @@ public class DiableAvionicsGulf_Master extends BaseHullMod {
         return copy;
     }
 
-    private boolean isSlotGrouped(List<WeaponGroupSpec> groups, String slotId) {
+    private boolean isSlotGrouped(List<WeaponGroupSpec> groups) {
         for (WeaponGroupSpec group : groups) {
-            if (group.getSlots().contains(slotId)) return true;
+            if (group.getSlots().contains(DiableAvionicsGulf_Master.LARGE_SLOT)) return true;
         }
         return false;
     }
