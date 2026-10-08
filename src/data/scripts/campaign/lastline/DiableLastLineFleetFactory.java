@@ -190,7 +190,7 @@ public final class DiableLastLineFleetFactory {
                 target,
                 Float.MAX_VALUE
         );
-        applySecondInCommandLoadout(fleet);
+        if(Global.getSettings().getModManager().isModEnabled("second_in_command")) applySecondInCommandLoadout(fleet);
         fleet.forceSync();
         return fleet;
     }
