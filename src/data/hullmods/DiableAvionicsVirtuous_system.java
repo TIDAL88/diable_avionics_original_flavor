@@ -128,14 +128,11 @@ public class DiableAvionicsVirtuous_system extends BaseHullMod {
             if (!switchTo.equals(stats.getVariant().getHullSpec().getHullId())) {
                 ShipHullSpecAPI ship = Global.getSettings().getHullSpec(switchTo);
                 stats.getVariant().setHullSpecAPI(ship);
-
                 FleetMemberAPI member = stats.getFleetMember();
                 if (member != null && member.getVariant() != null) {
                     member.getVariant().setHullSpecAPI(ship);
                     member.setVariant(stats.getVariant(), false, true);
                 }
-                needSync = true;
-                rebuild = true; // Hullspec changed, set rebuild flag for syncVariant
             }
         }
 
