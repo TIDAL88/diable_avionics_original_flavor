@@ -3,6 +3,7 @@ package data.campaign.rulecmd;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
+import com.fs.starfarer.api.campaign.InteractionDialogPlugin;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.combat.BattleCreationContext;
 import com.fs.starfarer.api.fleet.FleetGoal;
@@ -10,16 +11,32 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
 import com.fs.starfarer.api.util.Misc;
 import data.campaign.DASubject71BattleCreationPlugin;
+import data.campaign.DAVirtuousFleetInteractionDialogPluginImpl;
+import data.campaign.DANexVirtuousFleetInteractionDialogPluginImpl;
 
 import java.util.List;
 import java.util.Map;
 
 public class DASubject71_BattleSim extends BaseCommandPlugin {
     private static final float MAX_COMBAT_DP = 240f;
-    private static final String SIMULATION_RUNNING_KEY = "$simulationRunning";
 
     @Override
     public boolean execute(String ruleId, InteractionDialogAPI dialog, List<Misc.Token> params, Map<String, MemoryAPI> memoryMap) {
+        InteractionDialogPlugin plugin = dialog.getPlugin();
+        boolean hasResetHandler = plugin instanceof DAVirtuousFleetInteractionDialogPluginImpl
+                || (Global.getSettings().getModManager().isModEnabled("nexerelin")
+                    && plugin instanceof DANexVirtuousFleetInteractionDialogPluginImpl);
+        if (!hasResetHandler) {
+            Global.getLogger(DASubject71_BattleSim.class).warn(
+                    "Refusing Last Line simulation without a reset handler: "
+                            + (plugin == null ? "null" : plugin.getClass().getName())
+            );
+            dialog.getTextPanel().addPara(
+                    "Simulation access denied: simulation controller unavailable. Close the comm link and try again.",
+                    Misc.getNegativeHighlightColor()
+            );
+            return false;
+        }
         CampaignFleetAPI playerFleet = Global.getSector().getPlayerFleet();
         CampaignFleetAPI targetFleet = (CampaignFleetAPI) dialog.getInteractionTarget();
         float combatDp = getCombatDp(playerFleet);
@@ -38,7 +55,6 @@ public class DASubject71_BattleSim extends BaseCommandPlugin {
             return false;
         }
 
-        targetFleet.getMemoryWithoutUpdate().set(SIMULATION_RUNNING_KEY, true);
         String combatDpSummary = formatDp(combatDp) + "/" + formatDp(MAX_COMBAT_DP) + " DP";
         dialog.getTextPanel().addPara(
                 "Entering simulation... Combat fleet strength: " + combatDpSummary + ".",
@@ -55,7 +71,7 @@ public class DASubject71_BattleSim extends BaseCommandPlugin {
         try {
             dialog.startBattle(bcc);
         } catch (RuntimeException ex) {
-            targetFleet.getMemoryWithoutUpdate().unset(SIMULATION_RUNNING_KEY);
+            targetFleet.getMemoryWithoutUpdate().unset(DASubject71BattleCreationPlugin.SIMULATION_RUNNING_KEY);
             DASubject71BattleCreationPlugin.restoreSimulationBackground();
             throw ex;
         }

@@ -7,11 +7,14 @@ Bugfixing
 * Fixed a very rare bug that could reset faction reputation when loading a campaign.
 * Fixed some console command bugs.
 * Corrected a typo in the State support beam's description.
+* Prevented the Gulf from appearing in ship dealers, it is a unique ship.
+* Fixed a SIC related Last Line bug.
+* Fixed The Last Line simulator not functioning properly after a duel.
+
 
 Unique Ships & Refit
 * Virtuous weapon, head, and ship-system selections now update immediately in the refit screen without requiring the player to switch ships and return.
 * The Gulf's Deep Strike Conversion now updates its hull and weapon configuration immediately in the refit screen.
-* Prevented the Gulf from appearing in ship dealers, it is a unique ship.
 
 Wanzers & Strike-crafts Descriptions
 * Added missing descriptions and tactical role labels for all currently used Wanzer weapon systems with a few hidden hints.

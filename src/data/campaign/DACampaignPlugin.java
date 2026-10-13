@@ -27,12 +27,13 @@ public class DACampaignPlugin extends BaseCampaignPlugin {
                 );
             }
 
-            boolean isNormalLastLineEncounter =
+            boolean isLastLineEncounter =
                     hasMemoryInFleet(fleet, "$virtuous")
-                    && fleet.getMemoryWithoutUpdate().contains(
+                    && (DASubject71BattleCreationPlugin.isSimulationBattleActive(fleet)
+                        || fleet.getMemoryWithoutUpdate().contains(
                             DiableLastLineFleetFactory.FLEET_VERSION_MEMKEY
-                    );
-            if (isNormalLastLineEncounter) {
+                    ));
+            if (isLastLineEncounter) {
                 return new PluginPick<BattleCreationPlugin>(
                         new DASubject71BattleCreationPlugin(),
                         PickPriority.HIGHEST
@@ -56,10 +57,13 @@ public class DACampaignPlugin extends BaseCampaignPlugin {
                 DiableLastLineFleetFactory.GUARDIAN_FLEET_MEMKEY
         );
         if (isLastLineInteraction) {
+            // MagicLib's bounty dialog also uses MOD_SPECIFIC and has no
+            // simulation reset callback. Last Line must own this dialog even
+            // while a bounty is tracking its flagship.
             if (Global.getSettings().getModManager().isModEnabled("nexerelin")) {
-                return new PluginPick<InteractionDialogPlugin>(new DANexVirtuousFleetInteractionDialogPluginImpl(), PickPriority.MOD_SPECIFIC);
+                return new PluginPick<InteractionDialogPlugin>(new DANexVirtuousFleetInteractionDialogPluginImpl(), PickPriority.HIGHEST);
             } else {
-                return new PluginPick<InteractionDialogPlugin>(new DAVirtuousFleetInteractionDialogPluginImpl(), PickPriority.MOD_SPECIFIC);
+                return new PluginPick<InteractionDialogPlugin>(new DAVirtuousFleetInteractionDialogPluginImpl(), PickPriority.HIGHEST);
 
             }
         }

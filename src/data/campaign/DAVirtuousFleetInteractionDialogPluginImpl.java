@@ -32,8 +32,7 @@ public class DAVirtuousFleetInteractionDialogPluginImpl extends FleetInteraction
 
     @Override
     public void backFromEngagement(EngagementResultAPI result) {
-        if (DACampaignPlugin.hasMemoryInFleet(otherFleet, "$virtuous")
-                && DASubject71BattleCreationPlugin.isSimulationBattleActive()) {
+        if (DASubject71BattleCreationPlugin.isSimulationBattleActive(otherFleet)) {
             DASubject71BattleCreationPlugin.restoreSimulationBackground();
             restoreOrigCaptains();
             if (origFlagship != null) {
