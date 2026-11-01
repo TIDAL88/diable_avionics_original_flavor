@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * Leashes the Last Line Virtuous to a deployed Coanda, falling back to a Gust,
- * for the opening of combat, then holds it on Search and Destroy. The timer
+ * for the opening of combat
  * begins with the first enemy deployment and advances only while combat is
  * unpaused.
  */
