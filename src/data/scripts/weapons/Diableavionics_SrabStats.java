@@ -2,16 +2,19 @@ package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.MissileAPI;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
+import com.fs.starfarer.api.combat.MutableStat;
+import com.fs.starfarer.api.combat.MutableStat.StatMod;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.StatBonus;
 import com.fs.starfarer.api.combat.WeaponAPI;
 import com.fs.starfarer.api.combat.listeners.CombatListenerUtil;
 import com.fs.starfarer.api.combat.listeners.WeaponRangeModifier;
 import com.fs.starfarer.api.loading.MissileSpecAPI;
+import com.fs.starfarer.api.impl.campaign.ids.HullMods;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.combat.entities.Missile;
 
-/** Keeps the SRAB's missile projectile independent of missile stat modifiers. */
+/** Blocks missile stat bonuses on SRAB except ECCM maneuverability and flare resistance. */
 public final class Diableavionics_SrabStats implements WeaponRangeModifier {
     private static final String WEAPON_ID = "diableavionics_srab";
 
@@ -25,10 +28,10 @@ public final class Diableavionics_SrabStats implements WeaponRangeModifier {
     public static void normalizeProjectile(MissileAPI missile) {
         MutableShipStatsAPI engines = missile.getEngineStats();
         engines.getMaxSpeed().unmodify();
-        engines.getAcceleration().unmodify();
-        engines.getDeceleration().unmodify();
-        engines.getMaxTurnRate().unmodify();
-        engines.getTurnAcceleration().unmodify();
+        retainEccmModifier(engines.getAcceleration());
+        retainEccmModifier(engines.getDeceleration());
+        retainEccmModifier(engines.getMaxTurnRate());
+        retainEccmModifier(engines.getTurnAcceleration());
         missile.updateMaxSpeed();
 
         float hitpoints = missile.getSpec().getHullSpec().getHitpoints();
@@ -59,6 +62,18 @@ public final class Diableavionics_SrabStats implements WeaponRangeModifier {
         }
         // Guidance and ECCM chance are deliberately untouched: flares still work
         // normally, including ECCM's protection against distraction.
+    }
+
+    private static void retainEccmModifier(MutableStat stat) {
+        // Preserve the actual hullmod modifiers rather than duplicating ECCM's
+        // tuning values. This only changes this projectile's engine stats.
+        StatMod flat = stat.getFlatStatMod(HullMods.ECCM);
+        StatMod percent = stat.getPercentStatMod(HullMods.ECCM);
+        StatMod mult = stat.getMultStatMod(HullMods.ECCM);
+        stat.unmodify();
+        if (flat != null) stat.modifyFlat(HullMods.ECCM, flat.getValue(), flat.getDesc());
+        if (percent != null) stat.modifyPercent(HullMods.ECCM, percent.getValue(), percent.getDesc());
+        if (mult != null) stat.modifyMult(HullMods.ECCM, mult.getValue(), mult.getDesc());
     }
 
     private static float otherRangeMult(ShipAPI ship, WeaponAPI weapon) {
@@ -94,7 +109,7 @@ public final class Diableavionics_SrabStats implements WeaponRangeModifier {
 
         // The engine multiplies missile-launcher range by missile speed even for
         // ENERGY weapons. Cancel only that factor, preserving energy range mods
-        // and the range threshold used by hullmods such as ITC.
+        // and the range threshold used by hullmods such as ITU.
         StatBonus range = ship.getMutableStats().getEnergyWeaponRangeBonus();
         float base = Misc.getAdjustedBaseRange(weapon.getSpec().getMaxRange(), ship, weapon);
         float percent = range.getPercentMod()

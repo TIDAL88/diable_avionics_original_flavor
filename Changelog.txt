@@ -4,6 +4,7 @@ VERSION: Version 3.0.7 - WIP
 ===============================================================================
 
 Bugfixing
+* Restored the Hayle's Light Flicker Core from two charges to four, as stated in its tooltip.
 * Fixed a very rare bug that could reset faction reputation when loading a campaign.
 * Fixed some console command bugs.
 * Corrected a typo in the State support beam's description.
@@ -18,11 +19,13 @@ Unique Ships & Refit
 
 Ships
 * Versant: Switched combat damage marks and their glow to the Wanzer decal textures.
-* Coanda: Changed one small universal turret mount to hybrid (ballistic/energy).
+* Coanda: Changed one small forward facing universal turret mount to hybrid, it was mistakenly labeled as universal, typo.
 
 Weapons
+* Virtuous - Snowblast Shotgun: Reduced base range from 700 to 650.
+* Virtuous - Grasshopper Grenade Launcher: reduced ammo capacity from 12 to 10, ammo regeneration from 0.65 to 0.5/sec, and reload batch from 6 to 5 rounds.
 * SRAB: Increased base range from 800 to 900.
-* SRAB: Remains an energy weapon; its projectile no longer gains missile hitpoint or movement bonuses. ECCM flare resistance and normal energy-weapon bonuses still apply.
+* SRAB: Projectiles are no longer affected by Missile Specialization. ECCM retains its projectile maneuverability and flare-resistance bonuses, but no longer increases speed or range. Normal energy-weapon bonuses still apply.
 * SRAB: Projectiles now collide with friendly ships instead of passing through them.
 
 Wanzers & Strike-crafts Descriptions
