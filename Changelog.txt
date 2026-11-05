@@ -4,6 +4,7 @@ VERSION: Version 3.0.7 - WIP
 ===============================================================================
 
 Bugfixing
+* Hexafire and Twin-Hexafire: Flux damage bonuses and projectile speed variation now apply once per pellet when fired, preventing repeated damage multiplication near the muzzle.
 * Restored the Hayle's Light Flicker Core from two charges to four, as stated in its tooltip.
 * Fixed a very rare bug that could reset faction reputation when loading a campaign.
 * Fixed some console command bugs.
