@@ -4,7 +4,8 @@ VERSION: Version 3.0.7 - WIP
 ===============================================================================
 
 Bugfixing and QOL
-* Added a suspicious IBB agent's bar dialogue on Diable worlds, with a level 6, 1 SP contract option prepared for Gulf bounty integration. The contract option remains disabled pending integration.
+* Added a suspicious IBB agent with a 30% discovery chance per Diable market and month from level 5, independent of the weighted bar-event pool. Once approached, he stays at that market. Captains can spend 1 SP to access the Gulf's existing IBB bounty directly, with no further level or commission requirement. The agent disappears once the contract is active, completed, or the Gulf has been acquired.
+* The Gulf agent's 1 SP access fee is paid once per campaign. Returning to the briefing after declining the bounty is free.
 * Assume Wing Control: T no longer also activates the target-view shortcut while piloting a Wanzer.
 * Assume Wing Control: Left Alt enters a Wanzer from the carrier and returns to the carrier while piloting a Wanzer. T switches between Wanzers; normal Neural Link remains available on the carrier if specced.
 * Assume Wing Control: Fixed an intermittent blue HUD and unresponsive controls when a player-piloted Wanzer is destroyed or removed from combat. Control returns to the carrier, or the command shuttle if the carrier is lost.

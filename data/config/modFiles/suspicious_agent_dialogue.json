@@ -4,12 +4,14 @@
     "opening": [
         "He shifts his TriPad aside as you approach. Beneath it, you catch a glimpse of an old access card with the photograph scratched away. \"Captain. Have a seat.\"",
         "The man turns back his lapel just far enough to show you an IBB pin. \"Board business. I have a contract concerning the Admiralty. You won't find much about it in the public records, but that's hardly unusual around here.\"",
-        "\"The engineers wanted to take the ship apart. The admirals wanted to keep it. Neither got quite what they wanted.\" He smiles briefly, then checks the entrance. \"Its present captain has made herself everybody's problem. There are credits in solving it, if you're prepared to hear the particulars.\""
+        "\"The engineers wanted to take the ship apart. The admirals wanted to keep it. Neither got quite what they wanted.\" He smiles briefly, then checks the entrance. \"Its present captain has made herself everybody's problem. There are credits in solving it, if you're prepared to hear the particulars.\"",
+        "\"I'll be on this station for the time being... Do me a favor and don't take too long, all right? I'd rather not spend another night here.\""
     ],
-    "contractOption": "\"Let's hear about this contract.\" (Requires level %s)",
+    "contractOption": "\"Let's hear about this contract.\"",
     "leaveOption": "Excuse yourself and leave",
-    "levelRequirement": "Requires level %s. The agent is looking for a more experienced captain.",
     "contractUnavailable": "The agent keeps the contract sealed for now.",
-    "confirmationDescription": "Convince the agent to share the restricted IBB contract. You can decide whether to accept the bounty after hearing the briefing.",
+    "accessAlreadyPaid": "You have already unlocked this briefing. No story point is required.",
+    "bountyUnavailable": "The agent checks his TriPad, then closes the file. \"This contract is no longer available, Captain.\"",
+    "confirmationDescription": "Convince the agent to share the restricted IBB contract. You can decide whether to accept the bounty after hearing the briefing. Access remains free on future visits.",
     "storyPointLog": "Persuaded an IBB agent to share a restricted Diable contract"
 }
