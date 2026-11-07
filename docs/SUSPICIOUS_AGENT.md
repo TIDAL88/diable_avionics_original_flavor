@@ -1,43 +1,45 @@
-# Suspicious Diable bar agent
+# Gulf bounty bar contact
 
-Dialogue: `data/config/modFiles/suspicious_agent_dialogue.json`.
+Players normally have to wait for the Gulf bounty to come up through SWP's IBB
+agents. That can take a while, and those agents don't normally appear in Diable
+bars. This character gives players a way to ask for that specific bounty.
 
-Event: `src/data/scripts/campaign/bar/DASuspiciousAgentBarEvent.java`.
+He appears in every Diable-owned bar. The player talks to him, then spends 1 SP
+on "Let's hear about this contract." That option requires level 6, with no
+commission requirement. It should open SWP's existing Gulf briefing, where the
+player can accept or decline the bounty. The SP pays for access to the briefing,
+so declining afterwards does not refund it.
 
-`DAModPlugin.onGameLoad()` registers one persistent event in `PortsideBarData`.
-It is available at every Diable-owned bar, including below level 6, and does not
-use a random event creator or a global encounter cooldown. The same male agent
-and portrait persist across markets and save/load. The portrait is a vanilla
-asset and can be replaced in `getPersonPortrait()`.
+The character, opening dialogue, level requirement, and SP confirmation are done.
+The connection to SWP still needs writing. For now, the contract option is greyed
+out so it cannot charge the player for an unfinished action.
 
-The opening leads to a story option requiring level 6 and 1 SP, with no commission
-or reputation requirement. The native story-option confirmation handles spending
-and grants 100% bonus XP, matching SWP's alternate-bounty option. Leaving or
-cancelling the confirmation spends nothing.
+The awkward part is selecting the Gulf: `SWP_IBBIntel.init()` chooses a bounty
+itself and has no argument for requesting a particular one. The connection needs
+to select `FamousBountyStage.STAGE_GULF` and initialize that mission correctly.
+SWP already has the briefing, acceptance/refusal dialogue, fleet, and rewards.
 
-## TIDAL's integration points
+Both ways of getting the bounty need to use SWP's progress tracking. If the player
+accepts it from either agent, the other must stop offering it. Check old bar offers
+too, so returning to an earlier conversation cannot create a second Gulf fleet.
+Hide this character when IBB is disabled, the bounty is active or completed, or
+the player has already acquired the Gulf. Until the player accepts, the normal
+IBB route can still offer it.
 
-All IBB logic is deliberately absent. There is no SWP or PatchLib dependency,
-reflection, mission creation, tracker mutation, or replacement Gulf encounter.
+The methods left for this work are in
+`src/data/scripts/campaign/bar/DASuspiciousAgentBarEvent.java`:
 
-- `shouldShowAgent()` currently returns `true`. Add the checks for IBB being
-  enabled, the Gulf contract's state, and any other desired appearance conditions.
-- `isBountyAvailable()` currently returns `false`. Fill this in when the handoff
-  is implemented. The paid option stays greyed out until then, preventing SP
-  spending on an empty action. The level and SP checks are already wired.
-- `showGulfBounty()` is the empty handoff, called once per conversation after the
-  story-point confirmation. Use the inherited `dialog`, `memoryMap`, `market`, and
-  `person` fields to enter SWP's Gulf offer. A leave option is supplied as a
-  fallback; replace the options when presenting the briefing. Do not charge SP
-  again. Eligibility is rechecked at confirmation; the remaining SP balance is
-  not, because the native UI may already have deducted the cost.
+- `shouldShowAgent()`: decide whether the character should appear. Currently
+  always returns `true`.
+- `isBountyAvailable()`: decide whether to enable the contract option. Currently
+  always returns `false`.
+- `showGulfBounty()`: open SWP's Gulf briefing. Currently empty. The SP confirmation
+  calls this method; payment is already handled. `dialog`, `memoryMap`, `market`,
+  and `person` are available in the class.
 
-The briefing, acceptance, refusal, rewards, and completion belong to SWP:
+The SWP classes to look at are `data.scripts.campaign.intel.SWP_IBBIntel`,
+`data.scripts.campaign.intel.SWP_IBBTracker`, and
+`data.scripts.campaign.intel.bar.events.SWP_IBBBarEvent`.
 
-- `data.scripts.campaign.intel.SWP_IBBIntel`
-- `SWP_IBBIntel.FamousBountyStage.STAGE_GULF`
-- `data.scripts.campaign.intel.SWP_IBBTracker`
-- `data.scripts.campaign.intel.bar.events.SWP_IBBBarEvent`
-
-Outstanding offers and preventing duplicate acceptance through the two routes
-are part of that integration. No bounty eligibility is assumed by this scaffold.
+The dialogue is in `data/config/modFiles/suspicious_agent_dialogue.json`.
+Registration is already in `DAModPlugin.onGameLoad()`.
