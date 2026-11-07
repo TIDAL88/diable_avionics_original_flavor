@@ -1,4 +1,7 @@
 {
+  "bonusXP": {
+    "da_suspicious_agent_contract": 1
+  },
   "ruleCommandPackages":[
     "data.campaign.rulecmd"
   ],

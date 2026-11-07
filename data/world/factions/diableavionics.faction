@@ -225,6 +225,10 @@
         ],
     },
 
+    "weaponSellFrequency":{
+        "diableavionics_micromissile":3,
+    },
+
     "knownWeapons":{
         "tags":[
             #"base_bp",

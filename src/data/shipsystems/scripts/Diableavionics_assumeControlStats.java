@@ -4,14 +4,17 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.combat.WeaponAPI.WeaponType;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
+import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.plugins.ShipSystemStatsScript;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
+import com.fs.starfarer.combat.CombatEngine;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
 import org.lazywizard.lazylib.combat.AIUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 import org.magiclib.subsystems.MagicSubsystem;
@@ -45,6 +48,8 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
             "diableavionics_assumeControl_player_handling";
     private static final String WANZER_TAG = "wanzer";
     public static final String SYSTEM_ID = "diableavionics_assumeControl";
+    private static final String PLAYER_CONTROL_KEY = SYSTEM_ID + "_player_control";
+    private static final String TIME_FLOW_KEY = SYSTEM_ID + "_time_flow";
 
     @Override
     public void apply(MutableShipStatsAPI stats, String id, ShipSystemStatsScript.State state, float effectLevel) {
@@ -251,17 +256,41 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
     }
 
     private void switchToCarrier(ShipAPI carrier, ShipAPI fighter) {
-        Global.getCombatEngine().addPlugin(new GradualTimeFlowScript(carrier, fighter, SYSTEM_ID, 0.25f, 1f, 0.5f));
-        Global.getCombatEngine().setPlayerShipExternal(carrier);
+        CombatEngineAPI engine = Global.getCombatEngine();
+        if (engine.getPlayerShip() != fighter) return;
 
-        MagicSubsystemsManager.removeSubsystemFromShip(fighter, ControlCarrierSwitch.class);
-        MagicSubsystemsManager.removeSubsystemFromShip(fighter, ControlFighterSwitch.class);
+        //return to the command shuttle if the carrier is lost
+        //use the engine's shuttle, setPlayerShipExternal doesn't accept null
+        ShipAPI destination = isCarrierAvailable(engine, carrier, fighter.getOriginalOwner())
+                ? carrier : ((CombatEngine) engine).getFakePlayerShip();
+        stopPlayerControl(engine);
+        //restore the neural link after leaving the fighter
+        //otherwise vanilla forgets the pair and asks for a physical transfer
+        if (destination == carrier && carrier.getMutableStats().getDynamic()
+                .getMod(Stats.HAS_NEURAL_LINK).computeEffective(0f) > 0f) {
+            engine.setShipPlayerLastTransferredCommandTo(carrier);
+        }
+        engine.setPlayerShipExternal(destination);
+        startTimeFlow(engine, destination, 1f);
 
-        Global.getCombatEngine().spawnEmpArcVisual(fighter.getLocation(), fighter, carrier.getLocation(), carrier, 3f, Color.RED, Color.WHITE);
+        if (destination == carrier) {
+            engine.spawnEmpArcVisual(fighter.getLocation(), fighter, carrier.getLocation(), carrier, 3f, Color.RED, Color.WHITE);
+        }
     }
 
     private void switchToFighter(ShipAPI carrier, ShipAPI oldFighter, ShipAPI fighter) {
-        Global.getCombatEngine().setPlayerShipExternal(fighter);
+        CombatEngineAPI engine = Global.getCombatEngine();
+        ShipAPI source = oldFighter == null ? carrier : oldFighter;
+        if (engine.getPlayerShip() != source
+                || !isCarrierAvailable(engine, carrier, source.getOriginalOwner())
+                || !fighter.isAlive() || !engine.isEntityInPlay(fighter)
+                || fighter.getOwner() != source.getOriginalOwner()) return;
+
+        stopPlayerControl(engine);
+        engine.setPlayerShipExternal(fighter);
+        PlayerWingControlRecovery recovery = new PlayerWingControlRecovery(engine, carrier, fighter);
+        engine.getCustomData().put(PLAYER_CONTROL_KEY, recovery);
+        engine.addPlugin(recovery);
 
         ControlFighterSwitch subsystem1 = new ControlFighterSwitch(fighter, carrier);
         ControlCarrierSwitch subsystem2 = new ControlCarrierSwitch(fighter, carrier);
@@ -271,14 +300,13 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
         subsystem2.setState(MagicSubsystem.State.COOLDOWN);
 
         if (oldFighter != null) {
-            Global.getCombatEngine().addPlugin(new GradualTimeFlowScript(fighter, oldFighter, SYSTEM_ID, 0.25f, 0.75f, 0.5f));
             Global.getCombatEngine().spawnEmpArcVisual(oldFighter.getLocation(), oldFighter, fighter.getLocation(), fighter, 3f, Color.RED, Color.WHITE);
             MagicSubsystemsManager.removeSubsystemFromShip(oldFighter, ControlFighterSwitch.class);
             MagicSubsystemsManager.removeSubsystemFromShip(oldFighter, ControlCarrierSwitch.class);
         } else {
-            Global.getCombatEngine().addPlugin(new GradualTimeFlowScript(fighter, carrier, SYSTEM_ID, 0.25f, 0.75f, 0.5f));
             Global.getCombatEngine().spawnEmpArcVisual(carrier.getLocation(), carrier, fighter.getLocation(), fighter, 3f, Color.RED, Color.WHITE);
         }
+        startTimeFlow(engine, fighter, 0.75f);
 
         ShipSystemAPI system = fighter.getSystem();
         if (system != null) {
@@ -292,29 +320,121 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
 
     }
 
-    private class GradualTimeFlowScript extends BaseEveryFrameCombatPlugin {
-        private final String id;
-        private final float startMult;
-        private final float endMult;
-        private final float startTime;
-        private float time;
-        private boolean inited = false;
-        private final ShipAPI ship;
-        private final ShipAPI fromShip;
-        private float distance = 0f;
+    private static boolean isCarrierAvailable(CombatEngineAPI engine, ShipAPI carrier, int owner) {
+        return carrier.isAlive() && engine.isEntityInPlay(carrier) && carrier.getOwner() == owner;
+    }
 
-        private GradualTimeFlowScript(ShipAPI ship, ShipAPI fromShip, String id, float startMult, float endMult, float time) {
-            this.ship = ship;
-            this.fromShip = fromShip;
-            this.id = id;
-            this.startMult = startMult;
-            this.endMult = endMult;
-            this.startTime = time;
-            this.time = time;
+    private void stopPlayerControl(CombatEngineAPI engine) {
+        Object recovery = engine.getCustomData().get(PLAYER_CONTROL_KEY);
+        if (recovery instanceof PlayerWingControlRecovery) {
+            ((PlayerWingControlRecovery) recovery).stop();
+        }
+    }
+
+    //keep checking after the fighter is destroyed
+    //removed fighters no longer get their subsystem updates
+    private class PlayerWingControlRecovery extends BaseEveryFrameCombatPlugin {
+        private final CombatEngineAPI engine;
+        private final ShipAPI carrier;
+        private final ShipAPI fighter;
+        private boolean stopped;
+
+        private PlayerWingControlRecovery(CombatEngineAPI engine, ShipAPI carrier, ShipAPI fighter) {
+            this.engine = engine;
+            this.carrier = carrier;
+            this.fighter = fighter;
+        }
+
+        @Override
+        public void processInputPreCoreControls(float amount, List<InputEventAPI> events) {
+            if (stopped || engine.getPlayerShip() != fighter || engine.isCombatOver()) return;
+            CombatUIAPI ui = engine.getCombatUI();
+            if (ui == null || ui.isAutopilotOn() || ui.isShowingCommandUI()
+                    || ui.isShowingDeploymentDialog() || engine.isUIShowingDialog()) return;
+
+            //reserve T before the target-view control sees it
+            //MagicLib still reads the physical key for wanzer switching
+            for (InputEventAPI event : events) {
+                if (!event.isConsumed() && event.isKeyboardEvent()
+                        && event.getEventValue() == Keyboard.KEY_T) {
+                    event.consume();
+                }
+            }
         }
 
         @Override
         public void advance(float amount, List<InputEventAPI> events) {
+            if (stopped) return;
+            if (engine.getPlayerShip() != fighter || engine.isCombatOver()) {
+                stop();
+                return;
+            }
+            if (engine.isPaused()) return;
+
+            ShipSystemAPI system = carrier.getSystem();
+            if (!fighter.isAlive() || !engine.isEntityInPlay(fighter)
+                    || fighter.getOwner() != fighter.getOriginalOwner()
+                    || !isCarrierAvailable(engine, carrier, fighter.getOriginalOwner())
+                    || system == null
+                    || system.getState() == ShipSystemAPI.SystemState.IDLE
+                    || system.getState() == ShipSystemAPI.SystemState.COOLDOWN) {
+                switchToCarrier(carrier, fighter);
+            }
+        }
+
+        private void stop() {
+            if (stopped) return;
+            stopped = true;
+            if (engine.getCustomData().get(PLAYER_CONTROL_KEY) == this) {
+                engine.getCustomData().remove(PLAYER_CONTROL_KEY);
+                cancelTimeFlow(engine);
+                engine.getTimeMult().unmodify(SYSTEM_ID);
+            }
+            removePlayerControlDamageReduction(fighter);
+            MagicSubsystemsManager.removeSubsystemFromShip(fighter, ControlCarrierSwitch.class);
+            MagicSubsystemsManager.removeSubsystemFromShip(fighter, ControlFighterSwitch.class);
+            engine.removePlugin(this);
+        }
+    }
+
+    private void cancelTimeFlow(CombatEngineAPI engine) {
+        Object transition = engine.getCustomData().remove(TIME_FLOW_KEY);
+        if (transition instanceof GradualTimeFlowScript) {
+            engine.removePlugin((GradualTimeFlowScript) transition);
+        }
+    }
+
+    private void startTimeFlow(CombatEngineAPI engine, ShipAPI ship, float endMult) {
+        cancelTimeFlow(engine);
+        GradualTimeFlowScript transition = new GradualTimeFlowScript(ship, endMult);
+        engine.getCustomData().put(TIME_FLOW_KEY, transition);
+        engine.addPlugin(transition);
+    }
+
+    private class GradualTimeFlowScript extends BaseEveryFrameCombatPlugin {
+        private final float startMult = 0.25f;
+        private final float endMult;
+        private final float startTime = 0.5f;
+        private float time = startTime;
+        private boolean inited = false;
+        private final ShipAPI ship;
+
+        private GradualTimeFlowScript(ShipAPI ship, float endMult) {
+            this.ship = ship;
+            this.endMult = endMult;
+        }
+
+        @Override
+        public void advance(float amount, List<InputEventAPI> events) {
+            CombatEngineAPI engine = Global.getCombatEngine();
+            //ignore an old transition still waiting to run this frame
+            if (engine.getCustomData().get(TIME_FLOW_KEY) != this) return;
+            if (engine.getPlayerShip() != ship || engine.isCombatOver()) {
+                cancelTimeFlow(engine);
+                engine.getTimeMult().unmodify(SYSTEM_ID);
+                return;
+            }
+            if (engine.isPaused()) return;
             if (!inited) {
                 inited = true;
                 ship.giveCommand(ShipCommand.SELECT_GROUP, null, 0);
@@ -323,33 +443,52 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
             time -= amount * Global.getCombatEngine().getTimeMult().getModifiedValue();
             if (time < 0) {
                 if (endMult == 1) {
-                    Global.getCombatEngine().getTimeMult().unmodify(id);
+                    engine.getTimeMult().unmodify(SYSTEM_ID);
                 } else {
-                    Global.getCombatEngine().getTimeMult().modifyMult(id, endMult);
+                    engine.getTimeMult().modifyMult(SYSTEM_ID, endMult);
                 }
-                Global.getCombatEngine().removePlugin(this);
+                engine.getCustomData().remove(TIME_FLOW_KEY);
+                engine.removePlugin(this);
             } else {
                 float newMult = endMult - (endMult - startMult) * (time / startTime);
-                Global.getCombatEngine().getTimeMult().modifyMult(id, newMult);
+                engine.getTimeMult().modifyMult(SYSTEM_ID, newMult);
             }
         }
     }
 
-    private class ControlFighterSwitch extends MagicSubsystem {
+    private abstract class PlayerControlSwitch extends MagicSubsystem {
+        private boolean keyHeld = true;
+
+        private PlayerControlSwitch(ShipAPI ship) {
+            super(ship);
+        }
+
+        @Override
+        public boolean isKeyDown() {
+            //wait for a fresh press after changing ships
+            boolean pressed = super.isKeyDown();
+            boolean activate = pressed && !keyHeld;
+            keyHeld = pressed;
+            return activate;
+        }
+    }
+
+    private class ControlFighterSwitch extends PlayerControlSwitch {
         private ShipAPI carrier;
         public ControlFighterSwitch(ShipAPI ship, ShipAPI carrier) {
             super(ship);
             this.carrier = carrier;
+            if (ship != carrier) setKey("T");
         }
 
         @Override
         public int getOrder() {
-            return ORDER_SHIP_UNIQUE;
+            return ship == carrier ? ORDER_SHIP_UNIQUE : ORDER_SHIP_MODULAR;
         }
 
         @Override
         public String getDisplayText() {
-            return txt("wanzerLinkSubsystemName");
+            return txt(ship == carrier ? "wanzerLinkSubsystemName" : "wanzerSwitchSubsystemName");
         }
 
         @Override
@@ -390,7 +529,7 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
         }
     }
 
-    private class ControlCarrierSwitch extends MagicSubsystem {
+    private class ControlCarrierSwitch extends PlayerControlSwitch {
         private ShipAPI carrier;
 
         public ControlCarrierSwitch(ShipAPI ship, ShipAPI carrier) {
@@ -398,10 +537,10 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
             this.carrier = carrier;
         }
 
-        //fighters don't usually have subsystems
+        //return to the carrier gets the first subsystem key
         @Override
         public int getOrder() {
-            return ORDER_SHIP_MODULAR;
+            return ORDER_SHIP_UNIQUE;
         }
 
         @Override
@@ -431,7 +570,7 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
 
         @Override
         public boolean canActivate() {
-            return true;
+            return Global.getCombatEngine().getPlayerShip() == ship;
         }
 
         @Override
@@ -439,16 +578,6 @@ public class Diableavionics_assumeControlStats extends BaseShipSystemScript {
             switchToCarrier(carrier, ship);
         }
 
-
-        @Override
-        public void advanceInternal(float amount) {
-            if (!ship.isAlive() || !carrier.isAlive()) {
-                switchToCarrier(carrier, ship);
-                return;
-            }
-
-            super.advanceInternal(amount);
-        }
 
         @Override
         public void advance(float amount, boolean isPaused) {

@@ -3,7 +3,12 @@ DATE: WIP
 VERSION: Version 3.0.7 - WIP
 ===============================================================================
 
-Bugfixing
+Bugfixing and QOL
+* Added a suspicious IBB agent's bar dialogue on Diable worlds, with a level 6, 1 SP contract option prepared for Gulf bounty integration. The contract option remains disabled pending integration.
+* Assume Wing Control: T no longer also activates the target-view shortcut while piloting a Wanzer.
+* Assume Wing Control: Left Alt enters a Wanzer from the carrier and returns to the carrier while piloting a Wanzer. T switches between Wanzers; normal Neural Link remains available on the carrier if specced.
+* Assume Wing Control: Fixed an intermittent blue HUD and unresponsive controls when a player-piloted Wanzer is destroyed or removed from combat. Control returns to the carrier, or the command shuttle if the carrier is lost.
+* Assume Wing Control: Returning from a Wanzer to a Neural Link carrier now allows linking back to the other ship with T, including when the carrier originally had no officer.
 * Hexafire and Twin-Hexafire: Flux damage bonuses and projectile speed variation now apply once per pellet when fired, preventing repeated damage multiplication near the muzzle.
 * Restored the Hayle's Light Flicker Core from two charges to four, as stated in its tooltip.
 * Fixed a very rare bug that could reset faction reputation when loading a campaign.
@@ -23,6 +28,7 @@ Ships
 * Coanda: Changed one small forward facing universal turret mount to hybrid, it was mistakenly labeled as universal, typo.
 
 Weapons
+* Micro Missile Launcher: Tripled its selection weight in Diable shop stock generation.
 * Virtuous - Snowblast Shotgun: Reduced base range from 700 to 650.
 * Virtuous - Grasshopper Grenade Launcher: reduced ammo capacity from 12 to 10, ammo regeneration from 0.65 to 0.5/sec, and reload batch from 6 to 5 rounds.
 * SRAB: Increased base range from 800 to 900.

@@ -1,0 +1,15 @@
+{
+    "barDescription": "A thin man in a worn civilian jacket sits alone with a clear view of the entrance. His knee works restlessly beneath the table. When a pair of Diable officers passes, he lowers his eyes to a TriPad that has gone dark.",
+    "approachOption": "Approach the suspicious, fidgety man",
+    "opening": [
+        "He shifts his TriPad aside as you approach. Beneath it, you catch a glimpse of an old access card with the photograph scratched away. \"Captain. Have a seat.\"",
+        "The man turns back his lapel just far enough to show you an IBB pin. \"Board business. I have a contract concerning the Admiralty. You won't find much about it in the public records, but that's hardly unusual around here.\"",
+        "\"The engineers wanted to take the ship apart. The admirals wanted to keep it. Neither got quite what they wanted.\" He smiles briefly, then checks the entrance. \"Its present captain has made herself everybody's problem. There are credits in solving it, if you're prepared to hear the particulars.\""
+    ],
+    "contractOption": "\"Let's hear about this contract.\" (Requires level %s)",
+    "leaveOption": "Excuse yourself and leave",
+    "levelRequirement": "Requires level %s. The agent is looking for a more experienced captain.",
+    "contractUnavailable": "The agent keeps the contract sealed for now.",
+    "confirmationDescription": "Convince the agent to share the restricted IBB contract. You can decide whether to accept the bounty after hearing the briefing.",
+    "storyPointLog": "Persuaded an IBB agent to share a restricted Diable contract"
+}

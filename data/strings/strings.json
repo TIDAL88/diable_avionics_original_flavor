@@ -138,6 +138,7 @@
 				"virtuousShip":"00000000",
 
 				"wanzerLinkSubsystemName": "Assume Wing Control",
+				"wanzerSwitchSubsystemName": "Switch Wanzer",
 				"wanzerLinkedSubsystemName": "Return Wing Control",
 
 				"wanzerBurstSubsystemName": "Tactical Disruptor"
