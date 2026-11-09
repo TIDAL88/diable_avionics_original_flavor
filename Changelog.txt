@@ -18,6 +18,7 @@ Bugfixing and QOL
 * Prevented the Gulf from appearing in ship dealers, it is a unique ship.
 * Fixed a SIC related Last Line bug.
 * Fixed The Last Line simulator results not functioning properly after a duel.
+* Fixed Virtuous shoulder distortion when joining an ongoing battle with The Last Line already deployed as an ally.
 
 
 Unique Ships & Refit

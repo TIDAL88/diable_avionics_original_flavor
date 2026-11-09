@@ -91,7 +91,8 @@ public class Diableavionics_virtuous_pauldronsEffect implements EveryFrameWeapon
             return;
         }
         
-        float mult=SNAPINESS*amount;
+        // Large battle-setup updates must not overshoot the sway target.
+        float mult=Math.min(1f, SNAPINESS*amount);
         
         //acceleration sway
         if(ENGINE.isAccelerating()){
