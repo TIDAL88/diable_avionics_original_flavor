@@ -6,6 +6,8 @@ VERSION: Version 3.0.7 - WIP
 Bugfixing and QOL
 * Added a suspicious IBB agent with a 30% discovery chance per Diable market and month from level 5, independent of the weighted bar-event pool. Once approached, he stays at that market. Captains can spend 1 SP to access the Gulf's existing IBB bounty directly, with no further level or commission requirement. The agent disappears once the contract is active, completed, or the Gulf has been acquired.
 * The Gulf agent's 1 SP access fee is paid once per campaign. Returning to the briefing after declining the bounty is free.
+* With SWP absent or IBB disabled, the same agent offers "A cold plate of revenge" through MagicLib. The existing reputation and fleet-size requirements apply, and both the agent and bounty board use the same contract and target fleet.
+* Reduced repeated fleet searches when opening the Gulf agent's dialogue.
 * Assume Wing Control: T no longer also activates the target-view shortcut while piloting a Wanzer.
 * Assume Wing Control: Left Alt enters a Wanzer from the carrier and returns to the carrier while piloting a Wanzer. T switches between Wanzers; normal Neural Link remains available on the carrier if specced.
 * Assume Wing Control: Fixed an intermittent blue HUD and unresponsive controls when a player-piloted Wanzer is destroyed or removed from combat. Control returns to the carrier, or the command shuttle if the carrier is lost.

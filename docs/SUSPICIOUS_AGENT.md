@@ -17,20 +17,36 @@ player leaves without paying. The closing line tells the player they can return;
 its impatience is flavor, with no deadline on the contact.
 
 The player spends 1 SP on "Let's hear about this contract." There is no further
-level check or commission requirement. This opens SWP's existing Gulf briefing,
+level check or commission requirement. This opens the selected contract's briefing,
 where the player can accept or decline the bounty. The SP permanently unlocks
 the briefing for that campaign. Declining keeps access unlocked after saving and
 loading, even with no SP remaining.
 
-The agent is connected to SWP. Accepting the offer starts SWP's actual Gulf
-mission; its fleet, reward, recovery rules, and completion are handled by SWP.
-The agent disappears if IBB is disabled, the bounty is active or completed, or
-the player has acquired the Gulf. Ships in storage count too. Until acceptance,
-the regular IBB route can still offer the Gulf.
+With IBB enabled, accepting starts SWP's actual Gulf mission. Its fleet, reward,
+recovery rules, and completion are handled by SWP. Until acceptance, the regular
+IBB route can still offer the Gulf.
+
+Without SWP, or with IBB disabled, he offers the existing MagicBounty "A cold
+plate of revenge." Its own requirements still apply: currently +50 Diable
+reputation and 150 fleet points. The contract option stays disabled until those
+requirements are met; approaching him still fixes his station. The fallback has
+its own opening about the Gulf in Tri-Tachyon hands. It displays the existing
+bounty text, reward, reputation, deadline and map marker before acceptance.
+
+The fallback uses MagicLib's public API to attach to the existing `$gulf` fleet
+and accept `diable_gulf`. It doesn't create another fleet or replace the mission.
+The regular board and this agent use the same contract. Fleet balancing remains
+in `DiableavionicsGen.spawnGulf()` and the Gulf Boss variant.
+
+Either route hides the agent when its bounty is active, completed or otherwise
+closed, or the player has acquired the Gulf. Ships in storage count too. An
+unavailable IBB stage doesn't switch to the standalone contract while IBB is on.
 
 `DASuspiciousAgentBarEvent.java` handles the character, station, opening,
 and SP confirmation. One instance is stored in campaign memory; it has no random
-event expiry timer. `DAIBBGulfBarEvent.java` handles the SWP offer. Both are in
+event expiry timer. `DAIBBGulfBarEvent.java` handles the SWP offer;
+`DAMagicGulfBarEvent.java` handles the MagicBounty offer. `DAGulfBountyState.java`
+contains the shared acquired-ship checks and route selection. These are in
 `src/data/scripts/campaign/bar/`.
 
 `data/campaign/rules.csv` contains the discovery roll, the return visit rule, and
@@ -48,6 +64,15 @@ The offer uses `SWP_IBBTracker` for availability and checks again at acceptance.
 After accepting through this agent, any older regular IBB Gulf offer is removed.
 Other IBB targets keep their existing progress. This contact has no random-target
 reroll option.
+
+The MagicBounty adapter uses no reflection. Eligibility is rechecked before
+spending SP and accepting, and its prepared contract must still be the same
+unaccepted object held by MagicLib's coordinator.
+
+Checks run on bar and dialogue actions. Level and station checks happen first.
+Once MagicLib has prepared the contract, the adapter validates its stored fleet
+in its current location rather than searching every system again. Payment and
+acceptance still recheck live eligibility.
 
 The dialogue is in `data/config/modFiles/suspicious_agent_dialogue.json`.
 The old weighted creator and save migration are removed. This version does not

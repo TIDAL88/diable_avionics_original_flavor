@@ -1,18 +1,14 @@
 package data.scripts.campaign.bar;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.CargoAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
-import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.intel.bar.PortsideBarData;
 import com.fs.starfarer.api.impl.campaign.intel.bar.PortsideBarEvent;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
-import com.fs.starfarer.api.util.Misc;
 import data.scripts.SWPModPlugin;
-import data.scripts.campaign.gulf.DiableGulfPart2Intel;
 import data.scripts.campaign.intel.SWP_IBBIntel;
 import data.scripts.campaign.intel.SWP_IBBIntel.FamousBountyStage;
 import data.scripts.campaign.intel.SWP_IBBTracker;
@@ -20,14 +16,11 @@ import data.scripts.campaign.intel.bar.events.SWP_IBBBarEvent;
 import data.scripts.util.ReflectionUtils;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 // Loaded only when SWP is enabled; the persistent Diable event uses vanilla types.
 public class DAIBBGulfBarEvent extends SWP_IBBBarEvent {
-
-    private static final String ACQUIRED_KEY = "$da_ibb_gulf_acquired";
 
     private final PersonAPI agent;
     private final String unavailableText;
@@ -68,38 +61,14 @@ public class DAIBBGulfBarEvent extends SWP_IBBBarEvent {
     }
 
     public static boolean isAvailable() {
-        if (!SWPModPlugin.isIBBEnabled()) return false;
+        if (!isIBBEnabled()) return false;
         SWP_IBBTracker tracker = SWP_IBBTracker.getTracker();
         return tracker != null && tracker.isStageAvailable(FamousBountyStage.STAGE_GULF)
-                && !playerAcquiredGulf();
+                && !DAGulfBountyState.playerAcquiredGulf();
     }
 
-    private static boolean playerAcquiredGulf() {
-        MemoryAPI memory = Global.getSector().getMemoryWithoutUpdate();
-        if (memory.getBoolean(ACQUIRED_KEY)) return true;
-        boolean acquired = memory.getBoolean(DiableGulfPart2Intel.STARTED_MEMKEY)
-                || memory.getBoolean(DiableGulfPart2Intel.COMPLETE_MEMKEY)
-                || DiableGulfPart2Intel.playerHasGulf();
-        if (!acquired) {
-            for (MarketAPI market : Global.getSector().getEconomy().getMarketsCopy()) {
-                CargoAPI storage = Misc.getStorageCargo(market);
-                if (storage != null && containsGulf(storage.getMothballedShips().getMembersListCopy())) {
-                    acquired = true;
-                    break;
-                }
-            }
-        }
-        if (acquired) memory.set(ACQUIRED_KEY, true);
-        return acquired;
-    }
-
-    private static boolean containsGulf(List<FleetMemberAPI> ships) {
-        for (FleetMemberAPI ship : ships) {
-            if (ship.getHullSpec() == null) continue;
-            if (DiableGulfPart2Intel.GULF_BASE_HULL_ID.equals(ship.getHullSpec().getBaseHullId())
-                    || DiableGulfPart2Intel.GULF_BASE_HULL_ID.equals(ship.getHullSpec().getHullId())) return true;
-        }
-        return false;
+    public static boolean isIBBEnabled() {
+        return SWPModPlugin.isIBBEnabled();
     }
 
     @Override

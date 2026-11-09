@@ -43,6 +43,7 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
     private String stationedAt;
     private transient JSONObject dialogue;
     private transient boolean contractOpened;
+    private transient boolean ibbConversation;
     private transient PortsideBarEvent preparedBounty;
     private transient PortsideBarEvent activeBounty;
 
@@ -67,10 +68,14 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
 
     @Override
     public boolean shouldShowAtMarket(MarketAPI market) {
-        if (market == null || !FACTION_ID.equals(market.getFactionId()) || !shouldShowAgent()) return false;
-        if (hasBeenApproached()) return stationedAt.equals(market.getId());
+        if (market == null || !FACTION_ID.equals(market.getFactionId())) return false;
+        if (hasBeenApproached()) {
+            if (!stationedAt.equals(market.getId())) return false;
+        } else if (Global.getSector().getPlayerStats().getLevel() < DISCOVERY_LEVEL) {
+            return false;
+        }
         // The discovery rule applies the monthly 30% roll before adding the option.
-        return Global.getSector().getPlayerStats().getLevel() >= DISCOVERY_LEVEL;
+        return shouldShowAgent();
     }
 
     private void stayAtMarket() {
@@ -130,6 +135,7 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
         contractOpened = false;
         preparedBounty = null;
         activeBounty = null;
+        ibbConversation = useIBB();
         regen(dialog.getInteractionTarget().getMarket());
         if (!shouldShowAtMarket(market)) {
             done = true;
@@ -139,7 +145,7 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
         stayAtMarket();
 
         dialog.getVisualPanel().showPersonInfo(person, true);
-        JSONArray opening = dialogue().optJSONArray("opening");
+        JSONArray opening = dialogue().optJSONArray(ibbConversation ? "opening" : "magicOpening");
         if (opening == null) throw new IllegalStateException("Missing suspicious agent opening dialogue");
         for (int i = 0; i < opening.length(); i++) {
             text.addPara(opening.optString(i), Misc.getHighlightColor(),
@@ -152,12 +158,13 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
         options.clearOptions();
         options.addOption(line("contractOption"), CONTRACT_OPTION);
 
-        // Prepare the reflected SWP fields before offering to spend a story point.
-        if (isBountyAvailable()) {
+        // Prepare the selected offer before offering to spend a story point.
+        boolean available = isBountyAvailable();
+        if (available) {
             try {
                 preparedBounty = createGulfOffer();
             } catch (RuntimeException | LinkageError ex) {
-                Global.getLogger(DASuspiciousAgentBarEvent.class).error("Unable to prepare the Gulf IBB offer", ex);
+                Global.getLogger(DASuspiciousAgentBarEvent.class).error("Unable to prepare the Gulf contract", ex);
             }
         }
 
@@ -167,9 +174,10 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
             addPaidContractOption();
         }
 
-        if (preparedBounty == null || !isBountyAvailable()) {
+        if (preparedBounty == null) {
             options.setEnabled(CONTRACT_OPTION, false);
-            options.setTooltip(CONTRACT_OPTION, line("contractUnavailable"));
+            options.setTooltip(CONTRACT_OPTION, !ibbConversation && !available
+                    ? DAMagicGulfBarEvent.requirementsText(dialogue()) : line("contractUnavailable"));
         }
         addLeaveOption();
     }
@@ -177,7 +185,7 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
     private void addPaidContractOption() {
         StoryOptionParams params = new StoryOptionParams(
                 CONTRACT_OPTION, STORY_POINT_COST, CONTRACT_OPTION, Sounds.STORY_POINT_SPEND_COMBAT,
-                line("storyPointLog")
+                line(ibbConversation ? "storyPointLog" : "magicStoryPointLog")
         );
         SetStoryOption.set(dialog, params, new BaseOptionStoryPointActionDelegate(dialog, params) {
             @Override
@@ -187,7 +195,7 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
 
             @Override
             public void createDescription(TooltipMakerAPI info) {
-                info.addPara(line("confirmationDescription"), 0f);
+                info.addPara(line(ibbConversation ? "confirmationDescription" : "magicConfirmationDescription"), 0f);
                 info.addSpacer(20f);
                 addActionCostSection(info);
             }
@@ -229,19 +237,22 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
     }
 
     protected boolean shouldShowAgent() {
-        return isGulfAvailable();
+        return useIBB() ? DAIBBGulfBarEvent.isAvailable() : DAMagicGulfBarEvent.isAvailable();
     }
 
-    private static boolean isGulfAvailable() {
-        return Global.getSettings().getModManager().isModEnabled("swp") && DAIBBGulfBarEvent.isAvailable();
+    protected boolean useIBB() {
+        // An unavailable IBB stage does not switch the player to the standalone contract.
+        return DAGulfBountyState.useIBB();
     }
 
     protected boolean isBountyAvailable() {
-        return shouldShowAgent();
+        if (ibbConversation != useIBB()) return false;
+        return ibbConversation ? shouldShowAgent() : DAMagicGulfBarEvent.canOfferAt(market);
     }
 
     protected PortsideBarEvent createGulfOffer() {
-        return DAIBBGulfBarEvent.create(person, line("bountyUnavailable"));
+        return ibbConversation ? DAIBBGulfBarEvent.create(person, line("bountyUnavailable"))
+                : DAMagicGulfBarEvent.create(market, dialogue());
     }
 
     protected void showGulfBounty() {
