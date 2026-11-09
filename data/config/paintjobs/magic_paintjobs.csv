@@ -382,6 +382,7 @@ diableavionics_royalblue_versant,diableavionics_versant,Royal Blue,royalblue,gra
 diableavionics_snowblast_versant,diableavionics_versant,Snowblast,snowblast,graphics/snowblast/ships/versant/diableavionics_versant_body.png,true,,,
 diableavionics_stripeless_versant,diableavionics_versant,Stripeless,stripeless,graphics/stripeless/ships/versant/diableavionics_versant_body.png,true,,,
 diableavionics_sunrise_versant,diableavionics_versant,Sunrise,sunrise,graphics/sunrise/ships/versant/diableavionics_versant_body.png,true,,,
+diableavionics_dra_virtuous,"diableavionics_virtuous_skirmisher,diableavionics_virtuous_brawler,diableavionics_virtuous_defender,diableavionics_virtuous_scout,diableavionics_virtuous_destroyed",DRA,DRA,graphics/DRA/ships/virtuous/diableavionics_virtuous_body.png,true,,,
 diableavionics_dra_vortex,diableavionics_vortex,DRA,DRA,graphics/DRA/ships/diableavionics_vortex.png,true,,,
 diableavionics_ornate_vortex,diableavionics_vortex,Ornate,ornate,graphics/ornate/ships/diableavionics_vortex.png,true,,,
 diableavionics_royalblue_vortex,diableavionics_vortex,Royal Blue,royalblue,graphics/royalblue/ships/diableavionics_vortex.png,true,,,
