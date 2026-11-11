@@ -753,11 +753,8 @@ diableavionics_frostLeftArm,WEAPON,"The Covet is a smooth-bore revolver firing t
 
 The complete nine-round cylinder is exchanged at once rather than loaded one chamber at a time. This somewhat wasteful arrangement was deemed preferable to asking a Frost pilot to manipulate individual cartridges in the middle of a battle, especially when the hand performing the operation weighs several tons.",Assault,,
 ,,,,,
-diableavionics_frostBlade,WEAPON,"A tungsten-coated monofilament held under tension along a solid combat blade, then chemically sharpened shortly before deployment. It has negligible reach and asks the pilot to bring their craft into physical contact with the target, but can carve through exposed armor with an efficiency few conventional weapons of comparable mass can match.
-
-Official training material presents the blade as a practical answer to the Frost's limited ammunition reserves. Pilots generally describe it as what happens when the engineers responsible for those reserves are not the ones asked to close the distance.
-
-Despite its shortcomings, the Frost retains an enthusiastic following among officers enamored with the directness of its fighting style. Closing the distance, emptying the Covet, then finishing the job by hand offers a kind of romance newer Wanzers have largely engineered away. The Corporation does not officially encourage such behavior, but has never been shy about featuring it in recruitment footage.",Scalpel,,
+diableavionics_frostBlade,WEAPON,"A romantic proposition newer Wanzers have largely engineered away. This tungsten-coated monofilament is stretched along a solid blade and chemically sharpened before deployment. Its reach is negligible, but few weapons of comparable mass carve through exposed armor so efficiently, provided the pilot can get close enough.Ambitious, but a touch harder to pull off than the Admiralty’s recruitment holos would have you believe.
+",Scalpel,,
 ,,,,,
 ,,,,,
 # STRIFE,,,,,
@@ -777,9 +774,7 @@ diableavionics_blizzaiaGraveac,WEAPON,"A compact Grave Light Auto-Cannon using t
 
 It can still deliver a credible anti-shield burst if the complete magazine connects. Failing to do so leaves the bomber waiting on a lengthy reload with little to show for the attempt, a situation its crews are strongly encouraged to avoid.",Assault,,
 ,,,,,
-diableavionics_blizzaiaCicada,WEAPON,"The D13-4 ""Cicada"" is a burst-fire grenade launcher intended to seed the path of a slow or distracted target with independently armed high-explosive charges. Their low-powered motors bring them into the vicinity of the target before shutting down, after which a proximity fuse selects an appropriately inconvenient moment to detonate.
-
-Early fixed-timer models were responsible for several friendly-fire incidents when unexploded grenades remained on the battlefield longer than anticipated. The present guidance package was introduced after the engineering team demonstrated the issue to the Design Board by placing an inert example beneath each member's chair.",Bombardment,,
+diableavionics_blizzaiaCicada,WEAPON,"A burst-fire grenade launcher intended to seed the path of a slow or distracted target with independently armed high-explosive charges. Their low-powered motors bring them into the vicinity of the target before shutting down, after which a proximity fuse selects an appropriately inconvenient moment to detonate. Early fixed-timer models were responsible for several friendly-fire incidents when unexploded grenades remained on the battlefield longer than anticipated. The present guidance package was introduced after the engineering team demonstrated the issue to the Design Board by placing an inert example beneath each member's chair.",Bombardment,,
 ,,,,,
 ,,,,,
 # RAVEN,,,,,
@@ -906,13 +901,13 @@ diableavionics_quantumimpulse,SHIP_SYSTEM,The Q-ECM3 Priere system is a large sc
 ,,,,,
 diableavionics_evasion,SHIP_SYSTEM,Evades incoming ordnance by executing a brief maneuver out of the way.,Movement,Evades incoming ordnance by executing a brief maneuver out of the way.,
 ,,,,,
-diableavionics_slash,SHIP_SYSTEM,The most economical way to dispatch an enemy is often to stick a tungsten blade through its reactor's containment system.,Offensive," ""While you were partying, I studied the blade"" ",
+diableavionics_slash,SHIP_SYSTEM,"Propels the Frost forward in a rapid lunge while sweeping its monofilament blade across the target. The handgun and point-defense turret cease firing during the strike, leaving the pilot committed to a rather direct solution to the enemy's continued existence.",Offensive,"Propels the Frost forward in a rapid lunge while sweeping its monofilament blade across the target. The handgun and point-defense turret cease firing during the strike, leaving the pilot committed to a rather direct solution to the enemy's continued existence.",
 ,,,,,
-diableavionics_dakka,SHIP_SYSTEM,"When standard 10 shots clips no longer cut it, you just have to feed your trusty Grom MG a 100 cartridges belt.",Offensive," ""Time to let old painless out of the bag."" ",
+diableavionics_dakka,SHIP_SYSTEM,"Feeds the Grom a 100-round belt, increasing its range by 50% while improving tracking and recoil control. Bracing the frame halves damage taken by armor, but reduces speed by 75% and turning rate by 50%. A firing position is best chosen before committing to it.",Offensive,"Feeds the Grom a 100-round belt, increasing its range by 50% while improving tracking and recoil control. Bracing the frame halves damage taken by armor, but reduces speed by 75% and turning rate by 50%. A firing position is best chosen before committing to it.",
 ,,,,,
-diableavionics_kata,SHIP_SYSTEM,"When standard 10 shots clips no longer cut it, you just have to feed your trusty Grom MG a 100 cartridges belt.",Offensive," ""I do not kill with my gun; He who kills with his gun has forgotten the face of his father. I kill with my heart."" ",
+diableavionics_kata,SHIP_SYSTEM,"Engages the Quantum Targeting Prediction computer, leaving the Hoar effectively stationary for the duration. Accelerates onboard timeflow by a factor of four to eight, depending on the charge state of its two handguns.",Offensive,"Engages the Quantum Targeting Prediction computer, leaving the Hoar effectively stationary for the duration. Accelerates onboard timeflow by a factor of four to eight, depending on the charge state of its two handguns.",
 ,,,,,
-diableavionics_booster,SHIP_SYSTEM,Detatches the large booster engine used to quickly traverse the battlefield and unlock the weapons systems. Can be used as an improvised ordinance for a bombing run.,Movement,Drop the booster engine and unlocks the weapons.,
+diableavionics_booster,SHIP_SYSTEM,Detatches the large booster engine used to quickly traverse the battlefield and unlock the weapons systems. Can be used as an improvised ordinance for a bombing run.,Movement,Detatches the large booster engine used to quickly traverse the battlefield and unlock the weapons systems. Can be used as an improvised ordinance for a bombing run.,
 ,,,,,
 diableavionics_fastRefit,SHIP_SYSTEM,Halve the refit time of carried fighter wings but doubles the Fighter replacement rate gauge consumption.,Special,Halve the refit time of carried fighter wings but doubles the Fighter replacement rate gauge consumption.,
 ,,,,,
@@ -920,11 +915,11 @@ diableavionics_assumeControl,SHIP_SYSTEM,Increases the entire wing's timeflow by
 ,,,,,
 diableavionics_shield,SHIP_SYSTEM,"Redirects all power from the weapon systems to shields, greatly increasing the efficiency at which damage is absorbed. This process generates hard flux at a steady rate even if the shields are not taking any fire. This is a licensed version that has been artificially limited.",Defensive,"Reduces the damage taken by shields to a minimum for a short duration, but generates hard flux while active.",
 ,,,,,
-diableavionics_berserk,SHIP_SYSTEM,"Briefly allows every systems to operate way beyond their stardard limit, dramatically increasing firerate and weapon rotations.",Offensive,Dramatically increases the weapons rotation speed and fire-rate for a few seconds.,
+diableavionics_berserk,SHIP_SYSTEM,"Disengages performance safeties for nine seconds. Increases gun fire rate and the Snow Ball's range by 50%, boosts pellet damage by 12%, doubles turning rate and projectile speed, and reduces armor damage taken by 33%.",Offensive,"Disengages performance safeties for nine seconds. Increases gun fire rate and the Snow Ball's range by 50%, boosts pellet damage by 12%, doubles turning rate and projectile speed, and reduces armor damage taken by 33%.",
 ,,,,,
-diableavionics_warlust_drone,SHIP_SYSTEM,Deploys two small drone companions to help with PD operations.,Drones ,Deploys two Point Defense drones.,
+diableavionics_warlust_drone,SHIP_SYSTEM,"Deploys two autonomous drones armed with compact IBIS guns. They intercept missiles and enemy strike-craft, and can roam nearby to support the Warlust's attacks.",Drones ,"Deploys two autonomous drones armed with compact IBIS guns. They intercept missiles and enemy strike-craft, and can roam nearby to support the Warlust's attacks.",
 ,,,,,
-diableavionics_splitter,SHIP_SYSTEM,"And Dah' said: I shall cut thy army in half, and in half again. Only then your courage will be tested.",Offensive,"And Dah' said: I shall cut thy army in half, and in half again. Only then your spirit will be tested.",
+diableavionics_splitter,SHIP_SYSTEM,"Reconfigures the frame to couple both Micro Glaux emitters, delivering a brief discharge with the reach and output of a full-size Glaux. Halves speed but improves turning while transformed.",Offensive,"Reconfigures the frame to couple both Micro Glaux emitters, delivering a brief discharge with the reach and output of a full-size Glaux. Halves speed but improves turning while transformed.",
 ,,,,,
 diableavionics_capacitors,SHIP_SYSTEM,Connects the shield systems to a secondary array of Plasma Capacitors able to store great quantities of flux for a short amount of time. Effectively increases the damage absorption of the shield tenfold.,Defensive,Increases the shield efficiency tenfold for a very short while.,
 ,,,,,

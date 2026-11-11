@@ -5,8 +5,7 @@
 
 	"statsScript":"data.shipsystems.scripts.Diableavionics_shieldStats",
 	
-	"shieldRingColor":[255,255,255,255],
-	"shieldInnerColor":[100,255,200,75],
+	# Shield colors are blended by the stats script over 0.5 seconds.
 	"shieldThicknessMult":1,
 	"shieldFluctuationMult":0,
 	

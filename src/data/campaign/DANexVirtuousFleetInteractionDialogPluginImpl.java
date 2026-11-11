@@ -24,10 +24,19 @@ public class DANexVirtuousFleetInteractionDialogPluginImpl extends NexFleetInter
 
     @Override
     public void init(InteractionDialogAPI dialog) {
+        DiableLastLineFleetFactory.ensureEncounterCommander(dialog.getInteractionTarget());
         super.init(dialog);
         if (DACampaignPlugin.hasMemoryInFleet(otherFleet, "$virtuous")) {
             DASubject71DialogMusic.start();
         }
+    }
+
+    @Override
+    public void optionSelected(String text, Object optionData) {
+        if (optionData == OptionId.OPEN_COMM) {
+            DiableLastLineFleetFactory.ensureEncounterCommander(dialog.getInteractionTarget());
+        }
+        super.optionSelected(text, optionData);
     }
 
     @Override

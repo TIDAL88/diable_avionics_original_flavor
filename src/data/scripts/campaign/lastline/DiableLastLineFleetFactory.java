@@ -672,6 +672,37 @@ public final class DiableLastLineFleetFactory {
         return false;
     }
 
+    public static FleetMemberAPI findEncounterVirtuous(CampaignFleetAPI fleet) {
+        if (fleet == null || fleet.isPlayerFleet() || fleet.isDespawning()
+                || !fleet.getMemoryWithoutUpdate().getBoolean("$virtuous")
+                || fleet.getMemoryWithoutUpdate().getBoolean("$da_last_line_retiring")
+                || Global.getSector().getMemoryWithoutUpdate().getBoolean("$da_lastline_virtuous_claimed")) {
+            return null;
+        }
+
+        for (FleetMemberAPI member : fleet.getFleetData().getMembersListCopy()) {
+            if (member.getHullSpec() != null
+                    && member.getHullSpec().getBaseHullId().startsWith("diableavionics_virtuous")) {
+                return member;
+            }
+        }
+        return null;
+    }
+
+    public static void ensureEncounterCommander(SectorEntityToken target) {
+        if (!(target instanceof CampaignFleetAPI fleet)) return;
+        FleetMemberAPI virtuous = findEncounterVirtuous(fleet);
+        if (virtuous == null) return;
+
+        PersonAPI pilot = virtuous.getCaptain();
+        // Comms use the commander's local memory for the Subject 71 rules.
+        // Reuse the pilot object so a simulation's D1 identity is preserved.
+        if (pilot != null && pilot.getMemoryWithoutUpdate().getBoolean("$virtuous")
+                && fleet.getCommander() != pilot) {
+            fleet.setCommander(pilot);
+        }
+    }
+
     private static PersonAPI findSubject71(CampaignFleetAPI fleet) {
         PersonAPI commander = fleet.getCommander();
         if (commander != null

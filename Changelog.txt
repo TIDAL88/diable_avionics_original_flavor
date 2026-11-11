@@ -4,32 +4,36 @@ VERSION: Version 3.0.7 - WIP
 ===============================================================================
 
 Bugfixing and QOL
-* Added a suspicious IBB agent with a 30% discovery chance per Diable market and month from level 5, independent of the weighted bar-event pool. Once approached, he stays at that market. Captains can spend 1 SP to access the Gulf's existing IBB bounty directly, with no further level or commission requirement. The agent disappears once the contract is active, completed, or the Gulf has been acquired.
-* The Gulf agent's 1 SP access fee is paid once per campaign. Returning to the briefing after declining the bounty is free.
-* With SWP absent or IBB disabled, the same agent offers "A cold plate of revenge" through MagicLib. The existing reputation and fleet-size requirements apply, and both the agent and bounty board use the same contract and target fleet.
-* Reduced repeated fleet searches when opening the Gulf agent's dialogue.
-* Assume Wing Control: T no longer also activates the target-view shortcut while piloting a Wanzer.
-* Assume Wing Control: Left Alt enters a Wanzer from the carrier and returns to the carrier while piloting a Wanzer. T switches between Wanzers; normal Neural Link remains available on the carrier if specced.
-* Assume Wing Control: Fixed an intermittent blue HUD and unresponsive controls when a player-piloted Wanzer is destroyed or removed from combat. Control returns to the carrier, or the command shuttle if the carrier is lost.
-* Assume Wing Control: Returning from a Wanzer to a Neural Link carrier now allows linking back to the other ship with T, including when the carrier originally had no officer.
-* Hexafire and Twin-Hexafire: Flux damage bonuses and projectile speed variation now apply once per pellet when fired, preventing repeated damage multiplication near the muzzle.
-* Restored the Hayle's Light Flicker Core from two charges to four, as stated in its tooltip.
+* Hexafire and Twin-Hexafire: Flux damage and projectile speed variation now apply once per pellet when fired, preventing repeated damage multiplication near the muzzle. 
 * Fixed a very rare bug that could reset faction reputation when loading a campaign.
 * Fixed some console command bugs.
 * Corrected a typo in the State support beam's description.
 * Prevented the Gulf from appearing in ship dealers, it is a unique ship.
 * Fixed a SIC related Last Line bug.
 * Fixed The Last Line simulator results not functioning properly after a duel.
+* Fixed a randomly assigned commander hiding Subject 71's comms and simulation options. Claiming the Virtuous now finds the ship independently of the fleet commander.
 * Fixed Virtuous shoulder distortion when joining an ongoing battle with The Last Line already deployed as an ally.
 
+VFX
+* Plasma Capacitor Shunt: Shield colors now fade in and out over 0.5 seconds.
+
+Questing and Bar events:
+* From level 5, a suspicious man may appear in Diable bars with a lead on the Gulf bounty. Once you speak to him, he stays at that location so you can return later.
+* Access to the bounty briefing costs 1 story point, paid only once. You can decline the contract and return to the briefing without paying again.
+* Without Ship and Weapon Pack, or with IBB disabled, he offers "A cold plate of revenge" instead. This contract requires at least +50 reputation with Diable Avionics and a fleet worth at least 150 fleet points.
 
 Unique Ships & Refit
 * Virtuous weapon, head, and ship-system selections now update immediately in the refit screen without requiring the player to switch ships and return.
 * The Gulf's Deep Strike Conversion now updates its hull and weapon configuration immediately in the refit screen.
 
 Ships
+* Gust and Mini-Gust:
+    * Assume Wing Control bugfix: Fixed the legacy blue HUD and unresponsive controls bug when a player-piloted Wanzer is destroyed or removed from combat. Control returns to the carrier, or the command shuttle if the carrier is lost.
+    * Assume Wing Control controls update: Left Alt enters a Wanzer from the carrier and also returns to the carrier while piloting a Wanzer. T switches between Wanzers, like neural link; normal Neural Link remains available on the carrier if specced.
+    * Assume Wing Control neural link compatibility: Returning from a Wanzer to a Neural Link carrier now allows linking back to the other ship with T, even if the Gust ship is the captainless one.
 * Versant: Switched combat damage marks and their glow to the Wanzer decal textures.
 * Coanda: Changed one small forward facing universal turret mount to hybrid, it was mistakenly labeled as universal, typo.
+* Hayle: Restored the Hayle's Light Flicker Core from 2 charges to 4, as stated in its tooltip.
 
 Weapons
 * Micro Missile Launcher: Tripled its selection weight in Diable shop stock generation.
@@ -40,12 +44,24 @@ Weapons
 * SRAB: Projectiles now collide with friendly ships instead of passing through them.
 
 Wanzers & Strike-crafts Descriptions
-* Added missing descriptions and tactical role labels for all currently used Wanzer weapon systems with a few hints.
-* Added specialized role labels
+* Added the 25 missing weapon descriptions for Wanzers and Arbitrator strike-craft, including tactical role labels and usage hints.
+* Rewrote ship-system descriptions and tooltips to explain their effects:
+    * Frost - Botte Secrète.
+    * Strife - Hold Your Ground.
+    * Hoar - Gun Kata.
+    * Avalanche - Berserker.
+    * Zephyr - Aether Splitter.
+    * Warlust - Snap Drones.
+    * Arbitrator - Drop Booster.
+
+Paintjobs
+* Added the DRA paintjob for Virtuous.
+* More to come.
 
 Added Achievements
 * Added the "Duelist" achievement for winning The Last Line's simulated fleet duel. Only the simulation awards it because of the DP limitation.
 * Added the "Divide and Conquer" achievement for defeating the unknown forces at FIRST RELAY.
+
 ===============================================================================
 DATE: 25/08/2026
 VERSION: Version 3.0.6 - "3.0.5 is missing"
