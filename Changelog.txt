@@ -4,6 +4,7 @@ VERSION: Version 3.0.7 - WIP
 ===============================================================================
 
 General Bugfixing and QOL
+* Corrected legacy typos and grammar errors in descriptions and tooltips.
 * Fixed a very rare bug that could reset faction reputation when loading a campaign.
 * Fixed some console command bugs.
 * Corrected a typo in the State support beam's description.
@@ -35,6 +36,7 @@ Ships
 * Hayle bugfix: Restored the Hayle's Light Flicker Core from 2 charges to 4, as stated in its tooltip.
 
 Weapons
+* Winee EMPR (modular, Hoar, and Virtuous versions): Corrected a longstanding tooltip error that incorrectly advertised shield-piercing EMP arcs. Hits on armor or hull have a 25% chance to arc to weapons and engines; shield hits do not trigger arcs. This update only corrects the description of the existing behavior.
 * Hexafire and Twin-Hexafire: Flux damage and projectile speed variation now apply once per pellet when fired, preventing doubled damage multiplication near the muzzle.
 * Virtuous - Snowblast Shotgun: Reduced base range from 700 to 650.
 * Virtuous - Grasshopper Grenade Launcher: reduced ammo capacity from 12 to 10, ammo regeneration from 0.65 to 0.5/sec, and reload batch from 6 to 5 rounds.
