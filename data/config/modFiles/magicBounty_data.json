@@ -4,10 +4,10 @@
     "diable_gulf":{
 
     "trigger_marketFaction_any": ["diableavionics"],
+    "trigger_player_minLevel": 6,
     #"trigger_market_minSize": 5,
     #"trigger_min_days_elapsed": 360, 
-    "trigger_playerRelationship_atLeast": {"diableavionics":0.5,},
-    "trigger_min_fleet_size": 150,
+    "trigger_playerRelationship_atLeast": {"diableavionics":0.1,},
 
     "job_name": "A cold plate of revenge",
     "job_description": "Sifting through the restricted job postings you find quite the oddity: An offer from the Diable Avionics Corporation. It had to be something very special as they seldom use outsider help for their shenanigans. That is when they do not need someone to take the fall, something to keep in mind should you accept the offer.\n\nThe job description is pretty laconic: the ==Tri-tachyon Corporation== somehow got their hands on a lost odd-ball ship of theirs, and they want it gone. The trick being that the ship is part of a fleet located in the well defended ==$system system==.\n\nThe documentation about the target is thorough, as you can expect from the life-long professionals of DA's intelligence offices, and paints quite an impressive ship. One you probably would not mind keeping if the option presented itself. The information about rest of the fleet are hazier, the target escorts are regularly rotated to prevent exactly what this offer is asking of you.",
@@ -16,7 +16,7 @@
     #"job_intel_failure": "",
     #"job_intel_expired": "",
     "job_forFaction": "diableavionics",
-    "job_deadline": 360,
+    "job_deadline": 0,
     "job_credit_reward": 90000,
     "job_reputation_reward":15,
     "job_type":"assassination",
@@ -27,6 +27,8 @@
     "job_difficultyDescription": "auto",
 
     "existing_target_memkey":"$gulf",	
+    "fleet_faction": "tritachyon",
+    "fleet_memory_flags": ["$cfai_ignoreOtherFleets", "$cfai_ignoredByOtherFleets", "$cfai_doNotIgnorePlayer"],
     },
 
     "diable_virtuous":{

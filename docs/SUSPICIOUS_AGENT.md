@@ -4,7 +4,7 @@ Players normally have to wait for the Gulf bounty to come up through SWP's IBB
 agents. That can take a while, and those agents don't normally appear in Diable
 bars. This character gives players a way to ask for that specific bounty.
 
-From level 5, he has a 30% discovery chance at each Diable-owned market. The rule
+From level 6, he has a 30% discovery chance at each Diable-owned market. The rule
 uses vanilla `RollProbability 0.3`, which keeps the result fixed for the same
 market and month. Reopening the bar doesn't reroll it; another market or month
 provides another opportunity. This is separate from the weighted event pool, so
@@ -16,22 +16,25 @@ he stays at that market and stops appearing elsewhere. He stays even if the
 player leaves without paying. The closing line tells the player they can return;
 its impatience is flavor, with no deadline on the contact.
 
-The player spends 1 SP on "Let's hear about this contract." There is no further
-level check or commission requirement. This opens the selected contract's briefing,
-where the player can accept or decline the bounty. The SP permanently unlocks
-the briefing for that campaign. Declining keeps access unlocked after saving and
-loading, even with no SP remaining.
+The player spends 1 SP on "I'll take the contract." Confirmation immediately
+accepts the selected bounty through its existing acceptance code and shows the
+briefing. There is no second accept/decline step or commission requirement.
+Payment is still remembered: a previously paid contact or an expired IBB contract
+doesn't charge another SP.
 
 With IBB enabled, accepting starts SWP's actual Gulf mission. Its fleet, reward,
 recovery rules, and completion are handled by SWP. Until acceptance, the regular
 IBB route can still offer the Gulf.
 
 Without SWP, or with IBB disabled, he offers the existing MagicBounty "A cold
-plate of revenge." Its own requirements still apply: currently +50 Diable
-reputation and 150 fleet points. The contract option stays disabled until those
-requirements are met; approaching him still fixes his station. The fallback has
+plate of revenge." This requires level 6 and Favorable reputation (+10) or better
+with Diable Avionics, with no minimum fleet size. The level requirement also applies
+on the bounty board; it isn't repeated in the agent's tooltip. The contract option stays disabled until the
+reputation requirement is met; approaching him still fixes his station. The fallback has
 its own opening about the Gulf in Tri-Tachyon hands. It displays the existing
-bounty text, reward, reputation, deadline and map marker before acceptance.
+bounty text, reward, reputation and map marker when taking the contract. There is
+no deadline. The fleet uses the same NPC avoidance flags as MagicLib's generated
+bounties, applied at spawn and through `fleet_memory_flags` on acceptance.
 
 The fallback uses MagicLib's public API to attach to the existing `$gulf` fleet
 and accept `diable_gulf`. It doesn't create another fleet or replace the mission.

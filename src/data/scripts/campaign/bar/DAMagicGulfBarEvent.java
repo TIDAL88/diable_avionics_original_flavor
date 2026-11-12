@@ -83,7 +83,7 @@ public class DAMagicGulfBarEvent extends BaseBarEvent {
         if (spec == null) return dialogue.optString("contractUnavailable");
         float relationship = spec.trigger_playerRelationship_atLeast == null ? 0f
                 : spec.trigger_playerRelationship_atLeast.getOrDefault(DASuspiciousAgentBarEvent.FACTION_ID, 0f);
-        return String.format(dialogue.optString("magicRequirements"), Math.round(relationship * 100f), spec.trigger_min_fleet_size);
+        return String.format(dialogue.optString("magicRequirements"), Math.round(relationship * 100f));
     }
 
     public static PortsideBarEvent create(MarketAPI market, JSONObject dialogue) {
@@ -96,6 +96,10 @@ public class DAMagicGulfBarEvent extends BaseBarEvent {
         }
         if (active == null || active.getStage() != ActiveBounty.Stage.NotAccepted) {
             throw new IllegalStateException("Unable to prepare standalone Gulf contract");
+        }
+        // Saved offers may retain the old definition without the target faction.
+        if (active.getSpec().fleet_faction == null) {
+            active.getSpec().fleet_faction = active.getFleet().getFaction().getId();
         }
         return new DAMagicGulfBarEvent(active, dialogue);
     }
@@ -153,6 +157,9 @@ public class DAMagicGulfBarEvent extends BaseBarEvent {
             MagicBountySpec spec = bounty.getSpec();
             bounty.acceptBounty(dialog.getInteractionTarget(), spec.job_reputation_reward, spec.job_forFaction);
             text.addPara(line("magicAccepted"));
+            options.clearOptions();
+            options.addOption(line("leaveOption"), LEAVE_OPTION);
+            options.setShortcut(LEAVE_OPTION, Keyboard.KEY_ESCAPE, false, false, false, true);
             done = true;
             noContinue = false;
         }

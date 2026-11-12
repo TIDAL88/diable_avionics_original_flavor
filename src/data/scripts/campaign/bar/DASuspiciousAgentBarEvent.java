@@ -10,6 +10,7 @@ import com.fs.starfarer.api.impl.campaign.ids.Ranks;
 import com.fs.starfarer.api.impl.campaign.ids.Sounds;
 import com.fs.starfarer.api.impl.campaign.intel.bar.PortsideBarEvent;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BaseBarEventWithPerson;
+import com.fs.starfarer.api.impl.campaign.intel.bar.events.BaseGetCommodityBarEvent;
 import com.fs.starfarer.api.impl.campaign.rulecmd.SetStoryOption;
 import com.fs.starfarer.api.impl.campaign.rulecmd.SetStoryOption.BaseOptionStoryPointActionDelegate;
 import com.fs.starfarer.api.impl.campaign.rulecmd.SetStoryOption.StoryOptionParams;
@@ -37,7 +38,7 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
     public static final String CONTRACT_OPTION = "da_suspicious_agent_contract";
     public static final String LEAVE_OPTION = "da_suspicious_agent_leave";
     public static final String ACCESS_PAID_KEY = "$da_ibb_gulf_access_paid";
-    public static final int DISCOVERY_LEVEL = 5;
+    public static final int DISCOVERY_LEVEL = 6;
     public static final int STORY_POINT_COST = 1;
 
     private String stationedAt;
@@ -97,11 +98,6 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
     @Override
     protected String getPersonFaction() {
         return Factions.INDEPENDENT;
-    }
-
-    @Override
-    protected String getPersonPortrait() {
-        return "graphics/portraits/portrait_mercenary01.png";
     }
 
     @Override
@@ -258,6 +254,8 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
     protected void showGulfBounty() {
         activeBounty = preparedBounty;
         activeBounty.init(dialog, memoryMap);
+        activeBounty.optionSelected(null, ibbConversation
+                ? BaseGetCommodityBarEvent.OPTION_CONFIRM : DAMagicGulfBarEvent.ACCEPT_OPTION);
     }
 
     @Override

@@ -383,6 +383,10 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
             gulf.addEventListener(new Diableavionics_gulfLoot());
 
             gulf.getMemoryWithoutUpdate().set("$gulf", true);
+            // Match MagicLib's bounty protection from the moment this existing target spawns.
+            gulf.getMemoryWithoutUpdate().set(MemFlags.FLEET_IGNORES_OTHER_FLEETS, true);
+            gulf.getMemoryWithoutUpdate().set(MemFlags.FLEET_IGNORED_BY_OTHER_FLEETS, true);
+            gulf.getMemoryWithoutUpdate().set(MemFlags.FLEET_DO_NOT_IGNORE_PLAYER, true);
         }
     }
 }

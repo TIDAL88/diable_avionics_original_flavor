@@ -3,25 +3,29 @@ DATE: WIP
 VERSION: Version 3.0.7 - WIP
 ===============================================================================
 
-General Bugfixing and QOL
+General Bugfixing
+* Fixed nearby patrols being pulled into the encounter and announced as reinforcements when claiming the Virtuous after a simulation.
+* Moved to Starsector 0.98.5a-RC5.
 * Updated the vanilla Last Line simulation captain restoration call for Starsector 0.98.5a-RC4.
-* Corrected most legacy typos and grammar errors.
 * Fixed a very rare bug that could reset faction reputation when loading a campaign.
 * Fixed some console command bugs.
-* Corrected a typo in the State support beam's description.
 * Prevented the Gulf from appearing in ship dealers, it is a unique ship.
 * Fixed a SIC related Last Line bug.
 * Fixed The Last Line simulator results not functioning properly after a duel.
 * Fixed a randomly assigned commander hiding Subject 71's comms and simulation options. Claiming the Virtuous now finds the ship independently of the fleet commander.
 * Fixed Virtuous shoulder distortion when joining an ongoing battle with The Last Line already deployed as an ally.
 
+QOL
+* Corrected most legacy typos and grammar errors.
+* Corrected a typo in the State support beam's description.
+
 VFX
 * Plasma Capacitor Shunt: Shield colors now smoothly transition instead of abruptly changing like a light switch.
 
 Questing and Bar events:
-* From level 5, a suspicious man may appear in Diable bars with a lead on the Gulf bounty. Once you speak to him, he stays at that location so you can return later.
-* Access to the bounty briefing costs 1 story point, paid only once. You can decline the contract and return to the briefing without paying again.
-* Without Ship and Weapon Pack, or with IBB disabled, he offers "A cold plate of revenge" instead. This contract requires at least +50 reputation with Diable Avionics and a fleet worth at least 150 fleet points.
+* From level 6, a suspicious man may appear in Diable bars with a lead on the Gulf bounty. Once you speak to him, he stays at that location so you can return later.
+* Taking the agent's contract costs 1 story point and immediately accepts the bounty.
+* Without Ship and Weapon Pack, or with IBB disabled, he offers "A cold plate of revenge" instead. This contract requires Favorable reputation (+10) or better with Diable Avionics, with no minimum fleet size or deadline. NPC fleets will leave the target alone.
 
 Unique Ships & Refit
 * Virtuous weapon, head, and ship-system selections now update immediately in the refit screen without requiring the player to switch ships and return.

@@ -1,6 +1,7 @@
 package data.campaign;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.BattleAPI;
 import com.fs.starfarer.api.campaign.CombatDamageData;
 import com.fs.starfarer.api.campaign.FleetEncounterContextPlugin;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
@@ -136,8 +137,15 @@ public class DAVirtuousFleetInteractionDialogPluginImpl extends FleetInteraction
         }
     }
 
-    public void pullFleets() {
-        pullInNearbyFleets();
+    public void refreshFleetsAfterTransfer() {
+        // Rebuild the display after the handover without recruiting nearby patrols.
+        BattleAPI battle = context.getBattle();
+        battle.join(Global.getSector().getPlayerFleet());
+        battle.genCombined();
+        battle.takeSnapshots();
+        playerFleet = battle.getPlayerCombined();
+        otherFleet = battle.getNonPlayerCombined();
+        showFleetInfo();
     }
 
     /**
