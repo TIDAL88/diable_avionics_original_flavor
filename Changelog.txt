@@ -3,14 +3,7 @@ DATE: WIP
 VERSION: Version 3.0.7 - WIP
 ===============================================================================
 
-Bugfixing and QOL
-* Removed conversion of old Black Site gates. Current Ruptured Gate creation and placement are unchanged.
-* Removed the old relationship-marker migration. Ongoing-campaign installation and protection against resetting diplomacy on reload remain.
-* Removed old Last Line fleet migrations and guardian composition upgrades. Current fleet generation, Sivie support, and escort regeneration are unchanged.
-* Removed the old 2.80/2.82 Avionics save-upgrade scans and their internal version bookkeeping.
-* Removed old Gulf Part II relay, salvage-defender, and fleet-composition migrations, along with obsolete S-mod cleanup for Wanzer Gantry and Deep Strike Conversion.
-* Removed obsolete phase-visual and Rime flight-deck compatibility hullmods, plus the unused modular Dampened Mounts. The built-in Dampened Mounts and current Rime bay toggle are unchanged.
-* Hexafire and Twin-Hexafire: Flux damage and projectile speed variation now apply once per pellet when fired, preventing repeated damage multiplication near the muzzle. 
+General Bugfixing and QOL
 * Fixed a very rare bug that could reset faction reputation when loading a campaign.
 * Fixed some console command bugs.
 * Corrected a typo in the State support beam's description.
@@ -21,7 +14,7 @@ Bugfixing and QOL
 * Fixed Virtuous shoulder distortion when joining an ongoing battle with The Last Line already deployed as an ally.
 
 VFX
-* Plasma Capacitor Shunt: Shield colors now fade in and out over 0.5 seconds.
+* Plasma Capacitor Shunt: Shield colors now smoothly transition instead of abruptly changing like a light switch.
 
 Questing and Bar events:
 * From level 5, a suspicious man may appear in Diable bars with a lead on the Gulf bounty. Once you speak to him, he stays at that location so you can return later.
@@ -37,20 +30,21 @@ Ships
     * Assume Wing Control bugfix: Fixed the legacy blue HUD and unresponsive controls bug when a player-piloted Wanzer is destroyed or removed from combat. Control returns to the carrier, or the command shuttle if the carrier is lost.
     * Assume Wing Control controls update: Left Alt enters a Wanzer from the carrier and also returns to the carrier while piloting a Wanzer. T switches between Wanzers, like neural link; normal Neural Link remains available on the carrier if specced.
     * Assume Wing Control neural link compatibility: Returning from a Wanzer to a Neural Link carrier now allows linking back to the other ship with T, even if the Gust ship is the captainless one.
-* Versant: Switched combat damage marks and their glow to the Wanzer decal textures.
+* Versant: Switched combat damage marks and their glow to the Wanzer decal textures. They fit perfectly.
 * Coanda: Changed one small forward facing universal turret mount to hybrid, it was mistakenly labeled as universal, typo.
-* Hayle: Restored the Hayle's Light Flicker Core from 2 charges to 4, as stated in its tooltip.
+* Hayle bugfix: Restored the Hayle's Light Flicker Core from 2 charges to 4, as stated in its tooltip.
 
 Weapons
-* Micro Missile Launcher: Tripled its selection weight in Diable shop stock generation.
+* Hexafire and Twin-Hexafire: Flux damage and projectile speed variation now apply once per pellet when fired, preventing doubled damage multiplication near the muzzle.
 * Virtuous - Snowblast Shotgun: Reduced base range from 700 to 650.
 * Virtuous - Grasshopper Grenade Launcher: reduced ammo capacity from 12 to 10, ammo regeneration from 0.65 to 0.5/sec, and reload batch from 6 to 5 rounds.
 * SRAB: Increased base range from 800 to 900.
 * SRAB: Projectiles are no longer affected by Missile Specialization. ECCM retains its projectile maneuverability and flare-resistance bonuses, but no longer increases speed or range. Normal energy-weapon bonuses still apply.
 * SRAB: Projectiles now collide with friendly ships instead of passing through them.
+* Micro Missile Launcher: Tripled its selection weight in Diable shop stock generation.
 
 Wanzers & Strike-crafts Descriptions
-* Added the 25 missing weapon descriptions for Wanzers and Arbitrator strike-craft, including tactical role labels and usage hints.
+* Added the 25 missing weapon descriptions for Wanzers and Arbitrator strike-craft, including tactical role labels. With hints for the player.
 * Rewrote ship-system descriptions and tooltips to explain their effects:
     * Frost - Botte Secrète.
     * Strife - Hold Your Ground.
@@ -67,6 +61,9 @@ Paintjobs
 Added Achievements
 * Added the "Duelist" achievement for winning The Last Line's simulated fleet duel. Only the simulation awards it because of the DP limitation.
 * Added the "Divide and Conquer" achievement for defeating the unknown forces at FIRST RELAY.
+
+Removal of Legacy Save Compatibility
+* Big code cleanup
 
 ===============================================================================
 DATE: 25/08/2026
