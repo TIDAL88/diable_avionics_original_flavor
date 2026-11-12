@@ -4,7 +4,7 @@ VERSION: Version 3.0.7 - WIP
 ===============================================================================
 
 General Bugfixing and QOL
-* Corrected legacy typos and grammar errors in descriptions and tooltips.
+* Corrected most legacy typos and grammar errors.
 * Fixed a very rare bug that could reset faction reputation when loading a campaign.
 * Fixed some console command bugs.
 * Corrected a typo in the State support beam's description.
