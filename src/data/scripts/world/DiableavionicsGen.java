@@ -56,13 +56,6 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         MemoryAPI memory = sector.getMemoryWithoutUpdate();
         if (memory.getBoolean(RELATIONSHIPS_INITIALIZED_MEMKEY)) return;
 
-        // Existing DA saves predate the dedicated key. Their initialized marker proves that their
-        // starting relationships were already established, so preserve their current diplomacy.
-        if (memory.getBoolean(DAModPlugin.MEMKEY_INTIALIZED)) {
-            memory.set(RELATIONSHIPS_INITIALIZED_MEMKEY, true);
-            return;
-        }
-
         FactionAPI diableavionics = sector.getFaction("diableavionics");
         FactionAPI player = sector.getFaction(Factions.PLAYER);
         FactionAPI hegemony = sector.getFaction(Factions.HEGEMONY);
@@ -222,7 +215,6 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         return virtuous;
     }
 
-    /** Adds the hidden fleet manager to Sivie and adopts legacy fleets. */
     public static void ensureLastLineFleetIndustry() {
         if (useClassicLastLineFleet()) return;
 
@@ -285,20 +277,6 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
                     true
             );
         }
-    }
-
-    /**
-     * One-time, in-place update for a classic fleet serialized by an older release.
-     */
-    public static void migrateLastLineFleetIfNeeded() {
-        CampaignFleetAPI migrated =
-                DiableLastLineFleetFactory.migrateExistingFleet(
-                        useClassicLastLineFleet()
-                );
-        if (migrated == null) return;
-
-        virtuousVariant = DiableLastLineFleetFactory.VIRTUOUS_VARIANT_ID;
-        configureVirtuousEncounter(migrated, migrated.getCommander());
     }
 
     /**

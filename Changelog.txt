@@ -4,6 +4,12 @@ VERSION: Version 3.0.7 - WIP
 ===============================================================================
 
 Bugfixing and QOL
+* Removed conversion of old Black Site gates. Current Ruptured Gate creation and placement are unchanged.
+* Removed the old relationship-marker migration. Ongoing-campaign installation and protection against resetting diplomacy on reload remain.
+* Removed old Last Line fleet migrations and guardian composition upgrades. Current fleet generation, Sivie support, and escort regeneration are unchanged.
+* Removed the old 2.80/2.82 Avionics save-upgrade scans and their internal version bookkeeping.
+* Removed old Gulf Part II relay, salvage-defender, and fleet-composition migrations, along with obsolete S-mod cleanup for Wanzer Gantry and Deep Strike Conversion.
+* Removed obsolete phase-visual and Rime flight-deck compatibility hullmods, plus the unused modular Dampened Mounts. The built-in Dampened Mounts and current Rime bay toggle are unchanged.
 * Hexafire and Twin-Hexafire: Flux damage and projectile speed variation now apply once per pellet when fired, preventing repeated damage multiplication near the muzzle. 
 * Fixed a very rare bug that could reset faction reputation when loading a campaign.
 * Fixed some console command bugs.

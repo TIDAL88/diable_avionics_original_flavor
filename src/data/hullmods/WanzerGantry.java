@@ -125,11 +125,6 @@ public class WanzerGantry extends BaseHullMod {
 
     @Override
     public void applyEffectsBeforeShipCreation(HullSize hullSize, MutableShipStatsAPI stats, String id) {
-        // Save compatibility: remove the obsolete S-mod marker from existing variants.
-        // This remains a harmless no-op once all old saves have migrated.
-        stats.getVariant().getSMods().remove(GANTRY_ID);
-        stats.getVariant().getSModdedBuiltIns().remove(GANTRY_ID);
-
         //reset the "check" mutable stat so that it is applied next deployment
         stats.getFighterRefitTimeMult().unmodify(ID);
     }

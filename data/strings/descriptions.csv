@@ -907,7 +907,7 @@ diableavionics_dakka,SHIP_SYSTEM,"Feeds the Grom a 100-round belt, increasing it
 ,,,,,
 diableavionics_kata,SHIP_SYSTEM,"Engages the Quantum Targeting Prediction computer, leaving the Hoar effectively stationary for the duration. Accelerates onboard timeflow by a factor of four to eight, depending on the charge state of its two handguns.",Offensive,"Engages the Quantum Targeting Prediction computer, leaving the Hoar effectively stationary for the duration. Accelerates onboard timeflow by a factor of four to eight, depending on the charge state of its two handguns.",
 ,,,,,
-diableavionics_booster,SHIP_SYSTEM,Detatches the large booster engine used to quickly traverse the battlefield and unlock the weapons systems. Can be used as an improvised ordinance for a bombing run.,Movement,Detatches the large booster engine used to quickly traverse the battlefield and unlock the weapons systems. Can be used as an improvised ordinance for a bombing run.,
+diableavionics_booster,SHIP_SYSTEM,Detaches the large booster engine used to quickly traverse the battlefield and unlocks the weapon systems. Can be used as improvised ordnance for a bombing run.,Movement,Detaches the large booster engine used to quickly traverse the battlefield and unlocks the weapon systems. Can be used as improvised ordnance for a bombing run.,
 ,,,,,
 diableavionics_fastRefit,SHIP_SYSTEM,Halve the refit time of carried fighter wings but doubles the Fighter replacement rate gauge consumption.,Special,Halve the refit time of carried fighter wings but doubles the Fighter replacement rate gauge consumption.,
 ,,,,,

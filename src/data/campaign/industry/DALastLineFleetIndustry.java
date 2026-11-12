@@ -104,19 +104,6 @@ public class DALastLineFleetIndustry extends BaseIndustry
         if (fleet != null) {
             if (isActiveLastLineFleet(fleet)) {
                 ensureListener(fleet);
-                if (isVirtuousClaimed()) {
-                    if (fleet.getMemoryWithoutUpdate().getInt(
-                            DiableLastLineFleetFactory.FLEET_VERSION_MEMKEY
-                    ) < DiableLastLineFleetFactory.FLEET_VERSION
-                            && Diableavionics_virtuousLoot
-                            .wasGuardianMaelstromLost(fleet)) {
-                        retireSurvivingFleet(fleet);
-                        scheduleRespawn(false);
-                        return;
-                    }
-                    DiableLastLineFleetFactory
-                            .upgradeGuardianFleetIfNeeded(fleet);
-                }
                 initializePlayerAttritionState();
                 advancePlayerAttritionRestoration(amount);
                 return;
@@ -156,7 +143,6 @@ public class DALastLineFleetIndustry extends BaseIndustry
         }
     }
 
-    /** Attaches this industry to a pre-manager fleet in an existing save. */
     public void adoptExistingFleetIfPresent() {
         if (DiableavionicsGen.useClassicLastLineFleet()) {
             disableForClassicMode();
@@ -328,9 +314,6 @@ public class DALastLineFleetIndustry extends BaseIndustry
     private void adoptFleet(CampaignFleetAPI newFleet) {
         fleet = newFleet;
         respawnDelayDays = 0f;
-        if (isVirtuousClaimed()) {
-            DiableLastLineFleetFactory.upgradeGuardianFleetIfNeeded(newFleet);
-        }
         playerAttritionRestoreDelayDays =
                 DiableLastLineFleetFactory.hasMissingAuthoredEscorts(newFleet)
                         ? PLAYER_ATTRITION_RESTORE_DELAY_DAYS
@@ -375,9 +358,8 @@ public class DALastLineFleetIndustry extends BaseIndustry
 
     private void synchronizeResolvedState() {
         if (isVirtuousClaimed()) {
-            // A transfer or spawned wreck resolves the unique ship, not
-            // Sivie's renewable escort guard. Clear only the obsolete fleet
-            // resolution flag; the wreck/drop flag must remain one-time.
+            // Guardian support remains renewable after the unique ship is claimed.
+            // Preserve the one-time wreck/drop flag.
             Global.getSector().getMemoryWithoutUpdate().unset(RESOLVED_MEMKEY);
             resetBountyOnNextSpawn = false;
             return;
