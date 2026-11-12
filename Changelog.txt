@@ -4,6 +4,7 @@ VERSION: Version 3.0.7 - WIP
 ===============================================================================
 
 General Bugfixing and QOL
+* Updated the vanilla Last Line simulation captain restoration call for Starsector 0.98.5a-RC4.
 * Corrected most legacy typos and grammar errors.
 * Fixed a very rare bug that could reset faction reputation when loading a campaign.
 * Fixed some console command bugs.

@@ -43,7 +43,7 @@ public class DAVirtuousFleetInteractionDialogPluginImpl extends FleetInteraction
     public void backFromEngagement(EngagementResultAPI result) {
         if (DASubject71BattleCreationPlugin.isSimulationBattleActive(otherFleet)) {
             DASubject71BattleCreationPlugin.restoreSimulationBackground();
-            restoreOrigCaptains();
+            restoreOrigCaptains(null);
             if (origFlagship != null) {
                 if (selectedFlagship != null) {
                     PersonAPI captain = origFlagship.getCaptain();
