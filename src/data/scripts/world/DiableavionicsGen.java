@@ -18,6 +18,7 @@ import data.campaign.special.Diableavionics_gulfLoot;
 import data.campaign.special.Diableavionics_virtuousLoot;
 import data.scripts.DAModPlugin;
 import data.scripts.DAOptionalLunaSettings;
+import data.scripts.campaign.gulf.DiableGulfBountyFleetFactory;
 import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
 import data.scripts.world.systems.Diableavionics_blackSite;
 import data.scripts.world.systems.Diableavionics_fob;
@@ -345,37 +346,9 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         }
 
         if (target != null) {
-            PersonAPI gulfCaptain = MagicCampaign.createCaptainBuilder(Factions.TRITACHYON)
-                    .setFirstName(txt("gulfFN"))
-                    .setLastName(txt("gulfLN"))
-                    .setPortraitId("da_gulf")
-                    .setGender(FullName.Gender.FEMALE)
-                    .setRankId(Ranks.SPECIAL_AGENT)
-                    .setPostId(Ranks.POST_FLEET_COMMANDER)
-                    .setPersonality(Personalities.STEADY)
-                    .setLevel(6)
-                    .setEliteSkillsOverride(0)
-                    .setSkillPreference(OfficerManagerEvent.SkillPickPreference.YES_ENERGY_YES_BALLISTIC_YES_MISSILE_YES_DEFENSE)
-                    .create();
-
-            CampaignFleetAPI gulf = MagicCampaign.createFleetBuilder()
-                    .setFleetFaction(Factions.TRITACHYON)
-                    .setFleetName(txt("gulfFleet"))
-                    .setFleetType(FleetTypes.TASK_FORCE)
-                    .setFlagshipName(txt("gulfShip"))
-                    .setFlagshipAlwaysRecoverable(true)
-                    .setFlagshipVariant("diableavionics_IBBgulf_boss")
-                    .setFlagshipAutofit(false)
-                    .setCaptain(gulfCaptain)
-                    .setMinFP(200)
-                    .setReinforcementFaction(Factions.TRITACHYON)
-                    .setQualityOverride(2f)
-                    .setAssignment(FleetAssignment.PATROL_SYSTEM)
-                    .setAssignmentTarget(target)
-                    .setSpawnLocation(target)
-                    .setIsImportant(true)
-                    .setTransponderOn(false)
-                    .create();
+            CampaignFleetAPI gulf = DiableGulfBountyFleetFactory.createFleet();
+            if (gulf == null) return;
+            MagicCampaign.spawnFleet(gulf, target, FleetAssignment.PATROL_SYSTEM, target, true, false, false);
 
             gulf.setDiscoverable(false);
             gulf.addTag(Tags.NEUTRINO);

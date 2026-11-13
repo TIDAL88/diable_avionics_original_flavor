@@ -23,10 +23,12 @@ import java.util.Map;
 public class DAMagicGulfBarEvent extends BaseBarEvent {
     public static final String BOUNTY_ID = "diable_gulf";
     public static final String ACCEPT_OPTION = "da_magic_gulf_accept";
+    public static final String POSTING_OPTION = "da_magic_gulf_posting";
     public static final String LEAVE_OPTION = "da_magic_gulf_leave";
 
     private final ActiveBounty bounty;
     private final JSONObject dialogue;
+    private boolean accessKeyGiven;
 
     private DAMagicGulfBarEvent(ActiveBounty bounty, JSONObject dialogue) {
         this.bounty = bounty;
@@ -68,22 +70,16 @@ public class DAMagicGulfBarEvent extends BaseBarEvent {
     }
 
     public static boolean canOfferAt(MarketAPI market) {
-        if (!isAvailable() || market == null) return false;
+        if (market == null) return false;
         MagicBountySpec spec = MagicBountyLoader.getBountyData(BOUNTY_ID);
+        if (spec == null) return false;
         return MagicCampaign.isAvailableAtMarket(market, spec.trigger_market_id, spec.trigger_marketFaction_any,
                 spec.trigger_marketFaction_alliedWith, spec.trigger_marketFaction_none,
                 spec.trigger_marketFaction_enemyWith, spec.trigger_market_minSize)
                 && MagicCampaign.isAvailableToPlayer(spec.trigger_player_minLevel, spec.trigger_min_days_elapsed,
                 spec.trigger_min_fleet_size, spec.trigger_memKeys_all, spec.trigger_memKeys_any,
-                spec.trigger_memKeys_none, spec.trigger_playerRelationship_atLeast, spec.trigger_playerRelationship_atMost);
-    }
-
-    public static String requirementsText(JSONObject dialogue) {
-        MagicBountySpec spec = MagicBountyLoader.getBountyData(BOUNTY_ID);
-        if (spec == null) return dialogue.optString("contractUnavailable");
-        float relationship = spec.trigger_playerRelationship_atLeast == null ? 0f
-                : spec.trigger_playerRelationship_atLeast.getOrDefault(DASuspiciousAgentBarEvent.FACTION_ID, 0f);
-        return String.format(dialogue.optString("magicRequirements"), Math.round(relationship * 100f));
+                spec.trigger_memKeys_none, spec.trigger_playerRelationship_atLeast, spec.trigger_playerRelationship_atMost)
+                && isAvailable();
     }
 
     public static PortsideBarEvent create(MarketAPI market, JSONObject dialogue) {
@@ -97,10 +93,6 @@ public class DAMagicGulfBarEvent extends BaseBarEvent {
         if (active == null || active.getStage() != ActiveBounty.Stage.NotAccepted) {
             throw new IllegalStateException("Unable to prepare standalone Gulf contract");
         }
-        // Saved offers may retain the old definition without the target faction.
-        if (active.getSpec().fleet_faction == null) {
-            active.getSpec().fleet_faction = active.getFleet().getFaction().getId();
-        }
         return new DAMagicGulfBarEvent(active, dialogue);
     }
 
@@ -113,10 +105,13 @@ public class DAMagicGulfBarEvent extends BaseBarEvent {
         super.init(dialog, memoryMap);
         done = false;
         noContinue = false;
+        accessKeyGiven = false;
         if (!canAccept(dialog.getInteractionTarget().getMarket())) {
             finishUnavailable();
-            return;
         }
+    }
+
+    private void showBriefing() {
         text.addPara(bounty.getSpec().job_name, Misc.getHighlightColor());
         bounty.addDescriptionToTextPanel(text);
         Float credits = bounty.getRewardCredits();
@@ -126,19 +121,11 @@ public class DAMagicGulfBarEvent extends BaseBarEvent {
         }
         MagicBountySpec spec = bounty.getSpec();
         if (spec.job_reputation_reward > 0 && spec.job_forFaction != null) {
-            String reputation = Integer.toString(Math.round(spec.job_reputation_reward * 100f));
-            String faction = Global.getSector().getFaction(spec.job_forFaction).getDisplayName();
-            text.addPara(String.format(line("magicReputation"), reputation, faction),
-                    Misc.getHighlightColor(), reputation, faction);
-        }
-        if (bounty.getSpec().job_deadline > 0
-                && Boolean.TRUE.equals(MagicBountyCoordinator.getInstance().getDeadlinesEnabled())) {
-            String days = Integer.toString(bounty.getSpec().job_deadline);
-            text.addPara(String.format(line("magicDeadline"), days), Misc.getHighlightColor(), days);
+            text.addPara(line("magicReputation"));
         }
         dialog.getVisualPanel().showMapMarker(bounty.getFleetSpawnLocation(), null, null, false, null, null, null);
+        text.addPara(line("magicBriefingEnd"));
         options.clearOptions();
-        options.addOption(line("magicAcceptOption"), ACCEPT_OPTION);
         options.addOption(line("leaveOption"), LEAVE_OPTION);
         options.setShortcut(LEAVE_OPTION, Keyboard.KEY_ESCAPE, false, false, false, true);
     }
@@ -149,19 +136,22 @@ public class DAMagicGulfBarEvent extends BaseBarEvent {
         if (LEAVE_OPTION.equals(optionData)) {
             done = true;
             noContinue = true;
+        } else if (POSTING_OPTION.equals(optionData) && accessKeyGiven) {
+            showBriefing();
+            done = true;
+            noContinue = false;
         } else if (ACCEPT_OPTION.equals(optionData)) {
+            if (accessKeyGiven) return;
             if (!canAccept(dialog.getInteractionTarget().getMarket())) {
                 finishUnavailable();
                 return;
             }
             MagicBountySpec spec = bounty.getSpec();
             bounty.acceptBounty(dialog.getInteractionTarget(), spec.job_reputation_reward, spec.job_forFaction);
-            text.addPara(line("magicAccepted"));
+            accessKeyGiven = true;
+            text.addPara(line("magicAccessKey"));
             options.clearOptions();
-            options.addOption(line("leaveOption"), LEAVE_OPTION);
-            options.setShortcut(LEAVE_OPTION, Keyboard.KEY_ESCAPE, false, false, false, true);
-            done = true;
-            noContinue = false;
+            options.addOption(line("magicOpenPosting"), POSTING_OPTION);
         }
     }
 

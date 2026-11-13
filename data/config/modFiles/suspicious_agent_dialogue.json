@@ -2,13 +2,13 @@
     "barDescription": "A thin man in a worn civilian jacket sits alone with a clear view of the entrance. His knee works restlessly beneath the table. When a pair of Diable officers passes, he lowers his eyes to a TriPad that has gone dark.",
     "approachOption": "Approach the suspicious, fidgety man",
     "opening": [
-        "He shifts his TriPad aside as you approach. Beneath it, you catch a glimpse of an old access card with the photograph scratched away. \"Captain. Have a seat.\"",
+        "He shifts his TriPad aside as you approach. Beneath it, you catch a glimpse of an old access card with the \"DA\" logo scratched away. \"Captain. Have a seat.\"",
         "The man turns back his lapel just far enough to show you an IBB pin. \"Board business. I have a contract concerning the Admiralty. You won't find much about it in the public records, but that's hardly unusual around here.\"",
         "\"The engineers wanted to take the ship apart. The admirals wanted to keep it. Neither got quite what they wanted.\" He smiles briefly, then checks the entrance. \"Its present captain has made herself everybody's problem. There are credits in solving it, if you're prepared to hear the particulars.\"",
         "\"I'll be on this station for the time being... Do me a favor and don't take too long, all right? I'd rather not spend another night here.\""
     ],
     "magicOpening": [
-        "He shifts his TriPad aside as you approach. Beneath it, you catch a glimpse of an old access card with the photograph scratched away. \"Captain. Have a seat.\"",
+        "He shifts his TriPad aside as you approach. Beneath it, you catch a glimpse of an old access card with the \"DA\" logo scratched away. \"Captain. Have a seat.\"",
         "\"I have a contract concerning the Admiralty.\" He brings up a file, keeping the screen turned away. \"Tri-Tachyon got their hands on a ship that should never have left Diable space. Someone would like that corrected. Quietly, if possible.\"",
         "\"The engineers wanted to take the ship apart. The admirals wanted to keep it. Neither got quite what they wanted.\" He smiles briefly, then checks the entrance. \"Now the Corporation wants it gone, and they're willing to pay an outsider to do the job. Interested?\"",
         "\"I'll be on this station for the time being... Do me a favor and don't take too long, all right? I'd rather not spend another night here.\""
@@ -20,12 +20,9 @@
     "bountyUnavailable": "The agent checks his TriPad, then closes the file. \"This contract is no longer available, Captain.\"",
     "confirmationDescription": "Take the contract off his hands.",
     "storyPointLog": "Persuaded an IBB agent to share a restricted Diable contract",
-    "magicStoryPointLog": "Persuaded a Diable contact to share A cold plate of revenge",
-    "magicConfirmationDescription": "Take the contract off his hands.",
-    "magicRequirements": "Requires at least +%s reputation with Diable Avionics (Favorable).",
     "magicReward": "Payment on completion: %s.",
-    "magicReputation": "Reputation on completion: +%s with %s.",
-    "magicDeadline": "The contract allows %s days from acceptance to complete the job.",
-    "magicAcceptOption": "\"I'll take the contract.\"",
-    "magicAccepted": "He sends the file to your TriPad and shuts his own off. \"It's yours, Captain. You have the coordinates.\""
+    "magicReputation": "The Admiralty will look kindly on a job well done.",
+    "magicAccessKey": "He slides an access key across the table. \"Restricted listings. That'll get you in. You didn't get it from me.\"",
+    "magicOpenPosting": "Open the restricted posting",
+    "magicBriefingEnd": "You look up from your TriPad. His chair is empty."
 }

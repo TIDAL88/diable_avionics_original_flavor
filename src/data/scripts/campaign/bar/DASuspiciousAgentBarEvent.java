@@ -76,7 +76,7 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
             return false;
         }
         // The discovery rule applies the monthly 30% roll before adding the option.
-        return shouldShowAgent();
+        return useIBB() ? DAIBBGulfBarEvent.isAvailable() : DAMagicGulfBarEvent.canOfferAt(market);
     }
 
     private void stayAtMarket() {
@@ -154,9 +154,8 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
         options.clearOptions();
         options.addOption(line("contractOption"), CONTRACT_OPTION);
 
-        // Prepare the selected offer before offering to spend a story point.
-        boolean available = isBountyAvailable();
-        if (available) {
+        // Prepare the selected offer before enabling acceptance.
+        if (isBountyAvailable()) {
             try {
                 preparedBounty = createGulfOffer();
             } catch (RuntimeException | LinkageError ex) {
@@ -164,16 +163,17 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
             }
         }
 
-        if (hasContractAccess()) {
-            options.setTooltip(CONTRACT_OPTION, line("accessAlreadyPaid"));
-        } else {
-            addPaidContractOption();
+        if (ibbConversation) {
+            if (hasContractAccess()) {
+                options.setTooltip(CONTRACT_OPTION, line("accessAlreadyPaid"));
+            } else {
+                addPaidContractOption();
+            }
         }
 
         if (preparedBounty == null) {
             options.setEnabled(CONTRACT_OPTION, false);
-            options.setTooltip(CONTRACT_OPTION, !ibbConversation && !available
-                    ? DAMagicGulfBarEvent.requirementsText(dialogue()) : line("contractUnavailable"));
+            options.setTooltip(CONTRACT_OPTION, line("contractUnavailable"));
         }
         addLeaveOption();
     }
@@ -181,7 +181,7 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
     private void addPaidContractOption() {
         StoryOptionParams params = new StoryOptionParams(
                 CONTRACT_OPTION, STORY_POINT_COST, CONTRACT_OPTION, Sounds.STORY_POINT_SPEND_COMBAT,
-                line(ibbConversation ? "storyPointLog" : "magicStoryPointLog")
+                line("storyPointLog")
         );
         SetStoryOption.set(dialog, params, new BaseOptionStoryPointActionDelegate(dialog, params) {
             @Override
@@ -191,7 +191,7 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
 
             @Override
             public void createDescription(TooltipMakerAPI info) {
-                info.addPara(line(ibbConversation ? "confirmationDescription" : "magicConfirmationDescription"), 0f);
+                info.addPara(line("confirmationDescription"), 0f);
                 info.addSpacer(20f);
                 addActionCostSection(info);
             }
@@ -199,7 +199,7 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
     }
 
     private boolean hasContractAccess() {
-        return Global.getSector().getMemoryWithoutUpdate().getBoolean(ACCESS_PAID_KEY);
+        return !ibbConversation || Global.getSector().getMemoryWithoutUpdate().getBoolean(ACCESS_PAID_KEY);
     }
 
     private void openContract(boolean paid) {
@@ -232,10 +232,6 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
         }
     }
 
-    protected boolean shouldShowAgent() {
-        return useIBB() ? DAIBBGulfBarEvent.isAvailable() : DAMagicGulfBarEvent.isAvailable();
-    }
-
     protected boolean useIBB() {
         // An unavailable IBB stage does not switch the player to the standalone contract.
         return DAGulfBountyState.useIBB();
@@ -243,7 +239,7 @@ public class DASuspiciousAgentBarEvent extends BaseBarEventWithPerson {
 
     protected boolean isBountyAvailable() {
         if (ibbConversation != useIBB()) return false;
-        return ibbConversation ? shouldShowAgent() : DAMagicGulfBarEvent.canOfferAt(market);
+        return ibbConversation ? DAIBBGulfBarEvent.isAvailable() : DAMagicGulfBarEvent.canOfferAt(market);
     }
 
     protected PortsideBarEvent createGulfOffer() {

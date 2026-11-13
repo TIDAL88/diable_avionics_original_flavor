@@ -23,9 +23,11 @@ VFX
 * Plasma Capacitor Shunt: Shield colors now smoothly transition instead of abruptly changing like a light switch.
 
 Questing and Bar events:
-* From level 6, a suspicious man may appear in Diable bars with a lead on the Gulf bounty. Once you speak to him, he stays at that location so you can return later.
-* Taking the agent's contract costs 1 story point and immediately accepts the bounty.
-* Without Ship and Weapon Pack, or with IBB disabled, he offers "A cold plate of revenge" instead. This contract requires Favorable reputation (+10) or better with Diable Avionics, with no minimum fleet size or deadline. NPC fleets will leave the target alone.
+* Added a suspicious contact who may appear in Diable bars from level 6 when you meet the Gulf bounty's requirements. He offers the IBB or standalone version depending on your installed mods. Once approached, he stays at that location until you take the contract, appearing only while you remain eligible.
+* Taking the IBB contract costs 1 story point. The standalone "A cold plate of revenge" contract is free. Either option accepts its bounty immediately.
+* Without Ship and Weapon Pack, or with IBB disabled, the contact offers "A cold plate of revenge" instead. This bounty requires Favorable reputation (+10) or better with Diable Avionics.
+* "A cold plate of revenge" now features a larger Tri-Tachyon escort, stronger officers, and more S-mods for a challenge closer to the Gulf IBB bounty. Its reward has increased to 400,000 credits.
+* Removed the deadline and minimum fleet-size requirement from "A cold plate of revenge". NPC fleets will no longer attack its target.
 
 Unique Ships & Refit
 * Virtuous weapon, head, and ship-system selections now update immediately in the refit screen without requiring the player to switch ships and return.
