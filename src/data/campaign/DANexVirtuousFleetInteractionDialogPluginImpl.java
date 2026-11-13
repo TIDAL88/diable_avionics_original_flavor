@@ -1,6 +1,7 @@
 package data.campaign;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.BattleAPI;
 import com.fs.starfarer.api.campaign.CombatDamageData;
 import com.fs.starfarer.api.campaign.FleetEncounterContextPlugin;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
@@ -24,6 +25,7 @@ public class DANexVirtuousFleetInteractionDialogPluginImpl extends NexFleetInter
 
     @Override
     public void init(InteractionDialogAPI dialog) {
+        DiableLastLineFleetFactory.ensureEncounterCommander(dialog.getInteractionTarget());
         super.init(dialog);
         if (DACampaignPlugin.hasMemoryInFleet(otherFleet, "$virtuous")) {
             DASubject71DialogMusic.start();
@@ -31,9 +33,16 @@ public class DANexVirtuousFleetInteractionDialogPluginImpl extends NexFleetInter
     }
 
     @Override
+    public void optionSelected(String text, Object optionData) {
+        if (optionData == OptionId.OPEN_COMM) {
+            DiableLastLineFleetFactory.ensureEncounterCommander(dialog.getInteractionTarget());
+        }
+        super.optionSelected(text, optionData);
+    }
+
+    @Override
     public void backFromEngagement(EngagementResultAPI result) {
-        if (DACampaignPlugin.hasMemoryInFleet(otherFleet, "$virtuous")
-                && DASubject71BattleCreationPlugin.isSimulationBattleActive()) {
+        if (DASubject71BattleCreationPlugin.isSimulationBattleActive(otherFleet)) {
             DASubject71BattleCreationPlugin.restoreSimulationBackground();
             restoreOrigCaptains();
             if (origFlagship != null) {
@@ -128,8 +137,15 @@ public class DANexVirtuousFleetInteractionDialogPluginImpl extends NexFleetInter
         }
     }
 
-    public void pullFleets() {
-        pullInNearbyFleets();
+    public void refreshFleetsAfterTransfer() {
+        // Rebuild the display after the handover without recruiting nearby patrols.
+        BattleAPI battle = context.getBattle();
+        battle.join(Global.getSector().getPlayerFleet());
+        battle.genCombined();
+        battle.takeSnapshots();
+        playerFleet = battle.getPlayerCombined();
+        otherFleet = battle.getNonPlayerCombined();
+        showFleetInfo();
     }
 
     /**

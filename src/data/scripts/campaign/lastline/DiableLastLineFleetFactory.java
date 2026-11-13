@@ -53,8 +53,6 @@ public final class DiableLastLineFleetFactory {
     public static final String GUARDIAN_FLEET_MEMKEY =
             "$da_last_line_guardian";
     public static final int FLEET_VERSION = 31;
-    private static final String MIGRATION_VERSION_MEMKEY =
-            "$da_last_line_migration_version";
 
     private static final String OFFICER_CONFIG =
             "data/config/modFiles/last_line_officers.json";
@@ -196,62 +194,6 @@ public final class DiableLastLineFleetFactory {
     }
 
     /**
-     * Rebuilds a still-active classic Last Line fleet in place once per campaign.
-     * Keeping the CampaignFleetAPI object preserves quest and bounty references.
-     */
-    public static CampaignFleetAPI migrateExistingFleet(boolean keepClassicFleet) {
-        if (Global.getSector() == null) return null;
-
-        if (keepClassicFleet) {
-            return null;
-        }
-
-        syncExistingFleetState();
-
-        int migrationVersion = Global.getSector().getMemoryWithoutUpdate()
-                .getInt(MIGRATION_VERSION_MEMKEY);
-        if (migrationVersion >= FLEET_VERSION) return null;
-
-        for (LocationAPI location : Global.getSector().getAllLocations()) {
-            for (CampaignFleetAPI fleet : new ArrayList<>(
-                    location.getFleets()
-            )) {
-                if (!isActiveLastLineFleet(fleet)) continue;
-
-                if (fleet.getMemoryWithoutUpdate().getInt(FLEET_VERSION_MEMKEY)
-                        >= FLEET_VERSION) {
-                    markMigrationComplete();
-                    return null;
-                }
-
-                PersonAPI subject71 = findSubject71(fleet);
-                if (subject71 == null) {
-                    // Do not risk replacing a transferred or otherwise resolved boss.
-                    markMigrationComplete();
-                    return null;
-                }
-
-                CampaignFleetAPI flagshipFleet =
-                        createMagicFlagshipFleet(subject71);
-                FleetMemberAPI virtuous = flagshipFleet.getFlagship();
-                flagshipFleet.getFleetData().removeFleetMember(virtuous);
-
-                clearFleetMembersAndOfficers(fleet);
-                configureFleetIdentity(fleet, subject71);
-                populateFleet(fleet, subject71, virtuous);
-                applySecondInCommandLoadout(fleet);
-                finishFleet(fleet);
-                markMigrationComplete();
-                return fleet;
-            }
-        }
-
-        // Destroyed, transferred, despawned, or never present: nothing to resurrect.
-        markMigrationComplete();
-        return null;
-    }
-
-    /**
      * Creates the fixed Virtuous preset through the same flagship path used by
      * Tartiflette's classic Last Line builder. The fleet remains unspawned until
      * the handmade escorts and officers have been installed.
@@ -366,27 +308,6 @@ public final class DiableLastLineFleetFactory {
             fleet.forceSync();
             fleet.updateCounts();
         }
-    }
-
-    /** Updates an already-serialized guardian without healing prior losses. */
-    public static void upgradeGuardianFleetIfNeeded(CampaignFleetAPI fleet) {
-        if (fleet == null
-                || fleet.getMemoryWithoutUpdate().getInt(
-                FLEET_VERSION_MEMKEY
-        ) >= FLEET_VERSION
-                || !isVirtuouslessGuardian(fleet)) {
-            return;
-        }
-
-        addMissingEntries(fleet, GUARDIAN_ESCORTS);
-        configureGuardianCommander(fleet);
-        fleet.getFleetData().sort();
-        fleet.forceSync();
-        fleet.updateCounts();
-        fleet.getMemoryWithoutUpdate().set(
-                FLEET_VERSION_MEMKEY,
-                FLEET_VERSION
-        );
     }
 
     /** Removes boss-only hooks after Virtuous leaves either fleet mode. */
@@ -642,34 +563,35 @@ public final class DiableLastLineFleetFactory {
         fleet.setCommander(d1);
     }
 
-    private static void clearFleetMembersAndOfficers(CampaignFleetAPI fleet) {
-        for (FleetMemberAPI member : fleet.getFleetData().getMembersListCopy()) {
-            fleet.getFleetData().removeFleetMember(member);
-        }
-        for (OfficerDataAPI officer : fleet.getFleetData().getOfficersCopy()) {
-            fleet.getFleetData().removeOfficer(officer.getPerson());
-        }
-    }
-
-    private static boolean isActiveLastLineFleet(CampaignFleetAPI fleet) {
-        if (fleet == null || fleet.isPlayerFleet() || fleet.isDespawning()) {
-            return false;
-        }
-        if (!fleet.getMemoryWithoutUpdate().getBoolean("$virtuous")) {
-            return false;
-        }
-        if (findSubject71(fleet) != null) {
-            return true;
+    public static FleetMemberAPI findEncounterVirtuous(CampaignFleetAPI fleet) {
+        if (fleet == null || fleet.isPlayerFleet() || fleet.isDespawning()
+                || !fleet.getMemoryWithoutUpdate().getBoolean("$virtuous")
+                || fleet.getMemoryWithoutUpdate().getBoolean("$da_last_line_retiring")
+                || Global.getSector().getMemoryWithoutUpdate().getBoolean("$da_lastline_virtuous_claimed")) {
+            return null;
         }
 
         for (FleetMemberAPI member : fleet.getFleetData().getMembersListCopy()) {
             if (member.getHullSpec() != null
-                    && member.getHullSpec().getBaseHullId()
-                    .startsWith("diableavionics_virtuous")) {
-                return true;
+                    && member.getHullSpec().getBaseHullId().startsWith("diableavionics_virtuous")) {
+                return member;
             }
         }
-        return false;
+        return null;
+    }
+
+    public static void ensureEncounterCommander(SectorEntityToken target) {
+        if (!(target instanceof CampaignFleetAPI fleet)) return;
+        FleetMemberAPI virtuous = findEncounterVirtuous(fleet);
+        if (virtuous == null) return;
+
+        PersonAPI pilot = virtuous.getCaptain();
+        // Comms use the commander's local memory for the Subject 71 rules.
+        // Reuse the pilot object so a simulation's D1 identity is preserved.
+        if (pilot != null && pilot.getMemoryWithoutUpdate().getBoolean("$virtuous")
+                && fleet.getCommander() != pilot) {
+            fleet.setCommander(pilot);
+        }
     }
 
     private static PersonAPI findSubject71(CampaignFleetAPI fleet) {
@@ -707,13 +629,6 @@ public final class DiableLastLineFleetFactory {
         subject71.setPortraitSprite(ESCORT_PORTRAIT);
         Global.getLogger(DiableLastLineFleetFactory.class).info(
                 "Converted Subject 71 identity to Last Line D1"
-        );
-    }
-
-    private static void markMigrationComplete() {
-        Global.getSector().getMemoryWithoutUpdate().set(
-                MIGRATION_VERSION_MEMKEY,
-                FLEET_VERSION
         );
     }
 
@@ -788,57 +703,6 @@ public final class DiableLastLineFleetFactory {
         applySkillLevels(pilot, config.optJSONObject("officer_skills"));
         pilot.getStats().setSkipRefresh(false);
         return pilot;
-    }
-
-    /**
-     * Presentation and recovery state are mutable campaign data, so update
-     * existing Last Line fleets in place instead of rebuilding them.
-     */
-    private static void syncExistingFleetState() {
-        for (LocationAPI location : Global.getSector().getAllLocations()) {
-            for (CampaignFleetAPI fleet : location.getFleets()) {
-                if (!isActiveLastLineFleet(fleet)) continue;
-
-                fleet.getMemoryWithoutUpdate().set(
-                        NEX_AUTORESOLVE_STRENGTH_MULT_KEY,
-                        NEX_AUTORESOLVE_STRENGTH_MULT
-                );
-                fleet.getMemoryWithoutUpdate().set(NEX_NO_KEEP_SMODS_KEY, true);
-                fleet.getMemoryWithoutUpdate().set(
-                        GUARDIAN_FLEET_MEMKEY,
-                        true
-                );
-                fleet.getMemoryWithoutUpdate().set(
-                        MemFlags.FLEET_FIGHT_TO_THE_LAST,
-                        true
-                );
-                fleet.getMemoryWithoutUpdate().set(
-                        MemFlags.FLEET_INTERACTION_DIALOG_CONFIG_OVERRIDE_GEN,
-                        new LastLineFID()
-                );
-
-                PersonAPI subject71 = findSubject71(fleet);
-                if (subject71 != null) {
-                    subject71.setPersonality(Personalities.AGGRESSIVE);
-                    subject71.getStats().setSkipRefresh(true);
-                    subject71.getStats().setLevel(SUBJECT_71_LEVEL);
-                    subject71.getStats().setSkipRefresh(false);
-                }
-
-                for (FleetMemberAPI member : fleet.getFleetData().getMembersListCopy()) {
-                    PersonAPI captain = member.getCaptain();
-                    member.getVariant().removeTag(
-                            Tags.VARIANT_ALWAYS_RETAIN_SMODS_ON_SALVAGE
-                    );
-                    if (captain != null
-                            && member.getHullSpec() != null
-                            && !member.getHullSpec().getBaseHullId()
-                            .startsWith("diableavionics_virtuous")) {
-                        captain.setPortraitSprite(ESCORT_PORTRAIT);
-                    }
-                }
-            }
-        }
     }
 
     private static void applySkillLevels(PersonAPI person, JSONObject skills) {

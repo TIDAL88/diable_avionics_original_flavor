@@ -18,6 +18,7 @@ import data.campaign.special.Diableavionics_gulfLoot;
 import data.campaign.special.Diableavionics_virtuousLoot;
 import data.scripts.DAModPlugin;
 import data.scripts.DAOptionalLunaSettings;
+import data.scripts.campaign.gulf.DiableGulfBountyFleetFactory;
 import data.scripts.campaign.lastline.DiableLastLineFleetFactory;
 import data.scripts.world.systems.Diableavionics_blackSite;
 import data.scripts.world.systems.Diableavionics_fob;
@@ -55,13 +56,6 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         // relationships must only be applied once or they overwrite live diplomacy every load.
         MemoryAPI memory = sector.getMemoryWithoutUpdate();
         if (memory.getBoolean(RELATIONSHIPS_INITIALIZED_MEMKEY)) return;
-
-        // Existing DA saves predate the dedicated key. Their initialized marker proves that their
-        // starting relationships were already established, so preserve their current diplomacy.
-        if (memory.getBoolean(DAModPlugin.MEMKEY_INTIALIZED)) {
-            memory.set(RELATIONSHIPS_INITIALIZED_MEMKEY, true);
-            return;
-        }
 
         FactionAPI diableavionics = sector.getFaction("diableavionics");
         FactionAPI player = sector.getFaction(Factions.PLAYER);
@@ -222,7 +216,6 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         return virtuous;
     }
 
-    /** Adds the hidden fleet manager to Sivie and adopts legacy fleets. */
     public static void ensureLastLineFleetIndustry() {
         if (useClassicLastLineFleet()) return;
 
@@ -285,20 +278,6 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
                     true
             );
         }
-    }
-
-    /**
-     * One-time, in-place update for a classic fleet serialized by an older release.
-     */
-    public static void migrateLastLineFleetIfNeeded() {
-        CampaignFleetAPI migrated =
-                DiableLastLineFleetFactory.migrateExistingFleet(
-                        useClassicLastLineFleet()
-                );
-        if (migrated == null) return;
-
-        virtuousVariant = DiableLastLineFleetFactory.VIRTUOUS_VARIANT_ID;
-        configureVirtuousEncounter(migrated, migrated.getCommander());
     }
 
     /**
@@ -367,37 +346,9 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         }
 
         if (target != null) {
-            PersonAPI gulfCaptain = MagicCampaign.createCaptainBuilder(Factions.TRITACHYON)
-                    .setFirstName(txt("gulfFN"))
-                    .setLastName(txt("gulfLN"))
-                    .setPortraitId("da_gulf")
-                    .setGender(FullName.Gender.FEMALE)
-                    .setRankId(Ranks.SPECIAL_AGENT)
-                    .setPostId(Ranks.POST_FLEET_COMMANDER)
-                    .setPersonality(Personalities.STEADY)
-                    .setLevel(6)
-                    .setEliteSkillsOverride(0)
-                    .setSkillPreference(OfficerManagerEvent.SkillPickPreference.YES_ENERGY_YES_BALLISTIC_YES_MISSILE_YES_DEFENSE)
-                    .create();
-
-            CampaignFleetAPI gulf = MagicCampaign.createFleetBuilder()
-                    .setFleetFaction(Factions.TRITACHYON)
-                    .setFleetName(txt("gulfFleet"))
-                    .setFleetType(FleetTypes.TASK_FORCE)
-                    .setFlagshipName(txt("gulfShip"))
-                    .setFlagshipAlwaysRecoverable(true)
-                    .setFlagshipVariant("diableavionics_IBBgulf_boss")
-                    .setFlagshipAutofit(false)
-                    .setCaptain(gulfCaptain)
-                    .setMinFP(200)
-                    .setReinforcementFaction(Factions.TRITACHYON)
-                    .setQualityOverride(2f)
-                    .setAssignment(FleetAssignment.PATROL_SYSTEM)
-                    .setAssignmentTarget(target)
-                    .setSpawnLocation(target)
-                    .setIsImportant(true)
-                    .setTransponderOn(false)
-                    .create();
+            CampaignFleetAPI gulf = DiableGulfBountyFleetFactory.createFleet();
+            if (gulf == null) return;
+            MagicCampaign.spawnFleet(gulf, target, FleetAssignment.PATROL_SYSTEM, target, true, false, false);
 
             gulf.setDiscoverable(false);
             gulf.addTag(Tags.NEUTRINO);
@@ -405,6 +356,10 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
             gulf.addEventListener(new Diableavionics_gulfLoot());
 
             gulf.getMemoryWithoutUpdate().set("$gulf", true);
+            // Match MagicLib's bounty protection from the moment this existing target spawns.
+            gulf.getMemoryWithoutUpdate().set(MemFlags.FLEET_IGNORES_OTHER_FLEETS, true);
+            gulf.getMemoryWithoutUpdate().set(MemFlags.FLEET_IGNORED_BY_OTHER_FLEETS, true);
+            gulf.getMemoryWithoutUpdate().set(MemFlags.FLEET_DO_NOT_IGNORE_PLAYER, true);
         }
     }
 }

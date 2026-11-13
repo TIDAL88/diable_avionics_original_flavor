@@ -42,12 +42,14 @@ public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
         }
 
         CampaignFleetAPI targetFleet = (CampaignFleetAPI) dialog.getInteractionTarget();
-        FleetMemberAPI virtuousMember = targetFleet.getFleetData().getMemberWithCaptain(targetFleet.getCommander());
+        FleetMemberAPI virtuousMember = DiableLastLineFleetFactory.findEncounterVirtuous(targetFleet);
         if (virtuousMember == null) {
             return false;
         }
 
-        targetFleet.getFleetData().removeOfficer(targetFleet.getCommander());
+        if (virtuousMember.getCaptain() != null) {
+            targetFleet.getFleetData().removeOfficer(virtuousMember.getCaptain());
+        }
         virtuousMember.setCaptain(null);
         virtuousMember.setFlagship(false);
         virtuousMember.setVariant(
@@ -83,9 +85,9 @@ public class DASubject71_TransferVirtuous extends BaseCommandPlugin {
         context.setBattle(battle);
         if (DAModPlugin.haveNexerelin) {
             DANexVirtuousFleetInteractionDialogPluginImpl plugin = (DANexVirtuousFleetInteractionDialogPluginImpl) dialog.getPlugin();
-            plugin.pullFleets();
+            plugin.refreshFleetsAfterTransfer();
         } else if (dialog.getPlugin() instanceof DAVirtuousFleetInteractionDialogPluginImpl plugin) {
-            plugin.pullFleets();
+            plugin.refreshFleetsAfterTransfer();
         }
         return true;
     }

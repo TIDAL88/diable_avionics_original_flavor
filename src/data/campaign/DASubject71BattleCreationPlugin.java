@@ -1,6 +1,7 @@
 package data.campaign;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.LocationAPI;
 import com.fs.starfarer.api.combat.BattleCreationContext;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
@@ -11,6 +12,7 @@ import com.fs.starfarer.api.mission.MissionDefinitionAPI;
  * Combat setup shared by the normal-mode Last Line encounter and simulator.
  */
 public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
+    public static final String SIMULATION_RUNNING_KEY = "$simulationRunning";
     private static final String SIMULACRUM_BACKGROUND =
             "graphics/da/backgrounds/diableavionics_simulacrum.png";
     private static final String COMBAT_SETUP_KEY =
@@ -18,7 +20,6 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
 
     private static LocationAPI swappedLocation;
     private static String originalBackground;
-    private static BattleCreationContext simulationContext;
 
     private boolean simulation;
 
@@ -32,7 +33,7 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
             LocationAPI location
     ) {
         restoreSimulationBackground();
-        simulationContext = context;
+        context.getOtherFleet().getMemoryWithoutUpdate().set(SIMULATION_RUNNING_KEY, true);
         if (location == null) return;
 
         swappedLocation = location;
@@ -46,11 +47,13 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
         }
         swappedLocation = null;
         originalBackground = null;
-        simulationContext = null;
     }
 
-    public static boolean isSimulationBattleActive() {
-        return simulationContext != null;
+    public static boolean isSimulationBattleActive(CampaignFleetAPI fleet) {
+        // The fleet flag survives combat setup and is also consumed by the
+        // post-simulation dialog rules. Background cleanup must not disable
+        // the ship/reputation reset in backFromEngagement().
+        return fleet != null && fleet.getMemoryWithoutUpdate().getBoolean(SIMULATION_RUNNING_KEY);
     }
 
     @Override
@@ -61,7 +64,7 @@ public class DASubject71BattleCreationPlugin extends BattleCreationPluginImpl {
         context.aiRetreatAllowed = false;
         context.fightToTheLast = true;
         context.objectivesAllowed = true;
-        simulation = context == simulationContext;
+        simulation = isSimulationBattleActive(context.getOtherFleet());
         if (!simulation) {
             // Clean up any swap left behind by an interrupted simulation.
             restoreSimulationBackground();

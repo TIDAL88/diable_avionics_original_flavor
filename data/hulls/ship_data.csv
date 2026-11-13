@@ -15,7 +15,7 @@ ordnance points,min crew,max crew,number,mass,max turn rate,turn acceleration,de
 0,6,6,11,70,50,75,75,100,155,150,150,500,1600,Blizzaia,Diable Avionics,NONE,diableavionics_blizzaia,flarelauncher_active,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 0,3,3,9,45,90,180,200,200,160,75,200,1200,800,Valiant,Diable Avionics,OMNI,diableavionics_valiant,diableavionics_transit,,,,,,120,0.5,1,,,,,,,,,,,,,,,,,,,,,
-0,6,6,10,75,50,50,80,250,120,300,120,1250,1750,Raven,Diable Avionics,NONE,diableavionics_raven,diableavionics_flicker,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,6,6,10,75,50,50,80,250,120,300,120,1250,1750,Raven,Diable Avionics,NONE,diableavionics_raven,diableavionics_raven_flicker,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 0,5,5,9,65,75,150,150,300,165,100,240,1200,1000,Zephyr,Diable Avionics,OMNI,diableavionics_zephyr,diableavionics_splitter,,,,,,120,0.5,1,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 0,3,3,9,45,90,180,200,200,160,75,200,1200,800,Valiant,Diable Avionics,OMNI,diableavionics_valiantTrainer,diableavionics_transitTrainer,Trainer,,,,,120,0.5,1,,,,,,,,,,,,,,,HIDE_IN_CODEX,restricted,,,,,

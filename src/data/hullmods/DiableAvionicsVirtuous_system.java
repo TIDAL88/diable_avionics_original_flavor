@@ -20,6 +20,8 @@ import java.util.*;
 import static data.scripts.util.Diableavionics_stringsManager.txt;
 
 public class DiableAvionicsVirtuous_system extends BaseHullMod {
+    private static final ThreadLocal<Boolean> REFRESHING_REFIT = ThreadLocal.withInitial(() -> false);
+
     private final Set<String> BLOCKED_HULLMODS = new HashSet<>();
 
     {
@@ -81,6 +83,9 @@ public class DiableAvionicsVirtuous_system extends BaseHullMod {
 
     @Override
     public void applyEffectsBeforeShipCreation(HullSize hullSize, MutableShipStatsAPI stats, String id) {
+        // Refit refreshes create preview members from copies that may still lack selector hullmods.
+        if (REFRESHING_REFIT.get()) return;
+
         boolean needSync = false;
         boolean rebuild = false;
 
@@ -224,7 +229,12 @@ public class DiableAvionicsVirtuous_system extends BaseHullMod {
 
         if (needSync) {
             FleetMemberAPI member = stats.getFleetMember();
-            MiscUtilsKt.syncVariant(member, rebuild);
+            REFRESHING_REFIT.set(true);
+            try {
+                MiscUtilsKt.syncVariant(member, rebuild);
+            } finally {
+                REFRESHING_REFIT.remove();
+            }
         }
     }
 

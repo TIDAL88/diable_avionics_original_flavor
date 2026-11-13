@@ -3,23 +3,77 @@ DATE: WIP
 VERSION: Version 3.0.7 - WIP
 ===============================================================================
 
-Bugfixing
+General Bugfixing
+* Fixed nearby patrols being pulled into the encounter and announced as reinforcements when claiming the Virtuous after a simulation.
+* Moved to Starsector 0.98.5a-RC5.
+* Updated the vanilla Last Line simulation captain restoration call for Starsector 0.98.5a-RC4.
 * Fixed a very rare bug that could reset faction reputation when loading a campaign.
 * Fixed some console command bugs.
+* Prevented the Gulf from appearing in ship dealers, it is a unique ship.
+* Fixed a SIC related Last Line bug.
+* Fixed The Last Line simulator results not functioning properly after a duel.
+* Fixed a randomly assigned commander hiding Subject 71's comms and simulation options. Claiming the Virtuous now finds the ship independently of the fleet commander.
+* Fixed Virtuous shoulder distortion when joining an ongoing battle with The Last Line already deployed as an ally.
+
+QOL
+* Corrected most legacy typos and grammar errors.
 * Corrected a typo in the State support beam's description.
+
+VFX
+* Plasma Capacitor Shunt: Shield colors now smoothly transition instead of abruptly changing like a light switch.
+
+Questing and Bar events:
+* Added a suspicious contact who may appear in Diable bars from level 6 when you meet the Gulf bounty's requirements. He offers the IBB or standalone version depending on your installed mods. Once approached, he stays at that location until you take the contract, appearing only while you remain eligible.
+* Taking the IBB contract costs 1 story point. The standalone "A cold plate of revenge" contract is free. Either option accepts its bounty immediately.
+* Without Ship and Weapon Pack, or with IBB disabled, the contact offers "A cold plate of revenge" instead. This bounty requires Favorable reputation (+10) or better with Diable Avionics.
+* "A cold plate of revenge" now features a larger Tri-Tachyon escort, stronger officers, and more S-mods for a challenge closer to the Gulf IBB bounty. Its reward has increased to 400,000 credits.
+* Removed the deadline and minimum fleet-size requirement from "A cold plate of revenge". NPC fleets will no longer attack its target.
 
 Unique Ships & Refit
 * Virtuous weapon, head, and ship-system selections now update immediately in the refit screen without requiring the player to switch ships and return.
 * The Gulf's Deep Strike Conversion now updates its hull and weapon configuration immediately in the refit screen.
-* Prevented the Gulf from appearing in ship dealers, it is a unique ship.
+
+Ships
+* Gust and Mini-Gust:
+    * Assume Wing Control bugfix: Fixed the legacy blue HUD and unresponsive controls bug when a player-piloted Wanzer is destroyed or removed from combat. Control returns to the carrier, or the command shuttle if the carrier is lost.
+    * Assume Wing Control controls update: Left Alt enters a Wanzer from the carrier and also returns to the carrier while piloting a Wanzer. T switches between Wanzers, like neural link; normal Neural Link remains available on the carrier if specced.
+    * Assume Wing Control neural link compatibility: Returning from a Wanzer to a Neural Link carrier now allows linking back to the other ship with T, even if the Gust ship is the captainless one.
+* Versant: Switched combat damage marks and their glow to the Wanzer decal textures. They fit perfectly.
+* Coanda: Changed one small forward facing universal turret mount to hybrid, it was mistakenly labeled as universal, typo.
+* Hayle bugfix: Restored the Hayle's Light Flicker Core from 2 charges to 4, as stated in its tooltip.
+
+Weapons
+* Winee EMPR (modular, Hoar, and Virtuous versions): Corrected a longstanding tooltip error that incorrectly advertised shield-piercing EMP arcs. Hits on armor or hull have a 25% chance to arc to weapons and engines; shield hits do not trigger arcs. This update only corrects the description of the existing behavior.
+* Hexafire and Twin-Hexafire: Flux damage and projectile speed variation now apply once per pellet when fired, preventing doubled damage multiplication near the muzzle.
+* Virtuous - Snowblast Shotgun: Reduced base range from 700 to 650.
+* Virtuous - Grasshopper Grenade Launcher: reduced ammo capacity from 12 to 10, ammo regeneration from 0.65 to 0.5/sec, and reload batch from 6 to 5 rounds.
+* SRAB: Increased base range from 800 to 900.
+* SRAB: Projectiles are no longer affected by Missile Specialization. ECCM retains its projectile maneuverability and flare-resistance bonuses, but no longer increases speed or range. Normal energy-weapon bonuses still apply.
+* SRAB: Projectiles now collide with friendly ships instead of passing through them.
+* Micro Missile Launcher: Tripled its selection weight in Diable shop stock generation.
 
 Wanzers & Strike-crafts Descriptions
-* Added missing descriptions and tactical role labels for all currently used Wanzer weapon systems with a few hidden hints.
-* Added specialized role labels
+* Added the 25 missing weapon descriptions for Wanzers and Arbitrator strike-craft, including tactical role labels. With hints for the player.
+* Rewrote ship-system descriptions and tooltips to explain their effects:
+    * Frost - Botte Secrète.
+    * Strife - Hold Your Ground.
+    * Hoar - Gun Kata.
+    * Avalanche - Berserker.
+    * Zephyr - Aether Splitter.
+    * Warlust - Snap Drones.
+    * Arbitrator - Drop Booster.
+
+Paintjobs
+* Added the DRA paintjob for Virtuous.
+* More to come.
 
 Added Achievements
 * Added the "Duelist" achievement for winning The Last Line's simulated fleet duel. Only the simulation awards it because of the DP limitation.
 * Added the "Divide and Conquer" achievement for defeating the unknown forces at FIRST RELAY.
+
+Removal of Legacy Save Compatibility
+* Big code cleanup
+
 ===============================================================================
 DATE: 25/08/2026
 VERSION: Version 3.0.6 - "3.0.5 is missing"

@@ -3,15 +3,21 @@ package data.scripts.weapons;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.EveryFrameWeaponEffectPlugin;
 import com.fs.starfarer.api.combat.WeaponAPI;
+import com.fs.starfarer.api.combat.WeaponEffectPluginWithInit;
 import org.magiclib.util.MagicRender;
 import java.awt.Color;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
 import org.lwjgl.util.vector.Vector2f;
 
-public class Diableavionics_srabFire implements EveryFrameWeaponEffectPlugin {
+public class Diableavionics_srabFire implements EveryFrameWeaponEffectPlugin, WeaponEffectPluginWithInit {
         
     private boolean runOnce=false, hidden=false;
+
+    @Override
+    public void init(WeaponAPI weapon) {
+        Diableavionics_SrabStats.install(weapon.getShip());
+    }
     
     @Override
     public void advance(float amount, CombatEngineAPI engine, WeaponAPI weapon) {
@@ -19,6 +25,7 @@ public class Diableavionics_srabFire implements EveryFrameWeaponEffectPlugin {
         if(engine.isPaused() || weapon.getShip().getOriginalOwner()==-1){return;}
         
         if(!runOnce){
+            Diableavionics_SrabStats.install(weapon.getShip());
             runOnce=true;
             if(weapon.getSlot().isHidden()){
                 hidden=true;

@@ -27,10 +27,6 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
     public static final String COMPLETE_MEMKEY = "$da_gulf_part2_complete";
     public static final String SITE_MEMKEY = "$da_gulf_part2_site";
     public static final String DEFENDER_MEMKEY = "$da_gulf_part2_defenders";
-    public static final String LANDMARK_PLACEMENT_MEMKEY = "$da_gulf_part2_landmark_v1";
-
-    /** Legacy randomly-generated relay ID; retained only for save migration and cleanup. */
-    public static final String SITE_ID = "diableavionics_gulf_part2_site";
     public static final String ENEMY_FACTION_ID = "diableavionics_unknown";
     public static final String ENEMY_PORTRAIT = "graphics/da/portraits/scary.png";
     public static final String GULF_BASE_HULL_ID = "diableavionics_IBBgulf";
@@ -88,21 +84,11 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
         if (site == null) return;
 
         Global.getSector().getMemoryWithoutUpdate().set(STARTED_MEMKEY, true);
-        Global.getSector().getMemoryWithoutUpdate().set(LANDMARK_PLACEMENT_MEMKEY, true);
         configureActiveSite(site);
-        removeLegacyRelay();
         addIntel(site);
     }
 
-    /**
-     * Save migration for the test builds that targeted a randomly generated relay. Existing intel is
-     * retargeted to the permanent Black Site station and only the obsolete relay entity is removed.
-     */
-    public static void ensureLandmarkPlacement() {
-        syncBlackSiteStation();
-    }
-
-    private static void syncBlackSiteStation() {
+    public static void syncBlackSiteStation() {
         if (Global.getSector() == null) return;
 
         ensureIntelScriptsRegistered();
@@ -111,23 +97,18 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
         boolean started = Global.getSector().getMemoryWithoutUpdate().getBoolean(STARTED_MEMKEY);
         boolean complete = Global.getSector().getMemoryWithoutUpdate().getBoolean(COMPLETE_MEMKEY);
 
-        removeLegacyRelay();
         if (station == null) return;
 
-        // Keep the system ambience continuous when an existing save opens First Relay's dialog.
         Diableavionics_blackSite.applyAmbienceMusic(station);
 
         if (started && !complete) {
             configureActiveSite(station);
-            retargetExistingIntel(station);
-            Global.getSector().getMemoryWithoutUpdate().set(LANDMARK_PLACEMENT_MEMKEY, true);
         } else if (complete) {
             configureCompletedSite(station);
         } else {
             station.addTag(Tags.HAS_INTERACTION_DIALOG);
             station.getMemoryWithoutUpdate().unset(SITE_MEMKEY);
             station.getMemoryWithoutUpdate().unset(MemFlags.ENTITY_MISSION_IMPORTANT);
-            clearLegacySalvageState(station);
             DiableGulfPart2FleetFactory.removeFleet(station);
         }
     }
@@ -140,33 +121,13 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
         site.addTag(Tags.HAS_INTERACTION_DIALOG);
         site.getMemoryWithoutUpdate().set(SITE_MEMKEY, true);
         site.getMemoryWithoutUpdate().set(MemFlags.ENTITY_MISSION_IMPORTANT, true);
-        // Save migration: Part II originally used the vanilla salvage/probe defender backend.
-        // Clear every trace of that backend before the normal campaign fleet is created.
-        clearLegacySalvageState(site);
     }
 
     private static void configureCompletedSite(SectorEntityToken site) {
         site.addTag(Tags.HAS_INTERACTION_DIALOG);
         site.getMemoryWithoutUpdate().unset(SITE_MEMKEY);
         site.getMemoryWithoutUpdate().unset(MemFlags.ENTITY_MISSION_IMPORTANT);
-        clearLegacySalvageState(site);
         DiableGulfPart2FleetFactory.removeFleet(site);
-    }
-
-    private static void clearLegacySalvageState(SectorEntityToken site) {
-        site.getMemoryWithoutUpdate().unset(MemFlags.SALVAGE_DEFENDER_OVERRIDE);
-        site.getMemoryWithoutUpdate().unset(MemFlags.SALVAGE_SPEC_ID_OVERRIDE);
-        site.getMemoryWithoutUpdate().unset("$hasDefenders");
-        site.getMemoryWithoutUpdate().unset("$defenderFleet");
-        site.getMemoryWithoutUpdate().unset("$defenderFleetDefeated");
-    }
-
-    private static void retargetExistingIntel(SectorEntityToken site) {
-        for (IntelInfoPlugin intel : Global.getSector().getIntelManager().getIntel(DiableGulfPart2Intel.class)) {
-            if (intel instanceof DiableGulfPart2Intel) {
-                ((DiableGulfPart2Intel) intel).setSite(site);
-            }
-        }
     }
 
     private static void ensureIntelScriptsRegistered() {
@@ -176,18 +137,6 @@ public class DiableGulfPart2Intel extends BaseIntelPlugin {
                 Global.getSector().addScript((DiableGulfPart2Intel) intel);
             }
         }
-    }
-
-    private static void removeLegacyRelay() {
-        SectorEntityToken legacy = Global.getSector().getEntityById(SITE_ID);
-        if (legacy != null && legacy.getContainingLocation() != null) {
-            legacy.getContainingLocation().removeEntity(legacy);
-        }
-    }
-
-    private void setSite(SectorEntityToken site) {
-        this.site = site;
-        this.systemName = site.getStarSystem() == null ? "an unknown system" : site.getStarSystem().getName();
     }
 
     public static boolean playerHasGulf() {

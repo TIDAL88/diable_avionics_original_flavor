@@ -39,9 +39,8 @@ public class Diableavionics_virtuousLoot implements FleetEventListener {
     public void reportBattleOccurred(CampaignFleetAPI fleet, CampaignFleetAPI primaryWinner, BattleAPI battle) {
         boolean classicMode = DiableavionicsGen.useClassicLastLineFleet();
 
-        // After the simulation claim this listener is normally removed. Keep
-        // the guard for older serialized fleets: escort losses are handled by
-        // Sivie's industry and can never count as another Virtuous death.
+        // Escort losses after the claim belong to Sivie's support system
+        // and must never produce another Virtuous reward.
         if (!classicMode && Global.getSector().getMemoryWithoutUpdate().getBoolean(
                 VIRTUOUS_CLAIMED_MEMKEY
         )) {

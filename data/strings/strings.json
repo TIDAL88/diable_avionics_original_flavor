@@ -14,8 +14,8 @@
 				"percent":"percent",
 				
 				"slash":"SLASH!",
-				"gunKata":"Dispaching hostiles",
-				"assumeControl":"Improved fighter performances",
+				"gunKata":"Dispatching hostiles",
+				"assumeControl":"Improved fighter performance",
 				"berserker":"Berserker level",
 				"booster":" top speed",
 				"damper0":"Inertia Dampened",
@@ -24,15 +24,15 @@
 				"dakka":"Holding ground",
 				"drift":"Phase Drift in progress",
 				"evasion":"Mobility boost",
-				"refit1":"% fighters replacement time",
+				"refit1":"% fighter replacement time",
 				"refit2":"% carrier replacement rate usage",
 				"redirection1":"Weapons damage output +",
 				"redirection2":"Weapons flux use -",
 				"redirection3":"Accuracy -",
 				"redirection4":" degrees",
-				"range1":" fighters range",
+				"range1":" fighter range",
 				"range2":"% carrier speed",
-				"quantum":"Disrupting missiles guidance",
+				"quantum":"Disrupting missile guidance",
 				"repair":"Module damage taken: ",
 				"shield":"Shield strength increased by ",
 				"transit1":"Top speed increased by ",
@@ -78,7 +78,7 @@
                 "hm_warning":"WARNING",
                 "hm_noBays":"This ship does not have standard fighter bays.",
 				"hm_builtin":"This ship is already equipped with this hullmod.",
-                "hm_cramped_0":"Expanded Missiles Rack",
+                "hm_cramped_0":"Expanded Missile Racks",
                 "hm_cramped_1":"Expanded Magazines",
                 "hm_cramped_2":"Converted Hangar",
                 "hm_selector_0":"Automatic fire mode",
@@ -111,7 +111,7 @@
 
                 "star_A":"86 Rn",
                 "star_A_star_1":"Anchor Beta",
-                "star_A_station_1":"Forward Operation Base",
+                "star_A_station_1":"Forward Operating Base",
                 "star_A_jp_0":"86 Rn Access",
 
                 "star_B":"99 Es",
@@ -138,6 +138,7 @@
 				"virtuousShip":"00000000",
 
 				"wanzerLinkSubsystemName": "Assume Wing Control",
+				"wanzerSwitchSubsystemName": "Switch Wanzer",
 				"wanzerLinkedSubsystemName": "Return Wing Control",
 
 				"wanzerBurstSubsystemName": "Tactical Disruptor"

@@ -33,8 +33,6 @@ public final class DiableGulfPart2FleetFactory {
     private static final String FLEET_NAME = "Unknown";
 
     private static final float SPAWN_DISTANCE = 850f;
-    private static final String FLEET_VERSION_MEMKEY = "$da_gulf_part2_fleet_version";
-    private static final int FLEET_VERSION = 3;
     private static final String OFFICER_CONFIG =
             "data/config/modFiles/gulf_part2_officers.json";
     private static final String STATION_CAPTAIN_KEY = "station";
@@ -121,14 +119,13 @@ public final class DiableGulfPart2FleetFactory {
         }
 
         CampaignFleetAPI existing = findFleet(site);
-        if (isUsable(existing) && isCurrentVersion(existing)) {
+        if (isUsable(existing)) {
             existing.setName(FLEET_NAME);
             site.getMemoryWithoutUpdate().set(SITE_FLEET_MEMKEY, existing);
             prepareForDialog(existing);
             return existing;
         }
 
-        // Also clears an old placeholder composition or an interrupted test encounter.
         removeFleet(site);
 
         CampaignFleetAPI fleet = Global.getFactory().createEmptyFleet(
@@ -243,7 +240,6 @@ public final class DiableGulfPart2FleetFactory {
     }
 
     private static void configureMemory(CampaignFleetAPI fleet) {
-        fleet.getMemoryWithoutUpdate().set(FLEET_VERSION_MEMKEY, FLEET_VERSION);
         fleet.getMemoryWithoutUpdate().set(DiableGulfPart2Intel.DEFENDER_MEMKEY, true);
         fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_MAKE_HOSTILE, true);
         fleet.getMemoryWithoutUpdate().set(MemFlags.MEMORY_KEY_MAKE_AGGRESSIVE, true);
@@ -383,12 +379,6 @@ public final class DiableGulfPart2FleetFactory {
                 && !fleet.isEmpty()
                 && !fleet.isDespawning()
                 && fleet.getContainingLocation() != null;
-    }
-
-    private static boolean isCurrentVersion(CampaignFleetAPI fleet) {
-        return fleet != null
-                && fleet.getMemoryWithoutUpdate().getInt(FLEET_VERSION_MEMKEY)
-                == FLEET_VERSION;
     }
 
     private static void applySecondInCommandLoadout(CampaignFleetAPI fleet) {
