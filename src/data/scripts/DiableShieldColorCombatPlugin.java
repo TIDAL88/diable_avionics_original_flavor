@@ -74,6 +74,8 @@ public class DiableShieldColorCombatPlugin extends BaseEveryFrameCombatPlugin {
                 continue;
             }
 
+            if (DACarinaSentinelVisuals.isCarina(ship)) continue;
+
             if (ship.getVariant() != null
                     && ship.getVariant().hasHullMod(VIRTUOUS_CITADEL_HULLMOD)
                     && ship.getSystem() != null

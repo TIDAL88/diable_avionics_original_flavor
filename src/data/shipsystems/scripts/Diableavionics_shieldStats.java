@@ -46,6 +46,10 @@ public class Diableavionics_shieldStats extends BaseShipSystemScript {
                 Math.round(from.getAlpha() + (to.getAlpha() - from.getAlpha()) * level));
     }
 
+    public static boolean isShieldColorEffectActive(ShipAPI ship) {
+        return !ship.getListeners(ShieldColorFadeListener.class).isEmpty();
+    }
+
     private static final class ShieldColorFadeListener implements AdvanceableListener {
 
         private final ShipAPI ship;

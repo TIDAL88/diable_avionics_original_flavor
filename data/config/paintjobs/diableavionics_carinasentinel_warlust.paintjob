@@ -1,0 +1,17 @@
+{
+  "engines": {
+    "color": [
+      180,
+      230,
+      250,
+      200
+    ],
+    "contrailColor": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "glowSizeMult": 1
+  }
+}

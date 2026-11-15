@@ -64,7 +64,11 @@ Wanzers & Strike-crafts Descriptions
     * Arbitrator - Drop Booster.
 
 Paintjobs
+* Carina Sentinel: Added custom engine exhaust and shield visuals. Ship performance and shield stats are unchanged.
+* Carina Sentinel exhaust continues in orange while a ship system is on and returns to its normal idle smoke when the system switches off.
+* Versant's Carina Sentinel exhaust bursts orange when entering transit mode, keeps a faint orange trail during transit, and returns to its normal idle smoke outside transit mode.
 * Added the DRA paintjob for Virtuous.
+* Added Carina Sentinel paintjobs for 40 hulls and configurations, with matching weapon sprites where available.
 * More to come.
 
 Added Achievements
