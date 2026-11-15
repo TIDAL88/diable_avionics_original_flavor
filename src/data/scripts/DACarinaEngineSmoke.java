@@ -23,7 +23,15 @@ final class DACarinaEngineSmoke {
     private boolean versantInitialized;
     private boolean transitWasOn;
     private boolean transitEntryPending;
-
+    //constants that can be reused to avoids gc churns
+    private static final Color VENT = new Color(232, 165, 253, 120);
+    private static final Color SYSTEM = new Color(255, 184, 158, 25);
+    private static final Color SYSTEM_IDLE = new Color(255, 184, 158, 40);
+    private static final Color TRANSIT_IDLE = new Color(255, 184, 158, 15);
+    private static final Color BOOST = new Color(162, 195, 255, 70);
+    private static final Color DEFAULT = new Color(162, 200, 253, 120);
+    private static final Vector2f Location = new Vector2f();
+    private static final Vector2f Velocity = new Vector2f();
     static boolean isVersant(ShipAPI ship) {
         return ship.getHullSpec() != null
                 && ("diableavionics_versant".equals(ship.getHullSpec().getHullId())
@@ -124,6 +132,7 @@ final class DACarinaEngineSmoke {
         private final IntervalUtil interval;
         private int ticks;
 
+
         Burst(Profile profile, int limit, float minInterval, float maxInterval) {
             this.profile = profile;
             this.limit = limit;
@@ -151,30 +160,31 @@ final class DACarinaEngineSmoke {
         float spread = 2f + 24f * flux, length = 30f + 24f * flux;
         float duration = 0.5f, growth = 3f;
         int count = 2;
-        Color color = new Color(162, 200, 253, 120);
+        //use constants instead of allocating a new color object per call
+        Color color = DEFAULT;
         switch (profile) {
             case SYSTEM_IDLE:
                 min = 12f; range = 18f; spread = 40f; length = 35f;
                 duration = 0.75f; growth = 2f; count = 1;
-                color = new Color(255, 184, 158, 40);
+                color = SYSTEM_IDLE;
                 break;
             case TRANSIT_IDLE:
                 min = 6f; range = 8f; spread = 7f; length = 25f;
                 duration = 0.65f; growth = 2.5f; count = 1;
-                color = new Color(255, 184, 158, 15);
+                color = TRANSIT_IDLE;
                 break;
             case VENT:
-                color = new Color(232, 165, 253, 120);
+                color = VENT;
                 break;
             case BOOST:
                 min = 15f; range = 22f; spread = 7f; length = 85f;
                 duration = 0.75f; count = 3;
-                color = new Color(162, 195, 255, 70);
+                color = BOOST;
                 break;
             case SYSTEM:
                 min = 25f; range = 35f; spread = 30f; length = 140f;
                 duration = 2f; growth = 3.5f; count = 3;
-                color = new Color(255, 184, 158, 25);
+                color = SYSTEM;
                 break;
             default:
                 break;
@@ -186,14 +196,16 @@ final class DACarinaEngineSmoke {
             double theta = Math.toRadians(angle + (Math.random() - 0.5) * spread);
             float distance = (float) Math.random() * length;
             float x = (float) Math.cos(theta) * distance, y = (float) Math.sin(theta) * distance;
-            Vector2f location = new Vector2f(exhaust.getLocation().x + x, exhaust.getLocation().y + y);
-            Vector2f velocity = new Vector2f(ship.getVelocity().x + x, ship.getVelocity().y + y);
+            //likewise avoid new vector allocations
+            Location.set(exhaust.getLocation().x+x,exhaust.getLocation().y+y);
+            Velocity.set(ship.getVelocity().x + x, ship.getVelocity().y + y);
             // Apply randomized drift independently of the narrow emission cone.
             double driftAngle = Math.random() * Math.PI * 2;
             float driftRadius = (float) Math.sqrt(Math.random()) * length * 0.5f;
-            velocity.x += Math.cos(driftAngle) * driftRadius;
-            velocity.y += Math.sin(driftAngle) * driftRadius;
-            engine.addNebulaParticle(location, velocity, size, growth, 0.1f, 0f, duration, color);
+            // explicit cast instead of implict
+            Velocity.x += (float) (Math.cos(driftAngle) * driftRadius);
+            Velocity.y += (float) (Math.sin(driftAngle) * driftRadius);
+            engine.addNebulaParticle(Location, Velocity, size, growth, 0.1f, 0f, duration, color);
         }
     }
 }

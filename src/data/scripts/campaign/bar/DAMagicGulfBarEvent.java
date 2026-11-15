@@ -39,7 +39,7 @@ public class DAMagicGulfBarEvent extends BaseBarEvent {
         if (DAGulfBountyState.useIBB()) return false;
         MagicBountyCoordinator coordinator = MagicBountyCoordinator.getInstance();
         MagicBountySpec spec = MagicBountyLoader.getBountyData(BOUNTY_ID);
-        if (coordinator == null || spec == null || !"$gulf".equals(spec.existing_target_memkey)) return false;
+        if (spec == null || !"$gulf".equals(spec.existing_target_memkey)) return false;
         if (coordinator.getCompletedBounties().contains(BOUNTY_ID)) return false;
         ActiveBounty active = coordinator.getActiveBounty(BOUNTY_ID);
         if (active != null && active.getStage() != ActiveBounty.Stage.NotAccepted) return false;
@@ -147,7 +147,7 @@ public class DAMagicGulfBarEvent extends BaseBarEvent {
                 return;
             }
             MagicBountySpec spec = bounty.getSpec();
-            bounty.acceptBounty(dialog.getInteractionTarget(), spec.job_reputation_reward, spec.job_forFaction);
+            bounty.acceptBounty(dialog.getInteractionTarget(),150000F, spec.job_reputation_reward, spec.job_forFaction);
             accessKeyGiven = true;
             text.addPara(line("magicAccessKey"));
             options.clearOptions();

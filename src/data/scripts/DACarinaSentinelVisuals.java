@@ -6,7 +6,6 @@ import com.fs.starfarer.api.combat.ShipEngineControllerAPI.ShipEngineAPI;
 import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import data.shipsystems.scripts.Diableavionics_shieldStats;
-import org.lwjgl.util.vector.Vector2f;
 import org.magiclib.paintjobs.MagicPaintjobManager;
 import org.magiclib.paintjobs.MagicPaintjobSpec;
 
@@ -23,15 +22,27 @@ public class DACarinaSentinelVisuals extends BaseEveryFrameCombatPlugin {
     static final Color SHIELD_INNER = new Color(171, 226, 255, 75);
     static final Color ENGINE_COLOR = new Color(180, 230, 250, 200);
     private CombatEngineAPI engine;
-
+    // must be cleaned every time to prevent gc leaks
+    private static final IdentityHashMap<ShipAPI,Boolean> eligibleForPaintjob = new IdentityHashMap<>();
     public static boolean isCarina(ShipAPI ship) {
         if (ship == null || ship.getVariant() == null) return false;
+        if (eligibleForPaintjob.containsKey(ship)) return eligibleForPaintjob.get(ship);
         MagicPaintjobSpec paintjob = MagicPaintjobManager.getCurrentShipPaintjob(ship.getVariant());
-        return paintjob != null && FAMILY.equals(paintjob.getPaintjobFamily());
+        //avoid repetitive lookups by caching eligibility once
+        if (paintjob != null && FAMILY.equals(paintjob.getPaintjobFamily())){
+            eligibleForPaintjob.put(ship,true);
+            return true;
+        }
+        else{
+            eligibleForPaintjob.put(ship,false);
+            return false;
+        }
     }
 
     @Override
     public void init(CombatEngineAPI engine) {
+        //cleared once per battle to prevent gc leaks
+        eligibleForPaintjob.clear();
         this.engine = engine;
     }
 
