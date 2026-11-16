@@ -147,7 +147,7 @@ public class DAMagicGulfBarEvent extends BaseBarEvent {
                 return;
             }
             MagicBountySpec spec = bounty.getSpec();
-            bounty.acceptBounty(dialog.getInteractionTarget(),150000F, spec.job_reputation_reward, spec.job_forFaction);
+            bounty.acceptBounty(dialog.getInteractionTarget(), spec.job_reputation_reward, spec.job_forFaction);
             accessKeyGiven = true;
             text.addPara(line("magicAccessKey"));
             options.clearOptions();
