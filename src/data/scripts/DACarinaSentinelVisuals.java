@@ -22,27 +22,14 @@ public class DACarinaSentinelVisuals extends BaseEveryFrameCombatPlugin {
     static final Color SHIELD_INNER = new Color(171, 226, 255, 75);
     static final Color ENGINE_COLOR = new Color(180, 230, 250, 200);
     private CombatEngineAPI engine;
-    // must be cleaned every time to prevent gc leaks
-    private static final IdentityHashMap<ShipAPI,Boolean> eligibleForPaintjob = new IdentityHashMap<>();
     public static boolean isCarina(ShipAPI ship) {
         if (ship == null || ship.getVariant() == null) return false;
-        if (eligibleForPaintjob.containsKey(ship)) return eligibleForPaintjob.get(ship);
         MagicPaintjobSpec paintjob = MagicPaintjobManager.getCurrentShipPaintjob(ship.getVariant());
-        //avoid repetitive lookups by caching eligibility once
-        if (paintjob != null && FAMILY.equals(paintjob.getPaintjobFamily())){
-            eligibleForPaintjob.put(ship,true);
-            return true;
-        }
-        else{
-            eligibleForPaintjob.put(ship,false);
-            return false;
-        }
+        return paintjob != null && FAMILY.equals(paintjob.getPaintjobFamily());
     }
 
     @Override
     public void init(CombatEngineAPI engine) {
-        //cleared once per battle to prevent gc leaks
-        eligibleForPaintjob.clear();
         this.engine = engine;
     }
 
@@ -50,7 +37,10 @@ public class DACarinaSentinelVisuals extends BaseEveryFrameCombatPlugin {
     public void advance(float amount, List<InputEventAPI> events) {
         if (engine == null || engine.isPaused()) return;
         for (ShipAPI ship : engine.getShips()) {
-            if (!ship.isAlive() || !isCarina(ship)) continue;
+            // Fighters may inherit the carrier's paintjob after their first combat frame.
+            boolean carina = ship.isAlive() && isCarina(ship);
+            DACarinaMissilePaintjobs.updateLoaded(ship, carina);
+            if (!carina) continue;
             State state = (State) ship.getCustomData().get(STATE_KEY);
             if (state == null) {
                 state = new State(ship);
@@ -186,6 +176,7 @@ public class DACarinaSentinelVisuals extends BaseEveryFrameCombatPlugin {
 
         @Override
         public void cleanup() {
+            DACarinaMissilePaintjobs.updateLoaded(ship, false);
             originalGlow.forEach(EngineSlotAPI::setGlowSizeMult);
             ship.removeCustomData(STATE_KEY);
         }
