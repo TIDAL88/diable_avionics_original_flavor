@@ -61,7 +61,7 @@
     {
       "id": "WS0004",
       "size": "SMALL",
-      "type": "UNIVERSAL",
+      "type": "HYBRID",
       "mount": "TURRET",
       "arc": 90,
       "angle": -15,

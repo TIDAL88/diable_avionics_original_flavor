@@ -19,9 +19,6 @@ import java.util.Map;
 /**
  * Cosmetic-only addon hullmod for Diable Avionics ships.
  *
- * Uses the legacy save-compatible hullmod id as the main hullmod:
- * abyss_diable_afterimage_suite
- *
  * Adds a removable refit-screen mode selector hullmod:
  * - abyss_diable_afterimage_mode_red
  * - abyss_diable_afterimage_mode_blue

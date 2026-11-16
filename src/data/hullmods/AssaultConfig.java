@@ -44,7 +44,7 @@ public class AssaultConfig extends BaseHullMod {
         tooltip.addSectionHeading("Assault Configuration", Alignment.MID, pad);
 
         tooltip.addPara("Reduces the OP cost of all small and medium weapons by 2. " +
-                        "Increases top speed by 15 su and weapon rate of fire by 20%%, also reduce flux cost by 20%%.", pad,
+                        "Increases top speed by 15 su and weapon rate of fire by 20%%, also reduces flux cost by 20%%.", pad,
                 Misc.getHighlightColor(),
                 "2", "15 su", "30%", "30%");
 

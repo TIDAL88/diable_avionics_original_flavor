@@ -3,7 +3,7 @@
 	"id":"diableavionics_srab",
 	"type":"ENERGY",
 	"size":"MEDIUM",
-	"displayArcRadius":700,
+	"displayArcRadius":900,
 	"turretSprite":"graphics/da/weapons/diableavionics_srab_turret_base.png",
 	"turretGunSprite":"graphics/da/weapons/diableavionics_srab_turret_recoil.png",
 	"turretGlowSprite":"graphics/da/weapons/diableavionics_srab_turret_glow.png",		

@@ -4,7 +4,6 @@ import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.impl.MusicPlayerPluginImpl;
 import com.fs.starfarer.api.impl.campaign.DerelictShipEntityPlugin;
-import com.fs.starfarer.api.impl.campaign.GateEntityPlugin;
 import com.fs.starfarer.api.impl.campaign.ids.*;
 import com.fs.starfarer.api.impl.campaign.procgen.NebulaEditor;
 import com.fs.starfarer.api.impl.campaign.procgen.StarSystemGenerator;
@@ -229,19 +228,8 @@ public class Diableavionics_blackSite {
             gateOrbitAngle += 360f;
         }
 
-        SectorEntityToken existing = system.getEntityById(RUPTURED_GATE_ID);
-        CustomCampaignEntityAPI gate;
-        if (existing instanceof CustomCampaignEntityAPI
-                && RUPTURED_GATE_TYPE.equals(existing.getCustomEntityType())) {
-            gate = (CustomCampaignEntityAPI) existing;
-        } else {
-            if (existing != null) {
-                if (existing.getCustomPlugin() instanceof GateEntityPlugin) {
-                    existing.getMemoryWithoutUpdate().unset(GateEntityPlugin.GATE_SCANNED);
-                    GateEntityPlugin.getGateData().scanned.remove(existing);
-                }
-                system.removeEntity(existing);
-            }
+        SectorEntityToken gate = system.getEntityById(RUPTURED_GATE_ID);
+        if (gate == null) {
             gate = system.addCustomEntity(
                     RUPTURED_GATE_ID,
                     "Ruptured Gate",
@@ -355,9 +343,7 @@ public class Diableavionics_blackSite {
     }
 
     /**
-     * Builds a layered, visual-only accretion flow from vanilla ring textures.
-     * Known entities are rebuilt so old saves receive palette/layout revisions
-     * without accumulating duplicate bands each time the game is loaded.
+     * layered, visual-only flow from vanilla ring textures :)
      */
     private void rebuildBurnedSystemVisuals(
             StarSystemAPI system,

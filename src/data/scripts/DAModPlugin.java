@@ -4,15 +4,12 @@ import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.ModSpecAPI;
 import com.fs.starfarer.api.PluginPick;
-import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.CampaignPlugin;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.RepLevel;
-import com.fs.starfarer.api.campaign.StarSystemAPI;
 import com.fs.starfarer.api.combat.MissileAIPlugin;
 import com.fs.starfarer.api.combat.MissileAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.missions.hub.BaseHubMission;
 import com.fs.starfarer.api.impl.campaign.world.GateHaulerLocation;
 import data.campaign.DACampaignPlugin;
@@ -45,7 +42,6 @@ public class DAModPlugin extends BaseModPlugin {
     public static final String VIRTUOUS_MISSILE_ID = "diableavionics_virtuousmissile";
     public static final String DEEPSTRIKE_ID = "diableavionics_deepStrikeM";
 
-    public static final String MEMKEY_VERSION = "$diableavionics_version";
     public static final String MEMKEY_INTIALIZED = "$diableavionics_initialized";
     public static final String MEMKEY_SPECIAL_FLEETS_INITIALIZED = "$diableavionicsSpecial";
 
@@ -100,7 +96,6 @@ public class DAModPlugin extends BaseModPlugin {
         }
         DiableavionicsGen.ensureLastLineFleetIndustry();
         Global.getSector().getMemoryWithoutUpdate().set(MEMKEY_SPECIAL_FLEETS_INITIALIZED, true);
-        Global.getSector().getMemoryWithoutUpdate().set(MEMKEY_VERSION, 2.84);
         setupGulfPart2();
     }
 
@@ -125,41 +120,7 @@ public class DAModPlugin extends BaseModPlugin {
         }
 
         DiableavionicsGen.ensureLastLineFleetIndustry();
-        DiableavionicsGen.migrateLastLineFleetIfNeeded();
 
-        if (!Global.getSector().getMemoryWithoutUpdate().contains(MEMKEY_VERSION)
-                || ((Double) Global.getSector().getMemoryWithoutUpdate().get(MEMKEY_VERSION)) < 2.80) {
-
-            for (StarSystemAPI system : Global.getSector().getStarSystems()) {
-                for (CampaignFleetAPI fleet : system.getFleets()) {
-                    for (FleetMemberAPI member : fleet.getMembersWithFightersCopy()) {
-                        if (member.getVariant().hasHullMod("diableavionics_avionics")) {
-                            member.getVariant().removeMod("diableavionics_avionics");
-                        }
-                    }
-                }
-            }
-
-            Global.getSector().getMemoryWithoutUpdate().set(MEMKEY_VERSION, 2.80);
-        }
-
-        if (!Global.getSector().getMemoryWithoutUpdate().contains(MEMKEY_VERSION)
-                || ((Double) Global.getSector().getMemoryWithoutUpdate().get(MEMKEY_VERSION)) < 2.82) {
-
-            for (StarSystemAPI system : Global.getSector().getStarSystems()) {
-                for (CampaignFleetAPI fleet : system.getFleets()) {
-                    for (FleetMemberAPI member : fleet.getMembersWithFightersCopy()) {
-                        if (member.getVariant().getSMods().contains("diableavionics_avionics")
-                                || member.getVariant().getPermaMods().contains("diableavionics_avionics")) {
-                            member.getVariant().removeMod("diableavionics_avionics");
-                            member.getVariant().removePermaMod("diableavionics_avionics");
-                        }
-                    }
-                }
-            }
-
-            Global.getSector().getMemoryWithoutUpdate().set(MEMKEY_VERSION, 2.82);
-        }
     }
 
 
@@ -172,7 +133,7 @@ public class DAModPlugin extends BaseModPlugin {
         }
 
         DiableGulfPart2Intel.ensureStarted();
-        DiableGulfPart2Intel.ensureLandmarkPlacement();
+        DiableGulfPart2Intel.syncBlackSiteStation();
         if (!Global.getSector().getMemoryWithoutUpdate().getBoolean(DiableGulfPart2Intel.STARTED_MEMKEY)
                 && !Global.getSector().getMemoryWithoutUpdate().getBoolean(DiableGulfPart2Intel.COMPLETE_MEMKEY)
                 && !Global.getSector().hasTransientScript(DiableGulfPart2TriggerScript.class)) {

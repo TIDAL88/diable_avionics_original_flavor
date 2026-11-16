@@ -8,3 +8,6 @@ Desktop.ini
 __MACOSX/
 ._*
 dist/
+/tools/
+/docs/
+/lib/

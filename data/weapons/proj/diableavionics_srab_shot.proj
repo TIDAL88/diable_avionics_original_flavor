@@ -6,7 +6,7 @@
 	"size":[19,33],	
 	"center":[9.5,16.5],
 	"collisionRadius":16,
-	"collisionClass":"MISSILE_NO_FF",
+	"collisionClass":"MISSILE_FF",
 	"explosionColor":[182,36,243,100],
 	"explosionRadius":100,
 	"maxFlightTime":3,

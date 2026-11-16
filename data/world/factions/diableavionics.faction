@@ -225,6 +225,10 @@
         ],
     },
 
+    "weaponSellFrequency":{
+        "diableavionics_micromissile":3,
+    },
+
     "knownWeapons":{
         "tags":[
             #"base_bp",
@@ -337,7 +341,6 @@
             "shielded_holds",
             "recovery_shuttles",
             "ecm",
-            "diableavionics_mount",
             "diableavionics_avionics",
             "assault_configuration",
             "artillery_configuration"

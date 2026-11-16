@@ -1,15 +1,26 @@
 {
+  "bonusXP": {
+    "da_suspicious_agent_contract": 1
+  },
   "ruleCommandPackages":[
     "data.campaign.rulecmd"
   ],
   "plugins": {
-    "DiableShieldColorCombatPlugin": "data.scripts.DiableShieldColorCombatPlugin"
+    "DiableShieldColorCombatPlugin": "data.scripts.DiableShieldColorCombatPlugin",
+    "DACarinaSentinelVisuals": "data.scripts.DACarinaSentinelVisuals"
   },
   "textGreenColor":[0,255,0,255],
   "designTypeColors": {
     "Diable Avionics": [ 119,52,47,255 ]
   },
   "graphics": {
+    "carina_sentinel": {
+      "engine": "graphics/carinasentinel/fx/tania_engine_sprite2.png",
+      "engine_outline": "graphics/fx/wormhole_corona.png",
+      "shield_small": "graphics/carinasentinel/fx/tania_shields64.png",
+      "shield_medium": "graphics/carinasentinel/fx/tania_shields128c.png",
+      "shield_large": "graphics/carinasentinel/fx/tania_shields256.png"
+    },
     "characters": {
       "da_subject71": "graphics/da/portraits/diableavionics_s71.png",
       "da_gulf": "graphics/da/portraits/diableavionics_gulfOwner.png",

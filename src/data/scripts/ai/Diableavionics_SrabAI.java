@@ -1,7 +1,6 @@
 package data.scripts.ai;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.combat.CollisionClass;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.CombatEntityAPI;
 import com.fs.starfarer.api.combat.GuidedMissileAI;
@@ -10,6 +9,7 @@ import com.fs.starfarer.api.combat.MissileAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipCommand;
 import com.fs.starfarer.api.util.IntervalUtil;
+import data.scripts.weapons.Diableavionics_SrabStats;
 import org.magiclib.util.MagicRender;
 import org.magiclib.util.MagicTargeting;
 import java.awt.Color;
@@ -41,8 +41,8 @@ public class Diableavionics_SrabAI implements MissileAIPlugin, GuidedMissileAI {
             this.engine = Global.getCombatEngine();
         }        
         this.missile = missile;
+        Diableavionics_SrabStats.normalizeProjectile(missile);
         MAX_SPEED = missile.getMaxSpeed();
-        missile.setCollisionClass(CollisionClass.MISSILE_NO_FF);        
 
     }
 
@@ -81,7 +81,7 @@ public class Diableavionics_SrabAI implements MissileAIPlugin, GuidedMissileAI {
             //best intercepting point
             lead = AIUtils.getBestInterceptPoint(
                     missile.getLocation(),
-                    MAX_SPEED, //if eccm is intalled the point is accurate, otherwise it's placed closer to the target (almost tailchasing)
+                    MAX_SPEED,
                     target.getLocation(),
                     target.getVelocity()
             );                

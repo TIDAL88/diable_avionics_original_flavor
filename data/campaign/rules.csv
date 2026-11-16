@@ -1,6 +1,12 @@
 id,trigger,conditions,script,text,options,notes
 #RULESET_NAME Diable Avionics,,,,,,
 ,,,,,,
+# Gulf IBB bar contact,,,,,,
+daGulfAgentDiscovery,AddBarEvents,"DASuspiciousAgentCMD canDiscover
+RollProbability 0.3",DASuspiciousAgentCMD add,,,
+daGulfAgentStationed,AddBarEvents,DASuspiciousAgentCMD isStationed,DASuspiciousAgentCMD add,,,
+daGulfAgentApproach,DialogOptionSelected,$option == da_suspicious_agent_approach,DASuspiciousAgentCMD open,,,
+,,,,,,
 # Diable Avionics fleet greeting lines,,,,,,
 greetingDAFriendly,OpenCommLink,"$faction.id == diableavionics
 $faction.friendlyToPlayer","$menuState = fleetConvMain 0
