@@ -5,8 +5,6 @@ import com.fs.starfarer.api.combat.MissileRenderDataAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.WeaponAPI;
 import com.fs.starfarer.api.graphics.SpriteAPI;
-import org.magiclib.paintjobs.MagicPaintjobManager;
-import org.magiclib.paintjobs.MagicPaintjobSpec;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,10 +78,7 @@ final class DACarinaMissilePaintjobs {
         if (texture == null) return;
         ShipAPI source = missile.getSource();
         if (source == null) source = launchingShip;
-        if (source == null || source.getVariant() == null) return;
-        // Read at spawn so fighters can receive their inherited paintjob after deployment.
-        MagicPaintjobSpec paintjob = MagicPaintjobManager.getCurrentShipPaintjob(source.getVariant());
-        if (paintjob == null || !"carinasentinel".equals(paintjob.getPaintjobFamily())) return;
+        if (!DACarinaSentinelVisuals.isCarina(source)) return;
         missile.getSpriteAPI().setTexture(texture);
     }
 }

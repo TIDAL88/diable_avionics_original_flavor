@@ -11,6 +11,7 @@ import org.magiclib.paintjobs.MagicPaintjobSpec;
 
 import java.awt.Color;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,14 +23,33 @@ public class DACarinaSentinelVisuals extends BaseEveryFrameCombatPlugin {
     static final Color SHIELD_INNER = new Color(171, 226, 255, 75);
     static final Color ENGINE_COLOR = new Color(180, 230, 250, 200);
     private CombatEngineAPI engine;
+    // Cache definitions by hull, never combat ship instances.
+    private static final Map<String, List<MagicPaintjobSpec>> fighterPaintjobs = new HashMap<>();
     public static boolean isCarina(ShipAPI ship) {
-        if (ship == null || ship.getVariant() == null) return false;
-        MagicPaintjobSpec paintjob = MagicPaintjobManager.getCurrentShipPaintjob(ship.getVariant());
-        return paintjob != null && FAMILY.equals(paintjob.getPaintjobFamily());
+        if (ship == null) return false;
+        if (ship.getVariant() != null) {
+            MagicPaintjobSpec paintjob = MagicPaintjobManager.getCurrentShipPaintjob(ship.getVariant());
+            if (paintjob != null && FAMILY.equals(paintjob.getPaintjobFamily())) return true;
+        }
+        // MagicLib's carrier inheritance paints the combat fighter without tagging its variant.
+        if (!ship.isFighter() || ship.getHullSpec() == null) return false;
+        SpriteAPI sprite = ship.getSpriteAPI();
+        if (sprite == null || sprite.getTextureId() == 0) return false;
+        String hullId = ship.getHullSpec().getHullId();
+        if (hullId == null) return false;
+        List<MagicPaintjobSpec> candidates = fighterPaintjobs.computeIfAbsent(hullId,
+                id -> MagicPaintjobManager.getPaintjobsForHull(id, true, true));
+        for (MagicPaintjobSpec candidate : candidates) {
+            if (!FAMILY.equals(candidate.getPaintjobFamily())) continue;
+            SpriteAPI painted = Global.getSettings().getSprite(candidate.getSpriteId());
+            if (painted != null && painted.getTextureId() == sprite.getTextureId()) return true;
+        }
+        return false;
     }
 
     @Override
     public void init(CombatEngineAPI engine) {
+        fighterPaintjobs.clear();
         this.engine = engine;
     }
 
