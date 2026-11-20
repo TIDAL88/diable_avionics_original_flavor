@@ -2,14 +2,14 @@ package data.scripts;
 
 import com.fs.starfarer.api.combat.ShipEngineControllerAPI.ShipEngineAPI;
 import com.fs.starfarer.combat.entities.Ship;
-import com.fs.starfarer.loading.specs.E;
+import com.fs.starfarer.loading.specs.O0OO;
 import com.fs.starfarer.loading.specs.EngineSlot;
-import com.fs.starfarer.loading.specs.classsuper;
+import com.fs.starfarer.loading.specs.o0Oo;
 import org.json.JSONObject;
 import org.lwjgl.util.vector.Vector2f;
 import java.util.*;
 
-/** RC7 native engine layout adapter. Each layer gets its own normally initialized engine component. */
+/** RC8 native engine layout adapter. Each layer gets its own normally initialized engine component. */
 final class DAPFIDNativeEngines {
     private static final Vector2f ZERO = new Vector2f();
     interface Backend {
@@ -32,23 +32,63 @@ final class DAPFIDNativeEngines {
                 ship.getEngineController().initDamageableEngineComponents();
             }
             public void forget(Collection<EngineSlot> slots) {
-                ship.getEngineController().getEngineGlow().ØO0000().keySet().removeAll(slots);
+                ship.getEngineController().getEngineGlow().ÒO0000().keySet().removeAll(slots);
             }
         };
     }
 
     static final class Factory {
-        private final E.o custom = E.o.valueOf("CUSTOM");
+        private final O0OO.o custom = O0OO.o.valueOf("CUSTOM");
         private final JSONObject style;
-        Factory(JSONObject style) {
+        private final String styleId;
+        private final boolean mapped;
+        private final float referenceWidth, bankGap, bankWidthMultiplier;
+        private final float[] widths, lengths, angles, rearOffsets;
+        private final List<ReferenceNozzle> referenceNozzles = new ArrayList<>();
+        Factory(JSONObject style, JSONObject profile) {
             this.style = style;
+            try {
+                styleId = profile.getString("engineStyle");
+                String layout = profile.getString("layout");
+                if (!"mapped".equals(layout) && !"layered".equals(layout))
+                    throw new IllegalArgumentException("Unknown PFID engine layout: " + layout);
+                mapped = "mapped".equals(layout);
+                referenceWidth = (float) profile.optDouble("referenceWidth", 9);
+                bankGap = (float) profile.optDouble("bankGap", 10);
+                bankWidthMultiplier = (float) profile.optDouble("bankWidthMultiplier", 1.5);
+                if (mapped) {
+                    var nozzles = profile.getJSONArray("referenceNozzles");
+                    for (int i = 0; i < nozzles.length(); i++) {
+                        JSONObject nozzle = nozzles.getJSONObject(i);
+                        referenceNozzles.add(new ReferenceNozzle((float) nozzle.getDouble("lateral"),
+                                (float) nozzle.getDouble("width"), (float) nozzle.getDouble("length"),
+                                (float) nozzle.getDouble("angle")));
+                    }
+                    if (referenceNozzles.isEmpty()) throw new IllegalArgumentException("Empty PFID clean profile");
+                    widths = lengths = angles = rearOffsets = new float[0];
+                } else {
+                    widths = numbers(profile, "widths"); lengths = numbers(profile, "lengths");
+                    angles = numbers(profile, "angles"); rearOffsets = numbers(profile, "rearOffsets");
+                    if (widths.length == 0 || widths.length != lengths.length || widths.length != angles.length
+                            || widths.length != rearOffsets.length || referenceWidth <= 0)
+                        throw new IllegalArgumentException("Invalid PFID bright layer dimensions");
+                }
+            } catch (org.json.JSONException ex) {
+                throw new IllegalArgumentException("Invalid PFID engine profile", ex);
+            }
+        }
+        private static float[] numbers(JSONObject profile, String key) throws org.json.JSONException {
+            var array = profile.getJSONArray(key);
+            float[] result = new float[array.length()];
+            for (int i = 0; i < result.length; i++) result[i] = (float) array.getDouble(i);
+            return result;
         }
         EngineSlot create(int index, float width, float length, float angle, Vector2f position,
                           boolean systemActivated) {
             try {
-                E definition = new E(new classsuper("PFID_" + index,
+                O0OO definition = new O0OO(new o0Oo("PFID_" + index,
                         new Vector2f(position)), custom, width, length, angle);
-                definition.o00000(style, "PFID_Engine");
+                definition.o00000(style, styleId);
                 definition.Ò00000(systemActivated);
                 return definition.Ô00000();
             } catch (org.json.JSONException ex) {
@@ -56,6 +96,8 @@ final class DAPFIDNativeEngines {
             }
         }
     }
+
+    private record ReferenceNozzle(float lateral, float width, float length, float angle) {}
 
     static final class Layer {
         final EngineSlot original, emitter;
@@ -77,6 +119,33 @@ final class DAPFIDNativeEngines {
 
     static List<Layer> layers(List<EngineSlot> originals, Factory factory) {
         List<Layer> layers = new ArrayList<>();
+        if (factory.mapped) {
+            if (originals.isEmpty()) return layers;
+            float min = Float.POSITIVE_INFINITY, max = Float.NEGATIVE_INFINITY;
+            float referenceMin = Float.POSITIVE_INFINITY, referenceMax = Float.NEGATIVE_INFINITY;
+            for (EngineSlot slot : originals) {
+                float lateral = slot.computePosition(ZERO, 0f).y;
+                min = Math.min(min, lateral); max = Math.max(max, lateral);
+            }
+            for (ReferenceNozzle nozzle : factory.referenceNozzles) {
+                referenceMin = Math.min(referenceMin, nozzle.lateral);
+                referenceMax = Math.max(referenceMax, nozzle.lateral);
+            }
+            for (EngineSlot slot : originals) {
+                if (slot.getWidth() <= 0f) continue;
+                float fraction = max > min ? (slot.computePosition(ZERO, 0f).y - min) / (max - min) : 0.5f;
+                float lateral = referenceMin + fraction * (referenceMax - referenceMin);
+                ReferenceNozzle nearest = factory.referenceNozzles.get(0);
+                for (ReferenceNozzle candidate : factory.referenceNozzles)
+                    if (Math.abs(candidate.lateral - lateral) < Math.abs(nearest.lateral - lateral)) nearest = candidate;
+                float length = Math.round(nearest.length * slot.getWidth() / nearest.width * 10000f) / 10000f;
+                float tilt = nearest.angle - 180f;
+                EngineSlot emitter = factory.create(layers.size(), slot.getWidth(), length,
+                        slot.getAngle() + tilt, slot.computePosition(ZERO, 0f), slot.isSystemActivated());
+                layers.add(new Layer(slot, emitter, tilt, 0f));
+            }
+            return layers;
+        }
         List<EngineSlot> sorted = new ArrayList<>(originals);
         sorted.sort(Comparator.comparingDouble(slot -> slot.computePosition(ZERO, 0f).x));
         Map<EngineSlot, Float> sides = new IdentityHashMap<>();
@@ -84,21 +153,20 @@ final class DAPFIDNativeEngines {
         float previousX = Float.NEGATIVE_INFINITY;
         for (EngineSlot slot : sorted) {
             float x = slot.computePosition(ZERO, 0f).x;
-            if (!bank.isEmpty() && x - previousX > Math.max(10f, slot.getWidth() * 1.5f)) {
+            if (!bank.isEmpty() && x - previousX > Math.max(factory.bankGap, slot.getWidth() * factory.bankWidthMultiplier)) {
                 assignSides(bank, sides); bank.clear();
             }
             bank.add(slot); previousX = x;
         }
         assignSides(bank, sides);
-        float[] widths = {9f, 21f, 4f}, lengths = {21f, 7.5f, 58.5f};
-        for (int layer = 0; layer < 3; layer++) {
+        for (int layer = 0; layer < factory.widths.length; layer++) {
             for (EngineSlot slot : originals) {
-                float scale = slot.getWidth() / 9f;
+                float scale = slot.getWidth() / factory.referenceWidth;
                 if (scale <= 0f) continue;
-                float tilt = sides.get(slot) * (layer == 0 ? 12f : layer == 2 ? 2.5f : 0f);
-                float rear = layer == 1 ? scale : 0f;
-                EngineSlot emitter = factory.create(layers.size(), widths[layer] * scale,
-                        lengths[layer] * scale, slot.getAngle() + tilt,
+                float tilt = sides.get(slot) * factory.angles[layer];
+                float rear = factory.rearOffsets[layer] * scale;
+                EngineSlot emitter = factory.create(layers.size(), factory.widths[layer] * scale,
+                        factory.lengths[layer] * scale, slot.getAngle() + tilt,
                         slot.computePosition(ZERO, 0f), slot.isSystemActivated());
                 Layer result = new Layer(slot, emitter, tilt, rear);
                 result.follow(); layers.add(result);

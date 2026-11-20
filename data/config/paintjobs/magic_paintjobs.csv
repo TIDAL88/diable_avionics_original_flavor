@@ -513,6 +513,7 @@ diableavionics_battleworn_pandemonium_large,diableavionics_pandemonium_large,Bat
 diableavionics_stripleles_coanda,diableavionics_coanda,Stripeless,stripeless,graphics/stripeless/ships/diableavionics_coanda.png,True,,,
 diableavionics_dra_coanda,diableavionics_coanda,DRA,DRA,graphics/DRA/ships/diableavionics_coanda.png,True,,,
 diableavionics_PFID_arbitrator,diableavionics_arbitrator,PFID,PFID,graphics/PFID/ships/arbitrator/diableavionics_arbitrator.png,true,,,
+diableavionics_PFID_IBBgulf,"diableavionics_IBBgulf,diableavionics_IBBgulf_carrier",PFID,PFID,graphics/PFID/ships/gulf/diableavionics_IBBgulf.png,true,,,
 diableavionics_PFID_arbitratorZ,diableavionics_arbitratorZ,PFID,PFID,graphics/PFID/ships/arbitrator/diableavionics_arbitratorZ.png,true,,,
 diableavionics_PFID_avalanche,diableavionics_avalanche,PFID,PFID,graphics/PFID/ships/avalanche/diableavionics_avalanche_body.png,true,,,
 diableavionics_PFID_blizzaia,diableavionics_blizzaia,PFID,PFID,graphics/PFID/ships/blizzaia/diableavionics_blizzaia_body.png,true,,,

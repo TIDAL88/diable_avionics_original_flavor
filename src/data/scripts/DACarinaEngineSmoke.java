@@ -123,13 +123,13 @@ final class DACarinaEngineSmoke {
                 float dirY = (float) Math.sin(theta);
                 float r = (float) Math.random() * spawnRadius;
                 Vector2f loc = new Vector2f(point.x + dirX * r, point.y + dirY * r);
-                // Keep expansion speed independent of the tighter spawn radius.
-                float outwardSpeed = 120f + 80f * (float) Math.random();
+                // A quick arrival burst, rather than a lingering cloud.
+                float outwardSpeed = 240f + 120f * (float) Math.random();
                 Vector2f vel = new Vector2f(shipVel.x + dirX * outwardSpeed,
                         shipVel.y + dirY * outwardSpeed);
                 Vector2f.add(vel, Misc.getPointWithinRadius(new Vector2f(), 15f), vel);
-                engine.addNebulaParticle(loc, vel, size, 2.5f, 0.1f, 0f,
-                        1f, SKIRMISHER_SMOKE);
+                engine.addNebulaParticle(loc, vel, size, 2.5f, 0.025f, 0f,
+                        0.4f, SKIRMISHER_SMOKE);
             }
         }
 

@@ -1,0 +1,31 @@
+{
+  "defaultProfile": "bright",
+  "hullProfiles": {
+    "diableavionics_maelstrom": "clean"
+  },
+  "profiles": {
+    "bright": {
+      "engineStyle": "PFID_Engine",
+      "layout": "layered",
+      "referenceWidth": 9,
+      "widths": [9, 21, 4],
+      "lengths": [21, 7.5, 58.5],
+      "angles": [12, 0, 2.5],
+      "rearOffsets": [0, 1, 0],
+      "bankGap": 10,
+      "bankWidthMultiplier": 1.5
+    },
+    "clean": {
+      "engineStyle": "PFID_Engine",
+      "layout": "mapped",
+      "referenceNozzles": [
+        {"lateral": -15.5, "width": 11, "length": 40, "angle": 177.5},
+        {"lateral": -23.5, "width": 7, "length": 18, "angle": 176},
+        {"lateral": 6.5, "width": 11, "length": 67, "angle": 180},
+        {"lateral": -4.5, "width": 11, "length": 57.5, "angle": 178.5},
+        {"lateral": 33, "width": 7, "length": 43, "angle": 180},
+        {"lateral": 40.5, "width": 6, "length": 19, "angle": 182.5}
+      ]
+    }
+  }
+}
