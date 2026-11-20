@@ -1,0 +1,28 @@
+{
+  "engines": {
+    "color": [
+      183,
+      154,
+      156,
+      120
+    ],
+    "campaignColor": [
+      183,
+      154,
+      156,
+      120
+    ],
+    "contrailColor": [
+      31,
+      29,
+      51,
+      52
+    ],
+    "contrailCampaignColor": [
+      31,
+      29,
+      51,
+      52
+    ]
+  }
+}

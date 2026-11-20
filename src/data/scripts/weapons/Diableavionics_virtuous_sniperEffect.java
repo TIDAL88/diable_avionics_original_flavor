@@ -82,6 +82,7 @@ public class Diableavionics_virtuous_sniperEffect implements EveryFrameWeaponEff
         //recoil
 //        Vector2f vel = weapon.getShip().getVelocity();
         Vector2f.add(weapon.getShip().getVelocity(), MathUtils.getPoint(new Vector2f(), 75, weapon.getCurrAngle()+180), weapon.getShip().getVelocity());
-        weapon.getShip().setAngularVelocity(weapon.getShip().getAngularVelocity()-50);
+        float angularRecoil = "diableavionics_virtuous_excision_L".equals(weapon.getId()) ? 50f : -50f;
+        weapon.getShip().setAngularVelocity(weapon.getShip().getAngularVelocity() + angularRecoil);
     }
 }

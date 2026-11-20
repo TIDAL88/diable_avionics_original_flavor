@@ -9,6 +9,7 @@ import com.fs.starfarer.api.combat.ShipCommand;
 import com.fs.starfarer.api.combat.WeaponAPI;
 import com.fs.starfarer.api.util.IntervalUtil;
 import org.magiclib.util.MagicRender;
+import data.scripts.DACarinaDeepStrikePaintjobs;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public class Diableavionics_deepStrikePodEffect implements EveryFrameWeaponEffec
             return;
         }
         
+        DACarinaDeepStrikePaintjobs.advancePod(weapon.getShip());
         checkEnemies.advance(amount);
         if(checkEnemies.intervalElapsed()){
             ShipAPI enemy = AIUtils.getNearestEnemy(weapon.getShip());
@@ -75,7 +77,7 @@ public class Diableavionics_deepStrikePodEffect implements EveryFrameWeaponEffec
                     float turn = weapon.getShip().getAngularVelocity();
                     
                     MagicRender.battlespace(
-                            Global.getSettings().getSprite("diableavionics", "DS_doorUp"),
+                            DACarinaDeepStrikePaintjobs.doorSprite(weapon.getShip(), "Up"),
                             weapon.getLocation(),
                             new Vector2f(vel),
                             new Vector2f(14,33),
@@ -93,7 +95,7 @@ public class Diableavionics_deepStrikePodEffect implements EveryFrameWeaponEffec
                     turn = weapon.getShip().getAngularVelocity()+MathUtils.getRandomNumberInRange(10, 30);
                     
                     MagicRender.battlespace(
-                            Global.getSettings().getSprite("diableavionics", "DS_doorRight"),
+                            DACarinaDeepStrikePaintjobs.doorSprite(weapon.getShip(), "Right"),
                             MathUtils.getPoint(weapon.getLocation(),10,weapon.getShip().getFacing()-90),
                             new Vector2f(vel),
                             new Vector2f(8,33),
@@ -111,7 +113,7 @@ public class Diableavionics_deepStrikePodEffect implements EveryFrameWeaponEffec
                     turn = weapon.getShip().getAngularVelocity()+MathUtils.getRandomNumberInRange(-10, -30);
                     
                     MagicRender.battlespace(
-                            Global.getSettings().getSprite("diableavionics", "DS_doorLeft"),
+                            DACarinaDeepStrikePaintjobs.doorSprite(weapon.getShip(), "Left"),
                             MathUtils.getPoint(weapon.getLocation(),10,weapon.getShip().getFacing()+90),
                             new Vector2f(vel),
                             new Vector2f(8,33),

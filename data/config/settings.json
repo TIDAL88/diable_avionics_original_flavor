@@ -7,7 +7,8 @@
   ],
   "plugins": {
     "DiableShieldColorCombatPlugin": "data.scripts.DiableShieldColorCombatPlugin",
-    "DACarinaSentinelVisuals": "data.scripts.DACarinaSentinelVisuals"
+    "DACarinaSentinelVisuals": "data.scripts.DACarinaSentinelVisuals",
+    "DAPFIDEngineVisuals": "data.scripts.DAPFIDEngineVisuals"
   },
   "textGreenColor":[0,255,0,255],
   "designTypeColors": {
@@ -22,6 +23,7 @@
       "shield_large": "graphics/carinasentinel/fx/tania_shields256.png"
     },
     "carina_sentinel_missiles": {
+      "deep_strike": "graphics/carinasentinel/ships/station/diableavionics_deepStrikeM.png",
       "banish": "graphics/carinasentinel/missiles/diableavionics_banishmirv.png",
       "magic": "graphics/carinasentinel/missiles/diableavionics_magicmissile.png",
       "micro": "graphics/carinasentinel/missiles/diableavionics_micromissile.png",
@@ -103,6 +105,9 @@
       "RING": "graphics/da/fx/da_targetingRing.png",
 
       "DS_doorUp": "graphics/da/ships/station/diableavionics_deepStrikeDoorUp.png",
+      "DS_carinaDoorUp": "graphics/carinasentinel/ships/station/diableavionics_deepStrikeDoorUp.png",
+      "DS_carinaDoorLeft": "graphics/carinasentinel/ships/station/diableavionics_deepStrikeDoorLeft.png",
+      "DS_carinaDoorRight": "graphics/carinasentinel/ships/station/diableavionics_deepStrikeDoorRight.png",
       "DS_doorLeft": "graphics/da/ships/station/diableavionics_deepStrikeDoorLeft.png",
       "DS_doorRight": "graphics/da/ships/station/diableavionics_deepStrikeDoorRight.png",
       "DS_afterimage": "graphics/da/ships/station/diableavionics_deepStrikeM_afterimage.png",

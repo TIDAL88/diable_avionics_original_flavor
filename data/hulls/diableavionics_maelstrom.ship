@@ -140,100 +140,292 @@
   "collisionRadius": 335.5,
   "engineSlots": [
     {
-      "angle": 180,
+      "angle": 168,
       "contrailSize": 6,
-      "length": 6,
+      "length": 14.0,
       "location": [
         -152,
         -35.5
       ],
       "style": "CUSTOM",
-      "styleId": "DiableAvionicsTrail",
+      "styleId": "PFID_Engine",
       "width": 6
     },
     {
       "angle": 180,
       "contrailSize": 6,
-      "length": 6,
+      "length": 14.0,
       "location": [
         -153,
         -27.5
       ],
       "style": "CUSTOM",
-      "styleId": "DiableAvionicsTrail",
+      "styleId": "PFID_Engine",
       "width": 6
     },
     {
-      "angle": 180,
+      "angle": 192,
       "contrailSize": 6,
-      "length": 6,
+      "length": 14.0,
       "location": [
         -154,
         -19.5
       ],
       "style": "CUSTOM",
-      "styleId": "DiableAvionicsTrail",
+      "styleId": "PFID_Engine",
       "width": 6
     },
     {
-      "angle": 180,
+      "angle": 192,
       "contrailSize": 8,
-      "length": 7,
+      "length": 18.6667,
       "location": [
         -216.5,
         29.5
       ],
       "style": "CUSTOM",
-      "styleId": "DiableAvionicsTrail",
+      "styleId": "PFID_Engine",
       "width": 8
     },
     {
-      "angle": 180,
+      "angle": 168,
       "contrailSize": 8,
-      "length": 7,
+      "length": 18.6667,
       "location": [
         -214,
         21.5
       ],
       "style": "CUSTOM",
-      "styleId": "DiableAvionicsTrail",
+      "styleId": "PFID_Engine",
       "width": 8
     },
     {
-      "angle": 180,
+      "angle": 192,
       "contrailSize": 6,
-      "length": 6,
+      "length": 14.0,
       "location": [
         -173,
         12.5
       ],
       "style": "CUSTOM",
-      "styleId": "DiableAvionicsTrail",
+      "styleId": "PFID_Engine",
       "width": 6
     },
     {
       "angle": 180,
       "contrailSize": 6,
-      "length": 6,
+      "length": 14.0,
       "location": [
         -172,
         4.5
       ],
       "style": "CUSTOM",
-      "styleId": "DiableAvionicsTrail",
+      "styleId": "PFID_Engine",
       "width": 6
     },
     {
-      "angle": 180,
+      "angle": 168,
       "contrailSize": 6,
-      "length": 6,
+      "length": 14.0,
       "location": [
         -171,
         -3.5
       ],
       "style": "CUSTOM",
-      "styleId": "DiableAvionicsTrail",
+      "styleId": "PFID_Engine",
       "width": 6
+    },
+    {
+      "angle": 180,
+      "contrailSize": 14.0,
+      "length": 5.0,
+      "location": [
+        -152.6667,
+        -35.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 14.0
+    },
+    {
+      "angle": 180,
+      "contrailSize": 14.0,
+      "length": 5.0,
+      "location": [
+        -153.6667,
+        -27.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 14.0
+    },
+    {
+      "angle": 180,
+      "contrailSize": 14.0,
+      "length": 5.0,
+      "location": [
+        -154.6667,
+        -19.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 14.0
+    },
+    {
+      "angle": 180,
+      "contrailSize": 18.6667,
+      "length": 6.6667,
+      "location": [
+        -217.3889,
+        29.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 18.6667
+    },
+    {
+      "angle": 180,
+      "contrailSize": 18.6667,
+      "length": 6.6667,
+      "location": [
+        -214.8889,
+        21.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 18.6667
+    },
+    {
+      "angle": 180,
+      "contrailSize": 14.0,
+      "length": 5.0,
+      "location": [
+        -173.6667,
+        12.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 14.0
+    },
+    {
+      "angle": 180,
+      "contrailSize": 14.0,
+      "length": 5.0,
+      "location": [
+        -172.6667,
+        4.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 14.0
+    },
+    {
+      "angle": 180,
+      "contrailSize": 14.0,
+      "length": 5.0,
+      "location": [
+        -171.6667,
+        -3.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 14.0
+    },
+    {
+      "angle": 177.5,
+      "contrailSize": 2.6667,
+      "length": 39.0,
+      "location": [
+        -152,
+        -35.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 2.6667
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 2.6667,
+      "length": 39.0,
+      "location": [
+        -153,
+        -27.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 2.6667
+    },
+    {
+      "angle": 182.5,
+      "contrailSize": 2.6667,
+      "length": 39.0,
+      "location": [
+        -154,
+        -19.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 2.6667
+    },
+    {
+      "angle": 182.5,
+      "contrailSize": 3.5556,
+      "length": 52.0,
+      "location": [
+        -216.5,
+        29.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 3.5556
+    },
+    {
+      "angle": 177.5,
+      "contrailSize": 3.5556,
+      "length": 52.0,
+      "location": [
+        -214,
+        21.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 3.5556
+    },
+    {
+      "angle": 182.5,
+      "contrailSize": 2.6667,
+      "length": 39.0,
+      "location": [
+        -173,
+        12.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 2.6667
+    },
+    {
+      "angle": 180.0,
+      "contrailSize": 2.6667,
+      "length": 39.0,
+      "location": [
+        -172,
+        4.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 2.6667
+    },
+    {
+      "angle": 177.5,
+      "contrailSize": 2.6667,
+      "length": 39.0,
+      "location": [
+        -171,
+        -3.5
+      ],
+      "style": "CUSTOM",
+      "styleId": "PFID_Engine",
+      "width": 2.6667
     }
   ],
   "height": 512,

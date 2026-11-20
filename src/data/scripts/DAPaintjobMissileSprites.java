@@ -13,11 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** Applies Carina textures to launched missiles and the loaded missiles on their weapons. */
-final class DACarinaMissilePaintjobs {
+/** Carina missile sprites and the PFID Arbitrator booster, both loaded and launched. */
+final class DAPaintjobMissileSprites {
     private static final String LOADED_KEY = "diableavionics_carina_loaded_missiles";
     private static final String MISSILES = "graphics/carinasentinel/missiles/";
+    private static final String PFID_BOOSTER = "graphics/PFID/ships/arbitrator/diableavionics_arbitratorBoosterB.png";
     private static final Map<String, String> SPRITES = Map.ofEntries(
+            Map.entry("diableavionics_deepStrikeM",
+                    "graphics/carinasentinel/ships/station/diableavionics_deepStrikeM.png"),
             Map.entry("diableavionics_banishmirv", MISSILES + "diableavionics_banishmirv.png"),
             Map.entry("diableavionics_magicmissile", MISSILES + "diableavionics_magicmissile.png"),
             Map.entry("diableavionics_micromissile", MISSILES + "diableavionics_micromissile.png"),
@@ -30,21 +33,21 @@ final class DACarinaMissilePaintjobs {
                     "graphics/carinasentinel/ships/arbitrator/diableavionics_arbitratorBoosterB.png")
     );
 
-    private DACarinaMissilePaintjobs() {}
+    private DAPaintjobMissileSprites() {}
 
     static void updateLoaded(ShipAPI ship, boolean carina) {
         LoadedState state = (LoadedState) ship.getCustomData().get(LOADED_KEY);
-        if (!carina) {
-            if (state != null) {
-                for (LoadedSprite original : state.originals) original.sprite.setTexture(original.texture);
-                ship.removeCustomData(LOADED_KEY);
-            }
-            return;
+        String family = carina ? "carinasentinel" : DAPFIDEngineVisuals.isPFID(ship) ? "PFID" : null;
+        if (state != null && !state.family.equals(family)) {
+            for (LoadedSprite original : state.originals) original.sprite.setTexture(original.texture);
+            ship.removeCustomData(LOADED_KEY);
+            state = null;
         }
+        if (family == null) return;
         List<WeaponAPI> weapons = ship.getAllWeapons();
         if (weapons == null || weapons.isEmpty()) return;
         if (state == null) {
-            state = new LoadedState();
+            state = new LoadedState(family);
             ship.setCustomData(LOADED_KEY, state);
         }
         for (WeaponAPI weapon : weapons) {
@@ -54,11 +57,11 @@ final class DACarinaMissilePaintjobs {
             if (loaded == null) continue;
             for (MissileRenderDataAPI data : loaded) {
                 String id = data.getMissileSpecId();
-                String texture = id == null ? null : SPRITES.get(id);
+                String texture = texture(id, family);
                 if (texture == null) continue;
                 SpriteAPI sprite = data.getSprite();
                 state.originals.add(new LoadedSprite(sprite,
-                        texture.replace("graphics/carinasentinel/", "graphics/da/")));
+                        texture.replace("graphics/" + family + "/", "graphics/da/")));
                 sprite.setTexture(texture);
             }
         }
@@ -66,6 +69,8 @@ final class DACarinaMissilePaintjobs {
 
     // Owned by the ship, so destroyed fighters cannot be retained by a static cache.
     private static final class LoadedState {
+        final String family;
+        LoadedState(String family) { this.family = family; }
         final Set<WeaponAPI> weapons = Collections.newSetFromMap(new IdentityHashMap<>());
         final List<LoadedSprite> originals = new ArrayList<>();
     }
@@ -74,11 +79,19 @@ final class DACarinaMissilePaintjobs {
 
     static void apply(MissileAPI missile, ShipAPI launchingShip) {
         if (missile == null || missile.getProjectileSpecId() == null) return;
-        String texture = SPRITES.get(missile.getProjectileSpecId());
-        if (texture == null) return;
         ShipAPI source = missile.getSource();
         if (source == null) source = launchingShip;
-        if (!DACarinaSentinelVisuals.isCarina(source)) return;
+        String family = DACarinaSentinelVisuals.isCarina(source) ? "carinasentinel"
+                : DAPFIDEngineVisuals.isPFID(source) ? "PFID" : null;
+        String texture = texture(missile.getProjectileSpecId(), family);
+        if (texture == null) return;
         missile.getSpriteAPI().setTexture(texture);
+    }
+
+    private static String texture(String projectileId, String family) {
+        if (projectileId == null) return null;
+        if ("carinasentinel".equals(family)) return SPRITES.get(projectileId);
+        if ("PFID".equals(family) && "diableavionics_booster_proj".equals(projectileId)) return PFID_BOOSTER;
+        return null;
     }
 }

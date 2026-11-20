@@ -1,6 +1,20 @@
 ===============================================================================
 DATE: WIP
-VERSION: Version 3.0.7 - WIP
+VERSION: Version 3.0.8 - WIP
+===============================================================================
+
+General Bugfixing
+* Fixed the Virtuous's left-hand Excision recoil to swing opposite to the right-hand rifle.
+
+Paintjobs
+* New paintjob : PFID, including a very special Virtuous, thanks to Yisic
+* New paintjob : Carina Sentinel. From the Navarchy of Tania with love: A complete makeover that leaves nothing out: ships, Wanzers, weapons, and missile projectile and effects, with custom shields and engine exhaust to match. Even the Gulf's Deep Strike launch catapult, doors animations, pods, and deployed Wanzers get the Carina treatment. Includes the Virtuous and all its configurations.
+* New Virtuous paintjob : Stripeless.
+* New Virtuous paintjob : Arctic.
+
+===============================================================================
+DATE: 13/11/2026
+VERSION: Version 3.0.7 - "Clean House"
 ===============================================================================
 
 General Bugfixing
@@ -64,13 +78,7 @@ Wanzers & Strike-crafts Descriptions
     * Arbitrator - Drop Booster.
 
 Paintjobs
-* Carina Sentinel: Added custom engine exhaust and shield visuals. Ship performance and shield stats are unchanged.
-* Carina Sentinel exhaust continues in orange while a ship system is on and returns to its normal idle smoke when the system switches off.
-* Versant's Carina Sentinel exhaust bursts orange when entering transit mode, keeps a faint orange trail during transit, and returns to its normal idle smoke outside transit mode.
 * Added the DRA paintjob for Virtuous.
-* Added the Stripeless paintjob for Virtuous.
-* Added the Arctic paintjob for Virtuous.
-* Added Carina Sentinel paintjobs for 45 hulls and configurations, including Virtuous, with matching weapon sprites where available.
 * More to come.
 
 Added Achievements

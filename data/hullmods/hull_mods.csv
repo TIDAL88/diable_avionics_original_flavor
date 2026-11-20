@@ -106,3 +106,4 @@ master,rime_master,,,,"diable, no_build_in, no_drop, no_drop_salvage",,,,TRUE,TR
 Active Bay,rime_active_bay,,,Diable Avionics,"no_drop, no_drop_salvage, no_build_in, , no_dealer",,,,TRUE,"",0,0,0,0,com.fs.starfarer.api.combat.BaseHullMod,The flight deck is active and counts toward the fleet’s fighter bay total.,,,graphics/da/hullmods/diableavionics_decksON.png
 Standby Bay,rime_standby_bay,,,Diable Avionics,"no_drop, no_drop_salvage, no_build_in, no_sell, no_dealer",,,,TRUE,"",0,0,0,0,data.hullmods.RimeFlightDeckRemover,The flight deck is placed on standby and does not count toward the fleet’s fighter bay total.,,,graphics/da/hullmods/diableavionics_decksOFF.png
 ,,,,,,,,,,,,,,,,,,,
+Dampened Mounts,diableavionics_mount,,,Diable Avionics,"no_build_in, no_drop, no_drop_salvage, no_sell, codex_hidden","Weapons, Requires Dock",15000,,TRUE,TRUE,8,12,20,30,com.fs.starfarer.api.combat.BaseHullMod,,,,

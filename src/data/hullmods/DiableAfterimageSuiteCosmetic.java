@@ -7,9 +7,12 @@ import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipEngineControllerAPI;
 import com.fs.starfarer.api.combat.listeners.AdvanceableListener;
 import com.fs.starfarer.api.graphics.SpriteAPI;
+import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import org.magiclib.plugins.MagicTrailPlugin;
+import org.magiclib.paintjobs.MagicPaintjobManager;
+import org.magiclib.paintjobs.MagicPaintjobSpec;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.Color;
@@ -128,6 +131,22 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
         return !isForModSpec;
     }
 
+    @Override
+    public void addPostDescriptionSection(TooltipMakerAPI tooltip, ShipAPI.HullSize hullSize,
+                                          ShipAPI ship, float width, boolean isForModSpec) {
+        if (!isForModSpec && hasPaintjobEngineEffects(ship)) {
+            tooltip.addPara("Inactive while PFID or Carina Sentinel is selected. Your trail mode is preserved.", 10f);
+        }
+    }
+
+    private static boolean hasPaintjobEngineEffects(ShipAPI ship) {
+        if (ship == null || ship.getVariant() == null) return false;
+        MagicPaintjobSpec paintjob = MagicPaintjobManager.getCurrentShipPaintjob(ship.getVariant());
+        if (paintjob == null) return false;
+        String family = paintjob.getPaintjobFamily();
+        return "PFID".equals(family) || "carinasentinel".equals(family);
+    }
+
     private static float clamp(float value, float min, float max) {
         return Math.max(min, Math.min(max, value));
     }
@@ -152,6 +171,17 @@ public class DiableAfterimageSuiteCosmetic extends BaseHullMod {
         @Override
         public void advance(float amount) {
             if (ship == null || !ship.isAlive() || ship.getEngineController() == null) return;
+
+            // Keep the listener so changing paintjobs can resume the selected aesthetics mode.
+            if (hasPaintjobEngineEffects(ship)) {
+                if (engineEffectLevel > 0f) {
+                    ship.getEngineController().fadeToOtherColor(this, ENGINE_COLOR, EMPTY_COLOR, 0f, 0.33f);
+                    engineEffectLevel = 0f;
+                    trailIdByEngine.clear();
+                    effectInterval.nextInterval();
+                }
+                return;
+            }
 
             engineEffectLevel = clamp(engineEffectLevel + amount, 0f, 1f);
             ship.getEngineController().fadeToOtherColor(this, ENGINE_COLOR, EMPTY_COLOR, engineEffectLevel, 0.33f);

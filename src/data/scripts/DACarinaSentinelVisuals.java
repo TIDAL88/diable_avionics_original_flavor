@@ -21,12 +21,13 @@ public class DACarinaSentinelVisuals extends BaseEveryFrameCombatPlugin {
     static final String STATE_KEY = "diableavionics_carina_visuals";
     static final String FX = "graphics/carinasentinel/fx/";
     static final Color SHIELD_INNER = new Color(171, 226, 255, 75);
-    static final Color ENGINE_COLOR = new Color(180, 230, 250, 200);
     private CombatEngineAPI engine;
     // Cache definitions by hull, never combat ship instances.
     private static final Map<String, List<MagicPaintjobSpec>> fighterPaintjobs = new HashMap<>();
     public static boolean isCarina(ShipAPI ship) {
         if (ship == null) return false;
+        if (DACarinaDeepStrikePaintjobs.isCarinaPod(ship)) return true;
+        if (DAPaintjobDroneSprites.isCarinaDrone(ship)) return true;
         if (ship.getVariant() != null) {
             MagicPaintjobSpec paintjob = MagicPaintjobManager.getCurrentShipPaintjob(ship.getVariant());
             if (paintjob != null && FAMILY.equals(paintjob.getPaintjobFamily())) return true;
@@ -57,9 +58,10 @@ public class DACarinaSentinelVisuals extends BaseEveryFrameCombatPlugin {
     public void advance(float amount, List<InputEventAPI> events) {
         if (engine == null || engine.isPaused()) return;
         for (ShipAPI ship : engine.getShips()) {
+            DAPaintjobDroneSprites.update(ship);
             // Fighters may inherit the carrier's paintjob after their first combat frame.
             boolean carina = ship.isAlive() && isCarina(ship);
-            DACarinaMissilePaintjobs.updateLoaded(ship, carina);
+            DAPaintjobMissileSprites.updateLoaded(ship, carina);
             if (!carina) continue;
             State state = (State) ship.getCustomData().get(STATE_KEY);
             if (state == null) {
@@ -88,10 +90,9 @@ public class DACarinaSentinelVisuals extends BaseEveryFrameCombatPlugin {
 
     static final class State extends BaseCombatLayeredRenderingPlugin {
         private final ShipAPI ship;
-        private final SpriteAPI glow;
-        private final SpriteAPI outline;
         private final Map<EngineSlotAPI, Float> originalGlow = new IdentityHashMap<>();
         private final Map<ShipEngineAPI, DACarinaEngineSmoke> smokeEmitters = new IdentityHashMap<>();
+        private final DACarinaEngineSmoke.VirtuousEffects virtuousEffects;
         private ShieldAPI shield;
         private float innerRotation;
         private float ringRotation;
@@ -100,8 +101,7 @@ public class DACarinaSentinelVisuals extends BaseEveryFrameCombatPlugin {
 
         State(ShipAPI ship) {
             this.ship = ship;
-            glow = Global.getSettings().getSprite("carina_sentinel", "engine");
-            outline = Global.getSettings().getSprite("carina_sentinel", "engine_outline");
+            virtuousEffects = DACarinaEngineSmoke.isVirtuous(ship) ? new DACarinaEngineSmoke.VirtuousEffects() : null;
         }
 
         void updateShield() {
@@ -138,20 +138,19 @@ public class DACarinaSentinelVisuals extends BaseEveryFrameCombatPlugin {
         public void advance(float amount) {
             CombatEngineAPI engine = Global.getCombatEngine();
             if (entity != null) entity.getLocation().set(ship.getLocation());
-            if (engine == null || engine.isPaused() || isExpired() || ship.getEngineController() == null) return;
+            if (engine == null || engine.isPaused() || isExpired()) return;
+            // Body effects run once, including while Guardian has no active engine thrust.
+            if (virtuousEffects != null) virtuousEffects.advance(amount, engine, ship);
+            if (ship.getEngineController() == null) return;
             for (ShipEngineAPI exhaust : ship.getEngineController().getShipEngines()) {
                 EngineSlotAPI slot = exhaust.getEngineSlot();
                 originalGlow.putIfAbsent(slot, slot.getGlowSizeMult());
-                // Replace the stock glow without changing engine geometry or thrust.
+                // Keep the native flame and timed smoke, without an additional static halo.
                 slot.setGlowSizeMult(0f);
                 // Keep mode edges while idle, so resuming thrust does not retrigger the system-entry burst.
                 smokeEmitters.computeIfAbsent(exhaust, key -> new DACarinaEngineSmoke())
                         .advance(amount, engine, ship, exhaust, canEmitSmoke(ship, exhaust));
             }
-        }
-
-        private boolean visible(ShipEngineAPI exhaust) {
-            return exhaust.isActive() && engineAvailable(ship, exhaust);
         }
 
         @Override
@@ -165,38 +164,13 @@ public class DACarinaSentinelVisuals extends BaseEveryFrameCombatPlugin {
         }
 
         @Override
-        public void render(CombatEngineLayers layer, ViewportAPI viewport) {
-            if (isExpired() || ship.getEngineController() == null) return;
-            if (entity != null) entity.getLocation().set(ship.getLocation());
-            for (ShipEngineAPI exhaust : ship.getEngineController().getShipEngines()) {
-                if (!visible(exhaust)) continue;
-                EngineSlotAPI slot = exhaust.getEngineSlot();
-                float boost = ship.isEngineBoostActive() ? 1.2f : 1f;
-                float alpha = ship.getExtraAlphaMult() * viewport.getAlphaMult();
-                drawGlow(outline, exhaust, slot.getWidth() * 3f * boost,
-                        slot.getLength() * 1.6f * boost, alpha * 0.25f);
-                drawGlow(glow, exhaust, slot.getWidth() * 2f * boost,
-                        slot.getLength() * 1.3f * boost, alpha);
-            }
-        }
-
-        private void drawGlow(SpriteAPI sprite, ShipEngineAPI exhaust, float width, float height, float alpha) {
-            sprite.setAdditiveBlend();
-            sprite.setColor(ENGINE_COLOR);
-            sprite.setAlphaMult(alpha);
-            sprite.setSize(width, height);
-            sprite.setAngle(ship.getFacing() + exhaust.getEngineSlot().getAngle() - 90f);
-            sprite.renderAtCenter(exhaust.getLocation().x, exhaust.getLocation().y);
-        }
-
-        @Override
         public boolean isExpired() {
             return !ship.isAlive() || !isCarina(ship);
         }
 
         @Override
         public void cleanup() {
-            DACarinaMissilePaintjobs.updateLoaded(ship, false);
+            DAPaintjobMissileSprites.updateLoaded(ship, false);
             originalGlow.forEach(EngineSlotAPI::setGlowSizeMult);
             ship.removeCustomData(STATE_KEY);
         }

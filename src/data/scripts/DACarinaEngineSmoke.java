@@ -4,6 +4,7 @@ import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipEngineControllerAPI.ShipEngineAPI;
 import com.fs.starfarer.api.util.IntervalUtil;
+import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.Color;
@@ -11,8 +12,136 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-// Engine smoke timing and VFX by I Spectros I.
+/// Observation: On my end here, the static values are not being compiled, which means that none of my changes
+/// are working on them. I will use internal values inside each object to do changes, as they are functional.
+
+/// Observation 2: everything outside what was already implemented before sending to me is not working, tried to
+/// add smoke to Skirmisher, but it is not apparent on my end. Sorry but can't continue from here, something is
+/// screwed up and I have no idea what that is.
 final class DACarinaEngineSmoke {
+    // Spectrinho: system engine smoke only; normal exhaust and body effects are separate.
+    private static final boolean SKIRMISHER_SYSTEM_ENGINE_SMOKE = false;
+    private static final boolean BRAWLER_SYSTEM_ENGINE_SMOKE = true;
+    private static final boolean GUARDIAN_SYSTEM_ENGINE_SMOKE = false;
+    private static final boolean SCOUT_SYSTEM_ENGINE_SMOKE = true;
+
+    private static boolean systemEngineSmokeEnabled(ShipAPI ship) {
+        if (!isVirtuous(ship)) return true;
+        String systemId = ship.getHullSpec().getShipSystemId();
+        if (systemId == null) return true;
+        return switch (systemId) {
+            case "diableavionics_unlockedFlicker" -> SKIRMISHER_SYSTEM_ENGINE_SMOKE;
+            case "diableavionics_temporalshell" -> BRAWLER_SYSTEM_ENGINE_SMOKE;
+            case "diableavionics_citadel" -> GUARDIAN_SYSTEM_ENGINE_SMOKE;
+            case "diableavionics_circus" -> SCOUT_SYSTEM_ENGINE_SMOKE;
+            default -> true;
+        };
+    }
+
+    static boolean isVirtuous(ShipAPI ship) {
+        String hullId = ship.getHullSpec() == null ? null : ship.getHullSpec().getHullId();
+        return hullId != null && hullId.startsWith("diableavionics_virtuous_");
+    }
+
+    private static boolean isSkirmisher(ShipAPI ship) {
+        return isVirtuous(ship)
+                && "diableavionics_unlockedFlicker".equals(ship.getHullSpec().getShipSystemId());
+    }
+
+    /// Ship-centred Virtuous effects. Create ONE of these per ship, not per engine.
+
+    /** Tidal and Aero: replace the values here, since static objects are not compiling on my end,
+     * I had to put them inside the advance voids. */
+    static final class VirtuousEffects {
+        private static final Color DEFENDER_SMOKE = new Color(132, 218, 255, 10);
+        private static final Color SKIRMISHER_SMOKE = new Color(155, 202, 255, 52);
+        private final IntervalUtil defenderInterval = new IntervalUtil(0.08f, 0.11f);
+        private boolean defenderWasOn;
+        private boolean skirmisherWasOn;
+
+        void advance(float amount, CombatEngineAPI engine, ShipAPI ship) {
+            if (engine == null || engine.isPaused() || !ship.isAlive() || !isVirtuous(ship)) return;
+            String systemId = ship.getHullSpec().getShipSystemId();
+            boolean systemOn = ship.getSystem() != null && ship.getSystem().isOn();
+            boolean defenderOn = "diableavionics_citadel".equals(systemId) && systemOn && !ship.isPhased();
+            if (defenderOn != defenderWasOn) defenderInterval.nextInterval();
+            defenderWasOn = defenderOn;
+            boolean skirmisher = isSkirmisher(ship);
+            boolean skirmisherOn = skirmisher && systemOn;
+            // Flicker's falling edge is after arrival; emit once at the ship's current position.
+            if (skirmisher && skirmisherWasOn && !skirmisherOn) emitSkirmisherArrival(engine, ship);
+            skirmisherWasOn = skirmisherOn;
+            if (!systemOn || systemId == null) return;
+
+            switch (systemId) {
+                case "diableavionics_citadel":
+                    if (defenderOn) advanceDefender(amount, engine, ship);
+                    break;
+                case "diableavionics_temporalshell":
+                    advanceBrawler(amount, engine, ship);
+                    break;
+                case "diableavionics_circus":
+                    advanceScout(amount, engine, ship);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Defender / Guardian: Touraco-style cloud
+        private void advanceDefender(float amount, CombatEngineAPI engine, ShipAPI ship) {
+            defenderInterval.advance(amount);
+            if (defenderInterval.intervalElapsed()) emitDefenderCloud(engine, ship);
+        }
+        private void emitDefenderCloud(CombatEngineAPI engine, ShipAPI ship) {
+            Vector2f point = ship.getLocation();
+            Vector2f shipVel = ship.getVelocity();
+            float length = 120f;
+            for (int i = 0; i < 7; i++) {
+                float size = 60 + 120 * (float) Math.random();
+                double theta = Math.toRadians(ship.getFacing() - 180f + 360f * Math.random());
+                float r = (float) Math.random() * length;
+                float x = (float) Math.cos(theta) * r;
+                float y = (float) Math.sin(theta) * r;
+                Vector2f loc = new Vector2f(point.x + x, point.y + y);
+                Vector2f vel = new Vector2f(shipVel.x + x, shipVel.y + y);
+                Vector2f.add(vel, Misc.getPointWithinRadius(new Vector2f(), length * 0.5f), vel);
+                engine.addNebulaParticle(loc, vel, size, 2.5f, 0.1f, 0f,
+                        1f, new Color(155, 202, 255, 13));
+                //DEFENDER_SMOKE color, again the static thing is not working
+            }
+        }
+
+        private void emitSkirmisherArrival(CombatEngineAPI engine, ShipAPI ship) {
+            Vector2f point = ship.getLocation();
+            Vector2f shipVel = ship.getVelocity();
+            float spawnRadius = 35f;
+            for (int i = 0; i < 7; i++) {
+                float size = 60 + 120 * (float) Math.random();
+                double theta = Math.toRadians(ship.getFacing() - 180f + 360f * Math.random());
+                float dirX = (float) Math.cos(theta);
+                float dirY = (float) Math.sin(theta);
+                float r = (float) Math.random() * spawnRadius;
+                Vector2f loc = new Vector2f(point.x + dirX * r, point.y + dirY * r);
+                // Keep expansion speed independent of the tighter spawn radius.
+                float outwardSpeed = 120f + 80f * (float) Math.random();
+                Vector2f vel = new Vector2f(shipVel.x + dirX * outwardSpeed,
+                        shipVel.y + dirY * outwardSpeed);
+                Vector2f.add(vel, Misc.getPointWithinRadius(new Vector2f(), 15f), vel);
+                engine.addNebulaParticle(loc, vel, size, 2.5f, 0.1f, 0f,
+                        1f, SKIRMISHER_SMOKE);
+            }
+        }
+
+        private void advanceBrawler(float amount, CombatEngineAPI engine, ShipAPI ship) {
+            // Spectros: Temporal Shell effects go here. Give this mode its own timer if needed.
+        }
+
+        private void advanceScout(float amount, CombatEngineAPI engine, ShipAPI ship) {
+            // Spectros: Itano Circus effects go here.
+        }
+    }
+
     private final IntervalUtil repeat = new IntervalUtil(0.5f, 1f);
     private final List<Burst> bursts = new ArrayList<>();
     private final IntervalUtil transitIdle = new IntervalUtil(0.18f, 0.25f);
@@ -20,6 +149,7 @@ final class DACarinaEngineSmoke {
     private boolean wasBoosting;
     private boolean systemWasOn;
     private boolean systemEntryPending;
+    private boolean engineSmokeSuppressed;
     private boolean versantInitialized;
     private boolean transitWasOn;
     private boolean transitEntryPending;
@@ -52,7 +182,8 @@ final class DACarinaEngineSmoke {
             advanceVersant(amount, engine, ship, exhaust, emitting);
             return;
         }
-        boolean systemOn = ship.getSystem() != null && ship.getSystem().isOn();
+        boolean systemOn = ship.getSystem() != null && ship.getSystem().isOn()
+                && systemEngineSmokeEnabled(ship);
         boolean boosting = ship.isEngineBoostActive();
         boolean venting = ship.getFluxTracker() != null && ship.getFluxTracker().isVenting();
         boolean overloaded = ship.getFluxTracker() != null && ship.getFluxTracker().isOverloaded();
@@ -62,8 +193,12 @@ final class DACarinaEngineSmoke {
             if (!systemOn) repeat.forceIntervalElapsed();
         }
         systemWasOn = systemOn;
-        if (!emitting) {
+        boolean suppressSmoke = isSkirmisher(ship) && ship.getSystem() != null && ship.getSystem().isOn();
+        if (engineSmokeSuppressed && !suppressSmoke) repeat.forceIntervalElapsed();
+        engineSmokeSuppressed = suppressSmoke;
+        if (!emitting || suppressSmoke) {
             bursts.clear();
+            if (suppressSmoke) systemEntryPending = false;
             wasBoosting = boosting;
             return;
         }

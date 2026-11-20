@@ -16,6 +16,7 @@ import com.fs.starfarer.api.util.IntervalUtil;
 import org.magiclib.util.MagicRender;
 import org.magiclib.util.MagicTargeting;
 import data.scripts.weapons.Diableavionics_deepStrikeEffect;
+import data.scripts.DACarinaDeepStrikePaintjobs;
 import java.awt.Color;
 import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
@@ -46,6 +47,7 @@ public class Diableavionics_deepStrikeAI implements MissileAIPlugin, GuidedMissi
     //max speed of the missile after modifiers.
     private CombatEngineAPI engine;
     private final MissileAPI missile;
+    private final ShipAPI launchingShip;
     private ShipAPI target;
     private Vector2f lead = new Vector2f(), offset= new Vector2f();
     private boolean launch=true, rushing=false;
@@ -64,6 +66,7 @@ public class Diableavionics_deepStrikeAI implements MissileAIPlugin, GuidedMissi
         }
         
         this.missile = missile;
+        this.launchingShip = launchingShip;
         MAX_SPEED = missile.getMaxSpeed();
         //calculate the precision range factor
         PRECISION_RANGE=(float)Math.pow((2*PRECISION_RANGE),2);
@@ -285,6 +288,9 @@ public class Diableavionics_deepStrikeAI implements MissileAIPlugin, GuidedMissi
         dropPod.setOwner(missile.getOwner());
         */
         
+        DACarinaDeepStrikePaintjobs.inherit(
+                missile.getSource() != null ? missile.getSource() : launchingShip, dropPod);
+
         //inherit some velocity
         Vector2f vel = new Vector2f(missile.getVelocity());
         vel.scale(0.5f);

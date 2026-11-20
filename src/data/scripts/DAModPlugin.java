@@ -10,8 +10,6 @@ import com.fs.starfarer.api.campaign.RepLevel;
 import com.fs.starfarer.api.combat.MissileAIPlugin;
 import com.fs.starfarer.api.combat.MissileAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.impl.campaign.missions.hub.BaseHubMission;
-import com.fs.starfarer.api.impl.campaign.world.GateHaulerLocation;
 import data.campaign.DACampaignPlugin;
 import data.campaign.DASubject71DialogMusic;
 import data.scripts.campaign.gulf.DiableGulfPart2Intel;
@@ -163,7 +161,7 @@ public class DAModPlugin extends BaseModPlugin {
     @Override
     public PluginPick<MissileAIPlugin> pickMissileAI(MissileAPI missile, ShipAPI launchingShip) {
         // This callback also runs for scripted spawns and child missiles, once per missile.
-        DACarinaMissilePaintjobs.apply(missile, launchingShip);
+        DAPaintjobMissileSprites.apply(missile, launchingShip);
         return switch (missile.getProjectileSpecId()) {
             case SCATTER_MISSILE_ID ->
                     new PluginPick<>(new Diableavionics_ScatterMissileAI(missile, launchingShip), CampaignPlugin.PickPriority.MOD_SPECIFIC);
