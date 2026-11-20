@@ -32,6 +32,12 @@
       "thunderbolt": "graphics/carinasentinel/missiles/diableavionics_thunderbolt.png",
       "booster": "graphics/carinasentinel/ships/arbitrator/diableavionics_arbitratorBoosterB.png"
     },
+    "pfid_deep_strike": {
+      "missile": "graphics/PFID/ships/station/diableavionics_deepStrikeM.png",
+      "doorUp": "graphics/PFID/ships/station/diableavionics_deepStrikeDoorUp.png",
+      "doorLeft": "graphics/PFID/ships/station/diableavionics_deepStrikeDoorLeft.png",
+      "doorRight": "graphics/PFID/ships/station/diableavionics_deepStrikeDoorRight.png"
+    },
     "characters": {
       "da_subject71": "graphics/da/portraits/diableavionics_s71.png",
       "da_gulf": "graphics/da/portraits/diableavionics_gulfOwner.png",

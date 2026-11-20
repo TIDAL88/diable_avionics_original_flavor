@@ -54,6 +54,7 @@ public class DAPFIDEngineVisuals extends BaseEveryFrameCombatPlugin {
 
     static boolean isPFID(ShipAPI ship) {
         if (ship == null) return false;
+        if (DAPaintjobDeepStrikeSprites.isPFIDPod(ship)) return true;
         if (DAPaintjobDroneSprites.isPFIDDrone(ship)) return true;
         if (ship.getVariant() != null) {
             MagicPaintjobSpec paintjob = MagicPaintjobManager.getCurrentShipPaintjob(ship.getVariant());

@@ -16,7 +16,7 @@ import com.fs.starfarer.api.util.IntervalUtil;
 import org.magiclib.util.MagicRender;
 import org.magiclib.util.MagicTargeting;
 import data.scripts.weapons.Diableavionics_deepStrikeEffect;
-import data.scripts.DACarinaDeepStrikePaintjobs;
+import data.scripts.DAPaintjobDeepStrikeSprites;
 import java.awt.Color;
 import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
@@ -288,7 +288,7 @@ public class Diableavionics_deepStrikeAI implements MissileAIPlugin, GuidedMissi
         dropPod.setOwner(missile.getOwner());
         */
         
-        DACarinaDeepStrikePaintjobs.inherit(
+        DAPaintjobDeepStrikeSprites.inherit(
                 missile.getSource() != null ? missile.getSource() : launchingShip, dropPod);
 
         //inherit some velocity

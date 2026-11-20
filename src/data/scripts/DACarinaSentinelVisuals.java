@@ -26,7 +26,7 @@ public class DACarinaSentinelVisuals extends BaseEveryFrameCombatPlugin {
     private static final Map<String, List<MagicPaintjobSpec>> fighterPaintjobs = new HashMap<>();
     public static boolean isCarina(ShipAPI ship) {
         if (ship == null) return false;
-        if (DACarinaDeepStrikePaintjobs.isCarinaPod(ship)) return true;
+        if (DAPaintjobDeepStrikeSprites.isCarinaPod(ship)) return true;
         if (DAPaintjobDroneSprites.isCarinaDrone(ship)) return true;
         if (ship.getVariant() != null) {
             MagicPaintjobSpec paintjob = MagicPaintjobManager.getCurrentShipPaintjob(ship.getVariant());

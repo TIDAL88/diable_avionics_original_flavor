@@ -13,11 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** Carina missile sprites and the PFID Arbitrator booster, both loaded and launched. */
+/** Carina missile sprites and PFID Deep Strike/Arbitrator sprites, both loaded and launched. */
 final class DAPaintjobMissileSprites {
     private static final String LOADED_KEY = "diableavionics_carina_loaded_missiles";
     private static final String MISSILES = "graphics/carinasentinel/missiles/";
     private static final String PFID_BOOSTER = "graphics/PFID/ships/arbitrator/diableavionics_arbitratorBoosterB.png";
+    private static final String PFID_DEEP_STRIKE = "graphics/PFID/ships/station/diableavionics_deepStrikeM.png";
     private static final Map<String, String> SPRITES = Map.ofEntries(
             Map.entry("diableavionics_deepStrikeM",
                     "graphics/carinasentinel/ships/station/diableavionics_deepStrikeM.png"),
@@ -91,7 +92,10 @@ final class DAPaintjobMissileSprites {
     private static String texture(String projectileId, String family) {
         if (projectileId == null) return null;
         if ("carinasentinel".equals(family)) return SPRITES.get(projectileId);
-        if ("PFID".equals(family) && "diableavionics_booster_proj".equals(projectileId)) return PFID_BOOSTER;
+        if ("PFID".equals(family)) {
+            if ("diableavionics_booster_proj".equals(projectileId)) return PFID_BOOSTER;
+            if ("diableavionics_deepStrikeM".equals(projectileId)) return PFID_DEEP_STRIKE;
+        }
         return null;
     }
 }
