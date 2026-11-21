@@ -12,12 +12,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/// Observation: On my end here, the static values are not being compiled, which means that none of my changes
-/// are working on them. I will use internal values inside each object to do changes, as they are functional.
-
-/// Observation 2: everything outside what was already implemented before sending to me is not working, tried to
-/// add smoke to Skirmisher, but it is not apparent on my end. Sorry but can't continue from here, something is
-/// screwed up and I have no idea what that is.
 final class DACarinaEngineSmoke {
     // Spectrinho: system engine smoke only; normal exhaust and body effects are separate.
     private static final boolean SKIRMISHER_SYSTEM_ENGINE_SMOKE = false;
@@ -50,11 +44,9 @@ final class DACarinaEngineSmoke {
 
     /// Ship-centred Virtuous effects. Create ONE of these per ship, not per engine.
 
-    /** Tidal and Aero: replace the values here, since static objects are not compiling on my end,
-     * I had to put them inside the advance voids. */
     static final class VirtuousEffects {
-        private static final Color DEFENDER_SMOKE = new Color(132, 218, 255, 10);
-        private static final Color SKIRMISHER_SMOKE = new Color(155, 202, 255, 52);
+        private static final Color DEFENDER_SMOKE = new Color(155, 202, 255, 13);
+        private static final Color SKIRMISHER_SMOKE = new Color(255, 167, 155, 28);
         private final IntervalUtil defenderInterval = new IntervalUtil(0.08f, 0.11f);
         private boolean defenderWasOn;
         private boolean skirmisherWasOn;
@@ -107,8 +99,7 @@ final class DACarinaEngineSmoke {
                 Vector2f vel = new Vector2f(shipVel.x + x, shipVel.y + y);
                 Vector2f.add(vel, Misc.getPointWithinRadius(new Vector2f(), length * 0.5f), vel);
                 engine.addNebulaParticle(loc, vel, size, 2.5f, 0.1f, 0f,
-                        1f, new Color(155, 202, 255, 13));
-                //DEFENDER_SMOKE color, again the static thing is not working
+                        1f, DEFENDER_SMOKE);
             }
         }
 
@@ -116,20 +107,20 @@ final class DACarinaEngineSmoke {
             Vector2f point = ship.getLocation();
             Vector2f shipVel = ship.getVelocity();
             float spawnRadius = 35f;
-            for (int i = 0; i < 7; i++) {
-                float size = 60 + 120 * (float) Math.random();
+            for (int i = 0; i < 40; i++) {
+                float size = 90 + 90 * (float) Math.random();
                 double theta = Math.toRadians(ship.getFacing() - 180f + 360f * Math.random());
                 float dirX = (float) Math.cos(theta);
                 float dirY = (float) Math.sin(theta);
                 float r = (float) Math.random() * spawnRadius;
                 Vector2f loc = new Vector2f(point.x + dirX * r, point.y + dirY * r);
                 // A quick arrival burst, rather than a lingering cloud.
-                float outwardSpeed = 240f + 120f * (float) Math.random();
+                float outwardSpeed = 300f + 450f * (float) Math.random();
                 Vector2f vel = new Vector2f(shipVel.x + dirX * outwardSpeed,
                         shipVel.y + dirY * outwardSpeed);
                 Vector2f.add(vel, Misc.getPointWithinRadius(new Vector2f(), 15f), vel);
                 engine.addNebulaParticle(loc, vel, size, 2.5f, 0.025f, 0f,
-                        0.4f, SKIRMISHER_SMOKE);
+                        0.425f, SKIRMISHER_SMOKE);
             }
         }
 
