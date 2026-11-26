@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DASignalLost extends BaseCommandPlugin {
-    private static final String BOUNTY_ID = "diable_pressure_check";
+    public static final String BOUNTY_ID = "diable_pressure_check";
     private static final String OFFICER_CONFIG = "data/config/modFiles/pressure_check_officers.json";
     private static final List<String> SHIP_DESIGNATIONS = List.of(
             "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta",

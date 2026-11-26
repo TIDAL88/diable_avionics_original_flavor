@@ -39,6 +39,12 @@ public class DACampaignPlugin extends BaseCampaignPlugin {
                         PickPriority.HIGHEST
                 );
             }
+            if (DASignalLostBattleCreationPlugin.isBountyFleet(fleet)) {
+                return new PluginPick<BattleCreationPlugin>(
+                        new DASignalLostBattleCreationPlugin(),
+                        PickPriority.HIGHEST
+                );
+            }
         }
         return super.pickBattleCreationPlugin(opponent);
     }
