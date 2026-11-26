@@ -13,7 +13,6 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Ranks;
 import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.campaign.gulf.DiableGulfPart2Intel;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.magiclib.bounty.ActiveBounty;
@@ -79,12 +78,14 @@ public class DASignalLost extends BaseCommandPlugin {
         commander.setFaction(faction.getId());
         applySkills(commander, commanderLevel, commanderSkills);
         fleet.setCommander(commander);
+        String fleetPortrait = commander.getPortraitSprite();
         int gauntletIndex = 0;
         int velvetIndex = 0;
         int ironIndex = 0;
         for (FleetMemberAPI member : members) {
             PersonAPI captain = member == flagship ? commander : escorts.get(member);
             if (captain != null && captain != commander) {
+                captain.setPortraitSprite(fleetPortrait);
                 data.addOfficer(captain);
             }
             member.setCaptain(captain);
@@ -116,7 +117,6 @@ public class DASignalLost extends BaseCommandPlugin {
         }
 
         PersonAPI officer = faction.createRandomPerson();
-        officer.setPortraitSprite(DiableGulfPart2Intel.ENEMY_PORTRAIT);
         officer.setRankId(Ranks.SPACE_LIEUTENANT);
         officer.setPostId(Ranks.POST_OFFICER);
         officer.setPersonality(profile.getString("officer_personality"));
