@@ -1,0 +1,96 @@
+{
+    "displayName": "Assault",
+    "fluxCapacitors": 0,
+    "fluxVents": 4,
+    "goalVariant": false,
+    "hullId": "diableavionics_coanda",
+    "hullMods": [
+        "diableavionics_mountBI",
+        "missleracks",
+        "targetingunit",
+        "shield_shunt",
+        "damaged_mounts",
+        "degraded_life_support",
+        "erratic_injector",
+        "degraded_shields",
+        "faulty_grid",
+        "ML_skinSwap",
+        "autorepair",
+        "converted_hangar",
+        "reinforcedhull",
+        "eccm"
+    ],
+    "permaMods": [
+        "damaged_mounts",
+        "degraded_life_support",
+        "erratic_injector",
+        "degraded_shields",
+        "faulty_grid",
+        "ML_skinSwap",
+        "autorepair",
+        "converted_hangar",
+        "reinforcedhull"
+    ],
+    "sMods": [
+        "autorepair",
+        "converted_hangar",
+        "reinforcedhull"
+    ],
+    "sModdedBuiltIns": [],
+    "variantId": "diableavionics_damned_tania_coanda_frost",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0012": "diableavionics_microcluster_left2"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0001": "diableavionics_thrush"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0011": "diableavionics_micromissile",
+                "WS0009": "diableavionics_micromissile"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0008": "diableavionics_micromissile"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0003": "tania_thorn_cannon",
+                "WS0002": "tania_osorio_support",
+                "WS0005": "tania_thorn_cannon",
+                "WS0004": "tania_thorn_cannon"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0007": "tania_osorio_support",
+                "WS0006": "tania_osorio_support"
+            }
+        }
+    ],
+    "wings": [
+        "diableavionics_frost_wing"
+    ],
+    "tags": [
+        "ML_paintjob-diableavionics_carinasentinel_coanda"
+    ]
+}

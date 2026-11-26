@@ -44,62 +44,62 @@ public final class DiableGulfPart2FleetFactory {
     private static final FleetEntry[] FLEET = {
             new FleetEntry(
                     "diableavionics_gulf2_coanda",
-                    "ISS Stellar Rose",
+                    "Advanced Escort Alpha",
                     "diableavionics_coanda"
             ),
             new FleetEntry(
                     "diableavionics_gulf2_coanda",
-                    "ISS Blueshift",
+                    "Advanced Escort Beta",
                     "diableavionics_coanda"
             ),
             new FleetEntry(
                     "diableavionics_gulf2_coanda",
-                    "ISS Red Dwarf",
+                    "Advanced Escort Gamma",
                     "diableavionics_coanda"
             ),
             new FleetEntry(
                     "diableavionics_gulf2_coanda",
-                    "ISS Aloft Parabolic",
+                    "Advanced Escort Delta",
                     "diableavionics_coanda"
             ),
             new FleetEntry(
                     "diableavionics_gulf2_minigust_valiant",
-                    "ISS Stars Below",
+                    "Advanced Escort Epsilon",
                     "diableavionics_miniGust"
             ),
             new FleetEntry(
                     "diableavionics_gulf2_minigust_valiant",
-                    "ISS Interstitial Breeze",
+                    "Advanced Escort Zeta",
                     "diableavionics_miniGust"
             ),
             new FleetEntry(
                     "diableavionics_gulf2_minigust_valiant",
-                    "ISS Redshift",
+                    "Advanced Escort Eta",
                     "diableavionics_miniGust"
             ),
             new FleetEntry(
                     "diableavionics_gulf2_minigust_valiant",
-                    "ISS Lightspeed+",
+                    "Advanced Escort Theta",
                     "diableavionics_miniGust"
             ),
             new FleetEntry(
                     "diableavionics_gulf2_minigust_strife",
-                    "ISS 7000 Lightyears",
+                    "Advanced Escort Iota",
                     "diableavionics_miniGust"
             ),
             new FleetEntry(
                     "diableavionics_gulf2_vapor",
-                    "ISS Stars Below",
+                    "Advanced Escort Kappa",
                     "diableavionics_vapor"
             ),
             new FleetEntry(
                     "diableavionics_gulf2_vapor",
-                    "ISS Mercurial",
+                    "Advanced Escort Lambda",
                     "diableavionics_vapor"
             ),
             new FleetEntry(
                     "diableavionics_gulf2_vapor",
-                    "DSF Kilbeggan",
+                    "Advanced Escort Mu",
                     "diableavionics_vapor"
             )
     };

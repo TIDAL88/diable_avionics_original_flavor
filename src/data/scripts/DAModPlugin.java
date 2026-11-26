@@ -12,6 +12,7 @@ import com.fs.starfarer.api.combat.MissileAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import data.campaign.DACampaignPlugin;
 import data.campaign.DASubject71DialogMusic;
+import data.campaign.rulecmd.DARiseOfTheDamned;
 import data.scripts.campaign.gulf.DiableGulfPart2Intel;
 import data.scripts.campaign.gulf.DiableGulfPart2TriggerScript;
 import data.scripts.ai.*;
@@ -99,6 +100,7 @@ public class DAModPlugin extends BaseModPlugin {
 
     @Override
     public void onGameLoad(boolean newGame) {
+        DARiseOfTheDamned.updateAvailability();
         Global.getSector().registerPlugin(new DACampaignPlugin());
         if (!Global.getSector().hasTransientScript(DASubject71DialogMusic.class)) {
             Global.getSector().addTransientScript(new DASubject71DialogMusic());

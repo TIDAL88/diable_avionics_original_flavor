@@ -10,6 +10,7 @@
 	"explosionColor":[182,36,243,100],
 	"explosionRadius":100,
 	"maxFlightTime":3,
+	"fizzleOnReachingWeaponRange":true,
 	"fadeTime":0.1,
 	"noEngineGlowTime":0,
 	"engineSpec":{"turnAcc":2000,

@@ -188,6 +188,7 @@ final class DAPFIDNativeEngines {
         final Backend backend;
         final List<EngineSlot> originals, emitters;
         final List<Layer> layers;
+        long lastSeenFrame;
         boolean active;
         Binding(Backend backend, Factory factory) {
             this.backend = backend;

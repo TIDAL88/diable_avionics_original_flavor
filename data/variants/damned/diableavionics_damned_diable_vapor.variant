@@ -1,0 +1,67 @@
+{
+    "displayName": "Attack",
+    "fluxCapacitors": 8,
+    "fluxVents": 0,
+    "goalVariant": false,
+    "hullId": "diableavionics_vapor",
+    "hullMods": [
+        "diableavionics_cramped",
+        "damaged_mounts",
+        "degraded_life_support",
+        "erratic_injector",
+        "degraded_shields",
+        "faulty_grid",
+        "ML_skinSwap",
+        "pointdefenseai",
+        "reinforcedhull",
+        "autorepair",
+        "shield_shunt",
+        "hardened_subsystems"
+    ],
+    "permaMods": [
+        "damaged_mounts",
+        "degraded_life_support",
+        "erratic_injector",
+        "degraded_shields",
+        "faulty_grid",
+        "ML_skinSwap",
+        "pointdefenseai",
+        "reinforcedhull",
+        "autorepair"
+    ],
+    "sMods": [
+        "pointdefenseai",
+        "reinforcedhull",
+        "autorepair"
+    ],
+    "sModdedBuiltIns": [],
+    "variantId": "diableavionics_damned_diable_vapor",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0001": "diableavionics_artdeux"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0002": "diableavionics_lazyhorn_storm"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0003": "diableavionics_recson",
+                "WS0004": "diableavionics_recson"
+            }
+        }
+    ],
+    "wings": [],
+    "tags": [
+        "ML_paintjob-diableavionics_carinasentinel_vapor"
+    ]
+}

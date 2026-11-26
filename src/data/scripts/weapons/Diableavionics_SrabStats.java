@@ -14,7 +14,7 @@ import com.fs.starfarer.api.impl.campaign.ids.HullMods;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.combat.entities.Missile;
 
-/** Blocks missile stat bonuses on SRAB except ECCM maneuverability and flare resistance. */
+/** Blocks missile stat bonuses on SRAB except ECCM speed, maneuverability, and flare resistance. */
 public final class Diableavionics_SrabStats implements WeaponRangeModifier {
     private static final String WEAPON_ID = "diableavionics_srab";
 
@@ -27,7 +27,7 @@ public final class Diableavionics_SrabStats implements WeaponRangeModifier {
     /** Called once at creation, before the guidance AI caches the missile's speed. */
     public static void normalizeProjectile(MissileAPI missile) {
         MutableShipStatsAPI engines = missile.getEngineStats();
-        engines.getMaxSpeed().unmodify();
+        retainEccmModifier(engines.getMaxSpeed());
         retainEccmModifier(engines.getAcceleration());
         retainEccmModifier(engines.getDeceleration());
         retainEccmModifier(engines.getMaxTurnRate());

@@ -58,4 +58,213 @@
     "existing_target_memkey":"$virtuous",
     },
 
+    "diable_pressure_check": {
+        "trigger_marketFaction_any": ["player", "diableavionics"],
+        "trigger_player_minLevel": 15,
+
+        "job_name": "SIGNAL LOST",
+        "job_description": "An oddity. ==The Diable Avionics Corporation is paying for the destruction of a fleet flying its own colors.==\n\nA DSF carrier group on extended recon picked up a burst of ==pre-Collapse Corporation ID codes== from beyond the explored Sector. They traced the signal to a fleet, followed it into a…REDACTED, and made first contact.\n\nIn a rare display of candor or a routine exercise in calculation, the Admiralty has attached the few seconds of blurry footage a recon Vapor managed to transmit. You’re being asked for a second opinion.\n\n// …CONTROL! THEY’RE NOT FRIENDLY! THEY’RE NOT—\n[STATIC]\n…LOST THE WHOLE… OH GOD. I CAN’T GET THE HARNESS OFF.\n…CONTROL, PLEASE. SEND… SEND THE LAST LI—\n[SIGNAL LOST] //\n\nThe clip cuts to static, then starts again. The screams and creaks meld into one, like listening to the wails of dying animals through an analog interface.\n\nEven through the blur, the battle-worn ships move and coordinate in an organic, almost rehearsed manner as they slaughter the Admiralty’s carrier group. You look for the Wanzers and spot only a couple of sixth-generation antiques. ==The Cruiser School==, honed for a single purpose. From the look of it, that purpose was to dismantle their own faction.\n\nYour XO looks away after the third replay.\n\nThe bounty is substantial. The pre-Collapse hardware could be worth a fortune on its own, assuming you’re the one picking through the wreckage.",
+        "job_intel_success": "Diable confirms the destruction of the flagship and releases your payment. The final receipt lists the ship as unidentified.",
+        "job_intel_failure": "Diable has verified that the flagship is in your possession. The Corporation closes the contract without payment.",
+        "job_credit_reward": 1500000,
+        "job_forFaction": "diableavionics",
+        "job_reputation_reward": 35,
+        "job_type": "destruction",
+        "job_show_fleet": "vanilla",
+        "job_show_distance": "vanilla",
+        "job_difficultyDescription": "auto",
+        "job_pick_script": "DAPressureCheckPicked",
+
+        "target_gender": "ANY",
+        "target_portrait": "graphics/da/portraits/scary.png",
+        "target_rank": "spaceCommander",
+        "target_post": "fleetCommander",
+        "target_personality": "steady",
+        "target_level": 15,
+        "target_skills": {
+            "helmsmanship": 2,
+            "gunnery_implants": 2,
+            "tactical_drills": 1,
+            "coordinated_maneuvers": 1,
+            "crew_training": 1,
+            "fighter_uplink": 1,
+            "carrier_group": 1,
+            "officer_training": 1,
+            "officer_management": 1,
+            "best_of_the_best": 1,
+            "support_doctrine": 1,
+            "ballistic_mastery": 2,
+            "electronic_warfare": 1,
+            "flux_regulation": 1,
+            "cybernetic_augmentation": 1
+        },
+
+        "fleet_name": "The Velvet Gauntlet",
+        "fleet_faction": "diableavionics_unknown",
+        "fleet_flagship_variant": "diableavionics_wanzerless_maelstrom",
+        "fleet_flagship_name": "Gauntlet Actual",
+        "fleet_flagship_alwaysRecoverable": true,
+        "fleet_preset_ships": {
+            "diableavionics_wanzerless_maelstrom": 5,
+            "diableavionics_wanzerless_haze": 7,
+            "diableavionics_wanzerless_haze_so": 8,
+            "diableavionics_wanzerless_coanda": 5,
+            "diableavionics_wanzerless_vapor": 4
+        },
+        "fleet_composition_faction": "hegemony",
+        "fleet_composition_quality": 2,
+        "fleet_transponder": false,
+        "fleet_no_retreat": true,
+        "fleet_behavior": "AGGRESSIVE",
+        "fleet_attitude": "HOSTILE",
+        "fleet_memory_flags": ["$ignorePlayerCommRequests", "$cfai_makeAggressive", "$noRepImpact"],
+
+        "location_entitiesID": ["diableavionics_blacksite_ruptured_gate"],
+        "location_distance": "CLOSE",
+        "location_themes": ["procgen_no_theme_pulsar_blackhole"],
+        "location_themes_blacklist": ["theme_already_occupied", "theme_already_colonized", "theme_hidden", "no_pulsar_blackhole"]
+    },
+
+    "diable_lost_and_found_tania": {
+        "required_mods_id": [
+            "navarchy_of_tania"
+        ],
+        "trigger_marketFaction_any": [
+            "player",
+            "diableavionics"
+        ],
+        "trigger_player_minLevel": 15,
+        "job_name": "Rise Of The Damned",
+        "job_description": "Diable intelligence identifies Captain Samuel Rodrigues as a privateer operating under a Navarchy of Tania commission. He lost most of his ships in a recent engagement and is now trying to return to Carina.\n\nRodrigues rebuilt his fleet from a Diable ship graveyard. His crews patched a Pandemonium together from several wrecks and salvaged Drafts, Vapors, and a pair of Fractus carriers. They also coaxed a failing nanoforge back online. Coanda was the only intact hull pattern in its archive, so they kept building Coandas until the forge burned out.\n\nDiable wants Rodrigues eliminated before he reaches friendly space. He commands from the flotilla's ==Pandemonium==.",
+        "job_intel_success": "Diable confirms that Rodrigues is out of action and releases your payment. The salvaged flotilla will need another captain if it intends to make it home.",
+        "job_forFaction": "diableavionics",
+        "job_credit_reward": 1500000,
+        "job_reputation_reward": 35,
+        "job_type": "assassination",
+        "job_show_fleet": "vanilla",
+        "job_show_distance": "vanilla",
+        "job_difficultyDescription": "auto",
+        "job_pick_script": "DALostAndFoundTaniaPicked",
+        "job_memKey": "$diable_lost_and_found",
+        "target_first_name": "Samuel",
+        "target_last_name": "Rodrigues",
+        "target_gender": "MALE",
+        "target_portrait": "graphics/portraits/portrait_corporate06.png",
+        "target_rank": "spaceCommander",
+        "target_post": "fleetCommander",
+        "target_personality": "steady",
+        "target_level": 15,
+        "target_skills": {
+            "best_of_the_best": 1,
+            "derelict_contingent": 1,
+            "field_repairs": 1,
+            "carrier_group": 1,
+            "wolfpack_tactics": 1,
+            "navigation": 1,
+            "tactical_drills": 1,
+            "officer_training": 1,
+            "support_doctrine": 1,
+            "crew_training": 1,
+            "fighter_uplink": 1,
+            "bulk_transport": 1,
+            "containment_procedures": 1,
+            "makeshift_equipment": 1,
+            "coordinated_maneuvers": 1
+        },
+        "fleet_name": "Rodrigues's Flotilla",
+        "fleet_faction": "navarchy_of_tania",
+        "fleet_flagship_variant": "damned_tania/diableavionics_damned_tania_pandemonium",
+        "fleet_flagship_name": "ISS Forever Wandering",
+        "fleet_preset_ships": {
+            "damned_tania/diableavionics_damned_tania_fractus": 2,
+            "damned_tania/diableavionics_damned_tania_vapor": 3,
+            "damned_tania/diableavionics_damned_tania_draft": 3,
+            "damned_tania/diableavionics_damned_tania_coanda_strife": 5,
+            "damned_tania/diableavionics_damned_tania_coanda_frost": 16
+        },
+        "fleet_no_retreat": true,
+        "fleet_attitude": "HOSTILE",
+        "fleet_behavior": "ROAMING",
+        "location_distance": "CLOSE",
+        "location_themes": [
+            "procgen_no_theme_pulsar_blackhole"
+        ],
+        "location_themes_blacklist": [
+            "theme_already_occupied",
+            "theme_already_colonized",
+            "theme_hidden",
+            "no_pulsar_blackhole"
+        ]
+    },
+    "diable_lost_and_found_diable": {
+        "trigger_memKeys_none": {
+            "$da_lost_and_found_tania_enabled": true
+        },
+        "trigger_marketFaction_any": [
+            "player",
+            "diableavionics"
+        ],
+        "trigger_player_minLevel": 15,
+        "job_name": "Rise Of The Damned",
+        "job_description": "Diable intelligence has tracked an unidentified privateer working under a foreign commission. He lost most of his ships in a recent engagement and is now trying to return home.\n\nThe privateer rebuilt his fleet from a Diable ship graveyard. His crews patched a Pandemonium together from several wrecks and salvaged Drafts, Vapors, and a pair of Fractus carriers. They also coaxed a failing nanoforge back online. Coanda was the only intact hull pattern in its archive, so they kept building Coandas until the forge burned out.\n\nDiable wants the privateer eliminated before he reaches friendly space. He commands from the flotilla's ==Pandemonium==.",
+        "job_intel_success": "Diable confirms that the privateer is out of action and releases your payment. The salvaged flotilla will need another captain if it intends to make it home.",
+        "job_forFaction": "diableavionics",
+        "job_credit_reward": 1500000,
+        "job_reputation_reward": 35,
+        "job_type": "assassination",
+        "job_show_fleet": "vanilla",
+        "job_show_distance": "vanilla",
+        "job_difficultyDescription": "auto",
+        "job_pick_script": "DALostAndFoundDiablePicked",
+        "job_memKey": "$diable_lost_and_found",
+        "target_first_name": "Unidentified",
+        "target_last_name": "Privateer",
+        "target_gender": "MALE",
+        "target_portrait": "graphics/portraits/portrait_corporate06.png",
+        "target_rank": "spaceCommander",
+        "target_post": "fleetCommander",
+        "target_personality": "steady",
+        "target_level": 15,
+        "target_skills": {
+            "best_of_the_best": 1,
+            "derelict_contingent": 1,
+            "field_repairs": 1,
+            "carrier_group": 1,
+            "wolfpack_tactics": 1,
+            "navigation": 1,
+            "tactical_drills": 1,
+            "officer_training": 1,
+            "support_doctrine": 1,
+            "crew_training": 1,
+            "fighter_uplink": 1,
+            "bulk_transport": 1,
+            "containment_procedures": 1,
+            "makeshift_equipment": 1,
+            "coordinated_maneuvers": 1
+        },
+        "fleet_name": "Salvage Flotilla",
+        "fleet_faction": "diableavionics_unknown",
+        "fleet_flagship_variant": "diableavionics_damned_diable_pandemonium",
+        "fleet_flagship_name": "ISS Forever Wandering",
+        "fleet_preset_ships": {
+            "diableavionics_damned_diable_fractus": 2,
+            "diableavionics_damned_diable_vapor": 3,
+            "diableavionics_damned_diable_draft": 3,
+            "diableavionics_damned_diable_coanda_strife": 5,
+            "diableavionics_damned_diable_coanda_frost": 16
+        },
+        "fleet_no_retreat": true,
+        "fleet_attitude": "HOSTILE",
+        "fleet_behavior": "ROAMING",
+        "location_distance": "CLOSE",
+        "location_themes": [
+            "procgen_no_theme_pulsar_blackhole"
+        ],
+        "location_themes_blacklist": [
+            "theme_already_occupied",
+            "theme_already_colonized",
+            "theme_hidden",
+            "no_pulsar_blackhole"
+        ]
+    }
 }

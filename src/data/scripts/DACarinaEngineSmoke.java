@@ -1,10 +1,14 @@
 package data.scripts;
 
 import com.fs.starfarer.api.combat.CombatEngineAPI;
+import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.combat.CombatEngineLayers;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipEngineControllerAPI.ShipEngineAPI;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
+import com.fs.starfarer.api.graphics.SpriteAPI;
+import org.magiclib.util.MagicRender;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.Color;
@@ -46,7 +50,8 @@ final class DACarinaEngineSmoke {
 
     static final class VirtuousEffects {
         private static final Color DEFENDER_SMOKE = new Color(155, 202, 255, 13);
-        private static final Color SKIRMISHER_SMOKE = new Color(255, 167, 155, 28);
+        private static final Color SKIRMISHER_SMOKE = new Color(255, 255, 255, 40);
+        private static final Color SKIRMISHER_WISP = new Color(255, 255, 255, 16);
         private final IntervalUtil defenderInterval = new IntervalUtil(0.08f, 0.11f);
         private boolean defenderWasOn;
         private boolean skirmisherWasOn;
@@ -61,7 +66,7 @@ final class DACarinaEngineSmoke {
             boolean skirmisher = isSkirmisher(ship);
             boolean skirmisherOn = skirmisher && systemOn;
             // Flicker's falling edge is after arrival; emit once at the ship's current position.
-            if (skirmisher && skirmisherWasOn && !skirmisherOn) emitSkirmisherArrival(engine, ship);
+            if (skirmisher && skirmisherWasOn && !skirmisherOn) emitSkirmisherArrival(ship);
             skirmisherWasOn = skirmisherOn;
             if (!systemOn || systemId == null) return;
 
@@ -103,24 +108,44 @@ final class DACarinaEngineSmoke {
             }
         }
 
-        private void emitSkirmisherArrival(CombatEngineAPI engine, ShipAPI ship) {
+        private void emitSkirmisherArrival(ShipAPI ship) {
             Vector2f point = ship.getLocation();
             Vector2f shipVel = ship.getVelocity();
-            float spawnRadius = 35f;
-            for (int i = 0; i < 40; i++) {
-                float size = 90 + 90 * (float) Math.random();
+            float spawnRadius = 28.125f;
+            for (int i = 0; i < 28; i++) {
+                boolean wisp = i >= 22;
+                float size = wisp ? 55f + 30f * (float) Math.random()
+                        : 75f + 45f * (float) Math.random();
                 double theta = Math.toRadians(ship.getFacing() - 180f + 360f * Math.random());
                 float dirX = (float) Math.cos(theta);
                 float dirY = (float) Math.sin(theta);
                 float r = (float) Math.random() * spawnRadius;
                 Vector2f loc = new Vector2f(point.x + dirX * r, point.y + dirY * r);
-                // A quick arrival burst, rather than a lingering cloud.
-                float outwardSpeed = 300f + 450f * (float) Math.random();
+                // Keep the main puff compact, with a few slow wisps left at the arrival point.
+                float outwardSpeed = wisp ? 15f + 30f * (float) Math.random()
+                        : 110f + 90f * (float) Math.random();
                 Vector2f vel = new Vector2f(shipVel.x + dirX * outwardSpeed,
                         shipVel.y + dirY * outwardSpeed);
-                Vector2f.add(vel, Misc.getPointWithinRadius(new Vector2f(), 15f), vel);
-                engine.addNebulaParticle(loc, vel, size, 2.5f, 0.025f, 0f,
-                        0.425f, SKIRMISHER_SMOKE);
+                Vector2f.add(vel, Misc.getPointWithinRadius(new Vector2f(), 8f), vel);
+                float duration = wisp ? 0.875f + 0.4375f * (float) Math.random()
+                        : 0.475f + 0.2125f * (float) Math.random();
+                // The native nebula API picks its own layer. Render the same 4x4 smoke atlas below ships.
+                SpriteAPI sprite = Global.getSettings().getSprite("misc", "nebula_particles");
+                float tileWidth = sprite.getTextureWidth() / 4f;
+                float tileHeight = sprite.getTextureHeight() / 4f;
+                sprite.setTexX((int) (Math.random() * 4) * tileWidth);
+                sprite.setTexY((int) (Math.random() * 4) * tileHeight);
+                sprite.setTexWidth(tileWidth);
+                sprite.setTexHeight(tileHeight);
+                float growth = size * ((wisp ? 1.5f : 1.8f) - 1f) / duration;
+                float fadeIn = duration * (wisp ? 0.08f : 0.025f);
+                float peakUntil = Math.max(fadeIn, duration * (wisp ? 0f : 0.08f));
+                MagicRender.battlespace(sprite, loc, vel, new Vector2f(size, size),
+                        new Vector2f(growth, growth), (float) Math.random() * 360f, 0f,
+                        wisp ? SKIRMISHER_WISP : SKIRMISHER_SMOKE, true,
+                        0f, 0f, 0f, 0f, 0f,
+                        fadeIn, peakUntil - fadeIn, duration - peakUntil,
+                        CombatEngineLayers.BELOW_SHIPS_LAYER);
             }
         }
 

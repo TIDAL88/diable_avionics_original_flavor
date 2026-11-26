@@ -72,7 +72,7 @@
         "shipQuality":1,
         "numShips":1,
         "shipSize":1,
-        "aggression":4,
+        "aggression":5,
         "combatFreighterProbability":0,
         "combatFreighterCombatUseFraction":0,
         "combatFreighterCombatUseFractionWhenPriority":0,

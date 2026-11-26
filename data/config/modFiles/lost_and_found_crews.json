@@ -1,0 +1,248 @@
+{
+    "pandemonium": [
+        {
+            "ship_name": "ISS Forever Wandering",
+            "officer": {
+                "first_name": "Megas",
+                "last_name": "Hadar",
+                "gender": "MALE",
+                "portrait": "graphics/portraits/portrait23.png",
+                "level": 6,
+                "personality": "aggressive",
+                "skills": {
+                    "gunnery_implants": 1,
+                    "systems_expertise": 1,
+                    "damage_control": 1,
+                    "combat_endurance": 2,
+                    "helmsmanship": 1,
+                    "point_defense": 2
+                }
+            }
+        }
+    ],
+    "fractus": [
+        {
+            "ship_name": "ISS Azimuth",
+            "officer": {
+                "first_name": "Grant",
+                "last_name": "Rasmussen",
+                "gender": "MALE",
+                "portrait": "graphics/portraits/portrait_mercenary03.png",
+                "level": 6,
+                "personality": "cautious",
+                "skills": {
+                    "systems_expertise": 1,
+                    "damage_control": 1,
+                    "combat_endurance": 2,
+                    "helmsmanship": 1,
+                    "point_defense": 2,
+                    "polarized_armor": 1
+                }
+            }
+        },
+        {
+            "ship_name": "ISS Cromo",
+            "officer": {
+                "first_name": "Arinna",
+                "last_name": "Montoya",
+                "gender": "FEMALE",
+                "portrait": "graphics/portraits/portrait21.png",
+                "level": 6,
+                "personality": "cautious",
+                "skills": {
+                    "systems_expertise": 1,
+                    "damage_control": 1,
+                    "combat_endurance": 2,
+                    "helmsmanship": 1,
+                    "point_defense": 2,
+                    "polarized_armor": 1
+                }
+            }
+        }
+    ],
+    "vapor": [
+        {
+            "ship_name": "ISS Laniakea Traveller",
+            "officer": {
+                "first_name": "Buck",
+                "last_name": "Atkinson",
+                "gender": "MALE",
+                "portrait": "graphics/portraits/portrait_defactioned04.png",
+                "level": 6,
+                "personality": "cautious",
+                "skills": {
+                    "gunnery_implants": 2,
+                    "systems_expertise": 1,
+                    "damage_control": 1,
+                    "combat_endurance": 1,
+                    "helmsmanship": 1,
+                    "point_defense": 2
+                }
+            }
+        },
+        {
+            "ship_name": "ISS Rigel Flyer",
+            "officer": {
+                "first_name": "Lina",
+                "last_name": "Petty",
+                "gender": "FEMALE",
+                "portrait": "graphics/portraits/portrait46.png",
+                "level": 6,
+                "personality": "cautious",
+                "skills": {
+                    "gunnery_implants": 2,
+                    "systems_expertise": 1,
+                    "damage_control": 1,
+                    "combat_endurance": 1,
+                    "helmsmanship": 1,
+                    "point_defense": 2
+                }
+            }
+        },
+        {
+            "ship_name": "ISS There And Back Again",
+            "officer": {
+                "first_name": "Fauzi",
+                "last_name": "Quinlan",
+                "gender": "MALE",
+                "portrait": "graphics/portraits/portrait43.png",
+                "level": 6,
+                "personality": "cautious",
+                "skills": {
+                    "gunnery_implants": 2,
+                    "systems_expertise": 1,
+                    "damage_control": 1,
+                    "combat_endurance": 1,
+                    "helmsmanship": 1,
+                    "point_defense": 2
+                }
+            }
+        }
+    ],
+    "draft": [
+        {
+            "ship_name": "ISS Malfeasant",
+            "officer": {
+                "first_name": "Vela",
+                "last_name": "Serian",
+                "gender": "FEMALE",
+                "portrait": "graphics/portraits/portrait22.png",
+                "level": 6,
+                "personality": "steady",
+                "skills": {
+                    "gunnery_implants": 2,
+                    "ordnance_expert": 1,
+                    "damage_control": 1,
+                    "combat_endurance": 1,
+                    "helmsmanship": 1,
+                    "point_defense": 2
+                }
+            }
+        },
+        {
+            "ship_name": "ISS Memory of Deneb",
+            "officer": {
+                "first_name": "Kelly",
+                "last_name": "Io",
+                "gender": "FEMALE",
+                "portrait": "graphics/portraits/portrait45.png",
+                "level": 6,
+                "personality": "steady",
+                "skills": {
+                    "gunnery_implants": 2,
+                    "ordnance_expert": 1,
+                    "damage_control": 1,
+                    "combat_endurance": 1,
+                    "helmsmanship": 1,
+                    "point_defense": 2
+                }
+            }
+        },
+        {
+            "ship_name": "ISS Laika",
+            "officer": {
+                "first_name": "Ryan",
+                "last_name": "Cabrakan",
+                "gender": "MALE",
+                "portrait": "graphics/portraits/portrait_mercenary03.png",
+                "level": 6,
+                "personality": "steady",
+                "skills": {
+                    "gunnery_implants": 2,
+                    "ordnance_expert": 1,
+                    "damage_control": 1,
+                    "combat_endurance": 1,
+                    "helmsmanship": 1,
+                    "point_defense": 2
+                }
+            }
+        }
+    ],
+    "coanda_strife": [
+        {
+            "ship_name": "ISS Auster"
+        },
+        {
+            "ship_name": "ISS Antares Bright"
+        },
+        {
+            "ship_name": "ISS Go On Take A Good Look"
+        },
+        {
+            "ship_name": "ISS Old Earth Or Bust"
+        },
+        {
+            "ship_name": "ISS Ideal Parameters"
+        }
+    ],
+    "coanda_frost": [
+        {
+            "ship_name": "ISS Moskva-Kassiopeya"
+        },
+        {
+            "ship_name": "ISS Conny's Heart"
+        },
+        {
+            "ship_name": "ISS Star Blazer"
+        },
+        {
+            "ship_name": "ISS Kosmoskva"
+        },
+        {
+            "ship_name": "ISS Gagarin's Dream"
+        },
+        {
+            "ship_name": "ISS High Moon"
+        },
+        {
+            "ship_name": "ISS Nightrunner"
+        },
+        {
+            "ship_name": "ISS Azimuth"
+        },
+        {
+            "ship_name": "ISS Ideal Parameters"
+        },
+        {
+            "ship_name": "ISS Singularian"
+        },
+        {
+            "ship_name": "ISS Hurry-scurry"
+        },
+        {
+            "ship_name": "ISS Interstitial Breeze"
+        },
+        {
+            "ship_name": "ISS Mu Herculis Lost"
+        },
+        {
+            "ship_name": "ISS Coeurl"
+        },
+        {
+            "ship_name": "ISS Stellarian"
+        },
+        {
+            "ship_name": "ISS Amber"
+        }
+    ]
+}

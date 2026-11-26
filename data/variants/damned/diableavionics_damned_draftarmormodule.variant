@@ -1,0 +1,23 @@
+{
+    "displayName": "Standard",
+    "fluxCapacitors": 0,
+    "fluxVents": 0,
+    "goalVariant": false,
+    "hullId": "diableavionics_draftarmormodule",
+    "hullMods": [
+        "reduced_explosion",
+        "always_detaches",
+        "ML_skinSwap"
+    ],
+    "permaMods": [
+        "ML_skinSwap"
+    ],
+    "sMods": [],
+    "sModdedBuiltIns": [],
+    "variantId": "diableavionics_damned_draftarmormodule",
+    "weaponGroups": [],
+    "wings": [],
+    "tags": [
+        "ML_paintjob-diableavionics_carinasentinel_draftarmormodule"
+    ]
+}

@@ -1,4 +1,17 @@
 {
+  "engineStyles": {
+    "PFID_Engine": {
+      "engineColor": [183, 154, 156, 120],
+      "contrailParticleSizeMult": 10.90,
+      "contrailParticleDuration": 0.12,
+      "contrailParticleFinalSizeMult": 3.12,
+      "contrailMaxSpeedMult": 0.33,
+      "contrailAngularVelocityMult": 0.33,
+      "contrailColor": [31, 29, 51, 52],
+      "engineGlowGlowMult": 1.45,
+      "type": "GLOW"
+    }
+  },
   "defaultProfile": "bright",
   "hullProfiles": {
     "diableavionics_maelstrom": "clean"

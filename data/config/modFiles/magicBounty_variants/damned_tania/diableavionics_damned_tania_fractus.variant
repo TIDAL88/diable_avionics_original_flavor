@@ -1,0 +1,69 @@
+{
+    "displayName": "Standard",
+    "fluxCapacitors": 0,
+    "fluxVents": 2,
+    "goalVariant": true,
+    "hullId": "diableavionics_fractus",
+    "hullMods": [
+        "damaged_mounts",
+        "degraded_life_support",
+        "erratic_injector",
+        "degraded_shields",
+        "faulty_grid",
+        "ML_skinSwap",
+        "pointdefenseai",
+        "reinforcedhull",
+        "autorepair",
+        "shield_shunt"
+    ],
+    "permaMods": [
+        "damaged_mounts",
+        "degraded_life_support",
+        "erratic_injector",
+        "degraded_shields",
+        "faulty_grid",
+        "ML_skinSwap",
+        "pointdefenseai",
+        "reinforcedhull",
+        "autorepair"
+    ],
+    "sMods": [
+        "pointdefenseai",
+        "reinforcedhull",
+        "autorepair"
+    ],
+    "sModdedBuiltIns": [],
+    "variantId": "diableavionics_damned_tania_fractus",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0002": "diableavionics_thrush"
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0001": "diableavionics_micromissile",
+                "WS0006": "diableavionics_micromissile"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0003": "tania_thorn_cannon",
+                "WS0004": "tania_thorn_cannon"
+            }
+        }
+    ],
+    "wings": [
+        "diableavionics_blizzaia_wing",
+        "diableavionics_arbitrator_wing"
+    ],
+    "tags": [
+        "ML_paintjob-diableavionics_carinasentinel_fractus"
+    ]
+}

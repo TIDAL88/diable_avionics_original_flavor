@@ -3,12 +3,23 @@ DATE: WIP
 VERSION: Version 3.0.8 - WIP
 ===============================================================================
 
+Bounties
+* Added SIGNAL LOST, a Diable Avionics bounty on the Velvet Glove fleet.
+* Added Rise Of The Damned, with a Tania-armed fleet when Navarchy of Tania is enabled and Diable loadouts otherwise.
+
 General Bugfixing
 * Fixed the Virtuous's left-hand Excision recoil to swing opposite to the right-hand rifle.
 
+QOL
+* The Last Line now has a permanent campaign exclamation marker.
+* new ship names for Dead frequency boss fight
+
+Weapons
+* SRAB: Restored ECCM's projectile speed bonus.
+
 Paintjobs
-* New paintjob : PFID, including a very special Virtuous, thanks to Yisic
-* New paintjob : Carina Sentinel. From the Navarchy of Tania with love: A complete makeover that leaves nothing out: ships, Wanzers, weapons, and missile projectile and effects, with custom shields and engine exhaust to match. Even the Gulf's Deep Strike launch catapult, doors animations, pods, and deployed Wanzers get the Carina treatment. Includes the Virtuous and all its configurations.
+* New paintjob : PFID, including a very special Virtuous, thanks to Yisic !
+* New paintjob : Carina Sentinel. From the Navarchy of Tania with love: A complete makeover that leaves nothing out: ships, Wanzers, weapons, and missile projectile and effects, with custom shields and engine exhaust to match. Thanks to Spectros !
 * New Virtuous paintjob : Stripeless.
 * New Virtuous paintjob : Arctic.
 

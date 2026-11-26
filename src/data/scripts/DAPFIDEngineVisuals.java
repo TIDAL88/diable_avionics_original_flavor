@@ -18,19 +18,23 @@ public class DAPFIDEngineVisuals extends BaseEveryFrameCombatPlugin {
     private final Map<String, String> hullProfiles = new HashMap<>();
     private final Map<ShipAPI, DAPFIDNativeEngines.Binding> bindings = new IdentityHashMap<>();
     private static final Map<String, List<MagicPaintjobSpec>> fighterPaintjobs = new HashMap<>();
+    private static final Map<String, Integer> fighterTextureIds = new HashMap<>();
+    private long frame;
 
     @Override
     public void init(CombatEngineAPI engine) {
         bindings.clear();
+        frame = 0;
         fighterPaintjobs.clear();
+        fighterTextureIds.clear();
         factories.clear();
         hullProfiles.clear();
         this.engine = engine;
         try {
-            org.json.JSONObject styles = Global.getSettings()
-                    .loadJSON("data/config/engine_styles.json", "diableavionics");
+            // Keep runtime styles beside their layouts, independent of the shared engine_styles.json path.
             org.json.JSONObject config = Global.getSettings()
                     .loadJSON("data/config/pfid_engine_profiles.json", "diableavionics");
+            org.json.JSONObject styles = config.getJSONObject("engineStyles");
             defaultProfile = config.getString("defaultProfile");
             org.json.JSONObject profiles = config.getJSONObject("profiles");
             for (Iterator<?> names = profiles.keys(); names.hasNext();) {
@@ -47,8 +51,14 @@ public class DAPFIDEngineVisuals extends BaseEveryFrameCombatPlugin {
                 hullProfiles.put(hull, profile);
             }
             if (!factories.containsKey(defaultProfile)) throw new IllegalArgumentException("Unknown default PFID profile");
-        } catch (Exception ex) {
-            throw new RuntimeException("Unable to load native PFID engine settings", ex);
+        } catch (Exception | LinkageError ex) {
+            // Exhaust is cosmetic: a bad configuration must not prevent the title screen or combat loading.
+            this.engine = null;
+            factories.clear();
+            hullProfiles.clear();
+            Global.getLogger(DAPFIDEngineVisuals.class).error(
+                    "PFID native exhaust disabled for this combat; original engines retained. "
+                            + "Check data/config/pfid_engine_profiles.json and the game libraries.", ex);
         }
     }
 
@@ -60,26 +70,35 @@ public class DAPFIDEngineVisuals extends BaseEveryFrameCombatPlugin {
             MagicPaintjobSpec paintjob = MagicPaintjobManager.getCurrentShipPaintjob(ship.getVariant());
             if (paintjob != null && "PFID".equals(paintjob.getPaintjobFamily())) return true;
         }
-        if (!ship.isFighter() || ship.getHullSpec() == null || ship.getSpriteAPI() == null) return false;
+        if (!ship.isFighter() || ship.getHullSpec() == null) return false;
         SpriteAPI sprite = ship.getSpriteAPI();
-        if (sprite.getTextureId() == 0) return false;
+        if (sprite == null) return false;
+        int textureId = sprite.getTextureId();
+        if (textureId == 0) return false;
         for (MagicPaintjobSpec paintjob : fighterPaintjobs.computeIfAbsent(ship.getHullSpec().getHullId(),
                 id -> MagicPaintjobManager.getPaintjobsForHull(id, true, true))) {
             if (!"PFID".equals(paintjob.getPaintjobFamily())) continue;
-            SpriteAPI painted = Global.getSettings().getSprite(paintjob.getSpriteId());
-            if (painted != null && painted.getTextureId() == sprite.getTextureId()) return true;
+            Integer paintedTextureId = fighterTextureIds.computeIfAbsent(paintjob.getSpriteId(),
+                    DAPFIDEngineVisuals::getLoadedTextureId);
+            if (paintedTextureId != null && paintedTextureId == textureId) return true;
         }
         return false;
+    }
+
+    private static Integer getLoadedTextureId(String spriteId) {
+        SpriteAPI sprite = Global.getSettings().getSprite(spriteId);
+        int textureId = sprite == null ? 0 : sprite.getTextureId();
+        // A texture that isn't ready yet should be checked again next time.
+        return textureId == 0 ? null : textureId;
     }
 
     @Override
     public void advance(float amount, List<InputEventAPI> events) {
         if (engine == null || engine.isPaused()) return;
-        Set<ShipAPI> present = Collections.newSetFromMap(new IdentityHashMap<>());
+        long currentFrame = ++frame;
         for (ShipAPI ship : engine.getShips()) {
             if (!ship.isAlive() || !isPFID(ship) || !(ship instanceof Ship nativeShip)) continue;
             if (Boolean.TRUE.equals(ship.getCustomData().get(FAILED_KEY))) continue;
-            present.add(ship);
             DAPFIDNativeEngines.Binding binding = bindings.get(ship);
             if (binding == null && !nativeShip.getEngineLocations().isEmpty()) {
                 try {
@@ -92,12 +111,13 @@ public class DAPFIDEngineVisuals extends BaseEveryFrameCombatPlugin {
                             + ship.getHullSpec().getHullId() + "; original engines retained", ex);
                 }
             }
+            if (binding != null) binding.lastSeenFrame = currentFrame;
         }
-        Iterator<Map.Entry<ShipAPI, DAPFIDNativeEngines.Binding>> iterator = bindings.entrySet().iterator();
+        Iterator<DAPFIDNativeEngines.Binding> iterator = bindings.values().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<ShipAPI, DAPFIDNativeEngines.Binding> entry = iterator.next();
-            if (!present.contains(entry.getKey())) {
-                entry.getValue().restore();
+            DAPFIDNativeEngines.Binding binding = iterator.next();
+            if (binding.lastSeenFrame != currentFrame) {
+                binding.restore();
                 iterator.remove();
             }
         }

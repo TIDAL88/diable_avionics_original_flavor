@@ -11,6 +11,7 @@ import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.impl.campaign.events.OfficerManagerEvent;
 import com.fs.starfarer.api.impl.campaign.ids.*;
 import com.fs.starfarer.api.impl.campaign.shared.SharedData;
+import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
 import data.campaign.ids.Diableavionics_ids;
 import data.campaign.industry.DALastLineFleetIndustry;
@@ -213,6 +214,7 @@ public class DiableavionicsGen implements SectorGeneratorPlugin {
         } else {
             configureVirtuousEncounter(virtuous, virtuousCaptain);
         }
+        Misc.makeImportant(virtuous, "diableavionics_last_line");
         return virtuous;
     }
 
