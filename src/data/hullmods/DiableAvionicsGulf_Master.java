@@ -21,11 +21,18 @@ public class DiableAvionicsGulf_Master extends BaseHullMod {
     private static final String WANZER_DISRUPTION = "diableavionics_subsystem_wanzerdisruption";
     @Override
     public void applyEffectsBeforeShipCreation(HullSize hullSize, MutableShipStatsAPI stats, String id) {
-        ShipVariantAPI variant;
-        variant=stats.getVariant();
-        boolean needSync = false;
+        ShipVariantAPI variant = stats.getVariant();
         if (variant == null) return;
 
+        if (Global.CODEX_TOOLTIP_MODE) {
+            // The Codex builds an empty preview of the requested hull, without the conversion hullmod.
+            if (SPECIAL_SKIN.equals(variant.getHullSpec().getHullId()) && variant.getWeaponId(LARGE_SLOT) == null) {
+                variant.addWeapon(LARGE_SLOT, CUSTOM_WEAPON);
+            }
+            return;
+        }
+
+        boolean needSync = false;
         boolean hasHullmod = variant.getHullMods().contains(TOGGLE_HULLMOD);
 
         if (hasHullmod) {
